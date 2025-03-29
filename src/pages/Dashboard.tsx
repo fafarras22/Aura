@@ -1,4 +1,6 @@
+
 import { SensorCard } from "@/components/dashboard/SensorCard";
+import { ContainerUpgrade } from "@/components/dashboard/ContainerUpgrade";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getMockSensorData, getMockAlerts, getMockHarvests } from "@/services/mockDataService";
 import { Thermometer, Droplet, Wind, Zap, FlaskConical, Waves, AlertCircle, Droplets } from "lucide-react";
@@ -42,6 +44,9 @@ const Dashboard = () => {
           Last updated: {new Date().toLocaleTimeString()}
         </div>
       </div>
+      
+      {/* Container Upgrade Section */}
+      <ContainerUpgrade />
       
       {/* Quick Stats Summary */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
