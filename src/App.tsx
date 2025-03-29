@@ -8,6 +8,8 @@ import { DeveloperModeProvider } from "@/context/DeveloperModeContext";
 import { MainLayout } from "@/components/layout/MainLayout";
 import Dashboard from "@/pages/Dashboard";
 import Sensors from "@/pages/Sensors";
+import Water from "@/pages/Water";
+import Climate from "@/pages/Climate";
 import Alerts from "@/pages/Alerts";
 import CCTV from "@/pages/CCTV";
 import Harvest from "@/pages/Harvest";
@@ -29,8 +31,8 @@ const App = () => (
             <Route element={<MainLayout />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/sensors" element={<Sensors />} />
-              <Route path="/water" element={<Sensors />} /> {/* Temporarily using Sensors page for water */}
-              <Route path="/climate" element={<Sensors />} /> {/* Temporarily using Sensors page for climate */}
+              <Route path="/water" element={<Water />} />
+              <Route path="/climate" element={<Climate />} />
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/cctv" element={<CCTV />} />
               <Route path="/harvest" element={<Harvest />} />

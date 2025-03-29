@@ -31,13 +31,13 @@ import { Badge } from "@/components/ui/badge";
 
 const containerOptions = [
   {
-    id: "container-40",
-    name: "40-Foot Container",
-    description: "Our standard container farm - 6-7 tons of produce per year",
-    price: "$85,000",
+    id: "container-3ton",
+    name: "3-Ton Container",
+    description: "Our standard container farm - 3 tons of produce per year",
+    price: "IDR 350,000,000",
     features: [
-      "250 sq ft growing area",
-      "Up to 7 tons annual yield",
+      "180 sq ft growing area",
+      "Up to 3 tons annual yield",
       "Automated climate control",
       "Remote monitoring system",
     ],
@@ -48,13 +48,13 @@ const containerOptions = [
     ],
   },
   {
-    id: "container-40-pro",
-    name: "40-Foot Container PRO",
-    description: "Enhanced production - 8-9 tons of produce per year",
-    price: "$120,000",
+    id: "container-5ton",
+    name: "5-Ton Container",
+    description: "Enhanced production - 5 tons of produce per year",
+    price: "IDR 450,000,000",
     features: [
-      "280 sq ft growing area",
-      "Up to 9 tons annual yield",
+      "250 sq ft growing area",
+      "Up to 5 tons annual yield",
       "Advanced nutrient delivery system",
       "Enhanced LED lighting",
       "Premium insulation",
@@ -67,13 +67,13 @@ const containerOptions = [
     badge: "Recommended"
   },
   {
-    id: "container-53",
-    name: "53-Foot Container",
-    description: "Largest capacity - 10-12 tons of produce per year",
-    price: "$165,000",
+    id: "container-7ton",
+    name: "7-Ton Container",
+    description: "Largest capacity - 7 tons of produce per year",
+    price: "IDR 750,000,000",
     features: [
       "350 sq ft growing area",
-      "Up to 12 tons annual yield",
+      "Up to 7 tons annual yield",
       "Dual climate zones",
       "Commercial-grade water filtration",
       "Solar power integration option",
