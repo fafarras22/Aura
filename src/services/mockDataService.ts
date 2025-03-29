@@ -1,4 +1,3 @@
-
 // Mock data service for demonstration purposes
 // In a real application, this would be replaced with actual API calls
 
@@ -50,6 +49,32 @@ export interface HarvestData {
   images: string[];
   container: string;
   notes?: string;
+}
+
+export interface ClientData {
+  id: string;
+  name: string;
+  type: 'supermarket' | 'individual';
+  location: string;
+  imageUrl: string;
+}
+
+export interface ContainerSalesData {
+  id: string;
+  containerName: string;
+  supermarketClient: ClientData;
+  recurringCustomers: ClientData[];
+  priceRange: {
+    min: number;
+    max: number;
+  };
+  monthlySales: {
+    month: string;
+    sales: number;
+    revenue: number;
+  }[];
+  totalSales: number;
+  totalRevenue: number;
 }
 
 // Generate sensor data
@@ -283,6 +308,122 @@ export const getMockHarvests = (): HarvestData[] => {
         'https://source.unsplash.com/random/400x300/?basil,growing'
       ],
       notes: 'Growing as expected.'
+    }
+  ];
+};
+
+// Generate mock clients
+export const getMockClients = (): ClientData[] => {
+  return [
+    {
+      id: 'c1',
+      name: 'SuperFresh Market',
+      type: 'supermarket',
+      location: 'Jakarta Selatan',
+      imageUrl: 'https://source.unsplash.com/random/100x100/?supermarket,store'
+    },
+    {
+      id: 'c2',
+      name: 'GreenGrocers',
+      type: 'supermarket',
+      location: 'Jakarta Pusat',
+      imageUrl: 'https://source.unsplash.com/random/100x100/?grocery,shop'
+    },
+    {
+      id: 'c3',
+      name: 'Health Basket',
+      type: 'supermarket',
+      location: 'Bandung',
+      imageUrl: 'https://source.unsplash.com/random/100x100/?organic,store'
+    },
+    {
+      id: 'c4',
+      name: 'Aditya Wijaya',
+      type: 'individual',
+      location: 'Jakarta Selatan',
+      imageUrl: 'https://source.unsplash.com/random/100x100/?man,profile'
+    },
+    {
+      id: 'c5',
+      name: 'Siti Rahayu',
+      type: 'individual',
+      location: 'Jakarta Timur',
+      imageUrl: 'https://source.unsplash.com/random/100x100/?woman,profile'
+    },
+    {
+      id: 'c6',
+      name: 'Budi Santoso',
+      type: 'individual',
+      location: 'Jakarta Barat',
+      imageUrl: 'https://source.unsplash.com/random/100x100/?man,indonesian'
+    }
+  ];
+};
+
+// Generate container sales data
+export const getMockContainerSalesData = (): ContainerSalesData[] => {
+  const clients = getMockClients();
+  
+  return [
+    {
+      id: 'sales1',
+      containerName: 'AKAR Farm #1',
+      supermarketClient: clients[0],
+      recurringCustomers: clients.filter(c => c.type === 'individual').slice(0, 20),
+      priceRange: {
+        min: 40000,
+        max: 55000
+      },
+      monthlySales: [
+        { month: 'Jan', sales: 250, revenue: 250 * 47500 },
+        { month: 'Feb', sales: 280, revenue: 280 * 48000 },
+        { month: 'Mar', sales: 300, revenue: 300 * 50000 },
+        { month: 'Apr', sales: 320, revenue: 320 * 51000 },
+        { month: 'May', sales: 350, revenue: 350 * 52000 },
+        { month: 'Jun', sales: 370, revenue: 370 * 53000 }
+      ],
+      totalSales: 1870,
+      totalRevenue: 94535000
+    },
+    {
+      id: 'sales2',
+      containerName: 'AKAR Farm #2',
+      supermarketClient: clients[1],
+      recurringCustomers: clients.filter(c => c.type === 'individual').slice(0, 20),
+      priceRange: {
+        min: 45000,
+        max: 60000
+      },
+      monthlySales: [
+        { month: 'Jan', sales: 220, revenue: 220 * 52500 },
+        { month: 'Feb', sales: 240, revenue: 240 * 53000 },
+        { month: 'Mar', sales: 270, revenue: 270 * 54000 },
+        { month: 'Apr', sales: 290, revenue: 290 * 55000 },
+        { month: 'May', sales: 310, revenue: 310 * 56000 },
+        { month: 'Jun', sales: 340, revenue: 340 * 57000 }
+      ],
+      totalSales: 1670,
+      totalRevenue: 89500000
+    },
+    {
+      id: 'sales3',
+      containerName: 'AKAR Farm #3',
+      supermarketClient: clients[2],
+      recurringCustomers: clients.filter(c => c.type === 'individual').slice(0, 20),
+      priceRange: {
+        min: 50000,
+        max: 70000
+      },
+      monthlySales: [
+        { month: 'Jan', sales: 300, revenue: 300 * 60000 },
+        { month: 'Feb', sales: 320, revenue: 320 * 62000 },
+        { month: 'Mar', sales: 350, revenue: 350 * 63000 },
+        { month: 'Apr', sales: 380, revenue: 380 * 65000 },
+        { month: 'May', sales: 400, revenue: 400 * 67000 },
+        { month: 'Jun', sales: 420, revenue: 420 * 69000 }
+      ],
+      totalSales: 2170,
+      totalRevenue: 134340000
     }
   ];
 };

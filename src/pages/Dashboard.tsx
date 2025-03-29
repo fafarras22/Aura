@@ -1,8 +1,14 @@
 
 import { SensorCard } from "@/components/dashboard/SensorCard";
 import { ContainerUpgrade } from "@/components/dashboard/ContainerUpgrade";
+import { SalesStatusCard } from "@/components/dashboard/SalesStatusCard";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getMockSensorData, getMockAlerts, getMockHarvests } from "@/services/mockDataService";
+import { 
+  getMockSensorData, 
+  getMockAlerts, 
+  getMockHarvests,
+  getMockContainerSalesData
+} from "@/services/mockDataService";
 import { Thermometer, Droplet, Wind, Zap, FlaskConical, Waves, AlertCircle, Droplets } from "lucide-react";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -14,6 +20,7 @@ const Dashboard = () => {
   const sensorData = getMockSensorData();
   const alerts = getMockAlerts();
   const harvests = getMockHarvests();
+  const containerSalesData = getMockContainerSalesData();
 
   // Get upcoming harvests (status === 'ready')
   const upcomingHarvests = harvests.filter(harvest => harvest.status === 'ready');
@@ -96,6 +103,16 @@ const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Sales Status Section */}
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Sales Status</h2>
+        <div className="grid gap-6">
+          {containerSalesData.map((salesData) => (
+            <SalesStatusCard key={salesData.id} salesData={salesData} />
+          ))}
+        </div>
       </div>
 
       {/* Sensor Grid */}
@@ -220,3 +237,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
