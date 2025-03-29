@@ -11,6 +11,9 @@ import Sensors from "@/pages/Sensors";
 import Alerts from "@/pages/Alerts";
 import CCTV from "@/pages/CCTV";
 import Harvest from "@/pages/Harvest";
+import Calendar from "@/pages/Calendar";
+import Analytics from "@/pages/Analytics";
+import Settings from "@/pages/Settings";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,9 +34,9 @@ const App = () => (
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/cctv" element={<CCTV />} />
               <Route path="/harvest" element={<Harvest />} />
-              <Route path="/calendar" element={<Dashboard />} /> {/* Placeholder - will implement later */}
-              <Route path="/analytics" element={<Dashboard />} /> {/* Placeholder - will implement later */}
-              <Route path="/settings" element={<Dashboard />} /> {/* Placeholder - will implement later */}
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
