@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				akar: {
+					green: '#4CAF50',
+					lightgreen: '#8BC34A',
+					darkgreen: '#2E7D32',
+					gray: '#f5f5f5',
+					darkgray: '#616161'
 				}
 			},
 			borderRadius: {
@@ -84,11 +92,29 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-warning': {
+					'0%, 100%': {
+						backgroundColor: 'rgba(251, 191, 36, 0.2)'
+					},
+					'50%': {
+						backgroundColor: 'rgba(251, 191, 36, 0.5)'
+					}
+				},
+				'pulse-error': {
+					'0%, 100%': {
+						backgroundColor: 'rgba(239, 68, 68, 0.2)'
+					},
+					'50%': {
+						backgroundColor: 'rgba(239, 68, 68, 0.5)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-warning': 'pulse-warning 2s infinite',
+				'pulse-error': 'pulse-error 2s infinite'
 			}
 		}
 	},
