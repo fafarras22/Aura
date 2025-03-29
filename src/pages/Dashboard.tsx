@@ -1,4 +1,3 @@
-
 import { SensorCard } from "@/components/dashboard/SensorCard";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getMockSensorData, getMockAlerts, getMockHarvests } from "@/services/mockDataService";
@@ -129,8 +128,7 @@ const Dashboard = () => {
             ) : (
               alerts.slice(0, 3).map(alert => (
                 <Alert key={alert.id} variant={
-                  alert.type === 'error' ? 'destructive' : 
-                  alert.type === 'warning' ? 'default' : 'outline'
+                  alert.type === 'error' ? 'destructive' : 'default'
                 }>
                   <div className="flex justify-between items-start">
                     <div>

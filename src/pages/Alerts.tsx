@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { getMockAlerts } from "@/services/mockDataService";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
-import { Bell, BellOff, Info, AlertTriangle, AlertCircle, Check } from "lucide-react";
+import { Bell, BellOff, Info, AlertTriangle, AlertCircle, Check, Mail, Smartphone, Users, History } from "lucide-react";
 import { useState } from "react";
 import { format, parseISO } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
@@ -165,7 +164,7 @@ const Alerts = () => {
               {alerts.map(alert => (
                 <Alert key={alert.id} variant={
                   alert.type === 'error' ? 'destructive' : 
-                  alert.type === 'warning' ? 'default' : 'outline'
+                  alert.type === 'warning' ? 'default' : 'default'
                 }>
                   <div className="flex justify-between items-start">
                     <div className="flex items-start gap-3">
@@ -228,6 +227,3 @@ const Alerts = () => {
 };
 
 export default Alerts;
-
-// Add these imports at the top, which we missed
-import { Mail, Smartphone, Users, History } from "lucide-react";
