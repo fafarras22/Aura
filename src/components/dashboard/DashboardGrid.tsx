@@ -5,6 +5,7 @@ import { SensorCard } from "@/components/dashboard/SensorCard";
 import { FarmLocationsOverview } from "@/components/dashboard/FarmLocationsOverview";
 import { SalesStatusCard } from "@/components/dashboard/SalesStatusCard";
 import { ContainerManagement } from "@/components/dashboard/ContainerManagement";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { Thermometer, Droplet, Wind, Activity } from "lucide-react";
 import { 
   FarmLocation, 

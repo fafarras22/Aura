@@ -62,13 +62,8 @@ export function AppSidebar() {
       <SidebarFooter className="border-t py-4">
         {currentUser && (
           <UserProfileSection 
-            userName={currentUser.name}
-            userRole={currentUser.role}
-            containerId={currentUser.containerId}
-            canAccessDeveloperMode={canAccessDeveloperMode}
-            isDeveloperMode={isDeveloperMode}
-            toggleDeveloperMode={toggleDeveloperMode}
-            onSignOut={handleSignOut}
+            user={currentUser}
+            onLogout={handleSignOut}
           />
         )}
       </SidebarFooter>

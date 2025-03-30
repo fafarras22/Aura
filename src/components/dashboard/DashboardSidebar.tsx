@@ -3,7 +3,7 @@ import React from 'react';
 import { SectionCard } from "@/components/dashboard/SectionCard";
 import { TokenizationOverview } from "@/components/dashboard/TokenizationOverview";
 import { FarmLocationsOverview } from "@/components/dashboard/FarmLocationsOverview";
-import { FarmLocation } from "@/services/mockDataService";
+import { FarmLocation, TokenizationData } from "@/services/mockDataService";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 
 interface DashboardSidebarProps {
@@ -25,7 +25,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   farmLocations,
 }) => {
   const { getContainerData } = useDeveloperMode();
-  const tokenData = {
+  const tokenData: TokenizationData = {
     totalValue: 125000000,
     totalTokens: 12500,
     activeContracts: 3,
@@ -34,7 +34,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     recentActivities: [
       {
         id: "token-act-1",
-        type: "invested",
+        type: "invested" as const,
         description: "New investment",
         tokenAmount: 500,
         date: new Date().toLocaleDateString(),
@@ -42,7 +42,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
       },
       {
         id: "token-act-2",
-        type: "harvested",
+        type: "harvested" as const,
         description: "Harvest yield distributed",
         tokenAmount: 250,
         date: new Date().toLocaleDateString(),

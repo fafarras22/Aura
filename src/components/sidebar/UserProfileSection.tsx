@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/context/DeveloperModeContext"; // Fix: import User instead of UserRole
+import { User } from "@/context/DeveloperModeContext";
 
 interface UserProfileSectionProps {
   user: User | null;
@@ -37,7 +37,6 @@ export const UserProfileSection: React.FC<UserProfileSectionProps> = ({
           <div className="flex items-center gap-2 p-2 rounded-md hover:bg-accent cursor-pointer transition-colors">
             <Avatar className="h-8 w-8">
               <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-              {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name} />}
             </Avatar>
             <div className="flex-1 overflow-hidden">
               <div className="text-sm font-medium truncate">{user.name}</div>
@@ -51,7 +50,7 @@ export const UserProfileSection: React.FC<UserProfileSectionProps> = ({
         <DropdownMenuContent align="end" className="w-56">
           <div className="px-2 py-1.5">
             <div className="text-sm font-medium">{user.name}</div>
-            <div className="text-xs text-muted-foreground">{user.email}</div>
+            <div className="text-xs text-muted-foreground">{user.containerId}</div>
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Profile Settings</DropdownMenuItem>
