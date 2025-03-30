@@ -124,6 +124,8 @@ export interface CCTVCamera {
   status: 'online' | 'offline';
   lastMotion: Date;
   preview: string;
+  imageUrl: string; // Add the missing property
+  lastRecording: Date; // Add the missing property
 }
 
 // Alias type for Camera for backward compatibility
@@ -206,7 +208,9 @@ export const getMockCCTVCameras = (): CCTVCamera[] => {
       location: "Jakarta Central Farm",
       status: "online",
       lastMotion: new Date(Date.now() - 1000 * 60 * 15),
-      preview: "/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png"
+      preview: "/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png",
+      imageUrl: "/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png", // Added
+      lastRecording: new Date(Date.now() - 1000 * 60 * 30) // Added
     },
     {
       id: "cam2",
@@ -214,7 +218,9 @@ export const getMockCCTVCameras = (): CCTVCamera[] => {
       location: "Jakarta Central Farm",
       status: "online",
       lastMotion: new Date(Date.now() - 1000 * 60 * 45),
-      preview: "/lovable-uploads/ae9d74be-8813-4c4b-b946-cf1190243702.png"
+      preview: "/lovable-uploads/ae9d74be-8813-4c4b-b946-cf1190243702.png",
+      imageUrl: "/lovable-uploads/ae9d74be-8813-4c4b-b946-cf1190243702.png", // Added
+      lastRecording: new Date(Date.now() - 1000 * 60 * 60) // Added
     },
     {
       id: "cam3",
@@ -222,7 +228,9 @@ export const getMockCCTVCameras = (): CCTVCamera[] => {
       location: "Jakarta Central Farm",
       status: "offline",
       lastMotion: new Date(Date.now() - 1000 * 60 * 120),
-      preview: "/lovable-uploads/e60ccc9b-594d-461b-9ef9-2b157e19b0a1.png"
+      preview: "/lovable-uploads/e60ccc9b-594d-461b-9ef9-2b157e19b0a1.png",
+      imageUrl: "/lovable-uploads/e60ccc9b-594d-461b-9ef9-2b157e19b0a1.png", // Added
+      lastRecording: new Date(Date.now() - 1000 * 60 * 180) // Added
     },
     {
       id: "cam4",
@@ -230,7 +238,9 @@ export const getMockCCTVCameras = (): CCTVCamera[] => {
       location: "Jakarta Central Farm",
       status: "online",
       lastMotion: new Date(Date.now() - 1000 * 60 * 10),
-      preview: "/lovable-uploads/ff02fd5a-28c4-466b-99d9-ea6213beb2c5.png"
+      preview: "/lovable-uploads/ff02fd5a-28c4-466b-99d9-ea6213beb2c5.png",
+      imageUrl: "/lovable-uploads/ff02fd5a-28c4-466b-99d9-ea6213beb2c5.png", // Added
+      lastRecording: new Date(Date.now() - 1000 * 60 * 20) // Added
     }
   ];
 };
@@ -758,6 +768,7 @@ export interface TokenizationData {
   // Added properties for compatibility
   totalTokens?: number;
   totalInvestors?: number;
+  contractDuration?: number; // Added this property
   recentActivities?: {
     id: string;
     type: 'invested' | 'harvested' | 'other';
@@ -765,6 +776,15 @@ export interface TokenizationData {
     tokenAmount: number;
     date: string;
     transactionHash?: string;
+  }[];
+  // Add the missing properties needed by TokenOverview
+  tokenAllocation: {
+    name: string;
+    value: number;
+  }[];
+  investmentPerformance: {
+    month: string;
+    value: number;
   }[];
 }
 
@@ -778,6 +798,7 @@ export const getMockTokenizationData = (): TokenizationData => {
     tokenPrice: 15000, // IDR per token
     tokenChange: 3.2,
     tokenChangeType: 'increase',
+    contractDuration: 12, // Added property
     recentTransactions: [
       {
         id: 't1',
@@ -869,32 +890,4 @@ export const getMockTokenizationData = (): TokenizationData => {
       }
     ],
     // Adding missing properties
-    totalTokens: 750000,
-    totalInvestors: 325,
-    recentActivities: [
-      {
-        id: 'act1',
-        type: 'invested',
-        description: 'New investment in Jakarta Farm Expansion',
-        tokenAmount: 2500,
-        date: '2 days ago',
-        transactionHash: '0x8f7d8b9c1d2e3f4a5b6c7d8e9f0a1b2c'
-      },
-      {
-        id: 'act2',
-        type: 'harvested',
-        description: 'Harvest dividend distributed to token holders',
-        tokenAmount: 1200,
-        date: '1 week ago',
-        transactionHash: '0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'
-      },
-      {
-        id: 'act3',
-        type: 'other',
-        description: 'System upgrade completed for tokenization platform',
-        tokenAmount: 0,
-        date: '2 weeks ago'
-      }
-    ]
-  };
-};
+    totalTokens: 7500

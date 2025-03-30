@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -59,15 +60,15 @@ const Tokenization = () => {
         </TabsContent>
         
         <TabsContent value="allocation">
-          <TokenAllocation />
+          <TokenAllocation tokenData={tokenizationData} />
         </TabsContent>
         
         <TabsContent value="investments">
-          <TokenInvestments />
+          <TokenInvestments tokenData={tokenizationData} />
         </TabsContent>
         
         <TabsContent value="transactions">
-          <TokenTransactions />
+          <TokenTransactions tokenData={tokenizationData} />
         </TabsContent>
         
         <TabsContent value="purchase">
@@ -76,9 +77,9 @@ const Tokenization = () => {
       </Tabs>
       
       <TokenPurchaseModal 
-        isOpen={isPurchaseModalOpen}
-        onClose={() => setIsPurchaseModalOpen(false)}
-        onPurchase={handlePurchaseComplete}
+        open={isPurchaseModalOpen}
+        onOpenChange={setIsPurchaseModalOpen}
+        onComplete={handlePurchaseComplete}
         tokenId={selectedToken}
       />
     </div>
