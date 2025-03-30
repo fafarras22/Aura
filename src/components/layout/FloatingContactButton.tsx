@@ -1,10 +1,11 @@
 
 import React, { useState } from 'react';
-import { Leaf, X } from 'lucide-react';
+import { Shield, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { useMobile } from '@/hooks/use-mobile';
 
 export const FloatingContactButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export const FloatingContactButton = () => {
   const [email, setEmail] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const isMobile = useMobile();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,22 +36,22 @@ export const FloatingContactButton = () => {
 
   return (
     <>
-      {/* Floating button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {/* Floating button - positioned higher on mobile */}
+      <div className={`fixed ${isMobile ? 'bottom-24' : 'bottom-6'} right-6 z-50`}>
         <Button
           onClick={() => setIsOpen(!isOpen)}
           className={`rounded-full w-12 h-12 shadow-lg ${isOpen ? 'bg-red-500 hover:bg-red-600' : 'bg-green-600 hover:bg-green-700'}`}
         >
-          {isOpen ? <X className="h-5 w-5" /> : <Leaf className="h-5 w-5" />}
+          {isOpen ? <X className="h-5 w-5" /> : <Shield className="h-5 w-5" />}
         </Button>
       </div>
 
       {/* Chat popup */}
       {isOpen && (
-        <Card className="fixed bottom-24 right-6 z-50 shadow-lg w-80 md:w-96 overflow-hidden">
+        <Card className={`fixed ${isMobile ? 'bottom-40' : 'bottom-24'} right-6 z-50 shadow-lg w-80 md:w-96 overflow-hidden`}>
           <div className="bg-green-600 text-white py-3 px-4 font-medium flex justify-between items-center">
             <div className="flex items-center">
-              <Leaf className="mr-2 h-5 w-5" />
+              <Shield className="mr-2 h-5 w-5" />
               <span>AKAR Customer Service</span>
             </div>
             <Button 
@@ -100,7 +102,7 @@ export const FloatingContactButton = () => {
             ) : (
               <div className="py-8 text-center">
                 <div className="mx-auto bg-green-100 text-green-800 rounded-full w-16 h-16 flex items-center justify-center mb-4">
-                  <Leaf className="h-8 w-8" />
+                  <Shield className="h-8 w-8" />
                 </div>
                 <h3 className="font-medium text-lg">Thank You!</h3>
                 <p className="text-muted-foreground mt-1">

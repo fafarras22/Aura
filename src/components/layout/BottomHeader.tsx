@@ -17,11 +17,11 @@ export function BottomHeader() {
   const location = useLocation();
 
   const navItems: NavItem[] = [
-    { path: '/dashboard', label: 'Dashboard', icon: <Home className="h-5 w-5" /> },
-    { path: '/sensors', label: 'Sensors', icon: <Leaf className="h-5 w-5" /> },
-    { path: '/tokenization', label: 'Tokenization', icon: <Layers className="h-5 w-5" />, isPrimary: true },
-    { path: '/water', label: 'Water', icon: <Droplet className="h-5 w-5" /> },
-    { path: '/climate', label: 'Climate', icon: <Wind className="h-5 w-5" /> },
+    { path: '/dashboard', label: 'Dashboard', icon: <Home className="h-6 w-6" /> },
+    { path: '/sensors', label: 'Sensors', icon: <Leaf className="h-6 w-6" /> },
+    { path: '/tokenization', label: 'Tokenization', icon: <Layers className="h-7 w-7" />, isPrimary: true },
+    { path: '/water', label: 'Water', icon: <Droplet className="h-6 w-6" /> },
+    { path: '/climate', label: 'Climate', icon: <Wind className="h-6 w-6" /> },
   ];
 
   return (
@@ -42,7 +42,7 @@ export function BottomHeader() {
                       : location.pathname === item.path
                         ? 'text-primary-foreground'
                         : 'text-gray-500 dark:text-gray-400'
-                  } ${index === 2 ? 'relative -top-3 rounded-full shadow-lg' : ''}`}
+                  } ${index === 2 ? 'relative -top-5 rounded-full shadow-lg h-14 w-14' : 'h-12 w-12'}`}
                   onClick={() => navigate(item.path)}
                 >
                   {item.icon}
