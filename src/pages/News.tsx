@@ -234,7 +234,7 @@ const newsArticles: NewsArticle[] = [
   {
     id: '1',
     title: 'AKAR Secures $5M in Series A Funding to Expand Container Farming Network',
-    summary: 'Led by Antler and supported by leading Indonesian investors, this funding will accelerate AKAR's expansion across Southeast Asia.',
+    summary: "Led by Antler and supported by leading Indonesian investors, this funding will accelerate AKAR's expansion across Southeast Asia.",
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
     date: 'November 15, 2023',
     author: 'AKAR Communications Team',
@@ -257,7 +257,7 @@ const newsArticles: NewsArticle[] = [
   {
     id: '3',
     title: 'AKAR Partners with Indodax to Enhance Blockchain Tokenization Platform',
-    summary: 'This strategic partnership will improve liquidity and accessibility for AKAR token holders while strengthening Indonesia's blockchain ecosystem.',
+    summary: "This strategic partnership will improve liquidity and accessibility for AKAR token holders while strengthening Indonesia's blockchain ecosystem.",
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
     date: 'September 22, 2023',
     author: 'Partnerships Team',
@@ -301,7 +301,7 @@ const newsArticles: NewsArticle[] = [
   {
     id: '7',
     title: 'Climate Change and the Future of Farming: Why Controlled Environment Agriculture Matters',
-    summary: 'As traditional farming faces increasing challenges from climate change, solutions like AKAR's container farms offer resilience and stability.',
+    summary: "As traditional farming faces increasing challenges from climate change, solutions like AKAR's container farms offer resilience and stability.",
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
     date: 'June 25, 2023',
     author: 'Sustainability Team',
