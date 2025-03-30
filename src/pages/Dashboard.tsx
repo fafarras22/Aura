@@ -13,6 +13,11 @@ import { useNavigate } from "react-router-dom";
 import { ContainerManagement } from "@/components/dashboard/ContainerManagement";
 import { Thermometer, Droplet, Wind, Activity } from "lucide-react";
 import { format } from "date-fns";
+import { 
+  FarmLocation, 
+  ContainerSalesData, 
+  TokenizationData 
+} from "@/services/mockDataService";
 
 const Dashboard = () => {
   const [showLoginDialog, setShowLoginDialog] = useState<boolean>(false);
@@ -56,8 +61,11 @@ const Dashboard = () => {
         { id: "cust-1", name: "Customer 1", imageUrl: "" },
         { id: "cust-2", name: "Customer 2", imageUrl: "" },
         { id: "cust-3", name: "Customer 3", imageUrl: "" }
-      ]
-    },
+      ],
+      // Add missing required properties from ContainerSalesData
+      month: "Current",
+      amount: 85000000
+    } as ContainerSalesData,
     
     // Tokenization data
     tokenData: {
@@ -83,15 +91,46 @@ const Dashboard = () => {
           date: format(new Date(), "dd MMM yyyy"),
           transactionHash: "0x0987654321fedcba"
         }
-      ]
-    },
+      ],
+      // Add missing required properties from TokenizationData
+      tokenBalance: 5000,
+      tokenPrice: 10000,
+      tokenChange: 2.5,
+      tokenChangeType: "increase" as const,
+      tokenHolders: [],
+      investments: [],
+      recentTransactions: [],
+      tokenAllocation: [],
+      investmentPerformance: []
+    } as TokenizationData,
     
     // Farm locations
     farmLocations: [
-      { id: "loc-1", name: "Jakarta Farm", status: "active", coordinates: [106.8456, -6.2088] },
-      { id: "loc-2", name: "Bandung Farm", status: "maintenance", coordinates: [107.6191, -6.9175] },
-      { id: "loc-3", name: "Surabaya Farm", status: "active", coordinates: [112.7378, -7.2575] }
-    ]
+      { 
+        id: "loc-1", 
+        name: "Jakarta Farm", 
+        status: "active" as const, 
+        location: { lat: 106.8456, lng: -6.2088 },
+        containers: 5,
+        address: "Jl. Sudirman 123, Jakarta"
+      },
+      { 
+        id: "loc-2", 
+        name: "Bandung Farm", 
+        status: "maintenance" as const, 
+        location: { lat: 107.6191, lng: -6.9175 },
+        containers: 3,
+        address: "Jl. Asia Afrika 45, Bandung"
+      },
+      { 
+        id: "loc-3", 
+        name: "Surabaya Farm", 
+        status: "active" as const, 
+        location: { lat: 112.7378, lng: -7.2575 },
+        containers: 4, 
+        address: "Jl. Pemuda 88, Surabaya"
+      }
+    ] as FarmLocation[]
   };
   
   // Check if user is logged in when component mounts
