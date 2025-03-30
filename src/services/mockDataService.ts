@@ -21,8 +21,8 @@ export interface Alert {
   message: string;
   timestamp: string;
   isRead: boolean;
-  title?: string;
-  category?: string;
+  title: string;
+  category: string;
 }
 
 export interface Harvest {
@@ -32,14 +32,14 @@ export interface Harvest {
   unit: string;
   date: string;
   status: 'ready' | 'in progress' | 'completed';
-  plantName?: string;
-  plantType?: string;
-  plantedDate?: string;
-  estimatedHarvestDate?: string;
-  actualHarvestDate?: string;
-  harvestWeight?: number;
-  container?: string;
-  images?: string[];
+  plantName: string;
+  plantType: string;
+  plantedDate: string;
+  estimatedHarvestDate: string;
+  actualHarvestDate: string;
+  harvestWeight: number;
+  container: string;
+  images: string[];
 }
 
 export interface ContainerSalesData {
@@ -55,8 +55,8 @@ export interface ContainerSalesData {
     max: number;
   };
   totalSales: number;
-  totalRevenue?: number;
-  monthlySales?: number[];
+  totalRevenue: number;
+  monthlySales: number[];
   recurringCustomers: {
     id: string;
     name: string;
@@ -115,9 +115,9 @@ export interface TokenizationData {
     amount: number;
     date: string;
   }[];
-  totalTokens?: number;
-  totalInvestors?: number;
-  recentActivities?: {
+  totalTokens: number;
+  totalInvestors: number;
+  recentActivities: {
     id: string;
     date: string;
     description: string;
@@ -234,7 +234,7 @@ export const getMockCameras = (): Camera[] => {
   return Array.from({ length: 6 }, () => ({
     id: faker.string.uuid(),
     name: `Camera ${faker.lorem.word()}`,
-    location: faker.address.streetAddress(),
+    location: faker.location.streetAddress(),
     status: faker.helpers.arrayElement(['online', 'offline', 'maintenance']),
     lastSnapshot: faker.image.url(),
     lastUpdated: faker.date.recent().toLocaleString()
