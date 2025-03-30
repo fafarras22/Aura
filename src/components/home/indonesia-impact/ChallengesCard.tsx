@@ -22,38 +22,33 @@ const ChallengeItem: React.FC<ChallengeItemProps> = ({ icon, title, description 
   );
 };
 
-export const ChallengesCard: React.FC = () => {
-  const challenges = [
-    {
-      icon: <MapPin className="text-primary w-6 h-6" />,
-      title: "Archipelago Distribution",
-      description: "Our container farms can be deployed across Indonesia's 17,000+ islands, bringing fresh produce to remote communities."
-    },
-    {
-      icon: <SproutIcon className="text-primary w-6 h-6" />,
-      title: "Tropical Climate Adaptation",
-      description: "Our systems are specifically calibrated for Indonesia's tropical climate, ensuring optimal growing conditions year-round."
-    },
-    {
-      icon: <LineChart className="text-primary w-6 h-6" />,
-      title: "Urban Food Security",
-      description: "As Indonesia's cities grow, our urban farming solutions help ensure food security and reduce transportation emissions."
-    }
+interface ChallengesCardProps {
+  title: string;
+  challenges: string[];
+  isPositive?: boolean;
+}
+
+export const ChallengesCard: React.FC<ChallengesCardProps> = ({ title, challenges, isPositive = false }) => {
+  const baseIconClass = isPositive ? "text-green-600" : "text-primary";
+  const icons = [
+    <MapPin className={`${baseIconClass} w-6 h-6`} key="map" />,
+    <SproutIcon className={`${baseIconClass} w-6 h-6`} key="sprout" />,
+    <LineChart className={`${baseIconClass} w-6 h-6`} key="chart" />
   ];
 
   return (
     <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm">
       <h3 className="text-2xl font-semibold mb-6 text-primary dark:text-primary">
-        Addressing Indonesia's Unique Challenges
+        {title}
       </h3>
       
       <div className="space-y-6">
         {challenges.map((challenge, index) => (
           <ChallengeItem 
             key={index}
-            icon={challenge.icon}
-            title={challenge.title}
-            description={challenge.description}
+            icon={icons[index % icons.length]}
+            title={`${isPositive ? "Solution" : "Challenge"} ${index + 1}`}
+            description={challenge}
           />
         ))}
       </div>

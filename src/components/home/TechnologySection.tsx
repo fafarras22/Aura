@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Server, Clock, CloudCog, Plant, ShieldCheck } from "lucide-react";
+import { Server, Clock, CloudCog, Flower2, ShieldCheck } from "lucide-react";
 
 interface TechnologySectionProps {
   language: 'en' | 'id' | 'ko';
@@ -23,7 +23,7 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
           description: "Machine learning algorithms optimize growing conditions based on historical data and real-time feedback."
         },
         {
-          icon: <Plant className="h-5 w-5 text-green-600" />,
+          icon: <Flower2 className="h-5 w-5 text-green-600" />,
           title: "Hydroponic Systems",
           description: "Water-efficient growing technology that delivers nutrients directly to plant roots."
         },
@@ -54,7 +54,7 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
           description: "Algoritma pembelajaran mesin mengoptimalkan kondisi pertumbuhan berdasarkan data historis dan umpan balik real-time."
         },
         {
-          icon: <Plant className="h-5 w-5 text-green-600" />,
+          icon: <Flower2 className="h-5 w-5 text-green-600" />,
           title: "Sistem Hidroponik",
           description: "Teknologi pertumbuhan hemat air yang mengirimkan nutrisi langsung ke akar tanaman."
         },
@@ -85,7 +85,7 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
           description: "머신러닝 알고리즘이 과거 데이터와 실시간 피드백을 기반으로 재배 조건을 최적화합니다."
         },
         {
-          icon: <Plant className="h-5 w-5 text-green-600" />,
+          icon: <Flower2 className="h-5 w-5 text-green-600" />,
           title: "수경재배 시스템",
           description: "영양분을 식물 뿌리에 직접 전달하는 물 효율적인 재배 기술."
         },
