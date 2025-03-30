@@ -1,14 +1,165 @@
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Leaf, SproutIcon, DropletIcon, LineChart, Sparkles, ShoppingCart } from "lucide-react";
+import { Leaf, SproutIcon, DropletIcon, LineChart, Sparkles, ShoppingCart, MapPin } from "lucide-react";
 import { AppleButton } from "@/components/ui/apple-button";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const Home = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // 3D Container Farm visualization
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    // Scene setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf5f5f5);
+    
+    // Camera setup
+    const camera = new THREE.PerspectiveCamera(
+      40, 
+      containerRef.current.clientWidth / containerRef.current.clientHeight, 
+      0.1, 
+      1000
+    );
+    camera.position.set(5, 3, 5);
+    
+    // Renderer setup
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+    renderer.shadowMap.enabled = true;
+    containerRef.current.appendChild(renderer.domElement);
+    
+    // Controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.screenSpacePanning = false;
+    controls.minDistance = 3;
+    controls.maxDistance = 10;
+    controls.maxPolarAngle = Math.PI / 2;
+    
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(5, 10, 5);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
+    
+    // Ground
+    const groundGeometry = new THREE.PlaneGeometry(20, 20);
+    const groundMaterial = new THREE.MeshStandardMaterial({ 
+      color: 0x4CAF50,
+      roughness: 0.8,
+      metalness: 0.2
+    });
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+    
+    // Container Farm
+    const containerGroup = new THREE.Group();
+    
+    // Main container
+    const containerGeometry = new THREE.BoxGeometry(2, 2.5, 6);
+    const containerMaterial = new THREE.MeshStandardMaterial({ 
+      color: 0xeeeeee,
+      roughness: 0.7,
+      metalness: 0.3
+    });
+    const container = new THREE.Mesh(containerGeometry, containerMaterial);
+    container.position.y = 1.25;
+    container.castShadow = true;
+    container.receiveShadow = true;
+    containerGroup.add(container);
+    
+    // Container details
+    const doorGeometry = new THREE.PlaneGeometry(0.8, 2);
+    const doorMaterial = new THREE.MeshStandardMaterial({ 
+      color: 0x4CAF50,
+      roughness: 0.5,
+      metalness: 0.5
+    });
+    const door = new THREE.Mesh(doorGeometry, doorMaterial);
+    door.position.set(0, 0, 3.01);
+    door.castShadow = true;
+    containerGroup.add(door);
+    
+    // Solar panels
+    const panelGeometry = new THREE.BoxGeometry(2.2, 0.1, 6.2);
+    const panelMaterial = new THREE.MeshStandardMaterial({ 
+      color: 0x2E7D32,
+      roughness: 0.3,
+      metalness: 0.8
+    });
+    const solarPanel = new THREE.Mesh(panelGeometry, panelMaterial);
+    solarPanel.position.y = 2.6;
+    solarPanel.castShadow = true;
+    containerGroup.add(solarPanel);
+    
+    // Windows
+    for (let i = -2; i <= 2; i += 2) {
+      const windowGeometry = new THREE.PlaneGeometry(0.6, 0.6);
+      const windowMaterial = new THREE.MeshStandardMaterial({ 
+        color: 0xaaddff,
+        roughness: 0.2,
+        metalness: 0.8,
+        transparent: true,
+        opacity: 0.7
+      });
+      const window1 = new THREE.Mesh(windowGeometry, windowMaterial);
+      window1.position.set(1.01, 1.5, i);
+      window1.rotation.y = -Math.PI / 2;
+      containerGroup.add(window1);
+      
+      const window2 = new THREE.Mesh(windowGeometry, windowMaterial);
+      window2.position.set(-1.01, 1.5, i);
+      window2.rotation.y = Math.PI / 2;
+      containerGroup.add(window2);
+    }
+    
+    scene.add(containerGroup);
+    
+    // Animation loop
+    const animate = () => {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    };
+    animate();
+    
+    // Handle resize
+    const handleResize = () => {
+      if (!containerRef.current) return;
+      const width = containerRef.current.clientWidth;
+      const height = containerRef.current.clientHeight;
+      
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (containerRef.current && containerRef.current.contains(renderer.domElement)) {
+        containerRef.current.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+    };
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      {/* Hero section */}
+      {/* Header/Navigation */}
       <header className="w-full bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -31,6 +182,9 @@ const Home = () => {
               </a>
               <a href="#tokenization" className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
                 Tokenization
+              </a>
+              <a href="#indonesia" className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
+                Indonesia Impact
               </a>
             </nav>
             <div className="flex items-center gap-3">
@@ -56,14 +210,14 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-5xl font-bold tracking-tight text-gray-900 mb-6">
-                Revolutionizing Urban Farming for a Sustainable Future
+                Revolutionizing Urban Farming for a Sustainable Indonesia
               </h1>
               <p className="text-lg text-gray-600 mb-8">
-                AKAR delivers cutting-edge farming solutions with smart container technology. 
-                Monitor, analyze, and optimize your farm with our advanced systems.
+                AKAR delivers cutting-edge farming solutions with smart container technology, 
+                specially designed for Indonesia's tropical climate and urban challenges.
               </p>
               <div className="flex flex-wrap gap-4">
-                <AppleButton variant="primary" className="px-8 py-3">
+                <AppleButton variant="green" className="px-8 py-3">
                   Explore Solutions
                 </AppleButton>
                 <AppleButton variant="secondary" className="px-8 py-3">
@@ -72,12 +226,7 @@ const Home = () => {
               </div>
             </div>
             <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-xl">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/10"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" 
-                alt="Advanced Container Farm" 
-                className="w-full h-full object-cover"
-              />
+              <div ref={containerRef} className="w-full h-full"></div>
             </div>
           </div>
         </div>
@@ -123,6 +272,123 @@ const Home = () => {
               <p className="text-gray-600">
                 Precision irrigation and water recycling systems conserve this precious resource.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Indonesia Impact section */}
+      <section id="indonesia" className="bg-gradient-to-br from-primary/5 to-primary/20 py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl font-bold mb-4">Impact in Indonesia</h2>
+            <p className="text-gray-600">
+              AKAR's container farming technology is uniquely positioned to address Indonesia's agricultural challenges 
+              and support sustainable development across the archipelago.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="bg-white p-8 rounded-xl shadow-sm">
+              <h3 className="text-2xl font-semibold mb-6 text-primary">Addressing Indonesia's Unique Challenges</h3>
+              
+              <div className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="text-primary w-6 h-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-medium mb-1">Archipelago Distribution</h4>
+                    <p className="text-gray-600">
+                      Our container farms can be deployed across Indonesia's 17,000+ islands, bringing fresh produce to remote communities.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <SproutIcon className="text-primary w-6 h-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-medium mb-1">Tropical Climate Adaptation</h4>
+                    <p className="text-gray-600">
+                      Our systems are specifically calibrated for Indonesia's tropical climate, ensuring optimal growing conditions year-round.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <LineChart className="text-primary w-6 h-6" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-medium mb-1">Urban Food Security</h4>
+                    <p className="text-gray-600">
+                      As Indonesia's cities grow, our urban farming solutions help ensure food security and reduce transportation emissions.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-xl shadow-sm">
+                <h4 className="text-4xl font-bold text-primary mb-2">70%</h4>
+                <p className="text-gray-600">Reduction in water usage compared to traditional farming in Indonesia</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-xl shadow-sm">
+                <h4 className="text-4xl font-bold text-primary mb-2">5x</h4>
+                <p className="text-gray-600">More produce per square meter than conventional Indonesian farms</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-xl shadow-sm">
+                <h4 className="text-4xl font-bold text-primary mb-2">24/7</h4>
+                <p className="text-gray-600">Monitoring with Indonesian-developed IoT technology</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-xl shadow-sm">
+                <h4 className="text-4xl font-bold text-primary mb-2">12+</h4>
+                <p className="text-gray-600">Indonesian provinces where our containers are currently deployed</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-16 text-center">
+            <h3 className="text-2xl font-semibold mb-6">Our Growing Impact Across Indonesia</h3>
+            <div className="bg-white p-8 rounded-xl shadow-sm max-w-4xl mx-auto">
+              <div className="relative h-[400px] w-full mb-6 rounded-lg overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1599050751991-6296df2804fdfits=crop&w=1400&h=700&q=80" 
+                  alt="Indonesia Map" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-0 left-0 w-full h-full bg-primary/10"></div>
+                
+                {/* Location markers */}
+                <div className="absolute top-[30%] left-[35%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+                <div className="absolute top-[45%] left-[60%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+                <div className="absolute top-[60%] left-[48%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+                <div className="absolute top-[20%] left-[70%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+                <div className="absolute top-[55%] left-[25%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div>
+                  <h4 className="font-semibold mb-2">Jakarta Hub</h4>
+                  <p className="text-sm text-gray-600">Our flagship urban farming center serving Indonesia's capital</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold mb-2">Bali Eco-Center</h4>
+                  <p className="text-sm text-gray-600">Sustainable tourism meets agriculture innovation</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold mb-2">Sulawesi Outreach</h4>
+                  <p className="text-sm text-gray-600">Bringing technology to traditional farming communities</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
