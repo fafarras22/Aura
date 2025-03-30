@@ -7,12 +7,13 @@ import { TokenOverview } from "@/components/tokenization/TokenOverview";
 import { TokenInvestments } from "@/components/tokenization/TokenInvestments";
 import { TokenAllocation } from "@/components/tokenization/TokenAllocation";
 import { TokenTransactions } from "@/components/tokenization/TokenTransactions";
+import { TokenPurchase } from "@/components/tokenization/TokenPurchase";
 import { getMockTokenizationData } from "@/services/mockDataService";
 import { Badge } from "@/components/ui/badge";
 import { Info } from "lucide-react";
 
 const Tokenization = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("purchase");
   const tokenData = getMockTokenizationData();
 
   return (
@@ -50,12 +51,16 @@ const Tokenization = () => {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid grid-cols-4 mb-6">
+            <TabsList className="grid grid-cols-5 mb-6">
+              <TabsTrigger value="purchase">Purchase</TabsTrigger>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="investments">Investments</TabsTrigger>
               <TabsTrigger value="allocation">Fund Allocation</TabsTrigger>
               <TabsTrigger value="transactions">Transactions</TabsTrigger>
             </TabsList>
+            <TabsContent value="purchase" className="mt-0">
+              <TokenPurchase tokenData={tokenData} />
+            </TabsContent>
             <TabsContent value="overview" className="mt-0">
               <TokenOverview tokenData={tokenData} />
             </TabsContent>

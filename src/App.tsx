@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DeveloperModeProvider } from "@/context/DeveloperModeContext";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { MobileLayout } from "@/components/layout/MobileLayout";
+import { useMobile } from "@/hooks/use-mobile";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
@@ -23,6 +25,11 @@ import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const ResponsiveLayout = ({ children }: { children: React.ReactNode }) => {
+  const isMobile = useMobile();
+  return isMobile ? <MobileLayout>{children}</MobileLayout> : <MainLayout>{children}</MainLayout>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -36,7 +43,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             
             {/* Protected routes - Add authentication check here in a real app */}
-            <Route element={<MainLayout />}>
+            <Route element={<ResponsiveLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               
               {/* Internal Environment */}

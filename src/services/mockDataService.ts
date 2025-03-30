@@ -1,598 +1,219 @@
-// Mock data service for demonstration purposes
-// In a real application, this would be replaced with actual API calls
-
-import { ReactNode } from "react";
-
-export type SensorStatus = 'normal' | 'warning' | 'error';
+import { faker } from '@faker-js/faker';
 
 export interface SensorData {
   id: string;
   name: string;
   value: number;
   unit: string;
-  status: SensorStatus;
+  iconName: string;
+  status: 'normal' | 'warning' | 'error';
   minValue: number;
   maxValue: number;
-  iconName: string;
   lastUpdated: string;
-  category: 'climate' | 'water' | 'nutrient' | 'system';
 }
 
-export interface AlertData {
+export const getMockSensorData = (): SensorData[] => {
+  return Array.from({ length: 12 }, (_, i) => ({
+    id: faker.string.uuid(),
+    name: faker.lorem.words(2),
+    value: faker.number.float({ min: 10, max: 30, precision: 0.1 }),
+    unit: faker.helpers.arrayElement(['°C', '%', 'ppm', 'm/s']),
+    iconName: faker.helpers.arrayElement(['thermometer', 'droplet', 'wind', 'zap', 'flask-conical', 'waves', 'alert-circle']),
+    status: faker.helpers.arrayElement(['normal', 'warning', 'error']),
+    minValue: faker.number.float({ min: 0, max: 10, precision: 0.1 }),
+    maxValue: faker.number.float({ min: 30, max: 50, precision: 0.1 }),
+    lastUpdated: faker.date.recent().toLocaleTimeString(),
+  }));
+};
+
+export interface Alert {
   id: string;
-  title: string;
+  type: 'info' | 'warning' | 'error';
   message: string;
   timestamp: string;
-  type: 'info' | 'warning' | 'error';
   isRead: boolean;
-  category: string;
 }
 
-export interface CameraData {
+export const getMockAlerts = (): Alert[] => {
+  return Array.from({ length: 5 }, () => ({
+    id: faker.string.uuid(),
+    type: faker.helpers.arrayElement(['info', 'warning', 'error']),
+    message: faker.lorem.sentence(),
+    timestamp: faker.date.recent().toLocaleString(),
+    isRead: faker.datatype.boolean(),
+  }));
+};
+
+export interface Harvest {
   id: string;
-  name: string;
-  location: string;
-  isOnline: boolean;
-  lastSnapshot: string;
-  streamUrl: string;
+  crop: string;
+  quantity: number;
+  unit: string;
+  date: string;
+  status: 'ready' | 'in progress' | 'completed';
 }
 
-export interface HarvestData {
-  id: string;
-  plantName: string;
-  plantType: string;
-  plantedDate: string;
-  estimatedHarvestDate: string;
-  actualHarvestDate?: string;
-  status: 'growing' | 'ready' | 'harvested';
-  harvestWeight?: number;
-  images: string[];
-  container: string;
-  notes?: string;
-}
-
-export interface ClientData {
-  id: string;
-  name: string;
-  type: 'supermarket' | 'individual';
-  location: string;
-  imageUrl: string;
-}
+export const getMockHarvests = (): Harvest[] => {
+  return Array.from({ length: 6 }, () => ({
+    id: faker.string.uuid(),
+    crop: faker.lorem.word(),
+    quantity: faker.number.int({ min: 50, max: 200 }),
+    unit: 'kg',
+    date: faker.date.future().toLocaleDateString(),
+    status: faker.helpers.arrayElement(['ready', 'in progress', 'completed']),
+  }));
+};
 
 export interface ContainerSalesData {
   id: string;
   containerName: string;
-  supermarketClient: ClientData;
-  recurringCustomers: ClientData[];
+  supermarketClient: {
+    name: string;
+    location: string;
+  };
   priceRange: {
     min: number;
     max: number;
   };
-  monthlySales: {
-    month: string;
-    sales: number;
-    revenue: number;
-  }[];
   totalSales: number;
-  totalRevenue: number;
+  recurringCustomers: Array<{
+    id: string;
+    name: string;
+  }>;
 }
+
+export const getMockContainerSalesData = (): ContainerSalesData[] => {
+  return Array.from({ length: 3 }, () => ({
+    id: faker.string.uuid(),
+    containerName: faker.lorem.word(),
+    supermarketClient: {
+      name: faker.company.name(),
+      location: faker.address.city(),
+    },
+    priceRange: {
+      min: faker.number.int({ min: 40000, max: 50000 }),
+      max: faker.number.int({ min: 50000, max: 60000 }),
+    },
+    totalSales: faker.number.int({ min: 500, max: 1500 }),
+    recurringCustomers: Array.from({ length: faker.number.int({ min: 10, max: 50 }) }, () => ({
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
+    })),
+  }));
+};
 
 export interface FarmLocation {
   id: string;
   name: string;
   address: string;
   coordinates: {
-    x: number; // percentage position on the map (0-100)
-    y: number; // percentage position on the map (0-100)
+    x: number;
+    y: number;
   };
-  containerType: '3tons' | '5tons' | '7tons';
-  status: 'active' | 'maintenance' | 'installing';
 }
 
-export interface TokenActivity {
-  id: string;
-  type: 'invested' | 'harvested' | 'transferred';
-  description: string;
-  tokenAmount: number;
-  date: string;
-  transactionHash: string;
-}
-
-export interface TokenizationData {
-  totalTokens: number;
-  totalValue: number;
-  activeContracts: number;
-  totalInvestors: number;
-  averageReturn: number;
-  recentActivities: TokenActivity[];
-}
-
-// Generate sensor data
-export const getMockSensorData = (): SensorData[] => {
-  return [
-    {
-      id: 'temp-air',
-      name: 'Air Temperature',
-      value: 24.5,
-      unit: '°C',
-      status: 'normal',
-      minValue: 18,
-      maxValue: 30,
-      iconName: 'thermometer',
-      lastUpdated: new Date().toLocaleTimeString(),
-      category: 'climate'
-    },
-    {
-      id: 'temp-water',
-      name: 'Water Temperature',
-      value: 22.1,
-      unit: '°C',
-      status: 'normal',
-      minValue: 18,
-      maxValue: 26,
-      iconName: 'droplet',
-      lastUpdated: new Date().toLocaleTimeString(),
-      category: 'water'
-    },
-    {
-      id: 'humidity',
-      name: 'Humidity',
-      value: 65,
-      unit: '%',
-      status: 'normal',
-      minValue: 40,
-      maxValue: 80,
-      iconName: 'droplets',
-      lastUpdated: new Date().toLocaleTimeString(),
-      category: 'climate'
-    },
-    {
-      id: 'co2',
-      name: 'CO2 Level',
-      value: 850,
-      unit: 'ppm',
-      status: 'warning',
-      minValue: 400,
-      maxValue: 1200,
-      iconName: 'wind',
-      lastUpdated: new Date().toLocaleTimeString(),
-      category: 'climate'
-    },
-    {
-      id: 'tds',
-      name: 'TDS',
-      value: 780,
-      unit: 'ppm',
-      status: 'normal',
-      minValue: 500,
-      maxValue: 1000,
-      iconName: 'flask-conical',
-      lastUpdated: new Date().toLocaleTimeString(),
-      category: 'nutrient'
-    },
-    {
-      id: 'ec',
-      name: 'Electrical Conductivity',
-      value: 1.8,
-      unit: 'mS/cm',
-      status: 'normal',
-      minValue: 1.0,
-      maxValue: 3.0,
-      iconName: 'zap',
-      lastUpdated: new Date().toLocaleTimeString(),
-      category: 'nutrient'
-    },
-    {
-      id: 'water-level',
-      name: 'Water Level',
-      value: 78,
-      unit: '%',
-      status: 'normal',
-      minValue: 0,
-      maxValue: 100,
-      iconName: 'waves',
-      lastUpdated: new Date().toLocaleTimeString(),
-      category: 'water'
-    },
-    {
-      id: 'leakage',
-      name: 'Leakage Sensor',
-      value: 0,
-      unit: 'detections',
-      status: 'normal',
-      minValue: 0,
-      maxValue: 10,
-      iconName: 'alert-circle',
-      lastUpdated: new Date().toLocaleTimeString(),
-      category: 'system'
-    }
-  ];
-};
-
-// Generate alerts data
-export const getMockAlerts = (): AlertData[] => {
-  return [
-    {
-      id: '1',
-      title: 'High CO2 Level',
-      message: 'CO2 levels have exceeded 900ppm in Container 1',
-      timestamp: '2023-07-15T08:30:00',
-      type: 'warning',
-      isRead: false,
-      category: 'climate'
-    },
-    {
-      id: '2',
-      title: 'System Maintenance',
-      message: 'Scheduled maintenance will occur tomorrow at 10:00 AM',
-      timestamp: '2023-07-14T12:15:00',
-      type: 'info',
-      isRead: true,
-      category: 'system'
-    },
-    {
-      id: '3',
-      title: 'Water Pump Malfunction',
-      message: 'Water pump #2 has stopped working in Container 1',
-      timestamp: '2023-07-13T23:05:00',
-      type: 'error',
-      isRead: false,
-      category: 'water'
-    }
-  ];
-};
-
-// Generate camera data
-export const getMockCameras = (): CameraData[] => {
-  return [
-    {
-      id: 'cam1',
-      name: 'Front View',
-      location: 'Container Entrance',
-      isOnline: true,
-      lastSnapshot: 'https://source.unsplash.com/random/300x200/?farm,container',
-      streamUrl: '#'
-    },
-    {
-      id: 'cam2',
-      name: 'Rear View',
-      location: 'Container Back',
-      isOnline: true,
-      lastSnapshot: 'https://source.unsplash.com/random/300x200/?plants,indoor',
-      streamUrl: '#'
-    },
-    {
-      id: 'cam3',
-      name: 'Inside Left',
-      location: 'Container Inside Left',
-      isOnline: true,
-      lastSnapshot: 'https://source.unsplash.com/random/300x200/?hydroponics',
-      streamUrl: '#'
-    },
-    {
-      id: 'cam4',
-      name: 'Inside Right',
-      location: 'Container Inside Right',
-      isOnline: false,
-      lastSnapshot: 'https://source.unsplash.com/random/300x200/?vertical,farming',
-      streamUrl: '#'
-    }
-  ];
-};
-
-// Generate harvest data
-export const getMockHarvests = (): HarvestData[] => {
-  return [
-    {
-      id: 'h1',
-      plantName: 'Lettuce (Romaine)',
-      plantType: 'Leafy Green',
-      plantedDate: '2023-06-01',
-      estimatedHarvestDate: '2023-07-20',
-      status: 'ready',
-      container: 'Container 1',
-      images: [
-        'https://source.unsplash.com/random/400x300/?lettuce,romaine',
-        'https://source.unsplash.com/random/400x300/?lettuce,harvest'
-      ],
-      notes: 'Ready for harvest. Excellent growth observed.'
-    },
-    {
-      id: 'h2',
-      plantName: 'Spinach',
-      plantType: 'Leafy Green',
-      plantedDate: '2023-06-15',
-      estimatedHarvestDate: '2023-07-25',
-      status: 'growing',
-      container: 'Container 1',
-      images: [
-        'https://source.unsplash.com/random/400x300/?spinach,growing'
-      ],
-      notes: 'Growing well. No issues detected.'
-    },
-    {
-      id: 'h3',
-      plantName: 'Kale',
-      plantType: 'Leafy Green',
-      plantedDate: '2023-05-10',
-      estimatedHarvestDate: '2023-07-01',
-      actualHarvestDate: '2023-07-03',
-      harvestWeight: 12.5,
-      status: 'harvested',
-      container: 'Container 1',
-      images: [
-        'https://source.unsplash.com/random/400x300/?kale,harvest',
-        'https://source.unsplash.com/random/400x300/?kale,farm'
-      ],
-      notes: 'Successfully harvested. 12.5kg total weight.'
-    },
-    {
-      id: 'h4',
-      plantName: 'Basil',
-      plantType: 'Herb',
-      plantedDate: '2023-06-20',
-      estimatedHarvestDate: '2023-08-05',
-      status: 'growing',
-      container: 'Container 1',
-      images: [
-        'https://source.unsplash.com/random/400x300/?basil,growing'
-      ],
-      notes: 'Growing as expected.'
-    }
-  ];
-};
-
-// Generate mock clients
-export const getMockClients = (): ClientData[] => {
-  return [
-    {
-      id: 'c1',
-      name: 'SuperFresh Market',
-      type: 'supermarket',
-      location: 'Jakarta Selatan',
-      imageUrl: 'https://source.unsplash.com/random/100x100/?supermarket,store'
-    },
-    {
-      id: 'c2',
-      name: 'GreenGrocers',
-      type: 'supermarket',
-      location: 'Jakarta Pusat',
-      imageUrl: 'https://source.unsplash.com/random/100x100/?grocery,shop'
-    },
-    {
-      id: 'c3',
-      name: 'Health Basket',
-      type: 'supermarket',
-      location: 'Bandung',
-      imageUrl: 'https://source.unsplash.com/random/100x100/?organic,store'
-    },
-    {
-      id: 'c4',
-      name: 'Aditya Wijaya',
-      type: 'individual',
-      location: 'Jakarta Selatan',
-      imageUrl: 'https://source.unsplash.com/random/100x100/?man,profile'
-    },
-    {
-      id: 'c5',
-      name: 'Siti Rahayu',
-      type: 'individual',
-      location: 'Jakarta Timur',
-      imageUrl: 'https://source.unsplash.com/random/100x100/?woman,profile'
-    },
-    {
-      id: 'c6',
-      name: 'Budi Santoso',
-      type: 'individual',
-      location: 'Jakarta Barat',
-      imageUrl: 'https://source.unsplash.com/random/100x100/?man,indonesian'
-    }
-  ];
-};
-
-// Generate container sales data
-export const getMockContainerSalesData = (): ContainerSalesData[] => {
-  const clients = getMockClients();
-  
-  return [
-    {
-      id: 'sales1',
-      containerName: 'AKAR Farm #1',
-      supermarketClient: clients[0],
-      recurringCustomers: clients.filter(c => c.type === 'individual').slice(0, 20),
-      priceRange: {
-        min: 40000,
-        max: 55000
-      },
-      monthlySales: [
-        { month: 'Jan', sales: 250, revenue: 250 * 47500 },
-        { month: 'Feb', sales: 280, revenue: 280 * 48000 },
-        { month: 'Mar', sales: 300, revenue: 300 * 50000 },
-        { month: 'Apr', sales: 320, revenue: 320 * 51000 },
-        { month: 'May', sales: 350, revenue: 350 * 52000 },
-        { month: 'Jun', sales: 370, revenue: 370 * 53000 }
-      ],
-      totalSales: 1870,
-      totalRevenue: 94535000
-    },
-    {
-      id: 'sales2',
-      containerName: 'AKAR Farm #2',
-      supermarketClient: clients[1],
-      recurringCustomers: clients.filter(c => c.type === 'individual').slice(0, 20),
-      priceRange: {
-        min: 45000,
-        max: 60000
-      },
-      monthlySales: [
-        { month: 'Jan', sales: 220, revenue: 220 * 52500 },
-        { month: 'Feb', sales: 240, revenue: 240 * 53000 },
-        { month: 'Mar', sales: 270, revenue: 270 * 54000 },
-        { month: 'Apr', sales: 290, revenue: 290 * 55000 },
-        { month: 'May', sales: 310, revenue: 310 * 56000 },
-        { month: 'Jun', sales: 340, revenue: 340 * 57000 }
-      ],
-      totalSales: 1670,
-      totalRevenue: 89500000
-    },
-    {
-      id: 'sales3',
-      containerName: 'AKAR Farm #3',
-      supermarketClient: clients[2],
-      recurringCustomers: clients.filter(c => c.type === 'individual').slice(0, 20),
-      priceRange: {
-        min: 50000,
-        max: 70000
-      },
-      monthlySales: [
-        { month: 'Jan', sales: 300, revenue: 300 * 60000 },
-        { month: 'Feb', sales: 320, revenue: 320 * 62000 },
-        { month: 'Mar', sales: 350, revenue: 350 * 63000 },
-        { month: 'Apr', sales: 380, revenue: 380 * 65000 },
-        { month: 'May', sales: 400, revenue: 400 * 67000 },
-        { month: 'Jun', sales: 420, revenue: 420 * 69000 }
-      ],
-      totalSales: 2170,
-      totalRevenue: 134340000
-    }
-  ];
-};
-
-// Generate farm locations
 export const getMockFarmLocations = (): FarmLocation[] => {
   return [
     {
-      id: 'loc1',
-      name: 'AKAR Farm #1',
-      address: 'Jl. Pluit Raya No. 32, North Jakarta',
-      coordinates: { x: 35, y: 40 },
-      containerType: '5tons',
-      status: 'active'
+      id: 'location1',
+      name: 'Farm A',
+      address: 'Jl. Kebon Jeruk No. 27',
+      coordinates: { x: 25, y: 30 },
     },
     {
-      id: 'loc2',
-      name: 'AKAR Farm #2',
-      address: 'Jl. Sunter Permai No. 15, North Jakarta',
-      coordinates: { x: 48, y: 35 },
-      containerType: '3tons',
-      status: 'active'
-    },
-    {
-      id: 'loc3',
-      name: 'AKAR Farm #3',
-      address: 'Jl. Kelapa Gading Blvd, North Jakarta',
-      coordinates: { x: 60, y: 45 },
-      containerType: '7tons',
-      status: 'active'
-    },
-    {
-      id: 'loc4',
-      name: 'AKAR Farm #4',
-      address: 'Jl. Pantai Indah Kapuk, North Jakarta',
-      coordinates: { x: 25, y: 52 },
-      containerType: '5tons',
-      status: 'active'
-    },
-    {
-      id: 'loc5',
-      name: 'AKAR Farm #5',
-      address: 'Jl. Danau Sunter Utara, North Jakarta',
-      coordinates: { x: 53, y: 55 },
-      containerType: '5tons',
-      status: 'active'
-    },
-    {
-      id: 'loc6',
-      name: 'AKAR Farm #6',
-      address: 'Jl. Muara Karang Raya, North Jakarta',
-      coordinates: { x: 30, y: 35 },
-      containerType: '3tons',
-      status: 'active'
-    },
-    {
-      id: 'loc7',
-      name: 'AKAR Farm #7',
-      address: 'Jl. Pluit Selatan Raya, North Jakarta',
-      coordinates: { x: 40, y: 45 },
-      containerType: '7tons',
-      status: 'active'
-    },
-    {
-      id: 'loc8',
-      name: 'AKAR Farm #8',
-      address: 'Jl. Sunter Jaya, North Jakarta',
-      coordinates: { x: 65, y: 32 },
-      containerType: '3tons',
-      status: 'active'
-    },
-    {
-      id: 'loc9',
-      name: 'AKAR Farm #9',
-      address: 'Jl. Pademangan Timur, North Jakarta',
-      coordinates: { x: 58, y: 60 },
-      containerType: '5tons',
-      status: 'active'
-    },
-    {
-      id: 'loc10',
-      name: 'AKAR Farm #10',
-      address: 'Jl. Ancol Barat, North Jakarta',
+      id: 'location2',
+      name: 'Farm B',
+      address: 'Jl. Mangga Besar No. 10',
       coordinates: { x: 45, y: 50 },
-      containerType: '7tons',
-      status: 'active'
-    }
+    },
+    {
+      id: 'location3',
+      name: 'Farm C',
+      address: 'Jl. Gajah Mada No. 104',
+      coordinates: { x: 70, y: 60 },
+    },
   ];
 };
 
-// Generate tokenization data
+// Add user holdings to tokenization data
+export interface TokenizationData {
+  totalValue: number;
+  activeContracts: number;
+  averageReturn: number;
+  contractTypes: Array<{
+    name: string;
+    value: number;
+    color: string;
+  }>;
+  allocationData: Array<{
+    name: string;
+    value: number;
+    color: string;
+  }>;
+  investmentPerformance: Array<{
+    month: string;
+    returns: number;
+  }>;
+  transactions: Array<{
+    id: string;
+    date: string;
+    type: string;
+    amount: number;
+    status: string;
+  }>;
+  userHoldings: number;
+  recentTransactions: Array<{
+    id: number;
+    type: string;
+    amount: number;
+    date: string;
+  }>;
+}
+
 export const getMockTokenizationData = (): TokenizationData => {
   return {
-    totalTokens: 250000,
-    totalValue: 5250000000, // 5.25 billion IDR
-    activeContracts: 15,
-    totalInvestors: 28,
+    totalValue: 450000000,
+    activeContracts: 24,
     averageReturn: 12.5,
-    recentActivities: [
-      {
-        id: 'token1',
-        type: 'invested',
-        description: 'New investment from Investor #12',
-        tokenAmount: 5000,
-        date: '2023-07-15',
-        transactionHash: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
-      },
-      {
-        id: 'token2',
-        type: 'harvested',
-        description: 'Tokens issued for Lettuce harvest',
-        tokenAmount: 2500,
-        date: '2023-07-14',
-        transactionHash: '0x8C3A99d8b8A5B7a22F5b8a27A5fEa35B9F4c8EC7'
-      },
-      {
-        id: 'token3',
-        type: 'transferred',
-        description: 'Token transfer to marketplace',
-        tokenAmount: 1000,
-        date: '2023-07-13',
-        transactionHash: '0x5A4D4c38eB9F15cd738CbaeC0f4F1907620b5631'
-      },
-      {
-        id: 'token4',
-        type: 'invested',
-        description: 'Investment increased by Investor #05',
-        tokenAmount: 3000,
-        date: '2023-07-10',
-        transactionHash: '0x1B94D2C1F1E8E5E1Fc6B0a05c9c8B72a9F5D3B87'
-      },
-      {
-        id: 'token5',
-        type: 'harvested',
-        description: 'Tokens issued for Spinach harvest',
-        tokenAmount: 1800,
-        date: '2023-07-08',
-        transactionHash: '0x9E7C2d6A08Eb53BD416E69A3e9B8E05f5B5e9F9B'
-      }
+    contractTypes: [
+      { name: 'Standard', value: 45, color: '#4CAF50' },
+      { name: 'Premium', value: 30, color: '#2E7D32' },
+      { name: 'Enterprise', value: 25, color: '#1B5E20' }
+    ],
+    allocationData: [
+      { name: 'Farm Operations', value: 40, color: '#4CAF50' },
+      { name: 'Technology', value: 25, color: '#8BC34A' },
+      { name: 'Marketing', value: 15, color: '#CDDC39' },
+      { name: 'Research', value: 20, color: '#2E7D32' }
+    ],
+    investmentPerformance: [
+      { month: 'Jan', returns: 5.2 },
+      { month: 'Feb', returns: 5.8 },
+      { month: 'Mar', returns: 6.1 },
+      { month: 'Apr', returns: 5.9 },
+      { month: 'May', returns: 6.3 },
+      { month: 'Jun', returns: 7.0 },
+      { month: 'Jul', returns: 7.5 },
+      { month: 'Aug', returns: 8.2 },
+      { month: 'Sep', returns: 8.6 },
+      { month: 'Oct', returns: 9.1 },
+      { month: 'Nov', returns: 9.4 },
+      { month: 'Dec', returns: 9.8 }
+    ],
+    transactions: [
+      { id: 'tx1', date: '2023-01-15', type: 'Purchase', amount: 250, status: 'completed' },
+      { id: 'tx2', date: '2023-02-10', type: 'Dividend', amount: 15, status: 'completed' },
+      { id: 'tx3', date: '2023-03-22', type: 'Purchase', amount: 100, status: 'completed' },
+      { id: 'tx4', date: '2023-04-05', type: 'Sale', amount: 75, status: 'completed' },
+      { id: 'tx5', date: '2023-04-30', type: 'Dividend', amount: 25, status: 'completed' },
+      { id: 'tx6', date: '2023-05-14', type: 'Purchase', amount: 300, status: 'pending' }
+    ],
+    userHoldings: 35,
+    recentTransactions: [
+      { id: 1, type: 'Purchase', amount: 15, date: '2023-05-10' },
+      { id: 2, type: 'Reward', amount: 2.5, date: '2023-05-25' },
+      { id: 3, type: 'Purchase', amount: 20, date: '2023-06-05' },
+      { id: 4, type: 'Reward', amount: 3.2, date: '2023-06-25' }
     ]
   };
 };

@@ -1,11 +1,11 @@
-
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Leaf, SproutIcon, DropletIcon, LineChart, Sparkles, ShoppingCart, MapPin } from "lucide-react";
+import { Leaf, SproutIcon, DropletIcon, LineChart, Sparkles, ShoppingCart, MapPin, Instagram, Linkedin, Twitter } from "lucide-react";
 import { AppleButton } from "@/components/ui/apple-button";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { IndonesiaMap } from "@/components/home/IndonesiaMap";
 
 const Home = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -361,21 +361,8 @@ const Home = () => {
           <div className="mt-16 text-center">
             <h3 className="text-2xl font-semibold mb-6">Our Growing Impact Across Indonesia</h3>
             <div className="bg-white p-8 rounded-xl shadow-sm max-w-4xl mx-auto">
-              <div className="relative h-[400px] w-full mb-6 rounded-lg overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1599050751991-6296df2804fd?fits=crop&w=1400&h=700&q=80" 
-                  alt="Indonesia Map" 
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-0 left-0 w-full h-full bg-primary/10"></div>
-                
-                {/* Location markers */}
-                <div className="absolute top-[30%] left-[35%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
-                <div className="absolute top-[45%] left-[60%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
-                <div className="absolute top-[60%] left-[48%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
-                <div className="absolute top-[20%] left-[70%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
-                <div className="absolute top-[55%] left-[25%] w-4 h-4 bg-primary rounded-full animate-pulse"></div>
-              </div>
+              {/* Replace the static map with our interactive component */}
+              <IndonesiaMap />
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
                 <div>
@@ -651,71 +638,39 @@ const Home = () => {
                 Get Started
               </Button>
             </Link>
-            <Button variant="outline" size="lg" className="rounded-full text-white border-white hover:bg-white/10">
+            {/* Fixed the contrast issue with the Contact Us button */}
+            <Button variant="outline" size="lg" className="rounded-full text-white border-white hover:bg-white/10 bg-primary/50">
               Contact Us
             </Button>
           </div>
         </div>
       </section>
       
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      {/* Footer - updated to white */}
+      <footer className="bg-white text-gray-800 py-12 border-t border-gray-200">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <img 
                 src="/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png" 
                 alt="AKAR Logo" 
-                className="h-10 mb-4 brightness-0 invert"
+                className="h-10 mb-4"
               />
-              <p className="text-gray-400 text-sm mb-4">
+              <p className="text-gray-600 text-sm mb-4">
                 Revolutionizing sustainable farming through smart container technology for a greener Indonesia.
+              </p>
+              <p className="text-gray-600 text-sm flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                <span>Pluit Village Mall 2nd Floor, North Jakarta, Indonesia</span>
               </p>
             </div>
             
             <div>
-              <h4 className="font-semibold mb-4">Solutions</h4>
+              <h4 className="font-semibold mb-4 text-gray-800">Solutions</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Container Farms</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Monitoring Systems</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Crop Management</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Consultancy</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">Container Farms</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">Monitoring Systems</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">Crop Management</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">Consultancy</a></li>
               </ul>
             </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">About Us</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Careers</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">News</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Contact</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Connect</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Instagram</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Twitter</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">LinkedIn</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Email</a></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-500 text-sm">© 2023 AKAR Technologies. All rights reserved.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">Privacy Policy</a>
-              <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">Terms of Service</a>
-              <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">Cookies</a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
-export default Home;
