@@ -11,6 +11,7 @@ interface AppleNotificationProps {
   onClose?: () => void;
   isVisible: boolean;
   className?: string;
+  duration?: number;
 }
 
 export function AppleNotification({
@@ -20,7 +21,22 @@ export function AppleNotification({
   onClose,
   isVisible,
   className,
+  duration = 5000,
 }: AppleNotificationProps) {
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    
+    if (isVisible && onClose && duration) {
+      timer = setTimeout(() => {
+        onClose();
+      }, duration);
+    }
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [isVisible, onClose, duration]);
+
   return (
     <AnimatePresence>
       {isVisible && (

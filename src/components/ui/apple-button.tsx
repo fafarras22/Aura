@@ -14,6 +14,7 @@ const appleButtonVariants = cva(
         outline: "border border-gray-300 bg-transparent hover:bg-gray-100 text-black",
         ghost: "border border-transparent bg-transparent hover:bg-gray-100 text-black",
         link: "text-black underline-offset-4 hover:underline border-none bg-transparent p-0 h-auto",
+        green: "bg-primary text-white hover:bg-primary/90 border border-transparent",
       },
       size: {
         default: "h-10 px-6 py-2",

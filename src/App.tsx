@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DeveloperModeProvider } from "@/context/DeveloperModeContext";
 import { MainLayout } from "@/components/layout/MainLayout";
+import Home from "@/pages/Home";
+import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
 import Sensors from "@/pages/Sensors";
 import Water from "@/pages/Water";
@@ -29,8 +31,13 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            
+            {/* Protected routes - Add authentication check here in a real app */}
             <Route element={<MainLayout />}>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               
               {/* Internal Environment */}
               <Route path="/internal-environment" element={<Navigate to="/sensors" replace />} />
