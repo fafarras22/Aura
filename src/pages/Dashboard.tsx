@@ -122,8 +122,8 @@ const Dashboard = () => {
         
         {/* Forced Login Dialog */}
         <LoginDialog 
-          open={true} 
-          onOpenChange={(open) => {/* Don't allow closing */}}
+          open={showLoginDialog} 
+          onOpenChange={setShowLoginDialog}
           onLogin={handleLoginSubmit}
         />
       </div>

@@ -6,11 +6,13 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle 
+  DialogTitle,
+  DialogClose
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Shield, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface LoginDialogProps {
   open: boolean;
@@ -27,6 +29,7 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     setError("");
@@ -63,10 +66,16 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
     setPassword("");
   };
 
+  const handleDialogClose = () => {
+    // Navigate to home page when dialog is closed
+    navigate('/');
+  };
+
   return (
     <Dialog open={open} onOpenChange={(newOpen) => {
-      // Prevent closing if opened (force login)
+      // If closing, navigate to home
       if (open && newOpen === false) {
+        handleDialogClose();
         return;
       }
       onOpenChange(newOpen);
