@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { HistoricalReturn } from './types';
 
 interface InvestmentChartProps {
@@ -26,7 +26,12 @@ export const InvestmentChart: React.FC<InvestmentChartProps> = ({ historicalRetu
                 <stop offset="95%" stopColor={chartColor} stopOpacity={0} />
               </linearGradient>
             </defs>
-            <Tooltip labelFormatter={(label) => `Month: ${label}`} />
+            <XAxis dataKey="month" />
+            <YAxis unit="%" />
+            <Tooltip 
+              formatter={(value) => [`${value}%`, 'Return']}
+              labelFormatter={(label) => `Month: ${label}`} 
+            />
             <Area
               type="monotone"
               dataKey="return"
