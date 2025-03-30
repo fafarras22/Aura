@@ -1,77 +1,121 @@
 
 import React from "react";
-import { ShoppingCart, LineChart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { LeafyGreen, Database, BarChart2, GanttChart, Globe2 } from "lucide-react";
 
-export const SolutionsSection: React.FC = () => {
+interface SolutionsSectionProps {
+  language: 'en' | 'id' | 'ko';
+}
+
+export const SolutionsSection: React.FC<SolutionsSectionProps> = ({ language }) => {
+  const content = {
+    en: {
+      title: "Our Solutions",
+      subtitle: "Comprehensive container farm solutions designed for maximum efficiency and minimal environmental impact.",
+      cards: [
+        {
+          title: "Smart Container Farms",
+          description: "IoT-enabled growing environments with precise climate control and automated nutrient delivery systems."
+        },
+        {
+          title: "Blockchain Traceability",
+          description: "Full transparency from seed to harvest with immutable blockchain records for complete supply chain visibility."
+        },
+        {
+          title: "Real-Time Analytics",
+          description: "Detailed growth and performance metrics to optimize yields and resource utilization."
+        },
+        {
+          title: "Tokenized Investments",
+          description: "Fractional ownership of farm assets through security tokens, democratizing agricultural investment."
+        },
+        {
+          title: "Global Deployment",
+          description: "Modular design allows for rapid deployment in any location, from urban centers to remote villages."
+        }
+      ]
+    },
+    id: {
+      title: "Solusi Kami",
+      subtitle: "Solusi pertanian kontainer komprehensif yang dirancang untuk efisiensi maksimum dan dampak lingkungan minimal.",
+      cards: [
+        {
+          title: "Pertanian Kontainer Pintar",
+          description: "Lingkungan pertumbuhan berbasis IoT dengan kontrol iklim yang presisi dan sistem pengiriman nutrisi otomatis."
+        },
+        {
+          title: "Pelacakan Blockchain",
+          description: "Transparansi penuh dari benih hingga panen dengan catatan blockchain yang tidak dapat diubah untuk visibilitas rantai pasok yang lengkap."
+        },
+        {
+          title: "Analitik Real-Time",
+          description: "Metrik pertumbuhan dan kinerja yang detail untuk mengoptimalkan hasil dan pemanfaatan sumber daya."
+        },
+        {
+          title: "Investasi Tertokenisasi",
+          description: "Kepemilikan fraksional aset pertanian melalui token keamanan, demokratisasi investasi pertanian."
+        },
+        {
+          title: "Penerapan Global",
+          description: "Desain modular memungkinkan penerapan cepat di lokasi manapun, dari pusat kota hingga desa terpencil."
+        }
+      ]
+    },
+    ko: {
+      title: "우리의 솔루션",
+      subtitle: "최대 효율성과 최소 환경 영향을 위해 설계된 종합적인 컨테이너 농장 솔루션.",
+      cards: [
+        {
+          title: "스마트 컨테이너 농장",
+          description: "정밀한 기후 제어와 자동화된 영양분 공급 시스템이 있는 IoT 기반 재배 환경."
+        },
+        {
+          title: "블록체인 추적성",
+          description: "완전한 공급망 가시성을 위한 불변의 블록체인 기록으로 씨앗부터 수확까지 완전한 투명성."
+        },
+        {
+          title: "실시간 분석",
+          description: "수확량과 자원 활용을 최적화하기 위한 상세한 성장 및 성능 지표."
+        },
+        {
+          title: "토큰화된 투자",
+          description: "보안 토큰을 통한 농장 자산의 부분 소유권, 농업 투자의 민주화."
+        },
+        {
+          title: "글로벌 배포",
+          description: "모듈식 설계로 도시 중심지부터 외딴 마을까지 어느 위치에서나 신속한 배포가 가능합니다."
+        }
+      ]
+    }
+  };
+
+  const icons = [
+    <LeafyGreen className="h-7 w-7 text-green-600" />,
+    <Database className="h-7 w-7 text-green-600" />,
+    <BarChart2 className="h-7 w-7 text-green-600" />,
+    <GanttChart className="h-7 w-7 text-green-600" />,
+    <Globe2 className="h-7 w-7 text-green-600" />
+  ];
+
   return (
-    <section id="solutions" className="bg-gray-50 dark:bg-gray-900 py-20">
+    <section id="solutions" className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold mb-4 dark:text-white">Our Solutions</h2>
+          <h2 className="text-3xl font-bold mb-4 dark:text-white">{content[language].title}</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            From urban farming containers to comprehensive monitoring systems, AKAR offers end-to-end solutions for modern agriculture.
+            {content[language].subtitle}
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <ShoppingCart className="text-primary w-6 h-6" />
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {content[language].cards.map((card, index) => (
+            <div key={index} className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-6">
+                {icons[index]}
               </div>
-              <h3 className="text-xl font-semibold dark:text-white">Container Farms</h3>
+              <h3 className="text-xl font-semibold mb-3 dark:text-white">{card.title}</h3>
+              <p className="text-gray-600 dark:text-gray-400">{card.description}</p>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Fully equipped, turnkey container farming solutions that can be deployed anywhere. Each container is a complete ecosystem optimized for plant growth.
-            </p>
-            <ul className="space-y-2 mb-6">
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Modular design for easy scaling</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Comprehensive environmental controls</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Remote monitoring capabilities</span>
-              </li>
-            </ul>
-            <Button variant="apple-outline" className="rounded-full mt-4">
-              Learn More
-            </Button>
-          </div>
-          
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-all">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <LineChart className="text-primary w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-semibold dark:text-white">Monitoring Dashboard</h3>
-            </div>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Our advanced dashboard gives you complete visibility into your farm's operations, allowing you to monitor and control all aspects remotely.
-            </p>
-            <ul className="space-y-2 mb-6">
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Real-time environmental monitoring</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Predictive maintenance alerts</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span className="text-sm text-gray-600 dark:text-gray-400">Yield and performance analytics</span>
-              </li>
-            </ul>
-            <Button variant="apple-outline" className="rounded-full mt-4">
-              View Dashboard
-            </Button>
-          </div>
+          ))}
         </div>
       </div>
     </section>

@@ -1,12 +1,15 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CircleDollarSign, CreditCard, Wallet } from 'lucide-react';
+import { CircleDollarSign, CreditCard, Wallet, Calculator, ChevronRight, Info, ExternalLink, CheckCircle2, Clock } from 'lucide-react';
+import { Progress } from "@/components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
 
 interface TokenPurchaseProps {
   onPurchase: (tokenId: string) => void;
@@ -15,6 +18,22 @@ interface TokenPurchaseProps {
 export const TokenPurchase: React.FC<TokenPurchaseProps> = ({ onPurchase }) => {
   const [purchaseAmount, setPurchaseAmount] = useState('1000');
   const [paymentMethod, setPaymentMethod] = useState('bank');
+  const [sliderValue, setSliderValue] = useState([1000]);
+  const [investmentPlan, setInvestmentPlan] = useState('standard');
+  
+  const tokenPrice = 15000; // IDR per token
+  const totalCost = Number(purchaseAmount) * tokenPrice;
+  
+  const handleSliderChange = (value: number[]) => {
+    setSliderValue(value);
+    setPurchaseAmount(String(value[0]));
+  };
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPurchaseAmount(value);
+    setSliderValue([Number(value)]);
+  };
   
   const handlePurchaseSubmit = () => {
     // Generate a random token ID for this purchase
@@ -22,145 +41,276 @@ export const TokenPurchase: React.FC<TokenPurchaseProps> = ({ onPurchase }) => {
     onPurchase(tokenId);
   };
   
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  };
+  
+  const getEstimatedReturn = () => {
+    let returnRate = 0;
+    switch(investmentPlan) {
+      case 'conservative':
+        returnRate = 0.08; // 8%
+        break;
+      case 'standard':
+        returnRate = 0.12; // 12%
+        break;
+      case 'aggressive':
+        returnRate = 0.18; // 18%
+        break;
+      default:
+        returnRate = 0.12;
+    }
+    
+    return formatCurrency(totalCost * (1 + returnRate));
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Purchase Tokens</CardTitle>
-        <CardDescription>Invest in farm produce by purchasing tokens</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="buy" className="space-y-4">
-          <TabsList className="grid grid-cols-2">
-            <TabsTrigger value="buy">Buy Tokens</TabsTrigger>
-            <TabsTrigger value="info">Token Information</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="buy" className="space-y-4">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="amount">Amount (AKR Tokens)</Label>
-                <Input 
-                  id="amount" 
-                  type="number" 
-                  value={purchaseAmount} 
-                  onChange={(e) => setPurchaseAmount(e.target.value)}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <Card className="lg:col-span-2">
+        <CardHeader>
+          <CardTitle>Purchase AKR Tokens</CardTitle>
+          <CardDescription>Invest in tokenized farm assets with flexible options</CardDescription>
+        </CardHeader>
+        
+        <CardContent className="space-y-6">
+          <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
+            <div className="flex justify-between items-center">
+              <Label htmlFor="token-amount" className="text-base font-medium">Investment Amount</Label>
+              <div className="flex items-center gap-2">
+                <Calculator className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">1 AKR = {formatCurrency(tokenPrice)}</span>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Input
+                  id="token-amount"
+                  type="number"
+                  value={purchaseAmount}
+                  onChange={handleInputChange}
+                  className="text-lg font-medium"
+                  min="100"
                 />
-                <p className="text-sm text-muted-foreground">
-                  Estimated cost: IDR {(Number(purchaseAmount) * 15000).toLocaleString()}
-                </p>
+                <div className="flex justify-between mt-1 text-xs text-muted-foreground">
+                  <span>Min: 100 tokens</span>
+                  <span>Max: 10,000 tokens</span>
+                </div>
               </div>
               
-              <div className="space-y-2">
-                <Label>Payment Method</Label>
-                <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select payment method" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="bank">Bank Transfer</SelectItem>
-                    <SelectItem value="card">Credit/Debit Card</SelectItem>
-                    <SelectItem value="crypto">Cryptocurrency</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="flex items-center gap-4">
+                <Slider
+                  value={sliderValue}
+                  onValueChange={handleSliderChange}
+                  min={100}
+                  max={10000}
+                  step={100}
+                  className="flex-1"
+                />
               </div>
-              
-              {paymentMethod === 'bank' && (
-                <div className="space-y-2 p-4 bg-muted rounded-md">
-                  <div className="flex items-center gap-2">
-                    <CircleDollarSign className="h-5 w-5 text-primary" />
-                    <span className="font-medium">Bank Transfer Details</span>
-                  </div>
-                  <p className="text-sm">Transfer to our account and submit proof of payment:</p>
-                  <div className="text-sm">
-                    <p><span className="font-medium">Bank:</span> Bank Central Asia</p>
-                    <p><span className="font-medium">Account Name:</span> PT Akar Farms Indonesia</p>
-                    <p><span className="font-medium">Account Number:</span> 5270-3892-1111</p>
-                  </div>
-                </div>
-              )}
-              
-              {paymentMethod === 'card' && (
-                <div className="space-y-2 p-4 bg-muted rounded-md">
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-primary" />
-                    <span className="font-medium">Card Payment</span>
-                  </div>
-                  <p className="text-sm">Securely pay with your credit or debit card:</p>
-                  <div className="space-y-2">
-                    <Label htmlFor="cardNumber">Card Number</Label>
-                    <Input id="cardNumber" placeholder="1234 5678 9012 3456" />
-                    
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <Label htmlFor="expiry">Expiry Date</Label>
-                        <Input id="expiry" placeholder="MM/YY" />
-                      </div>
-                      <div>
-                        <Label htmlFor="cvv">CVV</Label>
-                        <Input id="cvv" placeholder="123" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {paymentMethod === 'crypto' && (
-                <div className="space-y-2 p-4 bg-muted rounded-md">
-                  <div className="flex items-center gap-2">
-                    <Wallet className="h-5 w-5 text-primary" />
-                    <span className="font-medium">Cryptocurrency</span>
-                  </div>
-                  <p className="text-sm">Pay with cryptocurrency:</p>
-                  <div className="text-sm">
-                    <p><span className="font-medium">Accepted:</span> USDT (ERC-20), BTC, ETH</p>
-                    <p><span className="font-medium">Wallet Address:</span> 0x8f7d8b9c1d2e3f4a5b6c7d8e9f0a1b2c</p>
-                    <p><span className="font-medium">Network:</span> Ethereum Mainnet</p>
-                  </div>
-                </div>
-              )}
-              
-              <Button className="w-full" onClick={handlePurchaseSubmit}>
-                Proceed to Purchase
-              </Button>
             </div>
-          </TabsContent>
+            
+            <div className="flex justify-between pt-2 pb-1 border-t">
+              <span className="text-muted-foreground">Total Cost:</span>
+              <span className="font-bold text-lg">{formatCurrency(totalCost)}</span>
+            </div>
+          </div>
           
-          <TabsContent value="info" className="space-y-4">
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-medium">About AKR Tokens</h3>
-                <p className="text-sm text-muted-foreground">
-                  AKR Tokens represent ownership in AKAR farm produce and container farms. 
-                  Each token is backed by real agricultural assets and gives you the right to 
-                  a share of the profits from farming operations.
+          <div className="space-y-4">
+            <Label className="text-base font-medium">Investment Plan</Label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <Card className={`cursor-pointer border-2 hover:border-primary hover:bg-muted/30 transition-all p-0 ${investmentPlan === 'conservative' ? 'border-primary' : 'border-border'}`}
+                    onClick={() => setInvestmentPlan('conservative')}>
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-medium">Conservative</h3>
+                    <Badge variant="outline">8% Return</Badge>
+                  </div>
+                  <ul className="text-sm space-y-1 text-muted-foreground">
+                    <li className="flex items-center gap-1">
+                      <CheckCircle2 className="h-3 w-3 text-green-600" />
+                      <span>Low risk crops</span>
+                    </li>
+                    <li className="flex items-center gap-1">
+                      <CheckCircle2 className="h-3 w-3 text-green-600" />
+                      <span>Established markets</span>
+                    </li>
+                    <li className="flex items-center gap-1">
+                      <Clock className="h-3 w-3 text-amber-600" />
+                      <span>6-month lock period</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+              
+              <Card className={`cursor-pointer border-2 hover:border-primary hover:bg-muted/30 transition-all p-0 ${investmentPlan === 'standard' ? 'border-primary' : 'border-border'}`}
+                    onClick={() => setInvestmentPlan('standard')}>
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-medium">Standard</h3>
+                    <Badge variant="outline">12% Return</Badge>
+                  </div>
+                  <ul className="text-sm space-y-1 text-muted-foreground">
+                    <li className="flex items-center gap-1">
+                      <CheckCircle2 className="h-3 w-3 text-green-600" />
+                      <span>Mixed crop portfolio</span>
+                    </li>
+                    <li className="flex items-center gap-1">
+                      <CheckCircle2 className="h-3 w-3 text-green-600" />
+                      <span>Growing markets</span>
+                    </li>
+                    <li className="flex items-center gap-1">
+                      <Clock className="h-3 w-3 text-amber-600" />
+                      <span>12-month lock period</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+              
+              <Card className={`cursor-pointer border-2 hover:border-primary hover:bg-muted/30 transition-all p-0 ${investmentPlan === 'aggressive' ? 'border-primary' : 'border-border'}`}
+                    onClick={() => setInvestmentPlan('aggressive')}>
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-medium">Aggressive</h3>
+                    <Badge variant="outline">18% Return</Badge>
+                  </div>
+                  <ul className="text-sm space-y-1 text-muted-foreground">
+                    <li className="flex items-center gap-1">
+                      <CheckCircle2 className="h-3 w-3 text-green-600" />
+                      <span>Premium crops</span>
+                    </li>
+                    <li className="flex items-center gap-1">
+                      <CheckCircle2 className="h-3 w-3 text-green-600" />
+                      <span>Emerging markets</span>
+                    </li>
+                    <li className="flex items-center gap-1">
+                      <Clock className="h-3 w-3 text-amber-600" />
+                      <span>18-month lock period</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <Label className="text-base font-medium">Payment Method</Label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <Card className={`cursor-pointer border-2 hover:border-primary hover:bg-muted/30 transition-all p-0 ${paymentMethod === 'bank' ? 'border-primary' : 'border-border'}`}
+                    onClick={() => setPaymentMethod('bank')}>
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="bg-blue-100 text-blue-700 w-10 h-10 rounded-full flex items-center justify-center">
+                    <CircleDollarSign className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium">Bank Transfer</h3>
+                    <p className="text-xs text-muted-foreground">Process time: 1-3 days</p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className={`cursor-pointer border-2 hover:border-primary hover:bg-muted/30 transition-all p-0 ${paymentMethod === 'card' ? 'border-primary' : 'border-border'}`}
+                    onClick={() => setPaymentMethod('card')}>
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="bg-purple-100 text-purple-700 w-10 h-10 rounded-full flex items-center justify-center">
+                    <CreditCard className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium">Credit/Debit Card</h3>
+                    <p className="text-xs text-muted-foreground">Process time: Instant</p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className={`cursor-pointer border-2 hover:border-primary hover:bg-muted/30 transition-all p-0 ${paymentMethod === 'crypto' ? 'border-primary' : 'border-border'}`}
+                    onClick={() => setPaymentMethod('crypto')}>
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="bg-amber-100 text-amber-700 w-10 h-10 rounded-full flex items-center justify-center">
+                    <Wallet className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium">Cryptocurrency</h3>
+                    <p className="text-xs text-muted-foreground">Process time: 1-2 hours</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </CardContent>
+        
+        <CardFooter className="flex justify-between border-t pt-6">
+          <Button variant="outline">Save for Later</Button>
+          <Button size="lg" onClick={handlePurchaseSubmit} className="gap-2">
+            Continue to Payment
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </CardFooter>
+      </Card>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Investment Summary</CardTitle>
+          <CardDescription>Details of your token purchase</CardDescription>
+        </CardHeader>
+        
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <div className="flex justify-between pb-2 border-b">
+              <span className="text-muted-foreground">Number of Tokens</span>
+              <span className="font-medium">{Number(purchaseAmount).toLocaleString()} AKR</span>
+            </div>
+            
+            <div className="flex justify-between pb-2 border-b">
+              <span className="text-muted-foreground">Token Price</span>
+              <span className="font-medium">{formatCurrency(tokenPrice)}/AKR</span>
+            </div>
+            
+            <div className="flex justify-between pb-2 border-b">
+              <span className="text-muted-foreground">Investment Plan</span>
+              <span className="font-medium capitalize">{investmentPlan}</span>
+            </div>
+            
+            <div className="flex justify-between pb-2 border-b">
+              <span className="text-muted-foreground">Payment Method</span>
+              <span className="font-medium capitalize">{paymentMethod}</span>
+            </div>
+            
+            <div className="flex justify-between pb-2 border-b">
+              <span className="text-muted-foreground">Transaction Fee</span>
+              <span className="font-medium text-green-600">Free</span>
+            </div>
+          </div>
+          
+          <div>
+            <div className="flex justify-between items-end mb-2">
+              <span className="text-base font-medium">Total Cost</span>
+              <span className="text-xl font-bold">{formatCurrency(totalCost)}</span>
+            </div>
+            
+            <div className="flex justify-between items-end mb-2">
+              <span className="text-sm text-muted-foreground flex items-center gap-1">
+                <Info className="h-3.5 w-3.5" />
+                Estimated Return (1 year)
+              </span>
+              <span className="text-sm font-medium text-green-600">{getEstimatedReturn()}</span>
+            </div>
+            
+            <div className="mt-6 p-3 bg-muted/50 rounded-lg text-sm">
+              <div className="flex items-start gap-2">
+                <Info className="h-4 w-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                <p className="text-muted-foreground">
+                  Actual returns may vary based on market conditions and farm performance. Review the full <a href="#" className="text-blue-600 hover:underline inline-flex items-center">investment terms <ExternalLink className="h-3 w-3 ml-0.5" /></a>.
                 </p>
               </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-muted rounded-md">
-                  <h4 className="font-medium">Current Token Price</h4>
-                  <p className="text-lg">IDR 15,000</p>
-                </div>
-                <div className="p-4 bg-muted rounded-md">
-                  <h4 className="font-medium">Expected Annual Return</h4>
-                  <p className="text-lg">12.5%</p>
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-medium">Terms & Conditions</h3>
-                <ul className="text-sm text-muted-foreground list-disc pl-5 space-y-1">
-                  <li>Minimum purchase: 100 AKR Tokens</li>
-                  <li>Lock-up period: 6 months</li>
-                  <li>Dividends distributed quarterly</li>
-                  <li>Secondary market trading available after lock-up</li>
-                  <li>Returns may vary based on harvest results</li>
-                </ul>
-              </div>
             </div>
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-    </Card>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };

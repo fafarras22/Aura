@@ -14,10 +14,12 @@ export const HeroContent: React.FC<HeroContentProps> = ({
 }) => {
   return (
     <div className="hero-content">
-      <h1 className="text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6">
+      <h1 className="text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6" 
+          itemProp="headline">
         {title}
       </h1>
-      <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
+      <p className="text-lg text-gray-600 dark:text-gray-400 mb-8" 
+         itemProp="description">
         {subtitle}
       </p>
       <div className="flex flex-wrap gap-4">

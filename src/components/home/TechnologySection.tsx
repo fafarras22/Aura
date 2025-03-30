@@ -1,68 +1,132 @@
 
 import React from "react";
-import { Sparkles, DropletIcon, LineChart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Server, Clock, CloudCog, Plant, ShieldCheck } from "lucide-react";
 
-export const TechnologySection: React.FC = () => {
+interface TechnologySectionProps {
+  language: 'en' | 'id' | 'ko';
+}
+
+export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }) => {
+  const content = {
+    en: {
+      title: "Our Technology",
+      subtitle: "Cutting-edge technology powering the future of sustainable agriculture.",
+      technologies: [
+        {
+          icon: <Server className="h-5 w-5 text-green-600" />,
+          title: "IoT Sensors",
+          description: "Advanced monitoring systems track temperature, humidity, nutrient levels, and plant health in real-time."
+        },
+        {
+          icon: <CloudCog className="h-5 w-5 text-green-600" />,
+          title: "AI-Powered Growth",
+          description: "Machine learning algorithms optimize growing conditions based on historical data and real-time feedback."
+        },
+        {
+          icon: <Plant className="h-5 w-5 text-green-600" />,
+          title: "Hydroponic Systems",
+          description: "Water-efficient growing technology that delivers nutrients directly to plant roots."
+        },
+        {
+          icon: <ShieldCheck className="h-5 w-5 text-green-600" />,
+          title: "Blockchain Security",
+          description: "Immutable record-keeping ensures data integrity and transparent supply chain tracking."
+        },
+        {
+          icon: <Clock className="h-5 w-5 text-green-600" />,
+          title: "Automated Maintenance",
+          description: "Self-monitoring systems that adjust conditions and alert operators when intervention is needed."
+        }
+      ]
+    },
+    id: {
+      title: "Teknologi Kami",
+      subtitle: "Teknologi mutakhir yang memacu masa depan pertanian berkelanjutan.",
+      technologies: [
+        {
+          icon: <Server className="h-5 w-5 text-green-600" />,
+          title: "Sensor IoT",
+          description: "Sistem pemantauan canggih melacak suhu, kelembaban, tingkat nutrisi, dan kesehatan tanaman secara real-time."
+        },
+        {
+          icon: <CloudCog className="h-5 w-5 text-green-600" />,
+          title: "Pertumbuhan Berbasis AI",
+          description: "Algoritma pembelajaran mesin mengoptimalkan kondisi pertumbuhan berdasarkan data historis dan umpan balik real-time."
+        },
+        {
+          icon: <Plant className="h-5 w-5 text-green-600" />,
+          title: "Sistem Hidroponik",
+          description: "Teknologi pertumbuhan hemat air yang mengirimkan nutrisi langsung ke akar tanaman."
+        },
+        {
+          icon: <ShieldCheck className="h-5 w-5 text-green-600" />,
+          title: "Keamanan Blockchain",
+          description: "Pencatatan yang tidak dapat diubah memastikan integritas data dan pelacakan rantai pasok yang transparan."
+        },
+        {
+          icon: <Clock className="h-5 w-5 text-green-600" />,
+          title: "Pemeliharaan Otomatis",
+          description: "Sistem pemantauan mandiri yang menyesuaikan kondisi dan memperingatkan operator ketika intervensi diperlukan."
+        }
+      ]
+    },
+    ko: {
+      title: "우리의 기술",
+      subtitle: "지속 가능한 농업의 미래를 이끄는 최첨단 기술.",
+      technologies: [
+        {
+          icon: <Server className="h-5 w-5 text-green-600" />,
+          title: "IoT 센서",
+          description: "고급 모니터링 시스템이 온도, 습도, 영양소 수준 및 식물 건강을 실시간으로 추적합니다."
+        },
+        {
+          icon: <CloudCog className="h-5 w-5 text-green-600" />,
+          title: "AI 기반 성장",
+          description: "머신러닝 알고리즘이 과거 데이터와 실시간 피드백을 기반으로 재배 조건을 최적화합니다."
+        },
+        {
+          icon: <Plant className="h-5 w-5 text-green-600" />,
+          title: "수경재배 시스템",
+          description: "영양분을 식물 뿌리에 직접 전달하는 물 효율적인 재배 기술."
+        },
+        {
+          icon: <ShieldCheck className="h-5 w-5 text-green-600" />,
+          title: "블록체인 보안",
+          description: "변경 불가능한 기록 보관으로 데이터 무결성과 투명한 공급망 추적을 보장합니다."
+        },
+        {
+          icon: <Clock className="h-5 w-5 text-green-600" />,
+          title: "자동화된 유지보수",
+          description: "조건을 조정하고 개입이 필요할 때 운영자에게 경고하는 자체 모니터링 시스템."
+        }
+      ]
+    }
+  };
+
   return (
-    <section id="technology" className="bg-white dark:bg-gray-900 py-20">
+    <section id="technology" className="py-20 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold mb-4 dark:text-white">Our Technology</h2>
+          <h2 className="text-3xl font-bold mb-4 dark:text-white">{content[language].title}</h2>
           <p className="text-gray-600 dark:text-gray-400">
-            AKAR combines cutting-edge technology with sustainable farming practices to create the most efficient growing systems.
+            {content[language].subtitle}
           </p>
         </div>
         
-        <div className="relative rounded-2xl overflow-hidden mb-16 h-[400px]">
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
-          <img 
-            src="/lovable-uploads/ff02fd5a-28c4-466b-99d9-ea6213beb2c5.png" 
-            alt="AKAR Real-time Monitoring" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute top-1/2 left-12 transform -translate-y-1/2 z-20 max-w-lg">
-            <h3 className="text-3xl font-bold text-white mb-4">Data-Driven Farming</h3>
-            <p className="text-white/90 mb-6">
-              Our proprietary sensor network continuously monitors all critical growing parameters, ensuring optimal conditions and maximum crop yields.
-            </p>
-            <Button variant="apple" className="rounded-full">
-              Explore Technology
-            </Button>
-          </div>
-        </div>
-        
-        {/* Technology feature cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-6 border border-gray-100 dark:border-gray-700 rounded-xl hover:border-primary/20 transition-all">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <Sparkles className="text-primary w-6 h-6" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {content[language].technologies.map((tech, index) => (
+            <div key={index} className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl">
+              <div className="flex items-center mb-4">
+                <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
+                  {tech.icon}
+                </div>
+                <h3 className="text-lg font-semibold dark:text-white">{tech.title}</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 ml-13">
+                {tech.description}
+              </p>
             </div>
-            <h3 className="text-xl font-semibold mb-3 dark:text-white">AI-Powered Growth Optimization</h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              Machine learning algorithms analyze growing conditions to provide recommendations for improved yields.
-            </p>
-          </div>
-          
-          <div className="p-6 border border-gray-100 dark:border-gray-700 rounded-xl hover:border-primary/20 transition-all">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <DropletIcon className="text-primary w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3 dark:text-white">Automated Irrigation Systems</h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              Precise water delivery systems ensure each plant receives exactly what it needs, when it needs it.
-            </p>
-          </div>
-          
-          <div className="p-6 border border-gray-100 dark:border-gray-700 rounded-xl hover:border-primary/20 transition-all">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <LineChart className="text-primary w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3 dark:text-white">Advanced Analytics</h3>
-            <p className="text-gray-600 dark:text-gray-400">
-              Comprehensive data collection and analysis for continuous improvement of farming operations.
-            </p>
-          </div>
+          ))}
         </div>
       </div>
     </section>

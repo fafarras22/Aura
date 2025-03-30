@@ -7,8 +7,8 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface HomeHeaderProps {
-  language: 'en' | 'id';
-  setLanguage: (language: 'en' | 'id') => void;
+  language: 'en' | 'id' | 'ko';
+  setLanguage: (language: 'en' | 'id' | 'ko') => void;
 }
 
 export const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
@@ -25,19 +25,19 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage })
         <div className="flex items-center gap-6">
           <nav className="hidden md:flex items-center gap-6">
             <a href="#about" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
-              {language === 'en' ? 'About' : 'Tentang'}
+              {language === 'en' ? 'About' : language === 'id' ? 'Tentang' : '소개'}
             </a>
             <a href="#solutions" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
-              {language === 'en' ? 'Solutions' : 'Solusi'}
+              {language === 'en' ? 'Solutions' : language === 'id' ? 'Solusi' : '솔루션'}
             </a>
             <a href="#technology" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
-              {language === 'en' ? 'Technology' : 'Teknologi'}
+              {language === 'en' ? 'Technology' : language === 'id' ? 'Teknologi' : '기술'}
             </a>
             <a href="#tokenization" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
-              {language === 'en' ? 'Tokenization' : 'Tokenisasi'}
+              {language === 'en' ? 'Tokenization' : language === 'id' ? 'Tokenisasi' : '토큰화'}
             </a>
             <a href="#indonesia" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
-              {language === 'en' ? 'Indonesia Impact' : 'Dampak Indonesia'}
+              {language === 'en' ? 'Indonesia Impact' : language === 'id' ? 'Dampak Indonesia' : '인도네시아 영향'}
             </a>
           </nav>
           <div className="flex items-center gap-3">
@@ -64,17 +64,24 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage })
                   >
                     Indonesia
                   </Button>
+                  <Button 
+                    variant={language === 'ko' ? "default" : "ghost"} 
+                    onClick={() => setLanguage('ko')}
+                    className="justify-start"
+                  >
+                    한국어
+                  </Button>
                 </div>
               </PopoverContent>
             </Popover>
             <Link to="/login">
               <Button variant="outline" size="sm">
-                {language === 'en' ? 'Sign in' : 'Masuk'}
+                {language === 'en' ? 'Sign in' : language === 'id' ? 'Masuk' : '로그인'}
               </Button>
             </Link>
             <Link to="/dashboard">
               <Button variant="apple" size="sm" className="rounded-full">
-                {language === 'en' ? 'Dashboard' : 'Dasbor'}
+                {language === 'en' ? 'Dashboard' : language === 'id' ? 'Dasbor' : '대시보드'}
               </Button>
             </Link>
           </div>

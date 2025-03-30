@@ -8,6 +8,7 @@ import { TokenInvestments } from '@/components/tokenization/TokenInvestments';
 import { TokenTransactions } from '@/components/tokenization/TokenTransactions';
 import { TokenPurchase } from '@/components/tokenization/TokenPurchase';
 import { TokenPurchaseModal } from '@/components/tokenization/TokenPurchaseModal';
+import { SalesDetailsCard } from '@/components/dashboard/SalesDetailsCard';
 import { getMockTokenizationData } from '@/services/mockDataService';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -47,12 +48,13 @@ const Tokenization = () => {
       </div>
       
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList className="grid grid-cols-5">
+        <TabsList className="grid grid-cols-6">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="allocation">Allocation</TabsTrigger>
           <TabsTrigger value="investments">Investments</TabsTrigger>
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
           <TabsTrigger value="purchase">Purchase</TabsTrigger>
+          <TabsTrigger value="sales">Sales Data</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview">
@@ -73,6 +75,10 @@ const Tokenization = () => {
         
         <TabsContent value="purchase">
           <TokenPurchase onPurchase={handlePurchase} />
+        </TabsContent>
+        
+        <TabsContent value="sales">
+          <SalesDetailsCard />
         </TabsContent>
       </Tabs>
       

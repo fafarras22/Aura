@@ -10,13 +10,13 @@ import { TechnologySection } from "@/components/home/TechnologySection";
 import { TokenizationSection } from "@/components/home/TokenizationSection";
 
 const Home = () => {
-  const [language, setLanguage] = useState<'en' | 'id'>('en');
+  const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
 
   // Language content
   const content = {
     en: {
       hero: {
-        title: "Container Farming. Tokenized.",
+        title: "Farming for Everyone. Tokenized.",
         subtitle: "Revolutionary urban farming technology meets blockchain investment. Sustainable farming now accessible to everyone.",
         explore: "Explore Solutions",
         learnMore: "Learn More"
@@ -32,7 +32,7 @@ const Home = () => {
     },
     id: {
       hero: {
-        title: "Pertanian Kontainer. Tertokenisasi.",
+        title: "Pertanian untuk Semua. Tertokenisasi.",
         subtitle: "Teknologi pertanian urban revolusioner bertemu investasi blockchain. Pertanian berkelanjutan kini dapat diakses semua orang.",
         explore: "Jelajahi Solusi",
         learnMore: "Pelajari Lebih Lanjut"
@@ -44,6 +44,22 @@ const Home = () => {
       tokenization: {
         title: "Investasi di Masa Depan Pertanian",
         description: "Miliki saham di pertanian kontainer melalui teknologi blockchain yang aman. Sederhana. Transparan. Menguntungkan."
+      }
+    },
+    ko: {
+      hero: {
+        title: "모두를 위한 농업. 토큰화.",
+        subtitle: "혁신적인 도시 농업 기술과 블록체인 투자의 만남. 지속 가능한 농업이 이제 모두에게 접근 가능합니다.",
+        explore: "솔루션 탐색",
+        learnMore: "더 알아보기"
+      },
+      about: {
+        title: "아카르 소개",
+        description: "스마트 컨테이너 기술. 블록체인 기반. 농업의 미래."
+      },
+      tokenization: {
+        title: "농업의 미래에 투자하세요",
+        description: "안전한 블록체인 기술을 통해 컨테이너 농장의 지분을 소유하세요. 간단하고. 투명하고. 보람찬."
       }
     }
   };
@@ -60,19 +76,19 @@ const Home = () => {
       <AboutSection content={content[language].about} />
       
       {/* Indonesia Impact section */}
-      <IndonesiaImpactSection />
+      <IndonesiaImpactSection language={language} />
       
       {/* Solutions section */}
-      <SolutionsSection />
+      <SolutionsSection language={language} />
       
       {/* Technology section */}
-      <TechnologySection />
+      <TechnologySection language={language} />
       
       {/* Tokenization section */}
       <TokenizationSection language={language} content={content[language]} />
       
       {/* Footer */}
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };
