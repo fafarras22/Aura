@@ -56,7 +56,7 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
     } else {
       // Check for potential hack attempts (e.g., common admin passwords or SQL injection patterns)
       if (loginType === 'admin' && 
-          (password.toLowerCase().includes("admin") || 
+          (password.toLowerCase().includes("admin123") || 
            password.includes("--") || 
            password.includes("="))) {
         setAttemptedHack(true);

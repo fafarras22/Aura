@@ -14,24 +14,24 @@ import { useNavigate } from "react-router-dom";
 import { LoginDialog } from "@/components/dashboard/LoginDialog";
 
 // Mock data for demonstration
-const monthlyYieldData = [
-  { name: "Jan", yield: 420 },
-  { name: "Feb", yield: 380 },
-  { name: "Mar", yield: 450 },
-  { name: "Apr", yield: 520 },
-  { name: "May", yield: 550 },
-  { name: "Jun", yield: 580 },
-  { name: "Jul", yield: 620 },
+const getMonthlyYieldData = (isAdmin: boolean) => [
+  { name: "Jan", yield: isAdmin ? 420 : 120 },
+  { name: "Feb", yield: isAdmin ? 380 : 105 },
+  { name: "Mar", yield: isAdmin ? 450 : 135 },
+  { name: "Apr", yield: isAdmin ? 520 : 160 },
+  { name: "May", yield: isAdmin ? 550 : 170 },
+  { name: "Jun", yield: isAdmin ? 580 : 175 },
+  { name: "Jul", yield: isAdmin ? 620 : 190 },
 ];
 
-const resourceUsageData = [
-  { name: "Jan", water: 1200, electricity: 800 },
-  { name: "Feb", water: 1100, electricity: 830 },
-  { name: "Mar", water: 1300, electricity: 810 },
-  { name: "Apr", water: 1400, electricity: 850 },
-  { name: "May", water: 1350, electricity: 870 },
-  { name: "Jun", water: 1450, electricity: 900 },
-  { name: "Jul", water: 1500, electricity: 940 },
+const getResourceUsageData = (isAdmin: boolean) => [
+  { name: "Jan", water: isAdmin ? 1200 : 400, electricity: isAdmin ? 800 : 260 },
+  { name: "Feb", water: isAdmin ? 1100 : 370, electricity: isAdmin ? 830 : 275 },
+  { name: "Mar", water: isAdmin ? 1300 : 430, electricity: isAdmin ? 810 : 270 },
+  { name: "Apr", water: isAdmin ? 1400 : 460, electricity: isAdmin ? 850 : 280 },
+  { name: "May", water: isAdmin ? 1350 : 450, electricity: isAdmin ? 870 : 290 },
+  { name: "Jun", water: isAdmin ? 1450 : 480, electricity: isAdmin ? 900 : 300 },
+  { name: "Jul", water: isAdmin ? 1500 : 490, electricity: isAdmin ? 940 : 310 },
 ];
 
 // Sales distribution data
@@ -49,6 +49,10 @@ const Analytics = () => {
   const [timeRange, setTimeRange] = useState("6months");
   const [showLoginDialog, setShowLoginDialog] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  const isAdmin = isDeveloperMode || (currentUser?.role === 'admin');
+  const monthlyYieldData = getMonthlyYieldData(isAdmin);
+  const resourceUsageData = getResourceUsageData(isAdmin);
 
   // Check if user is logged in when component mounts
   useEffect(() => {

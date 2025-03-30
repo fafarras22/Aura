@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { Shield } from "lucide-react";
@@ -15,6 +14,9 @@ type DeveloperModeContextType = {
   suspiciousActivities: SuspiciousActivity[];
   clearSuspiciousActivities: () => void;
   canAccessDeveloperMode: boolean;
+  toggleContainerOperation: (containerId: string, active: boolean) => void;
+  sendPaymentReminder: (containerId: string) => void;
+  getContainerData: (containerId?: string) => ContainerData[];
 };
 
 export type User = {
@@ -22,6 +24,16 @@ export type User = {
   name: string;
   role: 'admin' | 'client';
   containerId?: string;
+};
+
+export type ContainerData = {
+  id: string;
+  name: string;
+  location: string;
+  status: 'active' | 'inactive' | 'maintenance';
+  owner: string;
+  lastPayment?: Date;
+  nextPaymentDue?: Date;
 };
 
 export type SuspiciousActivity = {
@@ -33,10 +45,41 @@ export type SuspiciousActivity = {
 };
 
 // Admin and user credentials - in a real app, this would be stored securely on the server
-const ADMIN_PASSWORD = "akar@admin2023"; 
+const ADMIN_PASSWORD = "admin@akar2025"; 
 const USERS: User[] = [
   { id: "admin-1", name: "Muhammad Farras", role: "admin" },
   { id: "client-1", name: "Guest", role: "client", containerId: "CONT-001" }
+];
+
+// Mock container data - in a real app, this would come from a database
+const CONTAINERS: ContainerData[] = [
+  { 
+    id: "CONT-001", 
+    name: "Jakarta Farm Container A", 
+    location: "Jakarta", 
+    status: "active", 
+    owner: "Guest",
+    lastPayment: new Date(2025, 2, 15),
+    nextPaymentDue: new Date(2025, 3, 15)
+  },
+  { 
+    id: "CONT-002", 
+    name: "Surabaya Farm Container B", 
+    location: "Surabaya", 
+    status: "active", 
+    owner: "Company B",
+    lastPayment: new Date(2025, 2, 10),
+    nextPaymentDue: new Date(2025, 3, 10)
+  },
+  { 
+    id: "CONT-003", 
+    name: "Bandung Farm Container C", 
+    location: "Bandung", 
+    status: "maintenance", 
+    owner: "Company C",
+    lastPayment: new Date(2025, 1, 25),
+    nextPaymentDue: new Date(2025, 2, 25)
+  }
 ];
 
 // User credentials - in a real app, these would be hashed and stored securely
@@ -54,6 +97,7 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [suspiciousActivities, setSuspiciousActivities] = useState<SuspiciousActivity[]>([]);
   const [blockedIPs, setBlockedIPs] = useState<string[]>([]);
+  const [containers, setContainers] = useState<ContainerData[]>(CONTAINERS);
 
   // Track login attempts for security
   const [loginAttempts, setLoginAttempts] = useState<number>(0);
@@ -78,6 +122,85 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
     
     checkSecurity();
   }, []);
+
+  // Function to get container data based on role and containerId
+  const getContainerData = (containerId?: string): ContainerData[] => {
+    // Admin or developer mode can see all containers
+    if (isDeveloperMode || (currentUser && currentUser.role === 'admin')) {
+      return containers;
+    }
+    
+    // Client can only see their own container
+    if (currentUser && currentUser.role === 'client') {
+      return containers.filter(container => 
+        container.id === (containerId || currentUser.containerId)
+      );
+    }
+    
+    // If no user is logged in, return empty array
+    return [];
+  };
+
+  // Function to toggle container operation status
+  const toggleContainerOperation = (containerId: string, active: boolean) => {
+    // Only allow in developer mode
+    if (!isDeveloperMode) {
+      toast({
+        title: "Access Denied",
+        description: "Only administrators can control container operations.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Update container status
+    setContainers(prev => prev.map(container => {
+      if (container.id === containerId) {
+        return {
+          ...container,
+          status: active ? 'active' : 'inactive'
+        };
+      }
+      return container;
+    }));
+    
+    toast({
+      title: `Container ${active ? 'Activated' : 'Deactivated'}`,
+      description: `Container ${containerId} has been ${active ? 'activated' : 'deactivated'}.`,
+      variant: active ? "default" : "destructive"
+    });
+  };
+
+  // Function to send payment reminder to client
+  const sendPaymentReminder = (containerId: string) => {
+    // Only allow in developer mode
+    if (!isDeveloperMode) {
+      toast({
+        title: "Access Denied",
+        description: "Only administrators can send payment reminders.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Find container
+    const container = containers.find(c => c.id === containerId);
+    if (!container) {
+      toast({
+        title: "Container Not Found",
+        description: `Container ${containerId} was not found.`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // In a real app, this would send an email or notification
+    toast({
+      title: "Payment Reminder Sent",
+      description: `Payment reminder sent to owner of container ${container.name}.`,
+      variant: "default"
+    });
+  };
 
   // Function to log suspicious activities
   const logSuspiciousActivity = (action: string, username?: string) => {
@@ -269,7 +392,10 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
       logout,
       suspiciousActivities,
       clearSuspiciousActivities,
-      canAccessDeveloperMode
+      canAccessDeveloperMode,
+      toggleContainerOperation,
+      sendPaymentReminder,
+      getContainerData
     }}>
       {children}
     </DeveloperModeContext.Provider>

@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
-  const { isDeveloperMode, toggleDeveloperMode } = useDeveloperMode();
+  const { isDeveloperMode, toggleDeveloperMode, currentUser } = useDeveloperMode();
   const [showNotification, setShowNotification] = useState(false);
   const navigate = useNavigate();
 
@@ -61,28 +61,34 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                 <Bell className="w-5 h-5" />
               </AppleButton>
 
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">
-                  {isDeveloperMode ? "Developer Mode" : "Client Mode"}
-                </span>
-                <Switch
-                  checked={isDeveloperMode}
-                  onCheckedChange={toggleDeveloperMode}
-                />
-              </div>
+              {currentUser?.role === 'admin' && (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">
+                    {isDeveloperMode ? "Developer Mode" : "Client Mode"}
+                  </span>
+                  <Switch
+                    checked={isDeveloperMode}
+                    onCheckedChange={toggleDeveloperMode}
+                  />
+                </div>
+              )}
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8 border border-primary/20">
                       <AvatarImage src="" alt="@user" />
-                      <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary">MF</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary">
+                        {currentUser?.name.charAt(0) || 'U'}
+                      </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Muhammad Farras</DropdownMenuLabel>
-                  <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">muhammad.farras@gmail.com</DropdownMenuLabel>
+                  <DropdownMenuLabel>{currentUser?.name || 'User'}</DropdownMenuLabel>
+                  <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
+                    {currentUser?.role === 'admin' ? 'Administrator' : 'Client User'}
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate('/settings')}>
                     <Settings className="mr-2 h-4 w-4" />
@@ -108,7 +114,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         description="Monitor your farm's status in real-time with our advanced dashboard."
         isVisible={showNotification}
         onClose={() => setShowNotification(false)}
-        icon={<Bell className="w-5 h-5 text-primary" />}
+        icon={<Leaf className="w-5 h-5 text-primary" />}
       />
       
       <FloatingContactButton />
