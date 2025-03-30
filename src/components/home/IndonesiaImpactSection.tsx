@@ -2,12 +2,15 @@
 import React from "react";
 import { StatsGrid } from "./indonesia-impact/StatsGrid";
 import { ImpactLocations } from "./indonesia-impact/ImpactLocations";
+import { useMobile } from "@/hooks/use-mobile";
 
 interface IndonesiaImpactSectionProps {
   language: 'en' | 'id' | 'ko';
 }
 
 export const IndonesiaImpactSection: React.FC<IndonesiaImpactSectionProps> = ({ language }) => {
+  const isMobile = useMobile();
+  
   const content = {
     en: {
       title: "Indonesia Impact",
@@ -42,18 +45,21 @@ export const IndonesiaImpactSection: React.FC<IndonesiaImpactSectionProps> = ({ 
   };
 
   return (
-    <section id="indonesia" className="py-20 bg-white dark:bg-gray-900">
+    <section id="indonesia" className={`py-10 ${isMobile ? 'py-10' : 'py-20'} bg-white dark:bg-gray-900`}>
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold mb-4 dark:text-white">{content[language].title}</h2>
-          <p className="text-gray-600 dark:text-gray-400">
+        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-16">
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold mb-4 dark:text-white`}>
+            {content[language].title}
+          </h2>
+          <p className={`text-gray-600 dark:text-gray-400 ${isMobile ? 'text-sm' : 'text-base'}`}>
             {content[language].subtitle}
           </p>
         </div>
 
         <StatsGrid stats={content[language].stats} />
         
-        <ImpactLocations language={language} />
+        {/* Don't show the ImpactLocations component on mobile to save space */}
+        {!isMobile && <ImpactLocations language={language} />}
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 import React from 'react';
 import { StatCard } from "@/components/dashboard/StatCard";
 import { AlertTriangle, FlaskConical, Zap, Box } from "lucide-react";
+import { useMobile } from "@/hooks/use-mobile";
 
 interface QuickStatsProps {
   criticalAlertsCount: number;
@@ -14,8 +15,10 @@ export const QuickStats: React.FC<QuickStatsProps> = ({
   upcomingHarvestsCount,
   containerCount
 }) => {
+  const isMobile = useMobile();
+  
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className={`grid gap-5 ${isMobile ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'}`}>
       <StatCard 
         title="System Status" 
         value="Operational" 
@@ -28,18 +31,25 @@ export const QuickStats: React.FC<QuickStatsProps> = ({
         icon={AlertTriangle} 
         color="red" 
       />
-      <StatCard 
-        title="Harvests Ready" 
-        value={upcomingHarvestsCount} 
-        icon={FlaskConical} 
-        color="blue" 
-      />
-      <StatCard 
-        title="Container Farms" 
-        value={containerCount} 
-        icon={Box} 
-        color="purple"
-      />
+      {/* On mobile, we'll prioritize these two cards above */}
+      
+      {/* For mobile, we can conditionally render the less critical stats */}
+      {(!isMobile || containerCount > 5) && (
+        <StatCard 
+          title="Harvests Ready" 
+          value={upcomingHarvestsCount} 
+          icon={FlaskConical} 
+          color="blue" 
+        />
+      )}
+      {(!isMobile || criticalAlertsCount > 0) && (
+        <StatCard 
+          title="Container Farms" 
+          value={containerCount} 
+          icon={Box} 
+          color="purple"
+        />
+      )}
     </div>
   );
 };

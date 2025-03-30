@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { ZoomIn, ZoomOut } from 'lucide-react';
+import { useMobile } from "@/hooks/use-mobile";
 
 interface LocationMarker {
   id: string;
@@ -16,6 +17,8 @@ interface LocationMarker {
 export const IndonesiaMap = () => {
   const [zoom, setZoom] = useState(1);
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const isMobile = useMobile();
   
   const locations: LocationMarker[] = [
     {
@@ -78,8 +81,14 @@ export const IndonesiaMap = () => {
     if (zoom > 0.75) setZoom(zoom - 0.25);
   };
 
+  const handleLocationClick = (locationId: string) => {
+    if (isMobile) {
+      setSelectedLocation(selectedLocation === locationId ? null : locationId);
+    }
+  };
+
   return (
-    <div className="relative h-[400px] w-full mb-6 rounded-lg overflow-hidden">
+    <div className={`relative w-full mb-6 rounded-lg overflow-hidden ${isMobile ? 'h-[250px]' : 'h-[400px]'}`}>
       <div 
         className="absolute inset-0 transition-transform duration-300 ease-in-out"
         style={{ transform: `scale(${zoom})`, transformOrigin: 'center' }}
@@ -97,21 +106,31 @@ export const IndonesiaMap = () => {
             key={location.id}
             className="absolute"
             style={{ top: `${location.y}%`, left: `${location.x}%` }}
-            onMouseEnter={() => setHoveredLocation(location.id)}
-            onMouseLeave={() => setHoveredLocation(null)}
+            onMouseEnter={() => !isMobile && setHoveredLocation(location.id)}
+            onMouseLeave={() => !isMobile && setHoveredLocation(null)}
+            onClick={() => handleLocationClick(location.id)}
           >
-            <div className={`w-4 h-4 bg-primary rounded-full ${hoveredLocation === location.id ? 'ring-4 ring-primary/30' : 'animate-pulse'}`}></div>
+            <div className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} bg-primary rounded-full ${
+              (hoveredLocation === location.id || selectedLocation === location.id) 
+                ? 'ring-4 ring-primary/30' 
+                : 'animate-pulse'}`}>
+            </div>
             
-            {/* Tooltip on hover */}
-            {hoveredLocation === location.id && (
-              <div className="absolute z-10 w-64 bg-white rounded-lg shadow-lg p-3 -translate-x-1/2 -translate-y-full -mt-2">
+            {/* Tooltip on hover for desktop, on click for mobile */}
+            {((isMobile && selectedLocation === location.id) || 
+               (!isMobile && hoveredLocation === location.id)) && (
+              <div className={`absolute z-10 bg-white rounded-lg shadow-lg p-3 -translate-x-1/2 ${
+                isMobile ? 'w-48 -translate-y-full -mt-2' : 'w-64 -translate-y-full -mt-2'
+              }`}>
                 <h4 className="font-semibold text-primary">{location.name}</h4>
-                <p className="text-xs text-gray-600 mb-2">{location.description}</p>
+                {!isMobile && <p className="text-xs text-gray-600 mb-2">{location.description}</p>}
                 <div className="grid grid-cols-1 gap-1 text-xs">
-                  <div className="flex justify-between">
-                    <span className="font-medium">Impact:</span>
-                    <span className="text-gray-600">{location.impact}</span>
-                  </div>
+                  {!isMobile && (
+                    <div className="flex justify-between">
+                      <span className="font-medium">Impact:</span>
+                      <span className="text-gray-600">{location.impact}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="font-medium">Harvest:</span>
                     <span className="text-gray-600">{location.harvest}</span>
