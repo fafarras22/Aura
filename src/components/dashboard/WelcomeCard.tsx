@@ -18,7 +18,7 @@ export const WelcomeCard: React.FC<WelcomeCardProps> = ({ currentUser }) => {
     <Card className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900">
       <CardContent className={`flex items-center justify-between ${isMobile ? 'p-3' : 'p-4'}`}>
         <div>
-          <h2 className={`font-medium ${isMobile ? 'text-sm mb-0.5' : 'text-lg'}`}>
+          <h2 className={`font-medium ${isMobile ? 'text-base mb-0.5' : 'text-lg'}`}>
             {isMobile ? `Hi, ${currentUser.name.split(' ')[0]}` : `Welcome, ${currentUser.name}`}
           </h2>
           {!isMobile && (

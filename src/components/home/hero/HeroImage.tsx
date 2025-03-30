@@ -7,7 +7,7 @@ export const HeroImage: React.FC = () => {
   
   return (
     <div 
-      className={`relative rounded-2xl overflow-hidden shadow-xl ${isMobile ? 'h-[180px]' : 'h-[400px]'}`} 
+      className={`relative rounded-2xl overflow-hidden shadow-xl ${isMobile ? 'h-[200px]' : 'h-[400px]'}`} 
       role="img" 
       aria-label="AKAR Container Farm"
     >

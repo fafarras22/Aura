@@ -5,13 +5,14 @@ import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { AppleNotification } from "@/components/ui/apple-notification";
-import { Bell, LogOut, Settings } from "lucide-react";
+import { Bell, Leaf, LogOut, Settings } from "lucide-react";
 import { AppleButton } from "@/components/ui/apple-button";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from "@/components/ui/button";
 import { Footer } from "./Footer";
+import { FloatingContactButton } from "./FloatingContactButton";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -41,7 +42,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen flex w-full bg-gray-50 dark:bg-gray-900">
         <AppSidebar isDeveloperMode={isDeveloperMode} />
         <div className="flex-1 flex flex-col">
-          <header className="h-16 border-b flex items-center justify-between px-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-gray-200 dark:border-gray-800">
+          <header className="h-16 border-b flex items-center justify-between px-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-gray-200 dark:border-gray-800 sticky top-0 z-30">
             <div className="flex items-center gap-4">
               <SidebarTrigger className="p-2 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-md" />
               <div className="h-8 w-8 rounded-md overflow-hidden bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
@@ -109,6 +110,8 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         onClose={() => setShowNotification(false)}
         icon={<Bell className="w-5 h-5 text-primary" />}
       />
+      
+      <FloatingContactButton />
     </SidebarProvider>
   );
 }

@@ -10,6 +10,7 @@ import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BottomHeader } from './BottomHeader';
 import { Footer } from './Footer';
+import { FloatingContactButton } from './FloatingContactButton';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -193,6 +194,8 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
         onClose={() => setShowNotification(false)}
         icon={<Bell className="w-5 h-5 text-primary" />}
       />
+      
+      <FloatingContactButton />
     </div>
   );
 }
