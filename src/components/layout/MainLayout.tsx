@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from "@/components/ui/button";
+import { Footer } from "./Footer";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -97,6 +98,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           <main className="flex-1 p-6 overflow-auto">
             {children}
           </main>
+          <Footer />
         </div>
       </div>
       

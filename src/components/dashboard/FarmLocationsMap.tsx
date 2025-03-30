@@ -8,7 +8,6 @@ import { FarmLocation } from '@/services/mockDataService';
 // Dummy token - in a real app this should be set as an environment variable
 const MAPBOX_TOKEN = 'pk.dummy.token';
 
-// We'll reuse the FarmLocation interface directly from mockDataService.ts
 interface FarmLocationsMapProps {
   locations: FarmLocation[];
 }
@@ -69,7 +68,7 @@ export const FarmLocationsMap: React.FC<FarmLocationsMapProps> = ({ locations })
           </div>
         `);
       
-      // Add to map
+      // Add to map - use the location property instead of coordinates
       new mapboxgl.Marker(el)
         .setLngLat([location.location.lng, location.location.lat])
         .setPopup(popup)

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Menu, X, Home, Leaf, Droplet, Wind, Bell, Settings, Layers, ChevronRight, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BottomHeader } from './BottomHeader';
+import { Footer } from './Footer';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -168,9 +170,14 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 p-4 overflow-auto pb-16">
+      <main className="flex-1 p-4 overflow-auto pb-20">
         {children}
       </main>
+
+      {/* Fixed footer for mobile view - positioned before the bottom navigation */}
+      <div className="pb-16 md:pb-0">
+        <Footer />
+      </div>
 
       {/* Bottom Header using the dedicated component */}
       <BottomHeader />
