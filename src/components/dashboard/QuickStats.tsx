@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { StatCard } from "@/components/dashboard/StatCard";
-import { Alert, AlertCircle, FlaskConical, Zap } from "lucide-react";
+import { AlertTriangle, FlaskConical, Zap, Box } from "lucide-react";
 
 interface QuickStatsProps {
   criticalAlertsCount: number;
@@ -25,7 +25,7 @@ export const QuickStats: React.FC<QuickStatsProps> = ({
       <StatCard 
         title="Critical Alerts" 
         value={criticalAlertsCount} 
-        icon={AlertCircle} 
+        icon={AlertTriangle} 
         color="red" 
       />
       <StatCard 
@@ -37,7 +37,7 @@ export const QuickStats: React.FC<QuickStatsProps> = ({
       <StatCard 
         title="Container Farms" 
         value={containerCount} 
-        icon={Alert} 
+        icon={Box} 
         color="purple"
       />
     </div>
