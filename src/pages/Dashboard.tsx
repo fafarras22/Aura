@@ -54,7 +54,9 @@ const Dashboard = () => {
       totalRevenue: 85000000,
       supermarketClient: {
         name: "Superindo Market",
-        imageUrl: ""
+        imageUrl: "",
+        location: "Jakarta",
+        contractValue: 75000000
       },
       monthlySales: [120, 150, 180, 210, 250, 340],
       recurringCustomers: [
@@ -62,7 +64,6 @@ const Dashboard = () => {
         { id: "cust-2", name: "Customer 2", imageUrl: "" },
         { id: "cust-3", name: "Customer 3", imageUrl: "" }
       ],
-      // Add missing required properties from ContainerSalesData
       month: "Current",
       amount: 85000000
     } as ContainerSalesData,
@@ -92,7 +93,6 @@ const Dashboard = () => {
           transactionHash: "0x0987654321fedcba"
         }
       ],
-      // Add missing required properties from TokenizationData
       tokenBalance: 5000,
       tokenPrice: 10000,
       tokenChange: 2.5,

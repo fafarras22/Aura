@@ -4,9 +4,10 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Info } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -117,6 +118,18 @@ const Login = () => {
                 </div>
               </div>
 
+              <Alert variant="outline" className="bg-blue-50 border-blue-200">
+                <Info className="h-4 w-4 text-blue-500" />
+                <AlertDescription className="text-xs text-blue-700">
+                  <strong>Login Credentials:</strong>
+                  <ul className="mt-1 ml-4 list-disc">
+                    <li>Client: Username "Guest" / Password "guest123"</li>
+                    <li>Admin: Username "Muhammad Farras" / Password "admin123"</li>
+                    <li>Admin mode can also be accessed with admin password: "admin@akar2025"</li>
+                  </ul>
+                </AlertDescription>
+              </Alert>
+
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <Checkbox
@@ -131,9 +144,9 @@ const Login = () => {
                 </div>
 
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-primary hover:text-primary/80">
+                  <button type="button" className="font-medium text-primary hover:text-primary/80">
                     Forgot your password?
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -144,7 +157,7 @@ const Login = () => {
                   className="w-full py-6 rounded-xl"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Signing in..." : "Sign in"}
+                  {isLoading ? "Signing in..." : "Sign in to Dashboard"}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
@@ -161,7 +174,15 @@ const Login = () => {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Button variant="outline" className="w-full">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  type="button"
+                  onClick={() => toast({
+                    title: "Google Login",
+                    description: "Google login is not available in this demo"
+                  })}
+                >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19.9895 10.1871C19.9895 9.36767 19.9214 8.76973 19.7742 8.14966H11.5222V11.848H16.3042C16.1952 12.767 15.7292 14.1512 14.6122 15.0812L14.6008 15.1556L17.2222 17.1039L17.4289 17.1245C18.9088 15.4739 19.9895 13.0645 19.9895 10.1871Z" fill="#4285F4" />
                     <path d="M11.5222 19.9314C13.94 19.9314 15.9666 19.0455 17.4289 17.1245L14.6122 15.0812C13.9088 15.5951 12.9215 15.9522 11.5222 15.9522C9.10223 15.9522 7.04434 14.3443 6.25335 12.0791L6.18182 12.0892L3.48304 14.1159L3.44265 14.1835C4.89384 17.5548 7.97032 19.9314 11.5222 19.9314Z" fill="#34A853" />
@@ -171,7 +192,15 @@ const Login = () => {
                   <span className="ml-2">Google</span>
                 </Button>
                 
-                <Button variant="outline" className="w-full bg-black text-white hover:bg-black/90 border-black">
+                <Button 
+                  variant="outline" 
+                  className="w-full bg-black text-white hover:bg-black/90 border-black"
+                  type="button"
+                  onClick={() => toast({
+                    title: "Apple Login",
+                    description: "Apple login is not available in this demo"
+                  })}
+                >
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M16.6 7.1c-1 0-1.9.8-2.8.8-.9 0-2.2-.8-3.6-.8C7.5 7.1 4.9 9 4.9 12.6c0 2.2.9 4.5 2 5.9 1 1.3 1.9 2.4 3.2 2.4 1.3 0 1.7-.8 3.2-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.1-1.1 3.1-2.4.7-.9 1.2-1.9 1.6-3.1-4.1-1.5-3.8-7.3.4-8.3C19.9 4.1 17.4 4 16.6 7.1z" />
                     <path d="M15.3 3.6c.8-1 1.3-2.2 1.3-3.6-1.3.1-2.9.9-3.8 2-1 1-1.5 2.2-1.5 3.6 1.4.1 2.9-.9 4-2z" />
