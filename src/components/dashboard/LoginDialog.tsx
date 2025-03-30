@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Shield, User } from "lucide-react";
 
 interface LoginDialogProps {
   open: boolean;
@@ -25,31 +26,56 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
   const [loginType, setLoginType] = useState<'admin' | 'user'>('user');
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleLogin = () => {
+    setError("");
+    
+    if (loginType === 'admin' && !password) {
+      setError("Admin password is required");
+      return;
+    }
+    
+    if (loginType === 'user' && (!username || !password)) {
+      setError("Both username and password are required");
+      return;
+    }
+    
     const success = onLogin(loginType, username, password);
     
     if (success) {
       // Reset the form
       setUsername("");
       setPassword("");
+      setError("");
+    } else {
+      setError(loginType === 'admin' 
+        ? "Invalid admin password" 
+        : "Invalid username or password");
     }
   };
 
   const handleLoginTypeChange = (type: 'admin' | 'user') => {
     setLoginType(type);
+    setError("");
     // Reset form when switching login types
     setUsername("");
     setPassword("");
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(newOpen) => {
+      // Prevent closing if opened (force login)
+      if (open && newOpen === false) {
+        return;
+      }
+      onOpenChange(newOpen);
+    }}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Login to Dashboard</DialogTitle>
-          <DialogDescription>
-            Please sign in to access your AKAR dashboard.
+          <DialogTitle className="text-center text-xl">Login Required</DialogTitle>
+          <DialogDescription className="text-center">
+            Please sign in to access the AKAR FarmWatch dashboard.
           </DialogDescription>
         </DialogHeader>
         
@@ -57,13 +83,17 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
           <Button 
             variant={loginType === 'user' ? "default" : "outline"} 
             onClick={() => handleLoginTypeChange('user')}
+            className="flex gap-2 items-center"
           >
+            <User size={18} />
             Client Login
           </Button>
           <Button 
             variant={loginType === 'admin' ? "default" : "outline"} 
             onClick={() => handleLoginTypeChange('admin')}
+            className="flex gap-2 items-center"
           >
+            <Shield size={18} />
             Admin Login
           </Button>
         </div>
@@ -108,10 +138,18 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
               </div>
             </>
           )}
+          
+          {error && (
+            <div className="text-sm text-red-500 font-medium">
+              {error}
+            </div>
+          )}
         </div>
         
         <DialogFooter>
-          <Button type="submit" onClick={handleLogin}>Sign In</Button>
+          <Button type="submit" onClick={handleLogin} className="w-full">
+            Sign In
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

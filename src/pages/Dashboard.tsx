@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { SectionCard } from "@/components/dashboard/SectionCard";
 import { FarmLocationsOverview } from "@/components/dashboard/FarmLocationsOverview";
@@ -12,7 +11,7 @@ import {
   getMockFarmLocations,
   getMockTokenizationData
 } from "@/services/mockDataService";
-import { Droplets, ArrowRight } from "lucide-react";
+import { Droplets, ArrowRight, ShieldAlert } from "lucide-react";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { useNavigate } from "react-router-dom";
 import { AppleButton } from "@/components/ui/apple-button";
@@ -93,6 +92,43 @@ const Dashboard = () => {
     
     return success;
   };
+
+  // If not logged in, show only the login dialog with locked background
+  if (!currentUser) {
+    return (
+      <div className="relative">
+        {/* Blurred/Locked Dashboard Background */}
+        <div className="filter blur-sm pointer-events-none">
+          <div className="space-y-8 opacity-40">
+            <DashboardHeader currentUser={null} />
+            <div className="p-6 border rounded-lg bg-muted/30">
+              <h2 className="text-2xl font-bold mb-4">Access Restricted</h2>
+              <p>Please log in to view dashboard content</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-6 border rounded-lg bg-muted/30 h-40"></div>
+              <div className="p-6 border rounded-lg bg-muted/30 h-40"></div>
+              <div className="p-6 border rounded-lg bg-muted/30 h-40"></div>
+            </div>
+            
+            <div className="p-6 border rounded-lg bg-muted/30 h-60">
+              <div className="flex items-center justify-center h-full">
+                <ShieldAlert className="w-16 h-16 opacity-10" />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Forced Login Dialog */}
+        <LoginDialog 
+          open={true} 
+          onOpenChange={(open) => {/* Don't allow closing */}}
+          onLogin={handleLoginSubmit}
+        />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -324,7 +360,7 @@ const Dashboard = () => {
         {isDeveloperMode && <DeveloperInfoCard />}
       </div>
 
-      {/* Login Dialog */}
+      {/* Login Dialog - will only show if triggered by state */}
       <LoginDialog 
         open={showLoginDialog} 
         onOpenChange={setShowLoginDialog}
