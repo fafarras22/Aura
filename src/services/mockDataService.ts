@@ -1,3 +1,4 @@
+
 import { faker } from '@faker-js/faker';
 
 // Farm location interface
@@ -890,4 +891,53 @@ export const getMockTokenizationData = (): TokenizationData => {
       }
     ],
     // Adding missing properties
-    totalTokens: 7
+    totalTokens: 7,
+    totalInvestors: 350,
+    recentActivities: [
+      {
+        id: 'a1',
+        type: 'invested',
+        description: 'New investment in Jakarta Central Farm',
+        tokenAmount: 500,
+        date: '2023-11-12',
+        transactionHash: '0x1a2b3c4d5e6f7g8h9i0j'
+      },
+      {
+        id: 'a2',
+        type: 'harvested',
+        description: 'Harvest yield distributed as tokens',
+        tokenAmount: 250,
+        date: '2023-11-10'
+      },
+      {
+        id: 'a3',
+        type: 'other',
+        description: 'Community rewards distributed',
+        tokenAmount: 100,
+        date: '2023-11-05',
+        transactionHash: '0xabcdef1234567890'
+      }
+    ],
+    tokenAllocation: [
+      { name: 'Operations', value: 30 },
+      { name: 'Expansion', value: 25 },
+      { name: 'Investor Returns', value: 20 },
+      { name: 'Technology', value: 15 },
+      { name: 'Community', value: 10 }
+    ],
+    investmentPerformance: [
+      { month: 'Jan', value: 8.2 },
+      { month: 'Feb', value: 7.8 },
+      { month: 'Mar', value: 9.3 },
+      { month: 'Apr', value: 10.1 },
+      { month: 'May', value: 11.2 },
+      { month: 'Jun', value: 12.0 },
+      { month: 'Jul', value: 11.5 },
+      { month: 'Aug', value: 12.3 },
+      { month: 'Sep', value: 13.1 },
+      { month: 'Oct', value: 12.8 },
+      { month: 'Nov', value: 12.5 },
+      { month: 'Dec', value: 13.2 }
+    ]
+  };
+};
