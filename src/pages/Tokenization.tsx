@@ -90,10 +90,7 @@ const Tokenization = () => {
         </TabsContent>
         
         <TabsContent value="investments">
-          <TokenInvestments 
-            tokenData={tokenizationData}
-            isDeveloperMode={isDeveloperMode}
-          />
+          <TokenInvestments isDeveloperMode={isDeveloperMode} />
         </TabsContent>
         
         <TabsContent value="transactions">
