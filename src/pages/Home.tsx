@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { IndonesiaMap } from "@/components/home/IndonesiaMap";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const Home = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -226,6 +228,7 @@ const Home = () => {
               </a>
             </nav>
             <div className="flex items-center gap-3">
+              <ThemeToggle />
               <Popover>
                 <PopoverTrigger asChild>
                   <Button variant="outline" size="icon" className="rounded-full">
@@ -629,4 +632,109 @@ const Home = () => {
                       {language === 'en' 
                         ? 'Start with any investment size that fits your portfolio' 
                         : 'Mulai dengan ukuran investasi apa pun yang sesuai dengan portofolio Anda'}
-                    </
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+              <h4 className="font-semibold text-lg mb-4 dark:text-white">
+                {language === 'en' ? 'Blockchain Infrastructure' : 'Infrastruktur Blockchain'}
+              </h4>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                {language === 'en'
+                  ? 'AKAR tokens are built on Polygon PoS (Proof of Stake), a secure and eco-friendly blockchain that ensures fast transactions with minimal environmental impact.'
+                  : 'Token AKAR dibangun di atas Polygon PoS (Proof of Stake), blockchain yang aman dan ramah lingkungan yang memastikan transaksi cepat dengan dampak lingkungan minimal.'}
+              </p>
+              <div className="bg-primary/5 dark:bg-primary/10 rounded-lg p-4 mb-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Token Symbol</span>
+                  <span className="font-medium dark:text-white">$AKR</span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Network</span>
+                  <span className="font-medium dark:text-white">Polygon PoS</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Standard</span>
+                  <span className="font-medium dark:text-white">ERC-20</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Footer */}
+      <footer className="bg-gray-100 dark:bg-gray-900 py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <img 
+                src="/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png" 
+                alt="AKAR Logo" 
+                className="h-10 mb-4"
+              />
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Revolutionizing agriculture through sustainable container farming and blockchain technology.
+              </p>
+              <div className="flex gap-4">
+                <a href="#" className="text-gray-500 hover:text-primary transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-500 hover:text-primary transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-gray-500 hover:text-primary transition-colors">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4 dark:text-white">Company</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">About</a></li>
+                <li><a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">Careers</a></li>
+                <li><a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">News</a></li>
+                <li><a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">Partners</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4 dark:text-white">Resources</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">Documentation</a></li>
+                <li><a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">Whitepaper</a></li>
+                <li><a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">Token Economics</a></li>
+                <li><a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">FAQ</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4 dark:text-white">Contact</h4>
+              <ul className="space-y-2">
+                <li className="text-sm text-gray-600 dark:text-gray-400">Jakarta, Indonesia</li>
+                <li><a href="mailto:info@akar.io" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">info@akar.io</a></li>
+                <li><a href="tel:+62215551234" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">+62 21 555 1234</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 md:mb-0">
+              &copy; {new Date().getFullYear()} AKAR Technologies. All rights reserved.
+            </p>
+            <div className="flex gap-6">
+              <a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">Privacy Policy</a>
+              <a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">Terms of Service</a>
+              <a href="#" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">Legal</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Home;
