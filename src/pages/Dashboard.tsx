@@ -2,12 +2,16 @@
 import { SensorCard } from "@/components/dashboard/SensorCard";
 import { ContainerUpgrade } from "@/components/dashboard/ContainerUpgrade";
 import { SalesStatusCard } from "@/components/dashboard/SalesStatusCard";
+import { FarmLocationsMap } from "@/components/dashboard/FarmLocationsMap";
+import { TokenizationOverview } from "@/components/dashboard/TokenizationOverview";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   getMockSensorData, 
   getMockAlerts, 
   getMockHarvests,
-  getMockContainerSalesData
+  getMockContainerSalesData,
+  getMockFarmLocations,
+  getMockTokenizationData
 } from "@/services/mockDataService";
 import { Thermometer, Droplet, Wind, Zap, FlaskConical, Waves, AlertCircle, Droplets } from "lucide-react";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
@@ -21,6 +25,8 @@ const Dashboard = () => {
   const alerts = getMockAlerts();
   const harvests = getMockHarvests();
   const containerSalesData = getMockContainerSalesData();
+  const farmLocations = getMockFarmLocations();
+  const tokenizationData = getMockTokenizationData();
 
   // Get upcoming harvests (status === 'ready')
   const upcomingHarvests = harvests.filter(harvest => harvest.status === 'ready');
@@ -104,6 +110,12 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </div>
+      
+      {/* Tokenization Section */}
+      <TokenizationOverview tokenData={tokenizationData} />
+      
+      {/* Farm Locations Map */}
+      <FarmLocationsMap locations={farmLocations} />
 
       {/* Sales Status Section */}
       <div>
@@ -237,4 +249,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

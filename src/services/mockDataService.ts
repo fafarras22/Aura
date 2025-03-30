@@ -77,6 +77,36 @@ export interface ContainerSalesData {
   totalRevenue: number;
 }
 
+export interface FarmLocation {
+  id: string;
+  name: string;
+  address: string;
+  coordinates: {
+    x: number; // percentage position on the map (0-100)
+    y: number; // percentage position on the map (0-100)
+  };
+  containerType: '3tons' | '5tons' | '7tons';
+  status: 'active' | 'maintenance' | 'installing';
+}
+
+export interface TokenActivity {
+  id: string;
+  type: 'invested' | 'harvested' | 'transferred';
+  description: string;
+  tokenAmount: number;
+  date: string;
+  transactionHash: string;
+}
+
+export interface TokenizationData {
+  totalTokens: number;
+  totalValue: number;
+  activeContracts: number;
+  totalInvestors: number;
+  averageReturn: number;
+  recentActivities: TokenActivity[];
+}
+
 // Generate sensor data
 export const getMockSensorData = (): SensorData[] => {
   return [
@@ -426,4 +456,143 @@ export const getMockContainerSalesData = (): ContainerSalesData[] => {
       totalRevenue: 134340000
     }
   ];
+};
+
+// Generate farm locations
+export const getMockFarmLocations = (): FarmLocation[] => {
+  return [
+    {
+      id: 'loc1',
+      name: 'AKAR Farm #1',
+      address: 'Jl. Pluit Raya No. 32, North Jakarta',
+      coordinates: { x: 35, y: 40 },
+      containerType: '5tons',
+      status: 'active'
+    },
+    {
+      id: 'loc2',
+      name: 'AKAR Farm #2',
+      address: 'Jl. Sunter Permai No. 15, North Jakarta',
+      coordinates: { x: 48, y: 35 },
+      containerType: '3tons',
+      status: 'active'
+    },
+    {
+      id: 'loc3',
+      name: 'AKAR Farm #3',
+      address: 'Jl. Kelapa Gading Blvd, North Jakarta',
+      coordinates: { x: 60, y: 45 },
+      containerType: '7tons',
+      status: 'active'
+    },
+    {
+      id: 'loc4',
+      name: 'AKAR Farm #4',
+      address: 'Jl. Pantai Indah Kapuk, North Jakarta',
+      coordinates: { x: 25, y: 52 },
+      containerType: '5tons',
+      status: 'active'
+    },
+    {
+      id: 'loc5',
+      name: 'AKAR Farm #5',
+      address: 'Jl. Danau Sunter Utara, North Jakarta',
+      coordinates: { x: 53, y: 55 },
+      containerType: '5tons',
+      status: 'active'
+    },
+    {
+      id: 'loc6',
+      name: 'AKAR Farm #6',
+      address: 'Jl. Muara Karang Raya, North Jakarta',
+      coordinates: { x: 30, y: 35 },
+      containerType: '3tons',
+      status: 'active'
+    },
+    {
+      id: 'loc7',
+      name: 'AKAR Farm #7',
+      address: 'Jl. Pluit Selatan Raya, North Jakarta',
+      coordinates: { x: 40, y: 45 },
+      containerType: '7tons',
+      status: 'active'
+    },
+    {
+      id: 'loc8',
+      name: 'AKAR Farm #8',
+      address: 'Jl. Sunter Jaya, North Jakarta',
+      coordinates: { x: 65, y: 32 },
+      containerType: '3tons',
+      status: 'active'
+    },
+    {
+      id: 'loc9',
+      name: 'AKAR Farm #9',
+      address: 'Jl. Pademangan Timur, North Jakarta',
+      coordinates: { x: 58, y: 60 },
+      containerType: '5tons',
+      status: 'active'
+    },
+    {
+      id: 'loc10',
+      name: 'AKAR Farm #10',
+      address: 'Jl. Ancol Barat, North Jakarta',
+      coordinates: { x: 45, y: 50 },
+      containerType: '7tons',
+      status: 'active'
+    }
+  ];
+};
+
+// Generate tokenization data
+export const getMockTokenizationData = (): TokenizationData => {
+  return {
+    totalTokens: 250000,
+    totalValue: 5250000000, // 5.25 billion IDR
+    activeContracts: 15,
+    totalInvestors: 28,
+    averageReturn: 12.5,
+    recentActivities: [
+      {
+        id: 'token1',
+        type: 'invested',
+        description: 'New investment from Investor #12',
+        tokenAmount: 5000,
+        date: '2023-07-15',
+        transactionHash: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+      },
+      {
+        id: 'token2',
+        type: 'harvested',
+        description: 'Tokens issued for Lettuce harvest',
+        tokenAmount: 2500,
+        date: '2023-07-14',
+        transactionHash: '0x8C3A99d8b8A5B7a22F5b8a27A5fEa35B9F4c8EC7'
+      },
+      {
+        id: 'token3',
+        type: 'transferred',
+        description: 'Token transfer to marketplace',
+        tokenAmount: 1000,
+        date: '2023-07-13',
+        transactionHash: '0x5A4D4c38eB9F15cd738CbaeC0f4F1907620b5631'
+      },
+      {
+        id: 'token4',
+        type: 'invested',
+        description: 'Investment increased by Investor #05',
+        tokenAmount: 3000,
+        date: '2023-07-10',
+        transactionHash: '0x1B94D2C1F1E8E5E1Fc6B0a05c9c8B72a9F5D3B87'
+      },
+      {
+        id: 'token5',
+        type: 'harvested',
+        description: 'Tokens issued for Spinach harvest',
+        tokenAmount: 1800,
+        date: '2023-07-08',
+        transactionHash: '0x9E7C2d6A08Eb53BD416E69A3e9B8E05f5B5e9F9B'
+      }
+    ]
+  };
 };

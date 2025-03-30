@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ClientData, ContainerSalesData } from "@/services/mockDataService";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { formatCurrency } from "@/lib/utils";
+import { CircleDollarSign } from "lucide-react";
 
 interface SalesStatusCardProps {
   salesData: ContainerSalesData;
@@ -61,6 +62,17 @@ export const SalesStatusCard = ({ salesData }: SalesStatusCardProps) => {
               <p className="text-lg font-semibold">
                 {formatCurrency(salesData.priceRange.min)} - {formatCurrency(salesData.priceRange.max)} <span className="text-xs text-muted-foreground">per kg</span>
               </p>
+            </div>
+            
+            <div>
+              <h4 className="text-sm font-medium mb-2">Tokenization</h4>
+              <div className="flex items-center gap-2 p-2 rounded-md bg-purple-50 border border-purple-200 dark:bg-purple-900/20 dark:border-purple-800">
+                <CircleDollarSign className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                <div>
+                  <p className="text-sm font-medium">AKAR Tokens Available</p>
+                  <p className="text-xs text-muted-foreground">This container's produce is tokenized as ERC-20</p>
+                </div>
+              </div>
             </div>
           </div>
           
