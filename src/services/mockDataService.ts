@@ -890,4 +890,4 @@ export const getMockTokenizationData = (): TokenizationData => {
       }
     ],
     // Adding missing properties
-    totalTokens: 7500
+    totalTokens: 7
