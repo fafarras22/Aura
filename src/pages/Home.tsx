@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -674,3 +675,49 @@ const Home = () => {
                 <li><a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">Consultancy</a></li>
               </ul>
             </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4 text-gray-800">Company</h4>
+              <ul className="space-y-2">
+                <li><a href="#about" className="text-gray-600 hover:text-primary transition-colors text-sm">About Us</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">Careers</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">News</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-primary transition-colors text-sm">Contact</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4 text-gray-800">Connect</h4>
+              <div className="flex gap-4 mb-4">
+                <a href="https://www.instagram.com/akarfarm" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="https://www.linkedin.com/company/akarfarm" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary transition-colors">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a href="https://www.x.com/akarfarm" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
+              </div>
+              <p className="text-sm text-gray-600">
+                Subscribe to our newsletter for the latest updates on sustainable farming innovations.
+              </p>
+            </div>
+          </div>
+          
+          <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-sm text-gray-500 mb-4 md:mb-0">
+              &copy; {new Date().getFullYear()} AKAR. All rights reserved.
+            </p>
+            <div className="flex gap-6">
+              <a href="#" className="text-sm text-gray-500 hover:text-primary transition-colors">Privacy Policy</a>
+              <a href="#" className="text-sm text-gray-500 hover:text-primary transition-colors">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Home;
