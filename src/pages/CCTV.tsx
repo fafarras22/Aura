@@ -1,11 +1,10 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getMockCameras } from "@/services/mockDataService";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
-import { Camera, RefreshCw, Maximize, History, Settings, Pause, Play, Download, RotateCw } from "lucide-react";
+import { Camera, RefreshCw, Maximize, History, Settings, Pause, Play, Download, RotateCw, Users } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -225,6 +224,3 @@ const CCTV = () => {
 };
 
 export default CCTV;
-
-// Add this import at the top
-import { Users } from "lucide-react";

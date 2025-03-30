@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DeveloperModeProvider } from "@/context/DeveloperModeContext";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { MobileLayout } from "@/components/layout/MobileLayout";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile"; // Fixed hook name
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
@@ -22,12 +22,14 @@ import Analytics from "@/pages/Analytics";
 import Settings from "@/pages/Settings";
 import Tokenization from "@/pages/Tokenization";
 import NotFound from "@/pages/NotFound";
+import { Outlet } from "react-router-dom"; // Added for Outlet component
 
 const queryClient = new QueryClient();
 
-const ResponsiveLayout = ({ children }: { children: React.ReactNode }) => {
-  const isMobile = useMobile();
-  return isMobile ? <MobileLayout>{children}</MobileLayout> : <MainLayout>{children}</MainLayout>;
+// Fixed: Remove props that don't match component definition
+const ResponsiveLayout = () => {
+  const isMobile = useIsMobile();
+  return isMobile ? <MobileLayout><Outlet /></MobileLayout> : <MainLayout><Outlet /></MainLayout>;
 };
 
 const App = () => (
