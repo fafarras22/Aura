@@ -1,356 +1,232 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { Camera, AlertTriangle, Clock, CalendarDays, ArrowUpRight, Download, Play, Pause, Maximize, SkipForward, SkipBack } from "lucide-react";
-import { getMockCameras } from "@/services/mockDataService";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Clock, AlertTriangle, Settings, Plus, Eye, Download, MoreVertical, Maximize2 } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { getMockCameras, Camera } from "@/services/mockDataService";
 
 const CCTV = () => {
-  const { toast } = useToast();
-  const [activeCamera, setActiveCamera] = useState<string | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [activeTab, setActiveTab] = useState("all");
+  const [selectedCamera, setSelectedCamera] = useState<string | null>(null);
   const cameras = getMockCameras();
-
-  // Set the first camera as active if none selected
-  React.useEffect(() => {
-    if (cameras.length > 0 && !activeCamera) {
-      setActiveCamera(cameras[0].id);
-    }
-  }, [cameras, activeCamera]);
-
-  const selectedCamera = cameras.find(cam => cam.id === activeCamera);
-
-  const handleStreamToggle = () => {
-    setIsPlaying(!isPlaying);
-    
-    toast({
-      title: isPlaying ? "Paused camera stream" : "Playing camera stream",
-      description: `Camera ${selectedCamera?.name} ${isPlaying ? "paused" : "streaming"}.`,
-      duration: 3000,
-    });
+  
+  const handleCameraSelect = (cameraId: number) => {
+    setSelectedCamera(cameraId.toString());
   };
-
-  const handleSnapshot = () => {
-    toast({
-      title: "Snapshot captured",
-      description: `Snapshot from ${selectedCamera?.name} has been saved.`,
-      duration: 3000,
-    });
-  };
-
-  const isOnline = (status: string) => status === 'online';
+  
+  const activeCamera = selectedCamera 
+    ? cameras.find(camera => camera.id.toString() === selectedCamera) 
+    : null;
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight">CCTV Monitoring</h1>
-        <Badge variant="outline" className="flex items-center gap-1">
-          <span className="h-2 w-2 rounded-full bg-green-500"></span> 
-          {cameras.filter(cam => isOnline(cam.status)).length}/{cameras.length} Cameras Online
-        </Badge>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">CCTV Monitoring</h1>
+          <p className="text-muted-foreground">Live camera feeds from all container farm locations</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">4 Online</Badge>
+          <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200">2 Offline</Badge>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Camera
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New Camera</DialogTitle>
+                <DialogDescription>
+                  Connect a new camera to the monitoring system.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                {/* Form fields would go here */}
+                <p className="text-sm text-muted-foreground">Camera configuration interface would be here.</p>
+              </div>
+              <DialogFooter>
+                <Button type="button" variant="outline">Cancel</Button>
+                <Button type="submit">Add Camera</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
-
+      
+      <Alert variant="default" className="bg-amber-50 text-amber-800 border-amber-200">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertTitle>Maintenance Notice</AlertTitle>
+        <AlertDescription>
+          Scheduled camera system maintenance on June 30, 2023. Some cameras may be offline during this period.
+        </AlertDescription>
+      </Alert>
+      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main camera feed */}
-        <div className="lg:col-span-2">
-          <Card className="border-0 shadow-md overflow-hidden">
-            <div className="relative bg-gray-900 aspect-video">
-              {selectedCamera ? (
+        {/* Main camera display */}
+        <Card className="col-span-1 lg:col-span-2 lg:row-span-2">
+          <CardHeader className="pb-3">
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle>{activeCamera ? activeCamera.name : 'Select a Camera'}</CardTitle>
+                <CardDescription>{activeCamera ? activeCamera.location : 'No camera selected'}</CardDescription>
+              </div>
+              {activeCamera && (
+                <Badge variant={activeCamera.status === 'online' ? 'default' : 'destructive'}>
+                  {activeCamera.status.toUpperCase()}
+                </Badge>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="relative aspect-video bg-gray-900 rounded-md overflow-hidden">
+              {activeCamera ? (
                 <>
                   <img 
-                    src={selectedCamera.lastSnapshot} 
-                    alt={`Feed from ${selectedCamera.name}`}
-                    className="w-full h-full object-cover opacity-80"
+                    src={`/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png`} 
+                    alt={`Camera feed from ${activeCamera.name}`}
+                    className="w-full h-full object-cover opacity-90"
                   />
-                  <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                    <Badge 
-                      variant={isOnline(selectedCamera.status) ? "default" : "destructive"}
-                      className="bg-black/50 backdrop-blur-sm"
-                    >
-                      {isOnline(selectedCamera.status) ? "LIVE" : "OFFLINE"}
-                    </Badge>
-                    <Badge 
-                      variant="outline" 
-                      className="bg-black/50 backdrop-blur-sm text-white border-white/20"
-                    >
-                      {selectedCamera.name}
-                    </Badge>
+                  <div className="absolute bottom-3 right-3 flex gap-2">
+                    <Button size="sm" variant="outline" className="bg-black/50 text-white border-transparent hover:bg-black/70 hover:border-white">
+                      <Maximize2 className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="outline" className="bg-black/50 text-white border-transparent hover:bg-black/70 hover:border-white">
+                      <Download className="h-4 w-4" />
+                    </Button>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                    <div className="flex justify-between items-center">
-                      <div className="flex gap-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="bg-black/30 border-white/20 text-white hover:bg-black/50"
-                          onClick={handleStreamToggle}
-                        >
-                          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="bg-black/30 border-white/20 text-white hover:bg-black/50"
-                        >
-                          <SkipBack className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="bg-black/30 border-white/20 text-white hover:bg-black/50"
-                        >
-                          <SkipForward className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="bg-black/30 border-white/20 text-white hover:bg-black/50"
-                          onClick={handleSnapshot}
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="bg-black/30 border-white/20 text-white hover:bg-black/50"
-                        >
-                          <Maximize className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
+                  <div className="absolute top-3 left-3 flex items-center gap-2 px-2 py-1 bg-black/50 rounded text-xs text-white">
+                    <Clock className="h-3 w-3" />
+                    <span>Live</span>
+                  </div>
+                  <div className="absolute top-3 right-3 px-2 py-1 bg-black/50 rounded text-xs text-white">
+                    {new Date().toLocaleTimeString()}
                   </div>
                 </>
               ) : (
-                <div className="flex items-center justify-center h-full">
-                  <div className="text-white/70 text-center">
-                    <Camera className="h-12 w-12 mx-auto mb-2 opacity-30" />
-                    <p>No camera selected</p>
-                  </div>
+                <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
+                  <Eye className="h-16 w-16 mb-4 opacity-20" />
+                  <p className="text-lg font-medium">Select a camera to view the feed</p>
+                  <p className="text-sm">Choose from the available cameras in the sidebar</p>
                 </div>
               )}
             </div>
-            <CardContent className="p-4">
-              {selectedCamera && (
-                <>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-lg font-semibold">{selectedCamera.name}</h3>
-                      <p className="text-sm text-muted-foreground">{selectedCamera.location}</p>
-                    </div>
-                    <Badge 
-                      variant={isOnline(selectedCamera.status) ? "outline" : "destructive"}
-                      className={isOnline(selectedCamera.status) ? "bg-green-50 text-green-700" : ""}
-                    >
-                      {selectedCamera.status.toUpperCase()}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center text-sm text-muted-foreground mt-2 gap-4">
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      <span>Last updated: {selectedCamera.lastUpdated}</span>
-                    </div>
-                    <Button 
-                      variant="link" 
-                      size="sm" 
-                      className="text-primary p-0 h-auto"
-                    >
-                      View footage history
-                      <ArrowUpRight className="h-3 w-3 ml-1" />
-                    </Button>
-                  </div>
-                </>
+          </CardContent>
+          <CardFooter className="flex justify-between mt-3">
+            <div className="text-sm text-muted-foreground">
+              {activeCamera && (
+                <span className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  Last motion: {activeCamera.lastMotion}
+                </span>
               )}
-            </CardContent>
-          </Card>
-
-          {/* Timeline */}
-          <Card className="mt-4 border-0 shadow-sm">
-            <CardHeader className="py-3">
-              <div className="flex justify-between items-center">
-                <CardTitle className="text-lg">Time Controls</CardTitle>
-                <div className="text-sm text-muted-foreground flex items-center gap-1">
-                  <CalendarDays className="h-4 w-4" />
-                  <span>Today, {new Date().toLocaleDateString()}</span>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="py-0">
-              <div className="relative h-12 bg-slate-100 dark:bg-slate-800 rounded-md">
-                <div className="absolute inset-y-0 left-0 w-1/3 bg-primary/10 border-r-2 border-primary"></div>
-                {/* Time markers */}
-                {Array.from({ length: 24 }).map((_, i) => (
-                  <div 
-                    key={i} 
-                    className="absolute top-0 bottom-0" 
-                    style={{ left: `${(i / 24) * 100}%` }}
-                  >
-                    <div className="h-full w-px bg-slate-300 dark:bg-slate-700"></div>
-                    <div className="absolute -bottom-6 transform -translate-x-1/2 text-xs text-muted-foreground">
-                      {i}:00
-                    </div>
-                  </div>
-                ))}
-                {/* Current time indicator */}
-                <div 
-                  className="absolute top-0 bottom-0 w-px bg-primary" 
-                  style={{ left: '33%' }}
-                >
-                  <div className="absolute -top-1 transform -translate-x-1/2 w-3 h-3 rounded-full bg-primary"></div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Camera list */}
-        <div>
-          <Tabs defaultValue="all">
-            <TabsList className="w-full grid grid-cols-3 mb-4">
-              <TabsTrigger value="all">All Cameras</TabsTrigger>
-              <TabsTrigger value="online">Online</TabsTrigger>
-              <TabsTrigger value="offline">Offline</TabsTrigger>
-            </TabsList>
-            <TabsContent value="all" className="m-0">
-              <ScrollArea className="h-[550px] pr-4">
-                <div className="space-y-2">
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" disabled={!activeCamera}>
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" disabled={!activeCamera}>
+                    <MoreVertical className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>View History</DropdownMenuItem>
+                  <DropdownMenuItem>Export Footage</DropdownMenuItem>
+                  <DropdownMenuItem>Adjust Sensitivity</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </CardFooter>
+        </Card>
+        
+        {/* Camera selection sidebar */}
+        <Card className="lg:row-span-2">
+          <CardHeader>
+            <CardTitle>Available Cameras</CardTitle>
+            <CardDescription>Select a camera to view its feed</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <Tabs defaultValue="all" className="w-full" value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid grid-cols-3 mx-6">
+                <TabsTrigger value="all">All</TabsTrigger>
+                <TabsTrigger value="indoor">Indoor</TabsTrigger>
+                <TabsTrigger value="outdoor">Outdoor</TabsTrigger>
+              </TabsList>
+              <TabsContent value="all" className="m-0">
+                <div className="divide-y">
                   {cameras.map((camera) => (
-                    <Card 
-                      key={camera.id}
-                      className={`cursor-pointer transition-all ${
-                        activeCamera === camera.id 
-                          ? 'border-primary bg-primary/5' 
-                          : 'border-border hover:border-primary/30'
+                    <div 
+                      key={camera.id} 
+                      className={`flex items-center justify-between p-4 hover:bg-muted cursor-pointer ${
+                        camera.id.toString() === selectedCamera ? 'bg-muted' : ''
                       }`}
-                      onClick={() => setActiveCamera(camera.id)}
+                      onClick={() => handleCameraSelect(camera.id)}
                     >
-                      <CardContent className="p-3 flex gap-3">
-                        <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-                          <img 
-                            src={camera.lastSnapshot} 
-                            alt={camera.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <h4 className="font-medium">{camera.name}</h4>
-                            <Badge 
-                              variant={isOnline(camera.status) ? "outline" : "secondary"}
-                              className={`text-xs ${
-                                isOnline(camera.status) 
-                                  ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' 
-                                  : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
-                              }`}
-                            >
-                              {camera.status.toUpperCase()}
-                            </Badge>
-                          </div>
-                          <p className="text-xs text-muted-foreground">{camera.location}</p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Updated: {camera.lastUpdated}
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
+                      <div>
+                        <h4 className="font-medium">{camera.name}</h4>
+                        <p className="text-sm text-muted-foreground">{camera.location}</p>
+                      </div>
+                      <Badge variant={camera.status === 'online' ? 'outline' : 'destructive'} className="ml-2">
+                        {camera.status}
+                      </Badge>
+                    </div>
                   ))}
                 </div>
-              </ScrollArea>
-            </TabsContent>
-            <TabsContent value="online" className="m-0">
-              <ScrollArea className="h-[550px] pr-4">
-                <div className="space-y-2">
-                  {cameras.filter(cam => isOnline(cam.status)).map((camera) => (
-                    <Card 
-                      key={camera.id}
-                      className={`cursor-pointer transition-all ${
-                        activeCamera === camera.id 
-                          ? 'border-primary bg-primary/5' 
-                          : 'border-border hover:border-primary/30'
+              </TabsContent>
+              <TabsContent value="indoor" className="m-0">
+                <div className="divide-y">
+                  {cameras.filter(cam => cam.location.includes('Internal')).map((camera) => (
+                    <div 
+                      key={camera.id} 
+                      className={`flex items-center justify-between p-4 hover:bg-muted cursor-pointer ${
+                        camera.id.toString() === selectedCamera ? 'bg-muted' : ''
                       }`}
-                      onClick={() => setActiveCamera(camera.id)}
+                      onClick={() => handleCameraSelect(camera.id)}
                     >
-                      <CardContent className="p-3 flex gap-3">
-                        <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-                          <img 
-                            src={camera.lastSnapshot} 
-                            alt={camera.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <h4 className="font-medium">{camera.name}</h4>
-                            <Badge 
-                              variant="outline"
-                              className="text-xs bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-                            >
-                              ONLINE
-                            </Badge>
-                          </div>
-                          <p className="text-xs text-muted-foreground">{camera.location}</p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Updated: {camera.lastUpdated}
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
+                      <div>
+                        <h4 className="font-medium">{camera.name}</h4>
+                        <p className="text-sm text-muted-foreground">{camera.location}</p>
+                      </div>
+                      <Badge variant={camera.status === 'online' ? 'outline' : 'destructive'} className="ml-2">
+                        {camera.status}
+                      </Badge>
+                    </div>
                   ))}
                 </div>
-              </ScrollArea>
-            </TabsContent>
-            <TabsContent value="offline" className="m-0">
-              <ScrollArea className="h-[550px] pr-4">
-                <div className="space-y-2">
-                  {cameras.filter(cam => !isOnline(cam.status)).map((camera) => (
-                    <Card 
-                      key={camera.id}
-                      className={`cursor-pointer transition-all ${
-                        activeCamera === camera.id 
-                          ? 'border-primary bg-primary/5' 
-                          : 'border-border hover:border-primary/30'
+              </TabsContent>
+              <TabsContent value="outdoor" className="m-0">
+                <div className="divide-y">
+                  {cameras.filter(cam => cam.location.includes('External')).map((camera) => (
+                    <div 
+                      key={camera.id} 
+                      className={`flex items-center justify-between p-4 hover:bg-muted cursor-pointer ${
+                        camera.id.toString() === selectedCamera ? 'bg-muted' : ''
                       }`}
-                      onClick={() => setActiveCamera(camera.id)}
+                      onClick={() => handleCameraSelect(camera.id)}
                     >
-                      <CardContent className="p-3 flex gap-3">
-                        <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0 relative">
-                          <img 
-                            src={camera.lastSnapshot} 
-                            alt={camera.name}
-                            className="w-full h-full object-cover opacity-60"
-                          />
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <AlertTriangle className="h-6 w-6 text-yellow-500" />
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <h4 className="font-medium">{camera.name}</h4>
-                            <Badge 
-                              variant="secondary"
-                              className="text-xs"
-                            >
-                              {camera.status.toUpperCase()}
-                            </Badge>
-                          </div>
-                          <p className="text-xs text-muted-foreground">{camera.location}</p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Updated: {camera.lastUpdated}
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
+                      <div>
+                        <h4 className="font-medium">{camera.name}</h4>
+                        <p className="text-sm text-muted-foreground">{camera.location}</p>
+                      </div>
+                      <Badge variant={camera.status === 'online' ? 'outline' : 'destructive'} className="ml-2">
+                        {camera.status}
+                      </Badge>
+                    </div>
                   ))}
                 </div>
-              </ScrollArea>
-            </TabsContent>
-          </Tabs>
-        </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
