@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { IndonesiaMap } from "@/components/home/IndonesiaMap";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { Footer } from "@/components/layout/Footer";
 
 const Home = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -629,19 +629,4 @@ const Home = () => {
                       {language === 'en' ? 'Fractional Ownership' : 'Kepemilikan Fraksional'}
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {language === 'en' 
-                        ? 'Start with any investment size that fits your portfolio' 
-                        : 'Mulai dengan ukuran investasi apa pun yang sesuai dengan portofolio Anda'}
-                    </p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-};
-
-export default Home;
+                      {language === 'en'
