@@ -1,317 +1,734 @@
-
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bell, ChevronDown, AlertCircle, Filter, Calendar, CheckCircle } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AppleButton } from '@/components/ui/apple-button';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar"
+import { CalendarIcon, CheckCircle, Info, AlertTriangle, XCircle } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils";
+import { format } from "date-fns"
+import { useToast } from "@/hooks/use-toast";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Slider
+} from "@/components/ui/slider"
+import { Textarea } from "@/components/ui/textarea"
+import { Switch } from "@/components/ui/switch"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { getMockAlerts, Alert as AlertType } from '@/services/mockDataService';
 
-type AlertSeverity = 'warning' | 'error' | 'info';
+const filterSchema = z.object({
+  type: z.enum(['info', 'warning', 'error']).optional(),
+  containerNumber: z.string().optional(),
+  isRead: z.boolean().optional(),
+  dateRange: z.object({
+    from: z.date().optional(),
+    to: z.date().optional(),
+  }).optional(),
+});
 
-interface Alert {
-  id: string;
-  title: string;
-  message: string;
-  timestamp: Date;
-  severity: AlertSeverity;
-  containerNumber: string;
-  resolved: boolean;
-}
+const alertSchema = z.object({
+  title: z.string().min(2, {
+    message: "Title must be at least 2 characters.",
+  }),
+  message: z.string().min(10, {
+    message: "Message must be at least 10 characters.",
+  }),
+  type: z.enum(['info', 'warning', 'error']),
+  containerNumber: z.string().min(1, {
+    message: "Container number must be at least 1 character.",
+  }),
+  isRead: z.boolean().default(false),
+  timestamp: z.date().default(new Date()),
+})
 
 const Alerts = () => {
-  const [selectedTab, setSelectedTab] = useState<string>("all");
-  const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(true);
-  const [emailNotifications, setEmailNotifications] = useState<boolean>(true);
-  const [smsNotifications, setSmsNotifications] = useState<boolean>(false);
-  const [currentAlerts, setCurrentAlerts] = useState<Alert[]>(mockAlerts);
+  const { toast } = useToast();
+  const [alerts, setAlerts] = useState<AlertType[]>([]);
+  const [filteredAlerts, setFilteredAlerts] = useState<AlertType[]>([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isCreateAlertOpen, setIsCreateAlertOpen] = useState(false);
+  const [selectedAlert, setSelectedAlert] = useState<AlertType | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isEditAlertOpen, setIsEditAlertOpen] = useState(false);
+  const [isMarkAsReadLoading, setIsMarkAsReadLoading] = useState(false);
+  const [isMarkAllAsReadLoading, setIsMarkAllAsReadLoading] = useState(false);
 
-  const resolveAlert = (id: string) => {
-    setCurrentAlerts(currentAlerts.map(alert => 
-      alert.id === id ? { ...alert, resolved: true } : alert
-    ));
-  };
+  const form = useForm<z.infer<typeof alertSchema>>({
+    resolver: zodResolver(alertSchema),
+    defaultValues: {
+      title: "",
+      message: "",
+      type: "info",
+      containerNumber: "",
+      isRead: false,
+      timestamp: new Date(),
+    },
+  })
 
-  const filteredAlerts = currentAlerts.filter(alert => {
-    if (selectedTab === "resolved") return alert.resolved;
-    if (selectedTab === "unresolved") return !alert.resolved;
-    if (selectedTab === "critical") return alert.severity === "error" && !alert.resolved;
-    return true;
+  const filterForm = useForm<z.infer<typeof filterSchema>>({
+    defaultValues: {
+      type: undefined,
+      containerNumber: undefined,
+      isRead: undefined,
+      dateRange: undefined,
+    },
   });
 
+  useEffect(() => {
+    // Fetch mock alerts on component mount
+    const mockAlerts = getMockAlerts();
+    setAlerts(mockAlerts);
+    setFilteredAlerts(mockAlerts);
+  }, []);
+
+  const applyFilters = (filters: z.infer<typeof filterSchema>) => {
+    let newFilteredAlerts = [...alerts];
+
+    if (filters.type) {
+      newFilteredAlerts = newFilteredAlerts.filter(alert => alert.type === filters.type);
+    }
+
+    if (filters.containerNumber) {
+      newFilteredAlerts = newFilteredAlerts.filter(alert =>
+        alert.containerNumber.toLowerCase().includes(filters.containerNumber!.toLowerCase())
+      );
+    }
+
+    if (filters.isRead !== undefined) {
+      newFilteredAlerts = newFilteredAlerts.filter(alert => alert.isRead === filters.isRead);
+    }
+
+    if (filters.dateRange?.from && filters.dateRange?.to) {
+      newFilteredAlerts = newFilteredAlerts.filter(alert => {
+        const alertDate = new Date(alert.timestamp).getTime();
+        const fromDate = new Date(filters.dateRange!.from!).getTime();
+        const toDate = new Date(filters.dateRange!.to!).getTime();
+        return alertDate >= fromDate && alertDate <= toDate;
+      });
+    }
+
+    setFilteredAlerts(newFilteredAlerts);
+    setIsFilterOpen(false);
+  };
+
+  const handleCreateAlert = (values: z.infer<typeof alertSchema>) => {
+    const newAlert: AlertType = {
+      id: String(Date.now()),
+      ...values,
+      timestamp: new Date(),
+    };
+
+    setAlerts([newAlert, ...alerts]);
+    setFilteredAlerts([newAlert, ...filteredAlerts]);
+    setIsCreateAlertOpen(false);
+    toast({
+      title: "Success",
+      description: "Alert created successfully.",
+    });
+  };
+
+  const handleEditAlert = (values: z.infer<typeof alertSchema>) => {
+    if (!selectedAlert) return;
+
+    const updatedAlerts = alerts.map(alert =>
+      alert.id === selectedAlert.id ? { ...alert, ...values } : alert
+    );
+
+    setAlerts(updatedAlerts);
+    setFilteredAlerts(updatedAlerts);
+    setIsEditAlertOpen(false);
+    toast({
+      title: "Success",
+      description: "Alert updated successfully.",
+    });
+  };
+
+  const handleDeleteAlert = () => {
+    if (!selectedAlert) return;
+
+    const updatedAlerts = alerts.filter(alert => alert.id !== selectedAlert.id);
+    setAlerts(updatedAlerts);
+    setFilteredAlerts(updatedAlerts);
+    setIsDeleteDialogOpen(false);
+    toast({
+      title: "Success",
+      description: "Alert deleted successfully.",
+    });
+  };
+
+  const handleMarkAsRead = async (alertId: string) => {
+    setIsMarkAsReadLoading(true);
+    // Simulate an API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const updatedAlerts = alerts.map(alert =>
+      alert.id === alertId ? { ...alert, isRead: true } : alert
+    );
+
+    setAlerts(updatedAlerts);
+    setFilteredAlerts(updatedAlerts);
+    setIsMarkAsReadLoading(false);
+    toast({
+      title: "Success",
+      description: "Alert marked as read.",
+    });
+  };
+
+  const handleMarkAllAsRead = async () => {
+    setIsMarkAllAsReadLoading(true);
+    // Simulate an API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const updatedAlerts = alerts.map(alert => ({ ...alert, isRead: true }));
+    setAlerts(updatedAlerts);
+    setFilteredAlerts(updatedAlerts);
+    setIsMarkAllAsReadLoading(false);
+    toast({
+      title: "Success",
+      description: "All alerts marked as read.",
+    });
+  };
+
+  const handleClearFilters = () => {
+    filterForm.reset();
+    setFilteredAlerts([...alerts]);
+  };
+
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Alerts & Notifications</h1>
-          <p className="text-muted-foreground mt-1">
-            Monitor system alerts and manage your notification preferences
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Filter size={16} />
-                Filter
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Filter Alerts</DialogTitle>
-                <DialogDescription>
-                  Customize which alerts you want to see.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label className="col-span-2">Time Range</Label>
-                  <Select defaultValue="today">
-                    <SelectTrigger className="col-span-2">
-                      <SelectValue placeholder="Select Range" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="today">Today</SelectItem>
-                      <SelectItem value="week">Last 7 days</SelectItem>
-                      <SelectItem value="month">Last 30 days</SelectItem>
-                      <SelectItem value="custom">Custom Range</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label className="col-span-2">Severity</Label>
-                  <Select defaultValue="all">
-                    <SelectTrigger className="col-span-2">
-                      <SelectValue placeholder="Select Severity" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Severities</SelectItem>
-                      <SelectItem value="error">Critical</SelectItem>
-                      <SelectItem value="warning">Warning</SelectItem>
-                      <SelectItem value="info">Information</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label className="col-span-2">Container</Label>
-                  <Select defaultValue="all">
-                    <SelectTrigger className="col-span-2">
-                      <SelectValue placeholder="Select Container" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Containers</SelectItem>
-                      <SelectItem value="c001">Container 001</SelectItem>
-                      <SelectItem value="c002">Container 002</SelectItem>
-                      <SelectItem value="c003">Container 003</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit">Apply Filters</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-          
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Bell size={16} />
-                Alert Settings
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Alert Settings</DialogTitle>
-                <DialogDescription>
-                  Customize how you receive alerts and notifications.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="notifications">Enable Notifications</Label>
-                  <Switch 
-                    id="notifications" 
-                    checked={notificationsEnabled}
-                    onCheckedChange={setNotificationsEnabled}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="email-notifications">Email Notifications</Label>
-                  <Switch 
-                    id="email-notifications" 
-                    checked={emailNotifications}
-                    onCheckedChange={setEmailNotifications}
-                    disabled={!notificationsEnabled}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="sms-notifications">SMS Notifications</Label>
-                  <Switch 
-                    id="sms-notifications" 
-                    checked={smsNotifications}
-                    onCheckedChange={setSmsNotifications}
-                    disabled={!notificationsEnabled}
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label className="col-span-2">Minimum Alert Level</Label>
-                  <Select defaultValue="warning">
-                    <SelectTrigger className="col-span-2">
-                      <SelectValue placeholder="Select Level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="info">Information</SelectItem>
-                      <SelectItem value="warning">Warning</SelectItem>
-                      <SelectItem value="error">Critical</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <DialogFooter>
-                <Button type="submit">Save Settings</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+    <div className="container mx-auto py-10">
+      <div className="flex justify-between items-center mb-6">
+        <CardTitle className="text-2xl font-bold">Alerts</CardTitle>
+        <div className="space-x-2">
+          <Button variant="outline" onClick={() => setIsFilterOpen(true)}>
+            Filter
+          </Button>
+          <Button onClick={() => setIsCreateAlertOpen(true)}>
+            Create Alert
+          </Button>
         </div>
       </div>
 
-      <Tabs defaultValue="all" className="w-full" onValueChange={setSelectedTab}>
-        <TabsList className="grid grid-cols-4 mb-4">
-          <TabsTrigger value="all">All Alerts</TabsTrigger>
-          <TabsTrigger value="unresolved">Unresolved</TabsTrigger>
-          <TabsTrigger value="critical">Critical</TabsTrigger>
-          <TabsTrigger value="resolved">Resolved</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value={selectedTab} className="space-y-4">
-          {filteredAlerts.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center pt-10 pb-10">
-                <CheckCircle size={48} className="text-muted-foreground mb-4" />
-                <h3 className="text-xl font-semibold mb-2">No Alerts Found</h3>
-                <p className="text-muted-foreground text-center max-w-md">
-                  There are no alerts matching your current filter criteria. Adjust your filters or check back later.
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            filteredAlerts.map(alert => (
-              <AlertCard 
-                key={alert.id} 
-                alert={alert} 
-                onResolve={() => resolveAlert(alert.id)} 
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Alerts</CardTitle>
+          <CardDescription>
+            Here is a list of recent alerts in your system.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[150px]">Title</TableHead>
+                <TableHead>Message</TableHead>
+                <TableHead className="w-[100px]">Type</TableHead>
+                <TableHead className="w-[120px]">Container</TableHead>
+                <TableHead className="w-[150px]">Timestamp</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredAlerts.map((alert) => (
+                <TableRow key={alert.id}>
+                  <TableCell className="font-medium">{alert.title}</TableCell>
+                  <TableCell>{alert.message}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={alert.type === 'error' ? 'destructive' : alert.type === 'warning' ? 'secondary' : 'outline'}
+                    >
+                      {alert.type}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>{alert.containerNumber}</TableCell>
+                  <TableCell>
+                    {format(new Date(alert.timestamp), "MMM d, yyyy h:mm a")}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => {
+                                setSelectedAlert(alert);
+                                setIsEditAlertOpen(true);
+                              }}
+                            >
+                              Edit
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Edit alert</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => {
+                                setSelectedAlert(alert);
+                                setIsDeleteDialogOpen(true);
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Delete alert</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      {!alert.isRead && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                disabled={isMarkAsReadLoading}
+                                onClick={() => handleMarkAsRead(alert.id)}
+                              >
+                                <CheckCircle className="h-4 w-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Mark as read</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {filteredAlerts.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center">
+                    No alerts found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <div className="flex justify-between items-center">
+                    <span>Total: {filteredAlerts.length} alerts</span>
+                    <Button
+                      variant="outline"
+                      disabled={isMarkAllAsReadLoading}
+                      onClick={handleMarkAllAsRead}
+                    >
+                      Mark All as Read
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </CardContent>
+      </Card>
+
+      {/* Filter Dialog */}
+      <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Filter Alerts</DialogTitle>
+            <DialogDescription>
+              Filter alerts based on type, container number, read status, and
+              date range.
+            </DialogDescription>
+          </DialogHeader>
+          <Form {...filterForm}>
+            <form
+              onSubmit={filterForm.handleSubmit(applyFilters)}
+              className="space-y-4"
+            >
+              <FormField
+                control={filterForm.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="info">Info</SelectItem>
+                        <SelectItem value="warning">Warning</SelectItem>
+                        <SelectItem value="error">Error</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            ))
-          )}
-        </TabsContent>
-      </Tabs>
+              <FormField
+                control={filterForm.control}
+                name="containerNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Container Number</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Container number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={filterForm.control}
+                name="isRead"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Read Status</FormLabel>
+                      <FormDescription>
+                        Only show unread alerts
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={filterForm.control}
+                name="dateRange"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date Range</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value?.from && !field.value?.to && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value?.from ? (
+                              field.value?.to ? (
+                                <>
+                                  {format(field.value.from, "MMM d, yyyy")} -{" "}
+                                  {format(field.value.to, "MMM d, yyyy")}
+                                </>
+                              ) : (
+                                format(field.value.from, "MMM d, yyyy")
+                              )
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="center" side="bottom">
+                        <Calendar
+                          mode="range"
+                          defaultMonth={field.value?.from}
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("2020-01-01")
+                          }
+                          numberOfMonths={2}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-end space-x-2">
+                <Button type="button" variant="ghost" onClick={handleClearFilters}>
+                  Clear Filters
+                </Button>
+                <Button type="submit">Apply Filters</Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Create Alert Dialog */}
+      <Dialog open={isCreateAlertOpen} onOpenChange={setIsCreateAlertOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Create Alert</DialogTitle>
+            <DialogDescription>
+              Create a new alert to notify users of important events.
+            </DialogDescription>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleCreateAlert)}
+              className="space-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Alert title" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Message</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Alert message"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="info">Info</SelectItem>
+                        <SelectItem value="warning">Warning</SelectItem>
+                        <SelectItem value="error">Error</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="containerNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Container Number</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Container number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-end space-x-2">
+                <Button type="button" variant="ghost" onClick={() => setIsCreateAlertOpen(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit">Create</Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Alert Dialog */}
+      <Dialog open={isEditAlertOpen} onOpenChange={setIsEditAlertOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edit Alert</DialogTitle>
+            <DialogDescription>
+              Edit the selected alert details.
+            </DialogDescription>
+          </DialogHeader>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleEditAlert)}
+              className="space-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Alert title" {...field} defaultValue={selectedAlert?.title} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Message</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Alert message"
+                        className="resize-none"
+                        {...field}
+                        defaultValue={selectedAlert?.message}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={selectedAlert?.type}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="info">Info</SelectItem>
+                        <SelectItem value="warning">Warning</SelectItem>
+                        <SelectItem value="error">Error</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="containerNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Container Number</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Container number" {...field} defaultValue={selectedAlert?.containerNumber} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-end space-x-2">
+                <Button type="button" variant="ghost" onClick={() => setIsEditAlertOpen(false)}>
+                  Cancel
+                </Button>
+                <Button type="submit">Update</Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Alert Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Delete Alert</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this alert? This action cannot be
+              undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end space-x-2">
+            <Button type="button" variant="ghost" onClick={() => setIsDeleteDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDeleteAlert}
+            >
+              Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
-
-const AlertCard = ({ alert, onResolve }: { alert: Alert, onResolve: () => void }) => {
-  const getBadgeVariant = (severity: AlertSeverity) => {
-    switch (severity) {
-      case "error": return "destructive";
-      case "warning": return "warning";
-      case "info": return "secondary";
-      default: return "secondary";
-    }
-  };
-
-  return (
-    <Card className={`${alert.resolved ? 'opacity-70' : ''}`}>
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <AlertCircle size={16} className={`${
-                alert.severity === "error" ? "text-destructive" : 
-                alert.severity === "warning" ? "text-amber-500" : "text-blue-500"
-              }`} />
-              {alert.title}
-            </CardTitle>
-            <CardDescription className="flex items-center mt-1 gap-2">
-              <span>Container {alert.containerNumber}</span>
-              <span>•</span>
-              <span>{alert.timestamp.toLocaleString()}</span>
-            </CardDescription>
-          </div>
-          <Badge variant={getBadgeVariant(alert.severity)}>
-            {alert.severity.toUpperCase()}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm">{alert.message}</p>
-      </CardContent>
-      <CardFooter className="flex justify-between pt-0">
-        <Button variant="ghost" size="sm" className="gap-1">
-          <Calendar size={14} />
-          View History
-        </Button>
-        {!alert.resolved && (
-          <AppleButton onClick={onResolve} size="sm" variant="green">
-            Mark as Resolved
-          </AppleButton>
-        )}
-      </CardFooter>
-    </Card>
-  );
-};
-
-// Mock data
-const mockAlerts: Alert[] = [
-  {
-    id: "1",
-    title: "Temperature Exceeds Threshold",
-    message: "Container 001 has recorded a temperature of 32°C, exceeding the safe threshold of 28°C for current crops.",
-    timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-    severity: "error",
-    containerNumber: "001",
-    resolved: false
-  },
-  {
-    id: "2",
-    title: "Water Level Low",
-    message: "Container 002 water reservoir is at 15% capacity. Refill recommended within the next 12 hours.",
-    timestamp: new Date(Date.now() - 1000 * 60 * 120), // 2 hours ago
-    severity: "warning",
-    containerNumber: "002",
-    resolved: false
-  },
-  {
-    id: "3",
-    title: "CO2 Level Warning",
-    message: "Container 001 CO2 levels have been fluctuating between 600-1000 ppm over the last 6 hours.",
-    timestamp: new Date(Date.now() - 1000 * 60 * 360), // 6 hours ago
-    severity: "warning",
-    containerNumber: "001",
-    resolved: true
-  },
-  {
-    id: "4",
-    title: "System Maintenance Complete",
-    message: "Scheduled maintenance on Container 003 completed successfully. All systems operational.",
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12), // 12 hours ago
-    severity: "info",
-    containerNumber: "003",
-    resolved: true
-  },
-  {
-    id: "5",
-    title: "Humidity Level Critical",
-    message: "Container 002 humidity has dropped to 30%, significantly below the 50-60% required range.",
-    timestamp: new Date(Date.now() - 1000 * 60 * 45), // 45 minutes ago
-    severity: "error",
-    containerNumber: "002",
-    resolved: false
-  }
-];
 
 export default Alerts;
