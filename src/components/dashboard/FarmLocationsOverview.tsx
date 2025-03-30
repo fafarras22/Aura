@@ -5,16 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { MapPin, ThermometerSnowflake, Droplet, Leaf, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AppleButton } from '@/components/ui/apple-button';
-
-interface FarmLocation {
-  id: string;
-  name: string;
-  address: string;
-  coordinates: {
-    x: number;
-    y: number;
-  };
-}
+import { FarmLocation } from '@/services/mockDataService';
 
 interface FarmLocationsOverviewProps {
   farmLocations: FarmLocation[];
@@ -33,8 +24,9 @@ export function FarmLocationsOverview({ farmLocations }: FarmLocationsOverviewPr
             key={location.id}
             className="absolute w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-white shadow-md cursor-pointer transform hover:scale-110 transition-transform"
             style={{ 
-              left: `${location.coordinates.x}%`, 
-              top: `${location.coordinates.y}%`,
+              // Use a calculation based on lat/lng to position markers on the simplified map
+              left: `${((location.location.lng - 95) / 40) * 100}%`, 
+              top: `${((location.location.lat + 10) / 20) * 100}%`,
             }}
           >
             <MapPin className="w-3 h-3 text-white" />
