@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { QuickStats } from "@/components/dashboard/QuickStats";
@@ -58,7 +57,14 @@ const Dashboard = () => {
         location: "Jakarta",
         contractValue: 75000000
       },
-      monthlySales: [120, 150, 180, 210, 250, 340],
+      monthlySales: [
+        { month: "Jan", sales: 120 },
+        { month: "Feb", sales: 150 },
+        { month: "Mar", sales: 180 },
+        { month: "Apr", sales: 210 },
+        { month: "May", sales: 250 },
+        { month: "Jun", sales: 340 }
+      ],
       recurringCustomers: [
         { id: "cust-1", name: "Customer 1", imageUrl: "" },
         { id: "cust-2", name: "Customer 2", imageUrl: "" },
