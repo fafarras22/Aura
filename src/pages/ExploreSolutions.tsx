@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { CircleDollarSign, Leaf, Droplet, Zap, MapPin, MailOpen, Calculator, ArrowRight, Plant, Thermometer } from "lucide-react";
+import { CircleDollarSign, Leaf, Droplet, Zap, MapPin, MailOpen, Calculator, ArrowRight, Flower, Thermometer } from "lucide-react";
 
 // Define form schema for quotation
 const formSchema = z.object({
@@ -256,7 +255,7 @@ const ExploreSolutions = () => {
                   <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm">
                     <div className="flex items-center mb-4">
                       <div className="bg-green-100 dark:bg-green-900 p-3 rounded-full mr-4">
-                        <Plant className="h-6 w-6 text-green-600 dark:text-green-400" />
+                        <Flower className="h-6 w-6 text-green-600 dark:text-green-400" />
                       </div>
                       <h3 className="text-xl font-semibold">Vertical Farming Technology</h3>
                     </div>

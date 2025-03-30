@@ -34,8 +34,7 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
         toast({
           title: "Security Check Passed",
           description: "Your connection is secure and encrypted.",
-          variant: "default",
-          icon: <Shield className="h-5 w-5 text-green-500" />
+          // Remove the icon property since it's not supported directly
         });
       }
     };
