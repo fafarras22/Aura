@@ -30,27 +30,6 @@ const Tokenization = () => {
         </Badge>
       </div>
 
-      {/* Investor community highlight for both mobile and desktop */}
-      <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200 dark:from-green-900/20 dark:to-green-800/20 dark:border-green-800">
-        <CardContent className="p-4 flex items-center">
-          <div className="bg-green-100 dark:bg-green-800 p-2 rounded-full mr-3">
-            <Users className="h-5 w-5 text-green-700 dark:text-green-300" />
-          </div>
-          <div>
-            <p className="font-medium">{tokenData.totalInvestors || 2500}+ Investors in AKR Ecosystem</p>
-            <p className="text-sm text-muted-foreground">Join our community on Discord and Telegram for exclusive updates</p>
-          </div>
-          <div className="ml-auto space-x-2">
-            <Button variant="outline" size="sm" className="text-xs" onClick={() => window.open('https://discord.gg/akarfarm', '_blank')}>
-              Discord
-            </Button>
-            <Button variant="outline" size="sm" className="text-xs" onClick={() => window.open('https://t.me/akarfarm', '_blank')}>
-              Telegram
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
       <Card>
         <CardHeader className="pb-3">
           <CardTitle>Token Platform</CardTitle>
@@ -77,19 +56,29 @@ const Tokenization = () => {
             {isMobile ? (
               <TabsList className="grid grid-cols-5 mb-6 h-auto p-1 bg-muted/80">
                 <TabsTrigger value="purchase" className="py-3 px-2 data-[state=active]:bg-green-600 data-[state=active]:text-white rounded-md">
-                  <span className="text-xs">Purchase</span>
+                  <div className="flex flex-col items-center">
+                    <span className="text-xs">Buy</span>
+                  </div>
                 </TabsTrigger>
                 <TabsTrigger value="overview" className="py-3 px-2 data-[state=active]:bg-primary rounded-md">
-                  <span className="text-xs">Overview</span>
+                  <div className="flex flex-col items-center">
+                    <span className="text-xs">Stats</span>
+                  </div>
                 </TabsTrigger>
                 <TabsTrigger value="investments" className="py-3 px-2 data-[state=active]:bg-primary rounded-md">
-                  <span className="text-xs">Invest</span>
+                  <div className="flex flex-col items-center">
+                    <span className="text-xs">Invest</span>
+                  </div>
                 </TabsTrigger>
                 <TabsTrigger value="allocation" className="py-3 px-2 data-[state=active]:bg-primary rounded-md">
-                  <span className="text-xs">Funds</span>
+                  <div className="flex flex-col items-center">
+                    <span className="text-xs">Funds</span>
+                  </div>
                 </TabsTrigger>
                 <TabsTrigger value="transactions" className="py-3 px-2 data-[state=active]:bg-primary rounded-md">
-                  <span className="text-xs">Txns</span>
+                  <div className="flex flex-col items-center">
+                    <span className="text-xs">Txns</span>
+                  </div>
                 </TabsTrigger>
               </TabsList>
             ) : (

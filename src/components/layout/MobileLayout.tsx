@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Menu, X, Home, Leaf, Droplet, Wind, Bell, Settings, Layers, ChevronRight } from 'lucide-react';
+import { Menu, X, Home, Leaf, Droplet, Wind, Bell, Settings, Layers, ChevronRight, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -35,6 +35,11 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
     { path: '/climate', label: 'Climate', icon: <Wind className="w-5 h-5" /> },
   ];
 
+  const handleSignOut = () => {
+    // In a real app, this would include authentication logic
+    navigate('/login');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
       {/* Mobile Header */}
@@ -48,7 +53,7 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
           >
             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
-          <h1 className="text-lg font-medium">AKAR Farm</h1>
+          <img src="/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png" alt="AKAR Logo" className="h-8" />
         </div>
         <div className="flex items-center gap-2">
           <Button 
@@ -107,6 +112,16 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
                   onCheckedChange={toggleDeveloperMode}
                 />
               </div>
+              
+              {/* Sign Out Button */}
+              <Button 
+                variant="ghost" 
+                className="w-full mt-4 justify-start text-red-500 hover:bg-red-50 hover:text-red-600"
+                onClick={handleSignOut}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                <span>Sign Out</span>
+              </Button>
             </div>
           </div>
         </div>

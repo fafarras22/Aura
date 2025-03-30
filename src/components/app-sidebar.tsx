@@ -14,7 +14,8 @@ import {
   ChevronRight,
   MonitorSmartphone,
   Globe,
-  ChevronDown
+  ChevronDown,
+  LogOut
 } from "lucide-react";
 import {
   Sidebar,
@@ -66,8 +67,13 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
     );
   };
 
+  const handleSignOut = () => {
+    // In a real app, this would include authentication logic
+    navigate('/login');
+  };
+
   const menuItems: SidebarItem[] = [
-    { title: "Dashboard", path: "/", icon: Home },
+    { title: "Dashboard", path: "/dashboard", icon: Home },
     { 
       title: "Internal Environment", 
       path: "/internal-environment", 
@@ -118,7 +124,6 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
             className="h-12"
             onError={() => setAkarLogo("/placeholder.svg")}
           />
-          <div className="text-lg font-semibold text-white tracking-tight">AKAR FarmWatch</div>
           {isDeveloperMode && (
             <div className="px-2 py-1 text-xs bg-yellow-500 rounded-full text-black">
               Developer Mode
@@ -184,7 +189,7 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="border-t py-4">
-        <div className="flex justify-between items-center px-4">
+        <div className="flex flex-col px-4 space-y-4">
           <div className="flex items-center space-x-3">
             <Avatar>
               <AvatarImage src="/placeholder.svg" alt="User" />
@@ -201,6 +206,16 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
               </p>
             </div>
           </div>
+          
+          {/* Sign Out Button */}
+          <Button 
+            variant="outline" 
+            className="w-full justify-start text-sidebar-accent-foreground hover:bg-sidebar-accent"
+            onClick={handleSignOut}
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            <span>Sign Out</span>
+          </Button>
         </div>
       </SidebarFooter>
     </Sidebar>

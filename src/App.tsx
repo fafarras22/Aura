@@ -26,10 +26,10 @@ import { Outlet } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
-// Use Layout components that accept children through Outlet
+// Use Layout components that accept children through React component pattern
 const ResponsiveLayout = () => {
   const isMobile = useIsMobile();
-  return isMobile ? <MobileLayout><Outlet /></MobileLayout> : <MainLayout><Outlet /></MainLayout>;
+  return isMobile ? <MobileLayout>{<Outlet />}</MobileLayout> : <MainLayout>{<Outlet />}</MainLayout>;
 };
 
 const App = () => (

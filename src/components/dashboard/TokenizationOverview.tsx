@@ -34,7 +34,7 @@ export const TokenizationOverview = ({ tokenData }: TokenizationOverviewProps) =
             </div>
             <div className="text-2xl font-bold">{formatCurrency(tokenData.totalValue)}</div>
             <div className="text-sm text-muted-foreground mt-1">
-              {formatTokenAmount(tokenData.totalTokens)} AKAR tokens
+              {formatTokenAmount(tokenData.totalTokens || 0)} AKAR tokens
             </div>
           </div>
           
@@ -45,7 +45,7 @@ export const TokenizationOverview = ({ tokenData }: TokenizationOverviewProps) =
             </div>
             <div className="text-2xl font-bold">{tokenData.activeContracts}</div>
             <div className="text-sm text-muted-foreground mt-1">
-              {tokenData.totalInvestors} investors participating
+              {tokenData.totalInvestors || 0} investors participating
             </div>
           </div>
           
@@ -64,7 +64,7 @@ export const TokenizationOverview = ({ tokenData }: TokenizationOverviewProps) =
         <div>
           <h3 className="text-sm font-medium mb-3">Recent Tokenization Activity</h3>
           <div className="space-y-3">
-            {tokenData.recentActivities.slice(0, 3).map((activity) => (
+            {(tokenData.recentActivities || []).slice(0, 3).map((activity) => (
               <div key={activity.id} className="flex items-center justify-between p-3 rounded-lg border border-border">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
@@ -84,7 +84,7 @@ export const TokenizationOverview = ({ tokenData }: TokenizationOverviewProps) =
                   <div>
                     <p className="font-medium">{activity.description}</p>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <span>Tx: {shortenAddress(activity.transactionHash)}</span>
+                      {activity.transactionHash && <span>Tx: {shortenAddress(activity.transactionHash)}</span>}
                       <span>•</span>
                       <span>{activity.date}</span>
                     </div>

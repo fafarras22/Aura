@@ -1,98 +1,101 @@
 
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { SensorCard } from "@/components/sensors/SensorCard";
+import { Badge } from "@/components/ui/badge";
+import { Thermometer, Droplet, Wind, Zap, FlaskConical, Waves } from "lucide-react";
 import { getMockSensorData } from "@/services/mockDataService";
-import { SensorCard } from "@/components/dashboard/SensorCard";
-import { Thermometer, Droplet, Wind, Zap, FlaskConical, Waves, AlertCircle, Droplets } from "lucide-react";
-import { useDeveloperMode } from "@/context/DeveloperModeContext";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 
 const Sensors = () => {
-  const { isDeveloperMode } = useDeveloperMode();
-  const sensorData = getMockSensorData();
-  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState<string>("all");
   
-  // Group sensors by category
+  const sensorData = getMockSensorData();
+  const errorSensors = sensorData.filter(sensor => sensor.status === 'error');
+  const warningSensors = sensorData.filter(sensor => sensor.status === 'warning');
+  
+  // Filter sensors by category
   const climateSensors = sensorData.filter(sensor => sensor.category === 'climate');
   const waterSensors = sensorData.filter(sensor => sensor.category === 'water');
-  const nutrientSensors = sensorData.filter(sensor => sensor.category === 'nutrient');
-  const systemSensors = sensorData.filter(sensor => sensor.category === 'system');
-
-  // Map icon name to icon component
+  const energySensors = sensorData.filter(sensor => sensor.category === 'energy');
+  const environmentSensors = sensorData.filter(sensor => sensor.category === 'environment');
+  
+  // Get icon component based on sensor type
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
-      case 'thermometer': return <Thermometer className="w-5 h-5" />;
-      case 'droplet': return <Droplet className="w-5 h-5" />;
-      case 'droplets': return <Droplets className="w-5 h-5" />;
-      case 'wind': return <Wind className="w-5 h-5" />;
-      case 'zap': return <Zap className="w-5 h-5" />;
-      case 'flask-conical': return <FlaskConical className="w-5 h-5" />;
-      case 'waves': return <Waves className="w-5 h-5" />;
-      case 'alert-circle': return <AlertCircle className="w-5 h-5" />;
-      default: return <AlertCircle className="w-5 h-5" />;
+      case 'thermometer': return <Thermometer className="h-5 w-5" />;
+      case 'droplet': return <Droplet className="h-5 w-5" />;
+      case 'wind': return <Wind className="h-5 w-5" />;
+      case 'zap': return <Zap className="h-5 w-5" />;
+      case 'flask-conical': return <FlaskConical className="h-5 w-5" />;
+      case 'waves': return <Waves className="h-5 w-5" />;
+      default: return <Thermometer className="h-5 w-5" />;
     }
-  };
-
-  const handleCalibrate = () => {
-    toast({
-      title: "Calibration Initiated",
-      description: "Sensor calibration process has started. This may take a few minutes.",
-    });
-  };
-
-  const handleRefresh = () => {
-    toast({
-      title: "Sensors Refreshed",
-      description: "Sensor data has been updated with the latest readings.",
-    });
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight">Sensor Monitoring</h1>
-        <div className="flex space-x-2">
-          {isDeveloperMode && (
-            <Button variant="outline" onClick={handleCalibrate}>
-              Calibrate Sensors
-            </Button>
-          )}
-          <Button onClick={handleRefresh}>Refresh</Button>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Sensors</h1>
+          <p className="text-muted-foreground">
+            Monitor all container farm sensor readings in real-time
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200">
+            {errorSensors.length} Critical
+          </Badge>
+          <Badge variant="outline" className="bg-yellow-50 text-yellow-600 border-yellow-200">
+            {warningSensors.length} Warnings
+          </Badge>
         </div>
       </div>
-
+      
       <Card>
         <CardHeader>
-          <CardTitle>Sensor Status Overview</CardTitle>
+          <CardTitle>Sensor Overview</CardTitle>
           <CardDescription>
-            {sensorData.filter(s => s.status === 'normal').length} sensors operating normally, 
-            {' '}{sensorData.filter(s => s.status === 'warning').length} warnings, 
-            {' '}{sensorData.filter(s => s.status === 'error').length} critical issues
+            All sensor readings from the container farm environment
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="climate">
-            <TabsList className="grid grid-cols-4 mb-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+            <TabsList className="grid grid-cols-6 w-full">
+              <TabsTrigger value="all">All</TabsTrigger>
               <TabsTrigger value="climate">Climate</TabsTrigger>
               <TabsTrigger value="water">Water</TabsTrigger>
-              <TabsTrigger value="nutrient">Nutrients</TabsTrigger>
-              <TabsTrigger value="system">System</TabsTrigger>
+              <TabsTrigger value="energy">Energy</TabsTrigger>
+              <TabsTrigger value="environment">Environment</TabsTrigger>
+              <TabsTrigger value="alerts">Alerts</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="climate" className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {climateSensors.map((sensor) => (
+            <TabsContent value="all" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {sensorData.map(sensor => (
                   <SensorCard
                     key={sensor.id}
-                    title={sensor.name}
+                    name={sensor.name}
                     value={sensor.value}
                     unit={sensor.unit}
-                    icon={getIconComponent(sensor.iconName)}
                     status={sensor.status}
-                    progress={(sensor.value - sensor.minValue) / (sensor.maxValue - sensor.minValue) * 100}
-                    minValue={sensor.minValue}
-                    maxValue={sensor.maxValue}
+                    icon={getIconComponent(sensor.iconName)}
+                    lastUpdated={sensor.lastUpdated}
+                  />
+                ))}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="climate" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {climateSensors.map(sensor => (
+                  <SensorCard
+                    key={sensor.id}
+                    name={sensor.name}
+                    value={sensor.value}
+                    unit={sensor.unit}
+                    status={sensor.status}
+                    icon={getIconComponent(sensor.iconName)}
                     lastUpdated={sensor.lastUpdated}
                   />
                 ))}
@@ -100,56 +103,63 @@ const Sensors = () => {
             </TabsContent>
             
             <TabsContent value="water" className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {waterSensors.map((sensor) => (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {waterSensors.map(sensor => (
                   <SensorCard
                     key={sensor.id}
-                    title={sensor.name}
+                    name={sensor.name}
                     value={sensor.value}
                     unit={sensor.unit}
-                    icon={getIconComponent(sensor.iconName)}
                     status={sensor.status}
-                    progress={(sensor.value - sensor.minValue) / (sensor.maxValue - sensor.minValue) * 100}
-                    minValue={sensor.minValue}
-                    maxValue={sensor.maxValue}
+                    icon={getIconComponent(sensor.iconName)}
                     lastUpdated={sensor.lastUpdated}
                   />
                 ))}
               </div>
             </TabsContent>
             
-            <TabsContent value="nutrient" className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {nutrientSensors.map((sensor) => (
+            <TabsContent value="energy" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {energySensors.map(sensor => (
                   <SensorCard
                     key={sensor.id}
-                    title={sensor.name}
+                    name={sensor.name}
                     value={sensor.value}
                     unit={sensor.unit}
-                    icon={getIconComponent(sensor.iconName)}
                     status={sensor.status}
-                    progress={(sensor.value - sensor.minValue) / (sensor.maxValue - sensor.minValue) * 100}
-                    minValue={sensor.minValue}
-                    maxValue={sensor.maxValue}
+                    icon={getIconComponent(sensor.iconName)}
                     lastUpdated={sensor.lastUpdated}
                   />
                 ))}
               </div>
             </TabsContent>
             
-            <TabsContent value="system" className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {systemSensors.map((sensor) => (
+            <TabsContent value="environment" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {environmentSensors.map(sensor => (
                   <SensorCard
                     key={sensor.id}
-                    title={sensor.name}
+                    name={sensor.name}
                     value={sensor.value}
                     unit={sensor.unit}
-                    icon={getIconComponent(sensor.iconName)}
                     status={sensor.status}
-                    progress={(sensor.value - sensor.minValue) / (sensor.maxValue - sensor.minValue) * 100}
-                    minValue={sensor.minValue}
-                    maxValue={sensor.maxValue}
+                    icon={getIconComponent(sensor.iconName)}
+                    lastUpdated={sensor.lastUpdated}
+                  />
+                ))}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="alerts" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {sensorData.filter(s => s.status !== 'normal').map(sensor => (
+                  <SensorCard
+                    key={sensor.id}
+                    name={sensor.name}
+                    value={sensor.value}
+                    unit={sensor.unit}
+                    status={sensor.status}
+                    icon={getIconComponent(sensor.iconName)}
                     lastUpdated={sensor.lastUpdated}
                   />
                 ))}
@@ -158,37 +168,6 @@ const Sensors = () => {
           </Tabs>
         </CardContent>
       </Card>
-
-      {isDeveloperMode && (
-        <Card className="border-dashed border-2 border-yellow-300">
-          <CardHeader>
-            <CardTitle>Sensor Management (Admin Only)</CardTitle>
-            <CardDescription>Advanced sensor settings and configuration</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Button variant="outline" className="w-full justify-start">
-                  <FlaskConical className="mr-2 h-4 w-4" />
-                  Adjust Sensor Thresholds
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Zap className="mr-2 h-4 w-4" />
-                  Configure Alert Settings
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <AlertCircle className="mr-2 h-4 w-4" />
-                  Sensor Diagnostics
-                </Button>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                <p>Last sensor maintenance: 2023-07-01</p>
-                <p>Sensor firmware: v1.4.2</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 };

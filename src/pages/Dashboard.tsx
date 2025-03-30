@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { AppleButton } from "@/components/ui/apple-button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { FarmLocationsOverview } from "@/components/dashboard/FarmLocationsOverview";
 
 const Dashboard = () => {
   const { isDeveloperMode } = useDeveloperMode();
@@ -98,60 +99,74 @@ const Dashboard = () => {
         />
       </div>
       
-      {/* Container Upgrade Section - Summary */}
+      {/* Farm Locations Overview - New Main Section */}
       <SectionCard
-        title="Container Farm Upgrades"
-        description="Available container farm upgrades and capacity options"
-        onToggle={() => toggleSection('upgrade')}
-        isExpanded={expandedSection === 'upgrade'}
+        title="AKAR Farm Container Network"
+        description="All active container farms in the AKAR ecosystem"
+        onToggle={() => toggleSection('locations')}
+        isExpanded={expandedSection === 'locations'}
         summary={
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Available Upgrades</div>
-              <div className="text-xl font-bold">3 options</div>
+              <div className="text-sm text-muted-foreground mb-1">Active Containers</div>
+              <div className="text-xl font-bold">{farmLocations.length} units</div>
             </div>
             <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Current Capacity</div>
-              <div className="text-xl font-bold">75%</div>
+              <div className="text-sm text-muted-foreground mb-1">Production Capacity</div>
+              <div className="text-xl font-bold">84%</div>
             </div>
             <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Expansion Cost</div>
-              <div className="text-xl font-bold">IDR 45M+</div>
+              <div className="text-sm text-muted-foreground mb-1">Total Harvest</div>
+              <div className="text-xl font-bold">1,450 kg/month</div>
             </div>
           </div>
         }
       >
-        <ContainerUpgrade />
+        <FarmLocationsOverview farmLocations={farmLocations} />
       </SectionCard>
       
-      {/* Tokenization Section - Summary */}
+      {/* Sensor Readings */}
       <SectionCard
-        title="Tokenization Overview"
-        description="ERC-20 tokens on Polygon representing your farm produce"
-        onToggle={() => toggleSection('tokenization')}
-        isExpanded={expandedSection === 'tokenization'}
-        onFullView={() => navigate('/tokenization')}
+        title="Sensor Readings"
+        description="Live readings from all container farm sensors"
+        onToggle={() => toggleSection('sensors')}
+        isExpanded={expandedSection === 'sensors'}
+        onFullView={() => navigate('/sensors')}
         summary={
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Total Token Value</div>
-              <div className="text-xl font-bold">IDR {tokenizationData.totalValue.toLocaleString()}</div>
-            </div>
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Active Contracts</div>
-              <div className="text-xl font-bold">{tokenizationData.activeContracts}</div>
-            </div>
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Avg. Return Rate</div>
-              <div className="text-xl font-bold">{tokenizationData.averageReturn}%</div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {sensorData.filter(s => s.status !== 'normal').slice(0, 4).map((sensor) => (
+              <div key={sensor.id} className="p-4 bg-muted rounded-lg">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="text-sm text-muted-foreground">{sensor.name}</div>
+                  <Badge variant={sensor.status === 'warning' ? 'outline' : 'destructive'} className="text-xs">
+                    {sensor.status.toUpperCase()}
+                  </Badge>
+                </div>
+                <div className="text-xl font-bold">{sensor.value}{sensor.unit}</div>
+              </div>
+            ))}
           </div>
         }
       >
-        <TokenizationOverview tokenData={tokenizationData} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {sensorData.slice(0, 8).map((sensor) => (
+            <AppleSensorCard
+              key={sensor.id}
+              title={sensor.name}
+              value={sensor.value}
+              unit={sensor.unit}
+              icon={getIconComponent(sensor.iconName)}
+              status={sensor.status}
+              progress={(sensor.value - sensor.minValue) / (sensor.maxValue - sensor.minValue) * 100}
+              minValue={sensor.minValue}
+              maxValue={sensor.maxValue}
+              lastUpdated={sensor.lastUpdated}
+            />
+          ))}
+        </div>
       </SectionCard>
       
-      {/* Sales Status - Summary */}
+      {/* Sales Status */}
       <SectionCard
         title="Sales Status"
         description="Current sales data across supermarkets and recurring customers"
@@ -212,45 +227,57 @@ const Dashboard = () => {
         </div>
       </SectionCard>
       
-      {/* Sensor Readings - Summary */}
+      {/* Container Upgrade Section - Moved to Bottom */}
       <SectionCard
-        title="Sensor Readings"
-        description="Live readings from all container farm sensors"
-        onToggle={() => toggleSection('sensors')}
-        isExpanded={expandedSection === 'sensors'}
-        onFullView={() => navigate('/sensors')}
+        title="Container Farm Upgrades"
+        description="Available container farm upgrades and capacity options"
+        onToggle={() => toggleSection('upgrade')}
+        isExpanded={expandedSection === 'upgrade'}
         summary={
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {sensorData.filter(s => s.status !== 'normal').slice(0, 4).map((sensor) => (
-              <div key={sensor.id} className="p-4 bg-muted rounded-lg">
-                <div className="flex items-center justify-between mb-1">
-                  <div className="text-sm text-muted-foreground">{sensor.name}</div>
-                  <Badge variant={sensor.status === 'warning' ? 'outline' : 'destructive'} className="text-xs">
-                    {sensor.status.toUpperCase()}
-                  </Badge>
-                </div>
-                <div className="text-xl font-bold">{sensor.value}{sensor.unit}</div>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 bg-muted rounded-lg">
+              <div className="text-sm text-muted-foreground mb-1">Available Upgrades</div>
+              <div className="text-xl font-bold">3 options</div>
+            </div>
+            <div className="p-4 bg-muted rounded-lg">
+              <div className="text-sm text-muted-foreground mb-1">Current Capacity</div>
+              <div className="text-xl font-bold">75%</div>
+            </div>
+            <div className="p-4 bg-muted rounded-lg">
+              <div className="text-sm text-muted-foreground mb-1">Expansion Cost</div>
+              <div className="text-xl font-bold">IDR 45M+</div>
+            </div>
           </div>
         }
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {sensorData.slice(0, 8).map((sensor) => (
-            <AppleSensorCard
-              key={sensor.id}
-              title={sensor.name}
-              value={sensor.value}
-              unit={sensor.unit}
-              icon={getIconComponent(sensor.iconName)}
-              status={sensor.status}
-              progress={(sensor.value - sensor.minValue) / (sensor.maxValue - sensor.minValue) * 100}
-              minValue={sensor.minValue}
-              maxValue={sensor.maxValue}
-              lastUpdated={sensor.lastUpdated}
-            />
-          ))}
-        </div>
+        <ContainerUpgrade />
+      </SectionCard>
+      
+      {/* Tokenization Section - Moved to Bottom */}
+      <SectionCard
+        title="Tokenization Overview"
+        description="ERC-20 tokens on Polygon representing your farm produce"
+        onToggle={() => toggleSection('tokenization')}
+        isExpanded={expandedSection === 'tokenization'}
+        onFullView={() => navigate('/tokenization')}
+        summary={
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 bg-muted rounded-lg">
+              <div className="text-sm text-muted-foreground mb-1">Total Token Value</div>
+              <div className="text-xl font-bold">IDR {tokenizationData.totalValue.toLocaleString()}</div>
+            </div>
+            <div className="p-4 bg-muted rounded-lg">
+              <div className="text-sm text-muted-foreground mb-1">Active Contracts</div>
+              <div className="text-xl font-bold">{tokenizationData.activeContracts}</div>
+            </div>
+            <div className="p-4 bg-muted rounded-lg">
+              <div className="text-sm text-muted-foreground mb-1">Avg. Return Rate</div>
+              <div className="text-xl font-bold">{tokenizationData.averageReturn}%</div>
+            </div>
+          </div>
+        }
+      >
+        <TokenizationOverview tokenData={tokenizationData} />
       </SectionCard>
 
       {/* Developer Only Section - kept same */}
