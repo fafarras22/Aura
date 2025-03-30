@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -15,7 +14,7 @@ export interface FarmLocation {
   status: 'active' | 'inactive' | 'maintenance';
   containers: number;
   address: string;
-  coordinates?: [number, number]; // Added for backward compatibility
+  coordinates?: [number, number]; // Made optional for backwards compatibility
 }
 
 interface FarmLocationsMapProps {

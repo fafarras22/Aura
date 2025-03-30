@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DropletIcon, BarChart2, Droplet, Thermometer, Flask } from "lucide-react";
+import { DropletIcon, BarChart2, Droplet, Thermometer, Beaker } from "lucide-react";
 import { SensorCard } from "@/components/dashboard/SensorCard";
 import { getMockSensorData, SensorStatus } from "@/services/mockDataService";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
@@ -19,7 +19,8 @@ const Water = () => {
     switch (iconName) {
       case 'droplet': return <Droplet className="w-5 h-5" />;
       case 'thermometer': return <Thermometer className="w-5 h-5" />;
-      case 'flask': return <Flask className="w-5 h-5" />;
+      case 'flask': 
+      case 'beaker': return <Beaker className="w-5 h-5" />;
       default: return <Droplet className="w-5 h-5" />;
     }
   };
@@ -154,7 +155,7 @@ const Water = () => {
                   Export Water Usage Report
                 </Button>
                 <Button variant="outline" className="w-full justify-start">
-                  <Flask className="mr-2 h-4 w-4" />
+                  <Beaker className="mr-2 h-4 w-4" />
                   Adjust Nutrient Mix
                 </Button>
               </div>

@@ -10,6 +10,7 @@ import { AppleButton } from "@/components/ui/apple-button";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu,
   DropdownMenuContent,
