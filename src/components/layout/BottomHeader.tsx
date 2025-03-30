@@ -37,12 +37,12 @@ export function BottomHeader() {
                   className={`p-3 rounded-none ${
                     item.isPrimary
                       ? location.pathname === item.path
-                        ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800'
-                        : 'text-green-600 dark:text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20'
+                        ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 rounded-full shadow-lg'
+                        : 'text-green-600 dark:text-green-500 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-full shadow-lg'
                       : location.pathname === item.path
                         ? 'text-primary-foreground'
                         : 'text-gray-500 dark:text-gray-400'
-                  } ${index === 2 ? 'relative -top-5 rounded-full shadow-lg h-14 w-14' : 'h-12 w-12'}`}
+                  } ${index === 2 ? 'relative -top-5 rounded-full shadow-lg h-16 w-16' : 'h-14 w-14'}`}
                   onClick={() => navigate(item.path)}
                 >
                   {item.icon}

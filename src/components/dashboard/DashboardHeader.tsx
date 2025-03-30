@@ -15,7 +15,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ currentUser })
   
   return (
     <div className="flex justify-between items-center">
-      <h1 className={`font-bold tracking-tight ${isMobile ? 'text-lg' : 'text-3xl'}`}>Dashboard</h1>
+      <h1 className={`font-bold tracking-tight ${isMobile ? 'text-xl' : 'text-3xl'}`}>Dashboard</h1>
       {!isMobile && (
         <div className="text-sm text-muted-foreground">
           Last updated: {new Date().toLocaleTimeString()}
