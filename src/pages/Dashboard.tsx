@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { QuickStats } from "@/components/dashboard/QuickStats";
@@ -10,13 +11,14 @@ import { LoginDialog } from "@/components/dashboard/LoginDialog";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { useNavigate } from "react-router-dom";
 import { ContainerManagement } from "@/components/dashboard/ContainerManagement";
-import { Thermometer, Droplet, Wind, Activity } from "lucide-react";
+import { Thermometer, Droplet, Wind, Activity, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { 
   FarmLocation, 
   ContainerSalesData, 
   TokenizationData 
 } from "@/services/mockDataService";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Dashboard = () => {
   const [showLoginDialog, setShowLoginDialog] = useState<boolean>(false);
@@ -107,7 +109,8 @@ const Dashboard = () => {
       investments: [],
       recentTransactions: [],
       tokenAllocation: [],
-      investmentPerformance: []
+      investmentPerformance: [],
+      contractDuration: 12 // Added to fix type error
     } as TokenizationData,
     
     // Farm locations
@@ -166,8 +169,8 @@ const Dashboard = () => {
     return (
       <div className="relative min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
         <div className="text-center my-20 opacity-50">
-          <h1 className="text-3xl font-bold tracking-tight">AKAR Farm Dashboard</h1>
-          <p className="mt-2">Please login to access the dashboard</p>
+          <h1 className="text-2xl font-bold tracking-tight">AKAR Farm Dashboard</h1>
+          <p className="mt-2 text-sm">Please login to access the dashboard</p>
         </div>
         
         <LoginDialog 
@@ -179,14 +182,34 @@ const Dashboard = () => {
     );
   }
 
+  // Filter farm locations based on user role
+  const filteredFarmLocations = isDeveloperMode 
+    ? mockData.farmLocations 
+    : mockData.farmLocations.filter(location => {
+        if (currentUser?.role === 'client' && currentUser?.containerId) {
+          return location.id.includes(currentUser.containerId) || 
+                 location.name.includes(currentUser.containerId);
+        }
+        return true;
+      });
+
   return (
     <div className="space-y-6">
       <DashboardHeader currentUser={currentUser} />
       
+      {isDeveloperMode && (
+        <Alert variant="default" className="bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-900 dark:text-blue-300">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription className="text-xs">
+            Developer mode: You have full access to all container data and management capabilities
+          </AlertDescription>
+        </Alert>
+      )}
+      
       <QuickStats 
         criticalAlertsCount={mockData.criticalAlertsCount}
         upcomingHarvestsCount={mockData.upcomingHarvestsCount}
-        containerCount={mockData.containerCount}
+        containerCount={isDeveloperMode ? mockData.containerCount : 1}
       />
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -263,9 +286,15 @@ const Dashboard = () => {
             title="Container Locations"
             onToggle={() => toggleSection('locations')}
             isExpanded={expandedSections.locations}
-            summary={<div className="text-sm text-muted-foreground">{mockData.farmLocations.length} farm locations</div>}
+            summary={
+              <div className="text-sm text-muted-foreground">
+                {isDeveloperMode 
+                  ? `${mockData.farmLocations.length} farm locations` 
+                  : 'Your container locations'}
+              </div>
+            }
           >
-            <FarmLocationsOverview farmLocations={mockData.farmLocations} />
+            <FarmLocationsOverview farmLocations={filteredFarmLocations} />
           </SectionCard>
         </div>
       </div>

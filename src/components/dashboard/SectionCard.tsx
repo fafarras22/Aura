@@ -28,13 +28,13 @@ export function SectionCard({
     <Card className="overflow-hidden border-none shadow-sm bg-white dark:bg-gray-950 rounded-2xl">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
-          <CardTitle className="text-lg font-semibold">{title}</CardTitle>
+          <CardTitle className="text-base font-semibold">{title}</CardTitle>
           <div className="flex gap-2">
             <AppleButton 
               variant="ghost" 
               size="sm" 
               onClick={onToggle}
-              className="px-3"
+              className="px-3 text-xs"
             >
               {isExpanded ? 'Hide Details' : 'Show Details'}
             </AppleButton>
@@ -43,7 +43,7 @@ export function SectionCard({
                 variant="outline" 
                 size="sm" 
                 onClick={onFullView}
-                className="px-3"
+                className="px-3 text-xs"
               >
                 Full View
               </AppleButton>
@@ -51,7 +51,7 @@ export function SectionCard({
           </div>
         </div>
         {description && (
-          <CardDescription>{description}</CardDescription>
+          <CardDescription className="text-xs">{description}</CardDescription>
         )}
       </CardHeader>
       {isExpanded ? (
@@ -60,7 +60,7 @@ export function SectionCard({
         </CardContent>
       ) : (
         <CardContent className="pt-0">
-          {summary}
+          <div className="text-xs">{summary}</div>
         </CardContent>
       )}
     </Card>

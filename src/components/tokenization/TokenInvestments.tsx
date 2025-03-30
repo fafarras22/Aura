@@ -6,16 +6,18 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Button } from "@/components/ui/button";
 import { formatCurrency, formatTokenAmount } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Wallet, ArrowRight } from "lucide-react";
+import { Wallet, ArrowRight, Lock, AlertCircle } from "lucide-react";
 import { TokenProjectDetailsModal } from "./TokenProjectDetailsModal";
 import { TokenPurchaseModal } from "./TokenPurchaseModal";
 import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface TokenInvestmentsProps {
   tokenData: TokenizationData;
+  isDeveloperMode?: boolean;
 }
 
-export const TokenInvestments: React.FC<TokenInvestmentsProps> = ({ tokenData }) => {
+export const TokenInvestments: React.FC<TokenInvestmentsProps> = ({ tokenData, isDeveloperMode = false }) => {
   const { toast } = useToast();
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
@@ -119,6 +121,15 @@ export const TokenInvestments: React.FC<TokenInvestmentsProps> = ({ tokenData })
   };
 
   const handleInvest = () => {
+    if (isDeveloperMode) {
+      toast({
+        title: "Access Denied",
+        description: "Token purchases are not allowed in Developer mode",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsDetailsModalOpen(false);
     setIsPurchaseModalOpen(true);
   };
@@ -133,10 +144,19 @@ export const TokenInvestments: React.FC<TokenInvestmentsProps> = ({ tokenData })
 
   return (
     <div className="space-y-6">
+      {isDeveloperMode && (
+        <Alert variant="default" className="bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-900/20 dark:border-amber-900 dark:text-amber-300">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription className="text-xs">
+            You are viewing all investment data across all containers. Purchasing tokens is disabled in Developer mode.
+          </AlertDescription>
+        </Alert>
+      )}
+      
       <Card>
         <CardHeader>
-          <CardTitle>Investment Performance</CardTitle>
-          <CardDescription>Track your token investment growth over time</CardDescription>
+          <CardTitle className="text-lg font-semibold">Investment Performance</CardTitle>
+          <CardDescription className="text-sm">Track your token investment growth over time</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-72">
@@ -157,8 +177,8 @@ export const TokenInvestments: React.FC<TokenInvestmentsProps> = ({ tokenData })
 
       <Card>
         <CardHeader>
-          <CardTitle>Available Investment Opportunities</CardTitle>
-          <CardDescription>Current farm containers open for tokenized investment</CardDescription>
+          <CardTitle className="text-lg font-semibold">Available Investment Opportunities</CardTitle>
+          <CardDescription className="text-sm">Current farm containers open for tokenized investment</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -166,8 +186,8 @@ export const TokenInvestments: React.FC<TokenInvestmentsProps> = ({ tokenData })
               <div key={opportunity.id} className="border rounded-lg p-4">
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <h4 className="font-medium">{opportunity.name}</h4>
-                    <p className="text-sm text-muted-foreground">{opportunity.containerNumber}</p>
+                    <h4 className="font-medium text-sm">{opportunity.name}</h4>
+                    <p className="text-xs text-muted-foreground">{opportunity.containerNumber}</p>
                   </div>
                   <Badge variant={
                     opportunity.risk === 'Low' ? 'outline' :
@@ -179,20 +199,20 @@ export const TokenInvestments: React.FC<TokenInvestmentsProps> = ({ tokenData })
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">Minimum</p>
-                    <p className="font-medium">{formatCurrency(opportunity.minAmount)}</p>
+                    <p className="text-xs text-muted-foreground">Minimum</p>
+                    <p className="font-medium text-sm">{formatCurrency(opportunity.minAmount)}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Return Rate</p>
-                    <p className="font-medium">{opportunity.returnRate}%</p>
+                    <p className="text-xs text-muted-foreground">Return Rate</p>
+                    <p className="font-medium text-sm">{opportunity.returnRate}%</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Available Tokens</p>
-                    <p className="font-medium">{formatTokenAmount(opportunity.tokensAvailable)} AKR</p>
+                    <p className="text-xs text-muted-foreground">Available Tokens</p>
+                    <p className="font-medium text-sm">{formatTokenAmount(opportunity.tokensAvailable)} AKR</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Period</p>
-                    <p className="font-medium">{opportunity.period}</p>
+                    <p className="text-xs text-muted-foreground">Period</p>
+                    <p className="font-medium text-sm">{opportunity.period}</p>
                   </div>
                 </div>
 
@@ -201,17 +221,31 @@ export const TokenInvestments: React.FC<TokenInvestmentsProps> = ({ tokenData })
                     className="w-full sm:w-auto" 
                     variant="outline"
                     onClick={() => handleOpenDetails(opportunity.id)}
+                    size="sm"
                   >
                     <Wallet className="mr-2 h-4 w-4" />
                     Details
                   </Button>
-                  <Button 
-                    className="w-full sm:w-auto"
-                    onClick={() => handleOpenDetails(opportunity.id)}
-                  >
-                    Invest Now
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                  {isDeveloperMode ? (
+                    <Button 
+                      className="w-full sm:w-auto"
+                      variant="outline"
+                      size="sm"
+                      disabled
+                    >
+                      <Lock className="mr-2 h-4 w-4" />
+                      Admin View Only
+                    </Button>
+                  ) : (
+                    <Button 
+                      className="w-full sm:w-auto"
+                      onClick={() => handleOpenDetails(opportunity.id)}
+                      size="sm"
+                    >
+                      Invest Now
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}
@@ -226,16 +260,19 @@ export const TokenInvestments: React.FC<TokenInvestmentsProps> = ({ tokenData })
           onOpenChange={setIsDetailsModalOpen}
           project={investmentOpportunities.find(p => p.id === selectedProject)!}
           onInvest={handleInvest}
+          isDeveloperMode={isDeveloperMode}
         />
       )}
 
-      {/* Purchase Modal */}
-      <TokenPurchaseModal
-        open={isPurchaseModalOpen}
-        onOpenChange={setIsPurchaseModalOpen}
-        onComplete={handlePurchaseComplete}
-        tokenId={selectedProject ? `token-${selectedProject}` : null}
-      />
+      {/* Purchase Modal - only show for non-developer mode */}
+      {!isDeveloperMode && (
+        <TokenPurchaseModal
+          open={isPurchaseModalOpen}
+          onOpenChange={setIsPurchaseModalOpen}
+          onComplete={handlePurchaseComplete}
+          tokenId={selectedProject ? `token-${selectedProject}` : null}
+        />
+      )}
     </div>
   );
 };

@@ -19,7 +19,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ currentUser })
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-2">
-        <h1 className={`font-bold tracking-tight ${isMobile ? 'text-xl' : 'text-3xl'}`}>Dashboard</h1>
+        <h1 className={`font-bold tracking-tight ${isMobile ? 'text-lg' : 'text-2xl'}`}>Dashboard</h1>
         <Badge 
           variant="outline" 
           className={`
@@ -31,7 +31,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ currentUser })
           {isAdmin ? (
             <>
               <Shield className="w-3 h-3" />
-              <span>Admin Mode</span>
+              <span>Developer Mode</span>
             </>
           ) : (
             <>
@@ -43,7 +43,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ currentUser })
       </div>
       
       {!isMobile && (
-        <div className="text-sm text-muted-foreground">
+        <div className="text-xs text-muted-foreground">
           Last updated: {new Date().toLocaleTimeString()}
         </div>
       )}
