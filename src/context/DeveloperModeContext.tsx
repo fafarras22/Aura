@@ -14,7 +14,11 @@ import {
   handleLogoutAdmin,
   handleUserSignup
 } from "./developer-mode/authOperations";
-import { toggleContainerStatus, sendPaymentReminderNotification } from "./developer-mode/containerOperations";
+import { 
+  toggleContainerStatus, 
+  sendPaymentReminderNotification,
+  getFilteredContainerData
+} from "./developer-mode/containerOperations";
 
 // Create context with initial values
 const DeveloperModeContext = createContext<DeveloperModeContextType>({
@@ -113,10 +117,7 @@ export const DeveloperModeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Get container data (filtered by containerId if provided)
   const getContainerData = (containerId?: string): ContainerData[] => {
-    if (!containerId) {
-      return isDeveloperMode ? containers : containers.filter(c => c.owner === currentUser?.name);
-    }
-    return containers.filter(c => c.id === containerId);
+    return getFilteredContainerData(containers, isDeveloperMode, currentUser, containerId);
   };
 
   const contextValue: DeveloperModeContextType = {
@@ -145,3 +146,4 @@ export const DeveloperModeProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 export const useDeveloperMode = () => useContext(DeveloperModeContext);
+export type { User };

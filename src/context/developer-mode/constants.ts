@@ -49,12 +49,12 @@ export const addNewUser = (name: string, password: string) => {
   // Generate a new user ID
   const userId = `client-${USERS.length + 1}`;
   
-  // Create the new user object
+  // Create the new user object with containerId (assign a default one for demo)
   const newUser = {
     id: userId,
     name,
     role: "client" as const,
-    // No containerId initially, would be assigned when they purchase/register a container
+    containerId: `CONT-${USERS.length + 1}`, // Auto-assign a container ID
   };
   
   // Add the user to the USERS array
