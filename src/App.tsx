@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DeveloperModeProvider } from "@/context/DeveloperModeContext";
 import { MainLayout } from "@/components/layout/MainLayout";
 import Dashboard from "@/pages/Dashboard";
@@ -31,14 +31,21 @@ const App = () => (
           <Routes>
             <Route element={<MainLayout />}>
               <Route path="/" element={<Dashboard />} />
+              
+              {/* Internal Environment */}
+              <Route path="/internal-environment" element={<Navigate to="/sensors" replace />} />
               <Route path="/sensors" element={<Sensors />} />
               <Route path="/water" element={<Water />} />
               <Route path="/climate" element={<Climate />} />
+              
+              {/* External Environment */}
+              <Route path="/external-environment" element={<Navigate to="/alerts" replace />} />
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/cctv" element={<CCTV />} />
-              <Route path="/harvest" element={<Harvest />} />
-              <Route path="/tokenization" element={<Tokenization />} />
               <Route path="/calendar" element={<Calendar />} />
+              
+              <Route path="/tokenization" element={<Tokenization />} />
+              <Route path="/harvest" element={<Harvest />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/settings" element={<Settings />} />
             </Route>
