@@ -1,22 +1,14 @@
+
 import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useTheme } from '@/components/ui/theme-provider';
+import { FarmLocation } from '@/services/mockDataService';
 
 // Dummy token - in a real app this should be set as an environment variable
 const MAPBOX_TOKEN = 'pk.dummy.token';
 
-// Updated interface to match what's used in the component
-export interface FarmLocation {
-  id: string;
-  name: string;
-  location: { lat: number; lng: number };
-  status: 'active' | 'inactive' | 'maintenance';
-  containers: number;
-  address: string;
-  coordinates?: [number, number]; // Made optional for backwards compatibility
-}
-
+// We'll reuse the FarmLocation interface directly from mockDataService.ts
 interface FarmLocationsMapProps {
   locations: FarmLocation[];
 }
@@ -40,19 +32,8 @@ export const FarmLocationsMap: React.FC<FarmLocationsMapProps> = ({ locations })
       accessToken: MAPBOX_TOKEN,
     });
     
-    // Process locations to ensure they have coordinates for backward compatibility
-    const processedLocations = locations.map(location => {
-      if (!location.coordinates) {
-        return {
-          ...location,
-          coordinates: [location.location.lng, location.location.lat]
-        };
-      }
-      return location;
-    });
-    
     // Add markers for each location
-    processedLocations.forEach(location => {
+    locations.forEach(location => {
       // Create marker element
       const el = document.createElement('div');
       el.className = 'farm-marker';

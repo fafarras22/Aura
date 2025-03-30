@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   Card,
@@ -172,8 +173,12 @@ const Alerts = () => {
   const handleCreateAlert = (values: z.infer<typeof alertSchema>) => {
     const newAlert: AlertType = {
       id: String(Date.now()),
-      ...values,
-      timestamp: new Date(),
+      title: values.title,
+      message: values.message,
+      type: values.type,
+      containerNumber: values.containerNumber,
+      isRead: values.isRead,
+      timestamp: values.timestamp,
     };
 
     setAlerts([newAlert, ...alerts]);
@@ -449,9 +454,9 @@ const Alerts = () => {
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">Read Status</FormLabel>
-                      <FormDescription>
+                      <CardDescription>
                         Only show unread alerts
-                      </FormDescription>
+                      </CardDescription>
                     </div>
                     <FormControl>
                       <Switch
@@ -498,7 +503,10 @@ const Alerts = () => {
                         <Calendar
                           mode="range"
                           defaultMonth={field.value?.from}
-                          selected={field.value}
+                          selected={field.value ? {
+                            from: field.value.from || undefined,
+                            to: field.value.to || undefined,
+                          } : undefined}
                           onSelect={field.onChange}
                           disabled={(date) =>
                             date > new Date() || date < new Date("2020-01-01")
