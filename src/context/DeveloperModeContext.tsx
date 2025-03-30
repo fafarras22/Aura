@@ -1,68 +1,77 @@
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { toast } from "@/components/ui/use-toast";
-import { User, ContainerData, SuspiciousActivity, DeveloperModeContextType } from './developer-mode/types';
-import { USERS, CONTAINERS } from './developer-mode/constants';
-import { logSuspiciousActivity, handleLoginAttempts } from './developer-mode/securityUtils';
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { 
-  getFilteredContainerData, 
-  toggleContainer, 
-  sendPaymentReminder as sendReminder 
-} from './developer-mode/containerOperations';
+  DeveloperModeContextType, 
+  User, 
+  SuspiciousActivity,
+  ContainerData
+} from "./developer-mode/types";
+import { USERS, CONTAINERS } from "./developer-mode/constants";
 import { 
   handleUserLogin, 
   handleAdminLogin, 
-  handleLogout as logoutUser, 
-  handleLogoutAdmin 
-} from './developer-mode/authOperations';
+  handleLogout, 
+  handleLogoutAdmin,
+  handleUserSignup
+} from "./developer-mode/authOperations";
+import { toggleContainerStatus, sendPaymentReminderNotification } from "./developer-mode/containerOperations";
 
-const DeveloperModeContext = createContext<DeveloperModeContextType | undefined>(undefined);
+// Create context with initial values
+const DeveloperModeContext = createContext<DeveloperModeContextType>({
+  isDeveloperMode: false,
+  toggleDeveloperMode: () => {},
+  loginAsAdmin: () => false,
+  isAdminLoggedIn: false,
+  logoutAdmin: () => {},
+  currentUser: null,
+  login: () => false,
+  signup: () => false,
+  logout: () => {},
+  suspiciousActivities: [],
+  clearSuspiciousActivities: () => {},
+  canAccessDeveloperMode: false,
+  toggleContainerOperation: () => {},
+  sendPaymentReminder: () => {},
+  getContainerData: () => [],
+});
 
-export function DeveloperModeProvider({ children }: { children: ReactNode }) {
+export const DeveloperModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isDeveloperMode, setIsDeveloperMode] = useState<boolean>(false);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(false);
-  const [securityChecks, setSecurityChecks] = useState<boolean>(false);
+  const [loginAttempts, setLoginAttempts] = useState<number>(0);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [suspiciousActivities, setSuspiciousActivities] = useState<SuspiciousActivity[]>([]);
-  const [blockedIPs, setBlockedIPs] = useState<string[]>([]);
   const [containers, setContainers] = useState<ContainerData[]>(CONTAINERS);
 
-  // Track login attempts for security
-  const [loginAttempts, setLoginAttempts] = useState<number>(0);
-  
-  // Computed property to determine if the user can access developer mode
-  const canAccessDeveloperMode = isAdminLoggedIn || (currentUser?.role === 'admin');
+  // Only admin users can access developer mode
+  const canAccessDeveloperMode = currentUser?.role === 'admin';
 
-  useEffect(() => {
-    // Run security checks when mounted
-    const checkSecurity = () => {
-      const securityPassed = true; // In a real app, perform actual security checks
-      setSecurityChecks(securityPassed);
-      
-      if (securityPassed) {
-        toast({
-          title: "Security Check Passed",
-          description: "Your connection is secure and encrypted.",
-        });
-      }
-    };
-    
-    checkSecurity();
-  }, []);
-
-  // Wrapper functions that use the imported utility functions
-  const getContainerData = (containerId?: string): ContainerData[] => {
-    return getFilteredContainerData(containers, isDeveloperMode, currentUser, containerId);
+  // Toggle developer mode (only if logged in as admin)
+  const toggleDeveloperMode = () => {
+    if (isAdminLoggedIn) {
+      setIsDeveloperMode(!isDeveloperMode);
+    }
   };
 
-  const toggleContainerOperation = (containerId: string, active: boolean): void => {
-    toggleContainer(containerId, active, isDeveloperMode, containers, setContainers);
+  // Admin login
+  const loginAsAdmin = (password: string): boolean => {
+    return handleAdminLogin(
+      password, 
+      loginAttempts, 
+      setLoginAttempts, 
+      setCurrentUser, 
+      setIsAdminLoggedIn, 
+      setIsDeveloperMode,
+      setSuspiciousActivities
+    );
   };
 
-  const sendPaymentReminder = (containerId: string): void => {
-    sendReminder(containerId, isDeveloperMode, containers);
+  // Admin logout
+  const logoutAdmin = () => {
+    handleLogoutAdmin(setIsAdminLoggedIn, setIsDeveloperMode);
   };
 
+  // User login
   const login = (username: string, password: string): boolean => {
     return handleUserLogin(
       username, 
@@ -76,95 +85,63 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const loginAsAdmin = (password: string): boolean => {
-    return handleAdminLogin(
-      password, 
-      loginAttempts, 
-      setLoginAttempts, 
-      setCurrentUser, 
-      setIsAdminLoggedIn, 
-      setIsDeveloperMode,
-      setSuspiciousActivities
-    );
+  // User signup
+  const signup = (username: string, password: string): boolean => {
+    return handleUserSignup(username, password, setCurrentUser);
   };
 
-  const logout = (): void => {
-    logoutUser(setCurrentUser, currentUser, logoutAdmin);
+  // User logout
+  const logout = () => {
+    handleLogout(setCurrentUser, currentUser, logoutAdmin);
   };
 
-  const logoutAdmin = (): void => {
-    handleLogoutAdmin(setIsAdminLoggedIn, setIsDeveloperMode);
-  };
-
-  const toggleDeveloperMode = (): void => {
-    if (!canAccessDeveloperMode && !isDeveloperMode) {
-      // Log potential hack attempt if a client user tries to enable developer mode
-      if (currentUser && currentUser.role === 'client') {
-        logSuspiciousActivity(
-          "Client user attempted to access developer mode", 
-          currentUser.name,
-          setSuspiciousActivities
-        );
-      }
-      
-      toast({
-        title: "Access Denied",
-        description: "Only AKAR admin users can access developer mode.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    // If already logged in as admin, allow toggling developer mode
-    setIsDeveloperMode(prev => !prev);
-    
-    toast({
-      title: isDeveloperMode ? "Developer Mode Disabled" : "Developer Mode Enabled",
-      description: isDeveloperMode 
-        ? "Switched to client view mode." 
-        : "Full administrative access activated.",
-      variant: "default"
-    });
-  };
-
-  const clearSuspiciousActivities = (): void => {
+  // Clear suspicious activities
+  const clearSuspiciousActivities = () => {
     setSuspiciousActivities([]);
-    toast({
-      title: "Security Log Cleared",
-      description: "All suspicious activity records have been cleared.",
-      variant: "default"
-    });
+  };
+
+  // Toggle container operation (start/stop)
+  const toggleContainerOperation = (containerId: string, active: boolean) => {
+    const updatedContainers = toggleContainerStatus(containers, containerId, active);
+    setContainers(updatedContainers);
+  };
+
+  // Send payment reminder
+  const sendPaymentReminder = (containerId: string) => {
+    sendPaymentReminderNotification(containerId);
+  };
+
+  // Get container data (filtered by containerId if provided)
+  const getContainerData = (containerId?: string): ContainerData[] => {
+    if (!containerId) {
+      return isDeveloperMode ? containers : containers.filter(c => c.owner === currentUser?.name);
+    }
+    return containers.filter(c => c.id === containerId);
+  };
+
+  const contextValue: DeveloperModeContextType = {
+    isDeveloperMode,
+    toggleDeveloperMode,
+    loginAsAdmin,
+    isAdminLoggedIn,
+    logoutAdmin,
+    currentUser,
+    login,
+    signup,
+    logout,
+    suspiciousActivities,
+    clearSuspiciousActivities,
+    canAccessDeveloperMode,
+    toggleContainerOperation,
+    sendPaymentReminder,
+    getContainerData,
   };
 
   return (
-    <DeveloperModeContext.Provider value={{ 
-      isDeveloperMode, 
-      toggleDeveloperMode, 
-      loginAsAdmin, 
-      isAdminLoggedIn, 
-      logoutAdmin,
-      currentUser,
-      login,
-      logout,
-      suspiciousActivities,
-      clearSuspiciousActivities,
-      canAccessDeveloperMode,
-      toggleContainerOperation,
-      sendPaymentReminder,
-      getContainerData
-    }}>
+    <DeveloperModeContext.Provider value={contextValue}>
       {children}
     </DeveloperModeContext.Provider>
   );
-}
+};
 
-// Export types for easy import by other components
-export type { User, ContainerData, SuspiciousActivity };
-
-export function useDeveloperMode() {
-  const context = useContext(DeveloperModeContext);
-  if (context === undefined) {
-    throw new Error('useDeveloperMode must be used within a DeveloperModeProvider');
-  }
-  return context;
-}
+export const useDeveloperMode = () => useContext(DeveloperModeContext);

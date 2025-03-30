@@ -32,6 +32,7 @@ export interface DeveloperModeContextType {
   logoutAdmin: () => void;
   currentUser: User | null;
   login: (username: string, password: string) => boolean;
+  signup: (username: string, password: string) => boolean;
   logout: () => void;
   suspiciousActivities: SuspiciousActivity[];
   clearSuspiciousActivities: () => void;

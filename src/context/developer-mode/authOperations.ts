@@ -1,6 +1,6 @@
 
 import { User } from './types';
-import { USERS, USER_PASSWORDS, ADMIN_PASSWORD } from './constants';
+import { USERS, USER_PASSWORDS, ADMIN_PASSWORD, addNewUser } from './constants';
 import { toast } from "@/components/ui/use-toast";
 import { logSuspiciousActivity } from './securityUtils';
 
@@ -60,6 +60,38 @@ export const handleUserLogin = (
     });
     return false;
   }
+};
+
+export const handleUserSignup = (
+  username: string,
+  password: string,
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | null>>
+): boolean => {
+  // Check if user already exists
+  const existingUser = USERS.find(u => u.name === username);
+  
+  if (existingUser) {
+    toast({
+      title: "Registration Failed",
+      description: "This username is already taken. Please choose another.",
+      variant: "destructive"
+    });
+    return false;
+  }
+  
+  // Create new user
+  const newUser = addNewUser(username, password);
+  
+  // Set as current user
+  setCurrentUser(newUser);
+  
+  toast({
+    title: "Registration Successful",
+    description: `Welcome to AKAR FarmWatch, ${username}!`,
+    variant: "default"
+  });
+  
+  return true;
 };
 
 export const handleAdminLogin = (

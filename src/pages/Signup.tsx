@@ -8,38 +8,58 @@ import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 
-const Login = () => {
-  const [username, setUsername] = useState("");
+const Signup = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { login, loginAsAdmin } = useDeveloperMode();
+  const { login } = useDeveloperMode();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast({
+        title: "Password Error",
+        description: "Passwords do not match. Please try again.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!agreeTerms) {
+      toast({
+        title: "Terms Agreement Required",
+        description: "Please agree to the terms and conditions to continue.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsLoading(true);
     
-    // Try regular user login first
-    const loginSuccess = login(username, password);
-    
-    // If username contains "admin", try admin login
-    if (!loginSuccess && username.toLowerCase().includes("admin")) {
-      const adminLoginSuccess = loginAsAdmin(password);
-      
-      if (adminLoginSuccess) {
-        navigate("/dashboard");
-        return;
-      }
-    }
-    
-    if (loginSuccess) {
-      navigate("/dashboard");
-    } else {
+    // Simulate signup process
+    setTimeout(() => {
       setIsLoading(false);
-    }
+      
+      // In a real app, this would create a new user account in the database
+      toast({
+        title: "Account created",
+        description: "Welcome to AKAR FarmWatch!",
+      });
+      
+      // Automatically log in the user as a client/guest
+      const loginSuccess = login(name, password);
+      
+      if (loginSuccess) {
+        navigate("/dashboard");
+      }
+    }, 1500);
   };
 
   return (
@@ -57,33 +77,52 @@ const Login = () => {
         </div>
       </header>
 
-      {/* Login Container */}
+      {/* Signup Container */}
       <div className="flex-1 flex items-center justify-center py-12 px-4">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
             <p className="mt-2 text-sm text-gray-600">
-              Sign in to access your AKAR FarmWatch dashboard
+              Join AKAR FarmWatch and start monitoring your sustainable farming operations
             </p>
           </div>
 
           <div className="mt-8 bg-white py-8 px-4 shadow-sm rounded-lg sm:px-10 border border-gray-200">
-            <form className="space-y-6" onSubmit={handleLogin}>
+            <form className="space-y-6" onSubmit={handleSignup}>
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                  Username
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  Full Name
                 </label>
                 <div className="mt-1">
                   <Input
-                    id="username"
-                    name="username"
+                    id="name"
+                    name="name"
                     type="text"
-                    autoComplete="username"
+                    autoComplete="name"
                     required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="Your username"
+                    placeholder="Your full name"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <div className="mt-1">
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md"
+                    placeholder="you@example.com"
                   />
                 </div>
               </div>
@@ -97,7 +136,7 @@ const Login = () => {
                     id="password"
                     name="password"
                     type={showPassword ? "text" : "password"}
-                    autoComplete="current-password"
+                    autoComplete="new-password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -117,24 +156,41 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <Checkbox
-                    id="remember-me"
-                    checked={rememberMe}
-                    onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+                <div className="mt-1 relative">
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                    Remember me
-                  </label>
                 </div>
+              </div>
 
-                <div className="text-sm">
-                  <a href="#" className="font-medium text-primary hover:text-primary/80">
-                    Forgot your password?
+              <div className="flex items-center">
+                <Checkbox
+                  id="agree-terms"
+                  checked={agreeTerms}
+                  onCheckedChange={(checked) => setAgreeTerms(checked as boolean)}
+                  className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                />
+                <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-700">
+                  I agree to the{" "}
+                  <a href="/terms-of-service" className="font-medium text-primary hover:text-primary/80">
+                    Terms of Service
+                  </a>{" "}
+                  and{" "}
+                  <a href="/privacy-policy" className="font-medium text-primary hover:text-primary/80">
+                    Privacy Policy
                   </a>
-                </div>
+                </label>
               </div>
 
               <div>
@@ -144,7 +200,7 @@ const Login = () => {
                   className="w-full py-6 rounded-xl"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Signing in..." : "Sign in"}
+                  {isLoading ? "Creating account..." : "Create account"}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
@@ -184,9 +240,9 @@ const Login = () => {
 
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
-              <Link to="/signup" className="font-medium text-primary hover:text-primary/80">
-                Sign up for free
+              Already have an account?{" "}
+              <Link to="/login" className="font-medium text-primary hover:text-primary/80">
+                Sign in
               </Link>
             </p>
           </div>
@@ -205,4 +261,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

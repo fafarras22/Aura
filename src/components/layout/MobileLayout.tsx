@@ -30,7 +30,7 @@ interface NavItem {
 export function MobileLayout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
-  const { isDeveloperMode, toggleDeveloperMode } = useDeveloperMode();
+  const { isDeveloperMode, toggleDeveloperMode, isAdminLoggedIn, currentUser, logout } = useDeveloperMode();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,7 +48,7 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
   ];
 
   const handleSignOut = () => {
-    // In a real app, this would include authentication logic
+    logout();
     navigate('/login');
   };
 
@@ -85,13 +85,17 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-7 w-7 border border-primary/20">
                   <AvatarImage src="" alt="@user" />
-                  <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary text-xs">MF</AvatarFallback>
+                  <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary text-xs">
+                    {currentUser ? currentUser.name.charAt(0) : 'U'}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Muhammad Farras</DropdownMenuLabel>
-              <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">muhammad.farras@gmail.com</DropdownMenuLabel>
+              <DropdownMenuLabel>{currentUser ? currentUser.name : 'User'}</DropdownMenuLabel>
+              <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
+                {currentUser?.role === 'admin' ? 'Administrator' : 'Client User'}
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate('/settings')}>
                 <Settings className="mr-2 h-4 w-4" />
@@ -116,11 +120,15 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
             <div className="mb-3 flex items-center gap-2 pb-3 border-b border-gray-200 dark:border-gray-800">
               <Avatar className="h-9 w-9">
                 <AvatarImage src="" alt="@user" />
-                <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary">MF</AvatarFallback>
+                <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary">
+                  {currentUser ? currentUser.name.charAt(0) : 'U'}
+                </AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-medium text-sm">Muhammad Farras</p>
-                <p className="text-xs text-muted-foreground">muhammad.farras@gmail.com</p>
+                <p className="font-medium text-sm">{currentUser ? currentUser.name : 'User'}</p>
+                <p className="text-xs text-muted-foreground">
+                  {currentUser?.role === 'admin' ? 'Administrator' : 'Client User'}
+                </p>
               </div>
             </div>
             
@@ -150,13 +158,15 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
             </nav>
             
             <div className="mt-6 pt-3 border-t border-gray-200 dark:border-gray-800">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Developer Mode</span>
-                <Switch
-                  checked={isDeveloperMode}
-                  onCheckedChange={toggleDeveloperMode}
-                />
-              </div>
+              {isAdminLoggedIn && (
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Developer Mode</span>
+                  <Switch
+                    checked={isDeveloperMode}
+                    onCheckedChange={toggleDeveloperMode}
+                  />
+                </div>
+              )}
               
               {/* Sign Out Button */}
               <Button 

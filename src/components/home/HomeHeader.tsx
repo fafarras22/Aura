@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Languages } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -12,6 +12,12 @@ interface HomeHeaderProps {
 }
 
 export const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
+  const navigate = useNavigate();
+  
+  const handleDashboardClick = () => {
+    navigate('/login');
+  };
+  
   return (
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30 backdrop-blur-md bg-white/90 dark:bg-gray-950/90">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -74,16 +80,9 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage })
                 </div>
               </PopoverContent>
             </Popover>
-            <Link to="/login">
-              <Button variant="outline" size="sm">
-                {language === 'en' ? 'Sign in' : language === 'id' ? 'Masuk' : '로그인'}
-              </Button>
-            </Link>
-            <Link to="/dashboard">
-              <Button variant="apple" size="sm" className="rounded-full">
-                {language === 'en' ? 'Dashboard' : language === 'id' ? 'Dasbor' : '대시보드'}
-              </Button>
-            </Link>
+            <Button variant="apple" size="sm" className="rounded-full" onClick={handleDashboardClick}>
+              {language === 'en' ? 'Sign In / Dashboard' : language === 'id' ? 'Masuk / Dasbor' : '로그인 / 대시보드'}
+            </Button>
           </div>
         </div>
       </div>

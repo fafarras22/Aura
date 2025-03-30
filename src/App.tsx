@@ -11,6 +11,7 @@ import { MobileLayout } from "@/components/layout/MobileLayout";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
 import Dashboard from "@/pages/Dashboard";
 import Sensors from "@/pages/Sensors";
 import Water from "@/pages/Water";
@@ -55,6 +56,7 @@ const App = () => (
               {/* Public routes */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
               <Route path="/about" element={<About />} />
               <Route path="/careers" element={<Careers />} />
               <Route path="/news" element={<News />} />

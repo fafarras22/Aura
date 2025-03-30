@@ -43,3 +43,25 @@ export const USER_PASSWORDS: Record<string, string> = {
   "Muhammad Farras": "admin123",
   "Guest": "guest123"
 };
+
+// Function to add a new user (for sign-up functionality)
+export const addNewUser = (name: string, password: string) => {
+  // Generate a new user ID
+  const userId = `client-${USERS.length + 1}`;
+  
+  // Create the new user object
+  const newUser = {
+    id: userId,
+    name,
+    role: "client" as const,
+    // No containerId initially, would be assigned when they purchase/register a container
+  };
+  
+  // Add the user to the USERS array
+  USERS.push(newUser);
+  
+  // Add the password to the USER_PASSWORDS object
+  USER_PASSWORDS[name] = password;
+  
+  return newUser;
+};
