@@ -95,7 +95,7 @@ export const TokenAllocation: React.FC<TokenAllocationProps> = ({ tokenData }) =
                     <span className="text-sm font-medium">{item.name}</span>
                     <span className="text-sm">{item.value}%</span>
                   </div>
-                  <Progress value={item.value} className="h-2" indicatorClassName={`bg-[${item.color}]`} />
+                  <Progress value={item.value} className="h-2" style={{backgroundColor: item.color}} />
                 </div>
               ))}
             </div>

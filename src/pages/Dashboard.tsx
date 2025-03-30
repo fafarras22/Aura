@@ -200,26 +200,26 @@ const Dashboard = () => {
                 <div key={salesData.id}>
                   <div className="mb-4">
                     <Badge className="mb-1">{salesData.containerName}</Badge>
-                    <h3 className="text-lg font-semibold">{salesData.productName}</h3>
-                    <p className="text-muted-foreground">{salesData.location}</p>
+                    <h3 className="text-lg font-semibold">{salesData.containerName} Produce</h3>
+                    <p className="text-muted-foreground">{salesData.supermarketClient.location}</p>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                     <div className="bg-muted p-4 rounded-lg">
                       <div className="text-sm text-muted-foreground">Current Price</div>
-                      <div className="text-xl font-bold">IDR {salesData.currentPrice.toLocaleString()}/kg</div>
+                      <div className="text-xl font-bold">IDR {salesData.priceRange.max.toLocaleString()}/kg</div>
                     </div>
                     <div className="bg-muted p-4 rounded-lg">
                       <div className="text-sm text-muted-foreground">Monthly Sales</div>
-                      <div className="text-xl font-bold">{salesData.monthlySales} kg</div>
+                      <div className="text-xl font-bold">{salesData.totalSales} kg</div>
                     </div>
                     <div className="bg-muted p-4 rounded-lg">
                       <div className="text-sm text-muted-foreground">Supermarket Clients</div>
-                      <div className="text-xl font-bold">{salesData.supermarketClients}</div>
+                      <div className="text-xl font-bold">1</div>
                     </div>
                     <div className="bg-muted p-4 rounded-lg">
                       <div className="text-sm text-muted-foreground">Recurring Customers</div>
-                      <div className="text-xl font-bold">{salesData.recurringCustomers}</div>
+                      <div className="text-xl font-bold">{salesData.recurringCustomers.length}</div>
                     </div>
                   </div>
                 </div>
