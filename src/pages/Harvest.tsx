@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -27,13 +28,13 @@ const Harvest = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">
+          <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800">
             {readyHarvests.length} Ready
           </Badge>
-          <Badge variant="outline" className="bg-yellow-50 text-yellow-600 border-yellow-200">
+          <Badge variant="outline" className="bg-yellow-50 text-yellow-600 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800">
             {inProgressHarvests.length} In Progress
           </Badge>
-          <Badge variant="outline" className="bg-blue-50 text-blue-600 border-blue-200">
+          <Badge variant="outline" className="bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800">
             {completedHarvests.length} Completed
           </Badge>
         </div>
@@ -48,7 +49,7 @@ const Harvest = () => {
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {harvests.map(harvest => (
-            <div key={harvest.id} className="border rounded-lg p-4">
+            <div key={harvest.id} className="border rounded-lg p-4 dark:border-gray-800">
               <div className="flex items-center justify-between mb-2">
                 <div className="text-lg font-semibold">{harvest.crop}</div>
                 {harvest.status === 'ready' && (
@@ -93,7 +94,7 @@ function HarvestScheduleCard() {
   const [date, setDate] = React.useState<Date | undefined>(new Date())
 
   return (
-    <Card className="w-full">
+    <Card className="w-full dark:border-gray-800">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">Harvest Schedule</CardTitle>
         <CalendarIcon className="h-4 w-4 text-muted-foreground" />

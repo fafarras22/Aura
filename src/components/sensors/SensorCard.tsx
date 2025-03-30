@@ -29,7 +29,7 @@ export function SensorCard({
   };
 
   return (
-    <Card className="sensor-card">
+    <Card className="sensor-card dark:border-gray-800">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle className="text-md font-medium">{name}</CardTitle>
         <Badge variant="outline" className={statusColors[status]}>
@@ -39,12 +39,12 @@ export function SensorCard({
       <CardContent>
         <div className="flex items-center justify-between mb-4">
           <div className="text-3xl font-bold">{value}</div>
-          <div className="text-xl text-gray-500">{unit}</div>
-          <div className="text-akar-green p-2 rounded-full bg-akar-lightgreen/20">{icon}</div>
+          <div className="text-xl text-gray-500 dark:text-gray-400">{unit}</div>
+          <div className="text-akar-green p-2 rounded-full bg-akar-lightgreen/20 dark:bg-green-900/30">{icon}</div>
         </div>
         
         {lastUpdated && (
-          <div className="mt-4 text-xs text-gray-500">
+          <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
             Last updated: {lastUpdated}
           </div>
         )}

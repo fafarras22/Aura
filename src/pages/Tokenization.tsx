@@ -23,7 +23,7 @@ const Tokenization = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">AKAR Tokenization</h1>
-          <p className="text-muted-foreground">Manage your ERC-20 tokens on Polygon PoC</p>
+          <p className="text-muted-foreground">Manage your ERC-20 tokens on Polygon PoS</p>
         </div>
         <Badge variant="outline" className="bg-purple-50 text-purple-700 dark:bg-purple-900 dark:text-purple-300 flex items-center gap-1">
           <span className="h-2 w-2 rounded-full bg-green-500"></span> Polygon Network Connected
@@ -34,14 +34,14 @@ const Tokenization = () => {
         <CardHeader className="pb-3">
           <CardTitle>Token Platform</CardTitle>
           <CardDescription>
-            AKAR uses Polygon PoC (Proof of Concept) blockchain to tokenize farm produce, enabling fractional ownership and transparent value tracking.
+            AKAR uses Polygon PoS (Proof of Stake) blockchain to tokenize farm produce, enabling fractional ownership and transparent value tracking.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-md mb-4 border border-slate-200 dark:border-slate-800">
             <div className="flex items-start gap-3">
-              <div className="bg-amber-100 p-2 rounded-full">
-                <Info className="h-5 w-5 text-amber-700" />
+              <div className="bg-amber-100 dark:bg-amber-900/50 p-2 rounded-full">
+                <Info className="h-5 w-5 text-amber-700 dark:text-amber-300" />
               </div>
               <div>
                 <h4 className="font-medium text-sm">What are AKAR Tokens?</h4>
@@ -106,6 +106,33 @@ const Tokenization = () => {
               <TokenTransactions tokenData={tokenData} />
             </TabsContent>
           </Tabs>
+          
+          {/* Polygon PoS explanation */}
+          <div className="mt-10 p-4 border rounded-lg border-primary/20 bg-primary/5 dark:bg-primary/10">
+            <h4 className="font-medium mb-2">About Polygon PoS (Proof of Stake)</h4>
+            <p className="text-sm text-muted-foreground mb-3">
+              AKAR leverages Polygon's Proof of Stake (PoS) network to provide efficient, low-cost blockchain transactions while maintaining security. 
+              This scaling solution enables us to offer tokenized agricultural investments with minimal gas fees and rapid transaction finality.
+            </p>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-green-500"></span>
+                <span>99% Lower Carbon Footprint vs PoW</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-blue-500"></span>
+                <span>~2 Second Block Time</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-purple-500"></span>
+                <span>Low Gas Fees</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-amber-500"></span>
+                <span>EVM Compatible</span>
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

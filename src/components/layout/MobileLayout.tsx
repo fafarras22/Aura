@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDeveloperMode } from '@/context/DeveloperModeContext';
 import { AppleNotification } from '@/components/ui/apple-notification';
 import { Switch } from '@/components/ui/switch';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 interface NavItem {
   path: string;
@@ -56,6 +57,7 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
           <img src="/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png" alt="AKAR Logo" className="h-8" />
         </div>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Button 
             variant="ghost" 
             size="icon" 
@@ -116,7 +118,7 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
               {/* Sign Out Button */}
               <Button 
                 variant="ghost" 
-                className="w-full mt-4 justify-start text-red-500 hover:bg-red-50 hover:text-red-600"
+                className="w-full mt-4 justify-start text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 dark:hover:text-red-400"
                 onClick={handleSignOut}
               >
                 <LogOut className="w-4 h-4 mr-2" />
@@ -145,11 +147,11 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
                     className={`p-3 rounded-none ${
                       item.isPrimary
                         ? location.pathname === item.path
-                          ? 'bg-green-600 text-white hover:bg-green-700'
-                          : 'text-green-600 hover:bg-green-50'
+                          ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800'
+                          : 'text-green-600 dark:text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20'
                         : location.pathname === item.path
                           ? 'text-primary-foreground'
-                          : 'text-gray-500'
+                          : 'text-gray-500 dark:text-gray-400'
                     } ${index === 2 ? 'relative -top-3 rounded-full shadow-lg' : ''}`}
                     onClick={() => navigate(item.path)}
                   >
@@ -167,7 +169,7 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
 
       {/* Notification */}
       <AppleNotification
-        title="Welcome to AKAR Farm"
+        title="AKAR Farm Update"
         description="Monitor your farm's status in real-time with our advanced dashboard."
         isVisible={showNotification}
         onClose={() => setShowNotification(false)}
