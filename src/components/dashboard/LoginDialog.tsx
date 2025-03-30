@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Shield, User } from "lucide-react";
+import { Shield, User, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface LoginDialogProps {
@@ -29,6 +29,7 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [attemptedHack, setAttemptedHack] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -51,7 +52,16 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
       setUsername("");
       setPassword("");
       setError("");
+      setAttemptedHack(false);
     } else {
+      // Check for potential hack attempts (e.g., common admin passwords or SQL injection patterns)
+      if (loginType === 'admin' && 
+          (password.toLowerCase().includes("admin") || 
+           password.includes("--") || 
+           password.includes("="))) {
+        setAttemptedHack(true);
+      }
+      
       setError(loginType === 'admin' 
         ? "Invalid admin password" 
         : "Invalid username or password");
@@ -61,6 +71,7 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
   const handleLoginTypeChange = (type: 'admin' | 'user') => {
     setLoginType(type);
     setError("");
+    setAttemptedHack(false);
     // Reset form when switching login types
     setUsername("");
     setPassword("");
@@ -143,7 +154,7 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
                 />
               </div>
               <div className="text-xs text-muted-foreground">
-                Try "akar@admin2023" for admin access
+                Admin access is restricted to AKAR personnel only
               </div>
             </>
           )}
@@ -151,6 +162,16 @@ export const LoginDialog: React.FC<LoginDialogProps> = ({
           {error && (
             <div className="text-sm text-red-500 font-medium">
               {error}
+            </div>
+          )}
+          
+          {attemptedHack && (
+            <div className="bg-red-50 border border-red-200 rounded-md p-3 flex items-start">
+              <AlertTriangle className="text-red-500 mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
+              <div className="text-xs text-red-700">
+                <strong>Security Alert:</strong> Suspicious login attempt detected. 
+                This activity has been logged. Continued attempts may result in IP blocking.
+              </div>
             </div>
           )}
         </div>

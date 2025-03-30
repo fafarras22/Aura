@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { SectionCard } from "@/components/dashboard/SectionCard";
 import { FarmLocationsOverview } from "@/components/dashboard/FarmLocationsOverview";
@@ -11,7 +12,7 @@ import {
   getMockFarmLocations,
   getMockTokenizationData
 } from "@/services/mockDataService";
-import { Droplets, ArrowRight, ShieldAlert } from "lucide-react";
+import { Droplets, ArrowRight, ShieldAlert, Shield } from "lucide-react";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { useNavigate } from "react-router-dom";
 import { AppleButton } from "@/components/ui/apple-button";
@@ -22,9 +23,20 @@ import { DeveloperInfoCard } from "@/components/dashboard/DeveloperInfoCard";
 import { LoginDialog } from "@/components/dashboard/LoginDialog";
 import { AppleSensorCard } from "@/components/dashboard/AppleSensorCard";
 import { ContainerPerformanceSection } from "@/components/dashboard/ContainerPerformanceSection";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SalesStatusCard } from "@/components/dashboard/SalesStatusCard";
 
 const Dashboard = () => {
-  const { isDeveloperMode, loginAsAdmin, isAdminLoggedIn, currentUser, login } = useDeveloperMode();
+  const { 
+    isDeveloperMode, 
+    loginAsAdmin, 
+    isAdminLoggedIn, 
+    currentUser, 
+    login, 
+    suspiciousActivities, 
+    canAccessDeveloperMode 
+  } = useDeveloperMode();
+  
   const navigate = useNavigate();
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [showLoginDialog, setShowLoginDialog] = useState<boolean>(false);
@@ -51,8 +63,15 @@ const Dashboard = () => {
 
   // Get client's specific container (in a real app, this would come from authentication)
   const clientContainerId = currentUser?.containerId || "CONT-001"; // Use container ID from user or default
-  const clientSpecificContainers = isDeveloperMode ? containerSalesData : 
-    containerSalesData.filter(data => data.id === clientContainerId);
+  
+  // Filter data based on user role
+  const userContainers = isDeveloperMode 
+    ? containerSalesData // Show all containers for admin/developer
+    : containerSalesData.filter(data => data.id === clientContainerId); // Show only client's container
+  
+  const userFarmLocations = isDeveloperMode
+    ? farmLocations // Show all locations for admin/developer
+    : farmLocations.filter(loc => loc.id === clientContainerId); // Show only client's location
 
   // Map icon name to icon component
   const getIconComponent = (iconName: string) => {
@@ -142,7 +161,7 @@ const Dashboard = () => {
         <QuickStats 
           criticalAlertsCount={criticalAlerts.length}
           upcomingHarvestsCount={upcomingHarvests.length}
-          containerCount={isDeveloperMode ? farmLocations.length : clientSpecificContainers.length}
+          containerCount={isDeveloperMode ? farmLocations.length : userContainers.length}
         />
         
         {/* Farm Locations Overview - Main Section */}
@@ -155,7 +174,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-4 bg-muted rounded-lg">
                 <div className="text-sm text-muted-foreground mb-1">Active Containers</div>
-                <div className="text-xl font-bold">{isDeveloperMode ? farmLocations.length : clientSpecificContainers.length} units</div>
+                <div className="text-xl font-bold">{isDeveloperMode ? farmLocations.length : userContainers.length} units</div>
               </div>
               <div className="p-4 bg-muted rounded-lg">
                 <div className="text-sm text-muted-foreground mb-1">Production Capacity</div>
@@ -168,7 +187,7 @@ const Dashboard = () => {
             </div>
           }
         >
-          <FarmLocationsOverview farmLocations={isDeveloperMode ? farmLocations : farmLocations.filter(loc => loc.id === clientContainerId)} />
+          <FarmLocationsOverview farmLocations={userFarmLocations} />
         </SectionCard>
         
         {/* Sensor Readings */}
@@ -212,71 +231,60 @@ const Dashboard = () => {
           </div>
         </SectionCard>
         
-        {/* Sales Status - Only for Developer Mode */}
-        {isDeveloperMode && (
-          <SectionCard
-            title="Sales Status"
-            description="Current sales data across all supermarkets and recurring customers"
-            onToggle={() => toggleSection('sales')}
-            isExpanded={expandedSection === 'sales'}
-            summary={
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="text-sm text-muted-foreground mb-1">Avg. Price</div>
-                  <div className="text-xl font-bold">IDR 55,000/kg</div>
-                </div>
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="text-sm text-muted-foreground mb-1">Total Sales</div>
-                  <div className="text-xl font-bold">1,250 kg/month</div>
-                </div>
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="text-sm text-muted-foreground mb-1">Supermarkets</div>
-                  <div className="text-xl font-bold">10 clients</div>
-                </div>
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="text-sm text-muted-foreground mb-1">Customers</div>
-                  <div className="text-xl font-bold">215 recurring</div>
-                </div>
+        {/* Sales Status Section */}
+        <SectionCard
+          title={isDeveloperMode ? "Sales Status - All Containers" : "Sales Status - Your Container"}
+          description={isDeveloperMode 
+            ? "Current sales data across all containers and supermarkets" 
+            : "Current sales data for your container"}
+          onToggle={() => toggleSection('sales')}
+          isExpanded={expandedSection === 'sales'}
+          summary={
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Avg. Price</div>
+                <div className="text-xl font-bold">IDR 55,000/kg</div>
               </div>
-            }
-          >
-            <div className="grid gap-6">
-              {containerSalesData.slice(0, 1).map((salesData) => (
-                <div key={salesData.id}>
-                  <div className="mb-4">
-                    <div className="mb-1">{salesData.containerName}</div>
-                    <h3 className="text-lg font-semibold">{salesData.containerName} Produce</h3>
-                    <p className="text-muted-foreground">{salesData.supermarketClient?.location}</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div className="bg-muted p-4 rounded-lg">
-                      <div className="text-sm text-muted-foreground">Current Price</div>
-                      <div className="text-xl font-bold">IDR {salesData.priceRange?.max.toLocaleString()}/kg</div>
-                    </div>
-                    <div className="bg-muted p-4 rounded-lg">
-                      <div className="text-sm text-muted-foreground">Monthly Sales</div>
-                      <div className="text-xl font-bold">{salesData.totalSales} kg</div>
-                    </div>
-                    <div className="bg-muted p-4 rounded-lg">
-                      <div className="text-sm text-muted-foreground">Supermarket Clients</div>
-                      <div className="text-xl font-bold">1</div>
-                    </div>
-                    <div className="bg-muted p-4 rounded-lg">
-                      <div className="text-sm text-muted-foreground">Recurring Customers</div>
-                      <div className="text-xl font-bold">{salesData.recurringCustomers?.length}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-              <AppleButton variant="outline" onClick={() => navigate('/analytics')}>View All Sales Data</AppleButton>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Total Sales</div>
+                <div className="text-xl font-bold">{isDeveloperMode ? "1,250" : "375"} kg/month</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Supermarkets</div>
+                <div className="text-xl font-bold">{isDeveloperMode ? "10" : "1"} clients</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Customers</div>
+                <div className="text-xl font-bold">{isDeveloperMode ? "215" : "42"} recurring</div>
+              </div>
             </div>
-          </SectionCard>
-        )}
+          }
+        >
+          <div className="grid gap-6">
+            {isDeveloperMode ? (
+              // For admin/developer: Show all containers sales
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {containerSalesData.slice(0, 4).map((salesData) => (
+                  <SalesStatusCard key={salesData.id} data={salesData} />
+                ))}
+              </div>
+            ) : (
+              // For clients: Show only their container sales
+              userContainers.length > 0 && (
+                <SalesStatusCard data={userContainers[0]} />
+              )
+            )}
+
+            {isDeveloperMode && (
+              <AppleButton variant="outline" onClick={() => navigate('/analytics')}>
+                View All Sales Data
+              </AppleButton>
+            )}
+          </div>
+        </SectionCard>
         
         {/* Client specific container data if not in developer mode */}
-        {!isDeveloperMode && clientSpecificContainers.length > 0 && (
+        {!isDeveloperMode && userContainers.length > 0 && (
           <SectionCard
             title="Your Container Performance"
             description="Current performance data for your container farm"
@@ -299,7 +307,7 @@ const Dashboard = () => {
               </div>
             }
           >
-            <ContainerPerformanceSection containerName={clientSpecificContainers[0].containerName} />
+            <ContainerPerformanceSection containerName={userContainers[0].containerName} />
           </SectionCard>
         )}
         
@@ -355,6 +363,65 @@ const Dashboard = () => {
         >
           <TokenizationOverview tokenData={tokenizationData} />
         </SectionCard>
+
+        {/* Security Monitoring - Only for Developer/Admin */}
+        {isDeveloperMode && (
+          <SectionCard
+            title="Security Monitoring"
+            description="Track and manage security events across the platform"
+            onToggle={() => toggleSection('security')}
+            isExpanded={expandedSection === 'security'}
+            summary={
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 bg-muted rounded-lg">
+                  <div className="text-sm text-muted-foreground mb-1">Security Status</div>
+                  <div className="text-xl font-bold text-green-500">Active</div>
+                </div>
+                <div className="p-4 bg-muted rounded-lg">
+                  <div className="text-sm text-muted-foreground mb-1">Suspicious Activities</div>
+                  <div className="text-xl font-bold">{suspiciousActivities.length}</div>
+                </div>
+                <div className="p-4 bg-muted rounded-lg">
+                  <div className="text-sm text-muted-foreground mb-1">System Integrity</div>
+                  <div className="text-xl font-bold">98%</div>
+                </div>
+              </div>
+            }
+          >
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Shield className="mr-2 h-5 w-5" />
+                  Suspicious Activity Log
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {suspiciousActivities.length > 0 ? (
+                  <div className="space-y-4">
+                    {suspiciousActivities.map((activity) => (
+                      <div key={activity.id} className="p-3 border rounded-lg bg-red-50 border-red-200">
+                        <div className="flex justify-between">
+                          <div className="font-medium text-red-700">{activity.action}</div>
+                          <div className="text-xs text-gray-500">
+                            {new Date(activity.timestamp).toLocaleString()}
+                          </div>
+                        </div>
+                        <div className="text-sm mt-1">IP: {activity.ipAddress}</div>
+                        {activity.username && (
+                          <div className="text-sm">Username: {activity.username}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center p-6 text-gray-500">
+                    No suspicious activities detected.
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </SectionCard>
+        )}
 
         {/* Developer Only Section */}
         {isDeveloperMode && <DeveloperInfoCard />}

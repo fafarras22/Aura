@@ -1,16 +1,17 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
-import { BarChart2, TrendingUp, LineChart, PieChart, Download, Filter, Shield, AlertTriangle } from "lucide-react";
+import { BarChart2, TrendingUp, LineChart, PieChart, Download, Filter, Shield, AlertTriangle, Lock } from "lucide-react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart as RechartsLineChart, Line, PieChart as RechartsPieChart, Pie, Cell, AreaChart, Area } from "recharts";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SalesDetailsCard } from "@/components/dashboard/SalesDetailsCard";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useNavigate } from "react-router-dom";
+import { LoginDialog } from "@/components/dashboard/LoginDialog";
 
 // Mock data for demonstration
 const monthlyYieldData = [
@@ -44,8 +45,71 @@ const salesDistributionData = [
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const Analytics = () => {
-  const { isDeveloperMode } = useDeveloperMode();
+  const { isDeveloperMode, currentUser, login, loginAsAdmin } = useDeveloperMode();
   const [timeRange, setTimeRange] = useState("6months");
+  const [showLoginDialog, setShowLoginDialog] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  // Check if user is logged in when component mounts
+  useEffect(() => {
+    if (!currentUser) {
+      setShowLoginDialog(true);
+    }
+  }, [currentUser]);
+
+  const handleLoginSubmit = (type: 'admin' | 'user', username: string, password: string) => {
+    let success = false;
+    
+    if (type === 'admin') {
+      success = loginAsAdmin(password);
+    } else {
+      success = login(username, password);
+    }
+    
+    if (success) {
+      setShowLoginDialog(false);
+    }
+    
+    return success;
+  };
+
+  // If not logged in, show only the login dialog with locked background
+  if (!currentUser) {
+    return (
+      <div className="relative">
+        {/* Blurred/Locked Analytics Background */}
+        <div className="filter blur-sm pointer-events-none">
+          <div className="space-y-8 opacity-40">
+            <h1 className="text-3xl font-bold tracking-tight">Analytics Dashboard</h1>
+            
+            <div className="p-6 border rounded-lg bg-muted/30">
+              <h2 className="text-2xl font-bold mb-4">Access Restricted</h2>
+              <p>Please log in to view analytics content</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-6 border rounded-lg bg-muted/30 h-40"></div>
+              <div className="p-6 border rounded-lg bg-muted/30 h-40"></div>
+              <div className="p-6 border rounded-lg bg-muted/30 h-40"></div>
+            </div>
+            
+            <div className="p-6 border rounded-lg bg-muted/30 h-60">
+              <div className="flex items-center justify-center h-full">
+                <Lock className="w-16 h-16 opacity-10" />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Forced Login Dialog */}
+        <LoginDialog 
+          open={showLoginDialog} 
+          onOpenChange={setShowLoginDialog}
+          onLogin={handleLoginSubmit}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -135,7 +199,7 @@ const Analytics = () => {
                 <CardTitle className="text-lg">Total Yield</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">3,520 kg</div>
+                <div className="text-3xl font-bold">{isDeveloperMode ? "3,520" : "890"} kg</div>
                 <Badge className="mt-2" variant="success">+12% from last period</Badge>
               </CardContent>
             </Card>
@@ -155,7 +219,7 @@ const Analytics = () => {
                 <CardTitle className="text-lg">Current Projection</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">6,800 kg</div>
+                <div className="text-3xl font-bold">{isDeveloperMode ? "6,800" : "1,750"} kg</div>
                 <div className="text-muted-foreground">Annual estimate</div>
               </CardContent>
             </Card>
@@ -395,6 +459,13 @@ const Analytics = () => {
           </TabsContent>
         )}
       </Tabs>
+      
+      {/* Login Dialog - will only show if triggered by state */}
+      <LoginDialog 
+        open={showLoginDialog} 
+        onOpenChange={setShowLoginDialog}
+        onLogin={handleLoginSubmit}
+      />
     </div>
   );
 };

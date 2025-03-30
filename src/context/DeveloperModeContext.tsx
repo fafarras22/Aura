@@ -12,6 +12,9 @@ type DeveloperModeContextType = {
   currentUser: User | null;
   login: (username: string, password: string) => boolean;
   logout: () => void;
+  suspiciousActivities: SuspiciousActivity[];
+  clearSuspiciousActivities: () => void;
+  canAccessDeveloperMode: boolean;
 };
 
 export type User = {
@@ -19,6 +22,14 @@ export type User = {
   name: string;
   role: 'admin' | 'client';
   containerId?: string;
+};
+
+export type SuspiciousActivity = {
+  id: string;
+  timestamp: Date;
+  ipAddress: string;
+  action: string;
+  username?: string;
 };
 
 // Admin and user credentials - in a real app, this would be stored securely on the server
@@ -41,9 +52,14 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(false);
   const [securityChecks, setSecurityChecks] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [suspiciousActivities, setSuspiciousActivities] = useState<SuspiciousActivity[]>([]);
+  const [blockedIPs, setBlockedIPs] = useState<string[]>([]);
 
   // Track login attempts for security
   const [loginAttempts, setLoginAttempts] = useState<number>(0);
+  
+  // Computed property to determine if the user can access developer mode
+  const canAccessDeveloperMode = isAdminLoggedIn || (currentUser?.role === 'admin');
 
   useEffect(() => {
     // Run security checks when mounted
@@ -63,12 +79,34 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
     checkSecurity();
   }, []);
 
+  // Function to log suspicious activities
+  const logSuspiciousActivity = (action: string, username?: string) => {
+    // In a real app, you would get the actual IP address from the request
+    const mockIpAddress = `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+    
+    const newActivity: SuspiciousActivity = {
+      id: Date.now().toString(),
+      timestamp: new Date(),
+      ipAddress: mockIpAddress,
+      action,
+      username
+    };
+    
+    setSuspiciousActivities(prev => [...prev, newActivity]);
+    
+    // In a real app, you would also send this information to your backend for logging
+    console.log("SECURITY ALERT:", newActivity);
+    
+    return newActivity;
+  };
+
   const login = (username: string, password: string): boolean => {
     // Track login attempts for security
     setLoginAttempts(prev => prev + 1);
     
-    // Implement login timeout after multiple failed attempts
+    // Check if there have been too many failed attempts
     if (loginAttempts >= 5) {
+      const activity = logSuspiciousActivity("Too many login attempts", username);
       toast({
         title: "Too Many Attempts",
         description: "For security reasons, please try again later.",
@@ -97,6 +135,11 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
       
       return true;
     } else {
+      // Log failed login attempt
+      if (loginAttempts >= 2) {
+        logSuspiciousActivity("Multiple failed login attempts", username);
+      }
+      
       toast({
         title: "Login Failed",
         description: "Invalid username or password. Please try again.",
@@ -112,6 +155,7 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
     
     // Implement login timeout after multiple failed attempts
     if (loginAttempts >= 5) {
+      logSuspiciousActivity("Too many admin login attempts");
       toast({
         title: "Too Many Attempts",
         description: "For security reasons, please try again later.",
@@ -139,6 +183,9 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
       
       return true;
     } else {
+      // Log suspicious admin login attempt
+      logSuspiciousActivity("Failed admin login attempt", password);
+      
       toast({
         title: "Login Failed",
         description: "Invalid password. Please try again.",
@@ -175,17 +222,39 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
   };
 
   const toggleDeveloperMode = () => {
-    if (!isAdminLoggedIn && !isDeveloperMode) {
+    if (!canAccessDeveloperMode && !isDeveloperMode) {
+      // Log potential hack attempt if a client user tries to enable developer mode
+      if (currentUser && currentUser.role === 'client') {
+        logSuspiciousActivity("Client user attempted to access developer mode", currentUser.name);
+      }
+      
       toast({
-        title: "Authentication Required",
-        description: "Admin login is required to enable developer mode.",
-        variant: "default"
+        title: "Access Denied",
+        description: "Only AKAR admin users can access developer mode.",
+        variant: "destructive"
       });
       return;
     }
     
     // If already logged in as admin, allow toggling developer mode
     setIsDeveloperMode(prev => !prev);
+    
+    toast({
+      title: isDeveloperMode ? "Developer Mode Disabled" : "Developer Mode Enabled",
+      description: isDeveloperMode 
+        ? "Switched to client view mode." 
+        : "Full administrative access activated.",
+      variant: "default"
+    });
+  };
+
+  const clearSuspiciousActivities = () => {
+    setSuspiciousActivities([]);
+    toast({
+      title: "Security Log Cleared",
+      description: "All suspicious activity records have been cleared.",
+      variant: "default"
+    });
   };
 
   return (
@@ -197,7 +266,10 @@ export function DeveloperModeProvider({ children }: { children: ReactNode }) {
       logoutAdmin,
       currentUser,
       login,
-      logout
+      logout,
+      suspiciousActivities,
+      clearSuspiciousActivities,
+      canAccessDeveloperMode
     }}>
       {children}
     </DeveloperModeContext.Provider>

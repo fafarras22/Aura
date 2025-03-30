@@ -16,7 +16,9 @@ import {
   Globe,
   ChevronDown,
   LogOut,
-  Shield
+  Shield,
+  ToggleLeft,
+  ToggleRight
 } from "lucide-react";
 import {
   Sidebar,
@@ -38,6 +40,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useDeveloperMode } from "@/context/DeveloperModeContext";
+import { Badge } from "@/components/ui/badge";
 
 interface SidebarItem {
   title: string;
@@ -54,11 +58,19 @@ interface SidebarSubItem {
   adminOnly?: boolean;
 }
 
-export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: boolean }) {
+export function AppSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [akarLogo, setAkarLogo] = useState("/lovable-uploads/e60ccc9b-594d-461b-9ef9-2b157e19b0a1.png");
   const [openCategories, setOpenCategories] = useState<string[]>(['dashboard']);
+  
+  const { 
+    isDeveloperMode, 
+    toggleDeveloperMode, 
+    currentUser, 
+    logout, 
+    canAccessDeveloperMode 
+  } = useDeveloperMode();
 
   const toggleCategory = (category: string) => {
     setOpenCategories(prev => 
@@ -69,8 +81,8 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
   };
 
   const handleSignOut = () => {
-    // In a real app, this would include authentication logic
-    navigate('/login');
+    logout();
+    navigate('/');
   };
 
   const menuItems: SidebarItem[] = [
@@ -117,6 +129,10 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
 
   // Updated color style for active items - using a lighter green for better contrast
   const activeItemClass = "bg-green-50 dark:bg-green-900/30 text-green-500 dark:text-green-300";
+  
+  // Determine user role text and badge style
+  const userRoleText = currentUser?.role === 'admin' ? 'Admin' : 'Client';
+  const userRoleBadgeVariant = currentUser?.role === 'admin' ? 'default' : 'outline';
 
   return (
     <Sidebar className="bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800">
@@ -129,9 +145,9 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
             onError={() => setAkarLogo("/placeholder.svg")}
           />
           {isDeveloperMode && (
-            <div className="px-2 py-1 text-xs bg-yellow-500 rounded-full text-black">
+            <Badge variant="warning" className="px-2 py-1 text-xs rounded-full">
               Developer Mode
-            </div>
+            </Badge>
           )}
         </div>
       </SidebarHeader>
@@ -196,19 +212,46 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
           <div className="flex items-center space-x-3">
             <Avatar>
               <AvatarImage src="/placeholder.svg" alt="User" />
-              <AvatarFallback className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
-                {isDeveloperMode ? "AD" : "U"}
+              <AvatarFallback className={`${
+                currentUser?.role === 'admin' 
+                  ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300" 
+                  : "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+              }`}>
+                {currentUser?.name.charAt(0) ?? (currentUser?.role === 'admin' ? "A" : "U")}
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="text-sm font-medium">
-                {isDeveloperMode ? "AKAR Admin" : "Client User"}
-              </p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium">{currentUser?.name ?? 'Unknown User'}</p>
+                <Badge variant={userRoleBadgeVariant} className="text-[10px] px-1.5 py-0">
+                  {userRoleText}
+                </Badge>
+              </div>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                {isDeveloperMode ? "Admin Access" : "Client Access"}
+                {currentUser?.containerId ? `Container: ${currentUser.containerId}` : ''}
               </p>
             </div>
           </div>
+          
+          {/* Developer Mode Toggle - Only visible for admin users */}
+          {canAccessDeveloperMode && (
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="w-full justify-between hover:text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 dark:hover:text-green-300"
+              onClick={toggleDeveloperMode}
+            >
+              <div className="flex items-center">
+                <Shield className="w-4 h-4 mr-2" />
+                <span>Developer Mode</span>
+              </div>
+              {isDeveloperMode ? (
+                <ToggleRight className="w-4 h-4 text-green-500" />
+              ) : (
+                <ToggleLeft className="w-4 h-4" />
+              )}
+            </Button>
+          )}
           
           {/* Security Status */}
           <div className="px-3 py-2 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center space-x-2 text-green-700 dark:text-green-300 text-sm">
