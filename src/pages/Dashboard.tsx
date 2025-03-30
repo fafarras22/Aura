@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { SectionCard } from "@/components/dashboard/SectionCard";
 import { AppleSensorCard } from "@/components/dashboard/AppleSensorCard";
@@ -13,7 +14,7 @@ import {
   getMockTokenizationData,
   FarmLocation
 } from "@/services/mockDataService";
-import { Thermometer, Droplet, Wind, Zap, FlaskConical, Waves, AlertCircle, Droplets, ArrowRight } from "lucide-react";
+import { Thermometer, Droplet, Wind, Zap, FlaskConical, Waves, AlertCircle, Droplets, ArrowRight, Lock } from "lucide-react";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -38,6 +39,11 @@ const Dashboard = () => {
   
   // Filter for critical alerts
   const criticalAlerts = alerts.filter(alert => alert.type === 'error' && !alert.isRead);
+
+  // Get client's specific container (in a real app, this would come from authentication)
+  const clientContainerId = "CONT-001"; // Example client container ID
+  const clientSpecificContainers = isDeveloperMode ? containerSalesData : 
+    containerSalesData.filter(data => data.id === clientContainerId);
 
   // Map icon name to icon component
   const getIconComponent = (iconName: string) => {
@@ -94,23 +100,23 @@ const Dashboard = () => {
         />
         <StatCard 
           title="Container Farms" 
-          value={farmLocations.length} 
+          value={isDeveloperMode ? farmLocations.length : clientSpecificContainers.length} 
           icon={ArrowRight} 
           color="purple"
         />
       </div>
       
-      {/* Farm Locations Overview - New Main Section */}
+      {/* Farm Locations Overview - Main Section */}
       <SectionCard
         title="AKAR Farm Container Network"
-        description="All active container farms in the AKAR ecosystem"
+        description={isDeveloperMode ? "All active container farms in the AKAR ecosystem" : "Your container farms in the AKAR ecosystem"}
         onToggle={() => toggleSection('locations')}
         isExpanded={expandedSection === 'locations'}
         summary={
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-4 bg-muted rounded-lg">
               <div className="text-sm text-muted-foreground mb-1">Active Containers</div>
-              <div className="text-xl font-bold">{farmLocations.length} units</div>
+              <div className="text-xl font-bold">{isDeveloperMode ? farmLocations.length : clientSpecificContainers.length} units</div>
             </div>
             <div className="p-4 bg-muted rounded-lg">
               <div className="text-sm text-muted-foreground mb-1">Production Capacity</div>
@@ -123,13 +129,13 @@ const Dashboard = () => {
           </div>
         }
       >
-        <FarmLocationsOverview farmLocations={farmLocations} />
+        <FarmLocationsOverview farmLocations={isDeveloperMode ? farmLocations : farmLocations.filter(loc => loc.id === clientContainerId)} />
       </SectionCard>
       
       {/* Sensor Readings */}
       <SectionCard
         title="Sensor Readings"
-        description="Live readings from all container farm sensors"
+        description={isDeveloperMode ? "Live readings from all container farm sensors" : "Live readings from your container farm sensors"}
         onToggle={() => toggleSection('sensors')}
         isExpanded={expandedSection === 'sensors'}
         onFullView={() => navigate('/sensors')}
@@ -167,68 +173,136 @@ const Dashboard = () => {
         </div>
       </SectionCard>
       
-      {/* Sales Status */}
-      <SectionCard
-        title="Sales Status"
-        description="Current sales data across supermarkets and recurring customers"
-        onToggle={() => toggleSection('sales')}
-        isExpanded={expandedSection === 'sales'}
-        summary={
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Avg. Price</div>
-              <div className="text-xl font-bold">IDR 55,000/kg</div>
+      {/* Sales Status - Only for Developer Mode */}
+      {isDeveloperMode && (
+        <SectionCard
+          title="Sales Status"
+          description="Current sales data across all supermarkets and recurring customers"
+          onToggle={() => toggleSection('sales')}
+          isExpanded={expandedSection === 'sales'}
+          summary={
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Avg. Price</div>
+                <div className="text-xl font-bold">IDR 55,000/kg</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Total Sales</div>
+                <div className="text-xl font-bold">1,250 kg/month</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Supermarkets</div>
+                <div className="text-xl font-bold">10 clients</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Customers</div>
+                <div className="text-xl font-bold">215 recurring</div>
+              </div>
             </div>
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Total Sales</div>
-              <div className="text-xl font-bold">1,250 kg/month</div>
+          }
+        >
+          <div className="grid gap-6">
+            {containerSalesData.slice(0, 1).map((salesData) => (
+              <div key={salesData.id}>
+                <div className="mb-4">
+                  <Badge className="mb-1">{salesData.containerName}</Badge>
+                  <h3 className="text-lg font-semibold">{salesData.containerName} Produce</h3>
+                  <p className="text-muted-foreground">{salesData.supermarketClient?.location}</p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-muted p-4 rounded-lg">
+                    <div className="text-sm text-muted-foreground">Current Price</div>
+                    <div className="text-xl font-bold">IDR {salesData.priceRange?.max.toLocaleString()}/kg</div>
+                  </div>
+                  <div className="bg-muted p-4 rounded-lg">
+                    <div className="text-sm text-muted-foreground">Monthly Sales</div>
+                    <div className="text-xl font-bold">{salesData.totalSales} kg</div>
+                  </div>
+                  <div className="bg-muted p-4 rounded-lg">
+                    <div className="text-sm text-muted-foreground">Supermarket Clients</div>
+                    <div className="text-xl font-bold">1</div>
+                  </div>
+                  <div className="bg-muted p-4 rounded-lg">
+                    <div className="text-sm text-muted-foreground">Recurring Customers</div>
+                    <div className="text-xl font-bold">{salesData.recurringCustomers?.length}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <AppleButton variant="outline" onClick={() => navigate('/analytics')}>View All Sales Data</AppleButton>
+          </div>
+        </SectionCard>
+      )}
+      
+      {/* Client specific container data if not in developer mode */}
+      {!isDeveloperMode && clientSpecificContainers.length > 0 && (
+        <SectionCard
+          title="Your Container Performance"
+          description="Current performance data for your container farm"
+          onToggle={() => toggleSection('performance')}
+          isExpanded={expandedSection === 'performance'}
+          summary={
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Harvest Status</div>
+                <div className="text-xl font-bold">On Schedule</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Efficiency Rating</div>
+                <div className="text-xl font-bold">92%</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Next Maintenance</div>
+                <div className="text-xl font-bold">14 days</div>
+              </div>
             </div>
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Supermarkets</div>
-              <div className="text-xl font-bold">10 clients</div>
-            </div>
-            <div className="p-4 bg-muted rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">Customers</div>
-              <div className="text-xl font-bold">215 recurring</div>
+          }
+        >
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+            <h3 className="text-lg font-medium mb-4">Container Farm: {clientSpecificContainers[0].containerName}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="text-md font-medium mb-2">Current Crops</h4>
+                <ul className="space-y-2">
+                  <li className="flex justify-between">
+                    <span>Lettuce</span>
+                    <span>70% Ready</span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span>Kale</span>
+                    <span>45% Ready</span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span>Spinach</span>
+                    <span>90% Ready</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-md font-medium mb-2">Resource Usage</h4>
+                <ul className="space-y-2">
+                  <li className="flex justify-between">
+                    <span>Water</span>
+                    <span>32L/day</span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span>Electricity</span>
+                    <span>14kWh/day</span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span>Nutrients</span>
+                    <span>0.8kg/day</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        }
-      >
-        <div className="grid gap-6">
-          {containerSalesData.slice(0, 1).map((salesData) => (
-            <div key={salesData.id}>
-              <div className="mb-4">
-                <Badge className="mb-1">{salesData.containerName}</Badge>
-                <h3 className="text-lg font-semibold">{salesData.containerName} Produce</h3>
-                <p className="text-muted-foreground">{salesData.supermarketClient?.location}</p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <div className="bg-muted p-4 rounded-lg">
-                  <div className="text-sm text-muted-foreground">Current Price</div>
-                  <div className="text-xl font-bold">IDR {salesData.priceRange?.max.toLocaleString()}/kg</div>
-                </div>
-                <div className="bg-muted p-4 rounded-lg">
-                  <div className="text-sm text-muted-foreground">Monthly Sales</div>
-                  <div className="text-xl font-bold">{salesData.totalSales} kg</div>
-                </div>
-                <div className="bg-muted p-4 rounded-lg">
-                  <div className="text-sm text-muted-foreground">Supermarket Clients</div>
-                  <div className="text-xl font-bold">1</div>
-                </div>
-                <div className="bg-muted p-4 rounded-lg">
-                  <div className="text-sm text-muted-foreground">Recurring Customers</div>
-                  <div className="text-xl font-bold">{salesData.recurringCustomers?.length}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-
-          <AppleButton variant="outline">View All Sales Data</AppleButton>
-        </div>
-      </SectionCard>
+        </SectionCard>
+      )}
       
-      {/* Container Upgrade Section - Moved to Bottom */}
+      {/* Container Upgrade Section */}
       <SectionCard
         title="Container Farm Upgrades"
         description="Available container farm upgrades and capacity options"
@@ -254,7 +328,7 @@ const Dashboard = () => {
         <ContainerUpgrade />
       </SectionCard>
       
-      {/* Tokenization Section - Moved to Bottom */}
+      {/* Tokenization Section */}
       <SectionCard
         title="Tokenization Overview"
         description="ERC-20 tokens on Polygon representing your farm produce"
@@ -281,7 +355,7 @@ const Dashboard = () => {
         <TokenizationOverview tokenData={tokenizationData} />
       </SectionCard>
 
-      {/* Developer Only Section - kept same */}
+      {/* Developer Only Section */}
       {isDeveloperMode && (
         <Card className="border-dashed border-2 border-yellow-300 rounded-xl overflow-hidden">
           <CardHeader>
@@ -301,6 +375,10 @@ const Dashboard = () => {
                 <div>AKAR-40-001-JAK</div>
                 <div className="font-medium">Firmware Version:</div>
                 <div>v2.3.1</div>
+                <div className="font-medium">Security Status:</div>
+                <div className="flex items-center text-green-600">
+                  <Lock className="w-4 h-4 mr-1" /> Secured
+                </div>
               </div>
             </div>
           </CardContent>

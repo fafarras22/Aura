@@ -5,10 +5,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
-import { BarChart2, TrendingUp, LineChart, PieChart, Download, Filter } from "lucide-react";
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart as RechartsLineChart, Line } from "recharts";
+import { BarChart2, TrendingUp, LineChart, PieChart, Download, Filter, Shield, AlertTriangle } from "lucide-react";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart as RechartsLineChart, Line, PieChart as RechartsPieChart, Pie, Cell, AreaChart, Area } from "recharts";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { SalesDetailsCard } from "@/components/dashboard/SalesDetailsCard";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Mock data for demonstration
 const monthlyYieldData = [
@@ -30,6 +32,16 @@ const resourceUsageData = [
   { name: "Jun", water: 1450, electricity: 900 },
   { name: "Jul", water: 1500, electricity: 940 },
 ];
+
+// Sales distribution data
+const salesDistributionData = [
+  { name: "Supermarkets", value: 60 },
+  { name: "Restaurants", value: 25 },
+  { name: "Direct Consumers", value: 10 },
+  { name: "Export", value: 5 }
+];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const Analytics = () => {
   const { isDeveloperMode } = useDeveloperMode();
@@ -64,11 +76,22 @@ const Analytics = () => {
         </div>
       </div>
 
+      {!isDeveloperMode && (
+        <Alert variant="warning" className="mb-6">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Limited Access</AlertTitle>
+          <AlertDescription>
+            You are viewing client-specific analytics. For full company data, please switch to Developer Mode.
+          </AlertDescription>
+        </Alert>
+      )}
+
       <Tabs defaultValue="yield">
         <TabsList>
           <TabsTrigger value="yield">Yield</TabsTrigger>
           <TabsTrigger value="resources">Resource Usage</TabsTrigger>
           <TabsTrigger value="efficiency">Efficiency</TabsTrigger>
+          {isDeveloperMode && <TabsTrigger value="sales">Sales</TabsTrigger>}
           {isDeveloperMode && <TabsTrigger value="advanced">Advanced</TabsTrigger>}
         </TabsList>
         
@@ -80,7 +103,7 @@ const Analytics = () => {
                 Monthly Harvest Yield
               </CardTitle>
               <CardDescription>
-                Monthly production in kilograms
+                Monthly production in kilograms{isDeveloperMode ? " across all containers" : " for your containers"}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -271,6 +294,49 @@ const Analytics = () => {
           </Card>
         </TabsContent>
         
+        {/* Sales Analytics - Only for Developer Mode */}
+        {isDeveloperMode && (
+          <TabsContent value="sales" className="space-y-4 mt-6">
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <PieChart className="mr-2 h-5 w-5" />
+                  Sales Distribution
+                </CardTitle>
+                <CardDescription>
+                  Sales distribution by market segment
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px] flex justify-center">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RechartsPieChart>
+                      <Pie
+                        data={salesDistributionData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        outerRadius={120}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {salesDistributionData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => `${value}%`} />
+                      <Legend />
+                    </RechartsPieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <SalesDetailsCard />
+          </TabsContent>
+        )}
+        
         {isDeveloperMode && (
           <TabsContent value="advanced" className="space-y-4 mt-6">
             <Card className="border-dashed border-2 border-yellow-300">
@@ -296,6 +362,32 @@ const Analytics = () => {
                       Generate detailed reports with custom metrics
                     </p>
                     <Button variant="outline">Create Report</Button>
+                  </div>
+                </div>
+                
+                <div className="mt-6">
+                  <h3 className="text-lg font-medium mb-4">Security Analytics</h3>
+                  <div className="flex items-center mb-4 text-green-600">
+                    <Shield className="w-5 h-5 mr-2" />
+                    <span className="font-medium">System Security: Enhanced Protection Active</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+                      <div className="text-sm font-medium">Access Attempts</div>
+                      <div className="text-2xl font-bold">324</div>
+                      <div className="text-xs text-muted-foreground">Last 30 days</div>
+                    </div>
+                    <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+                      <div className="text-sm font-medium">Blocked Attacks</div>
+                      <div className="text-2xl font-bold">27</div>
+                      <div className="text-xs text-muted-foreground">Last 30 days</div>
+                    </div>
+                    <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+                      <div className="text-sm font-medium">Security Score</div>
+                      <div className="text-2xl font-bold">94/100</div>
+                      <div className="text-xs text-green-600">Excellent</div>
+                    </div>
                   </div>
                 </div>
               </CardContent>

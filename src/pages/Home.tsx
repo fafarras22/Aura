@@ -5,12 +5,13 @@ import { HomeHeader } from "@/components/home/HomeHeader";
 import { HeroSection } from "@/components/home/HeroSection";
 import { AboutSection } from "@/components/home/AboutSection";
 import { IndonesiaImpactSection } from "@/components/home/IndonesiaImpactSection";
-import { SolutionsSection } from "@/components/home/SolutionsSection";
 import { TechnologySection } from "@/components/home/TechnologySection";
 import { TokenizationSection } from "@/components/home/TokenizationSection";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
+  const navigate = useNavigate();
 
   // Language content
   const content = {
@@ -64,22 +65,31 @@ const Home = () => {
     }
   };
 
+  const handleExploreClick = () => {
+    navigate('/explore-solutions');
+  };
+
+  const handleLearnMoreClick = () => {
+    navigate('/learn-more');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
       {/* Header/Navigation */}
       <HomeHeader language={language} setLanguage={setLanguage} />
 
       {/* Hero section */}
-      <HeroSection content={content[language].hero} />
+      <HeroSection 
+        content={content[language].hero} 
+        onExploreClick={handleExploreClick}
+        onLearnMoreClick={handleLearnMoreClick}
+      />
 
       {/* About section */}
       <AboutSection content={content[language].about} />
       
       {/* Indonesia Impact section */}
       <IndonesiaImpactSection language={language} />
-      
-      {/* Solutions section */}
-      <SolutionsSection language={language} />
       
       {/* Technology section */}
       <TechnologySection language={language} />

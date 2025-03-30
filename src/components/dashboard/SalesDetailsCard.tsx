@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from 'recharts';
 import { Badge } from "@/components/ui/badge";
-import { Download, Filter, Calendar } from "lucide-react";
+import { Download, Filter, Calendar, ArrowUpRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const mockHistoricalData = [
@@ -264,7 +264,7 @@ export const SalesDetailsCard = () => {
           <TabsContent value="projections">
             <div className="h-[400px] bg-white dark:bg-gray-800 p-4 rounded-lg">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart
+                <AreaChart
                   data={[...mockHistoricalData, ...mockProjectedData]}
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                 >
@@ -273,24 +273,36 @@ export const SalesDetailsCard = () => {
                   <YAxis />
                   <Tooltip formatter={(value) => [formatNumber(Number(value)), 'Units']} />
                   <Legend />
-                  <Line 
+                  <defs>
+                    <linearGradient id="colorHistorical" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#4ade80" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#4ade80" stopOpacity={0.1}/>
+                    </linearGradient>
+                    <linearGradient id="colorProjected" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                  <Area 
                     type="monotone" 
                     dataKey="sales" 
                     data={mockHistoricalData}
                     name="Historical" 
                     stroke="#4ade80" 
-                    strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#colorHistorical)"
                   />
-                  <Line 
+                  <Area 
                     type="monotone" 
                     dataKey="sales" 
                     data={mockProjectedData}
                     name="Projected" 
                     stroke="#f59e0b" 
+                    fillOpacity={1}
+                    fill="url(#colorProjected)"
                     strokeDasharray="5 5"
-                    strokeWidth={2}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
             
@@ -344,6 +356,15 @@ export const SalesDetailsCard = () => {
                 </li>
               </ul>
             </div>
+            
+            <Button 
+              className="w-full mt-4" 
+              variant="default" 
+              size="lg"
+            >
+              <Download className="mr-2 h-4 w-4" />
+              Download Complete Forecast Report
+            </Button>
           </TabsContent>
         </Tabs>
       </CardContent>

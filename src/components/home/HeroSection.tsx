@@ -10,9 +10,15 @@ interface HeroSectionProps {
     explore: string;
     learnMore: string;
   };
+  onExploreClick?: () => void;
+  onLearnMoreClick?: () => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ content }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ 
+  content, 
+  onExploreClick,
+  onLearnMoreClick
+}) => {
   return (
     <section className="relative w-full min-h-[80vh] flex items-center">
       <div className="absolute inset-0 z-0 bg-gradient-to-r from-white via-white to-accent/20 dark:from-gray-950 dark:via-gray-950 dark:to-accent/5"></div>
@@ -23,6 +29,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ content }) => {
             subtitle={content.subtitle}
             explore={content.explore}
             learnMore={content.learnMore}
+            onExploreClick={onExploreClick}
+            onLearnMoreClick={onLearnMoreClick}
           />
           <HeroImage />
         </div>

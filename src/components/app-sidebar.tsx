@@ -15,7 +15,8 @@ import {
   MonitorSmartphone,
   Globe,
   ChevronDown,
-  LogOut
+  LogOut,
+  Shield
 } from "lucide-react";
 import {
   Sidebar,
@@ -114,8 +115,8 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
     return false;
   };
 
-  // Updated color style for active items - using a lighter green
-  const activeItemClass = "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300";
+  // Updated color style for active items - using a lighter green for better contrast
+  const activeItemClass = "bg-green-50 dark:bg-green-900/30 text-green-500 dark:text-green-300";
 
   return (
     <Sidebar className="bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800">
@@ -151,7 +152,7 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
                           className={`justify-between ${isActiveGroup(item) ? activeItemClass : ""}`}
                         >
                           <div className="flex items-center">
-                            <item.icon className={`w-5 h-5 mr-3 ${isActiveGroup(item) ? "text-green-600 dark:text-green-400" : ""}`} />
+                            <item.icon className={`w-5 h-5 mr-3 ${isActiveGroup(item) ? "text-green-500 dark:text-green-400" : ""}`} />
                             <span>{item.title}</span>
                           </div>
                           <ChevronDown 
@@ -167,7 +168,7 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
                                 onClick={() => navigate(subItem.path)}
                                 className={`pl-9 ${isActive(subItem.path) ? activeItemClass : ""}`}
                               >
-                                <subItem.icon className={`w-4 h-4 mr-2 ${isActive(subItem.path) ? "text-green-600 dark:text-green-400" : ""}`} />
+                                <subItem.icon className={`w-4 h-4 mr-2 ${isActive(subItem.path) ? "text-green-500 dark:text-green-400" : ""}`} />
                                 <span>{subItem.title}</span>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
@@ -180,7 +181,7 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
                       onClick={() => navigate(item.path)}
                       className={isActive(item.path) ? activeItemClass : ""}
                     >
-                      <item.icon className={`w-5 h-5 mr-3 ${isActive(item.path) ? "text-green-600 dark:text-green-400" : ""}`} />
+                      <item.icon className={`w-5 h-5 mr-3 ${isActive(item.path) ? "text-green-500 dark:text-green-400" : ""}`} />
                       <span>{item.title}</span>
                     </SidebarMenuButton>
                   )}
@@ -209,10 +210,16 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
             </div>
           </div>
           
+          {/* Security Status */}
+          <div className="px-3 py-2 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center space-x-2 text-green-700 dark:text-green-300 text-sm">
+            <Shield className="w-4 h-4" />
+            <span>Secure Connection</span>
+          </div>
+          
           {/* Sign Out Button */}
           <Button 
             variant="outline" 
-            className="w-full justify-start hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/20 dark:hover:text-green-300"
+            className="w-full justify-start hover:text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20 dark:hover:text-green-300"
             onClick={handleSignOut}
           >
             <LogOut className="w-4 h-4 mr-2" />

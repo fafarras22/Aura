@@ -31,6 +31,8 @@ import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 import Legal from "@/pages/Legal";
 import Whitepaper from "@/pages/Whitepaper";
+import ExploreSolutions from "@/pages/ExploreSolutions";
+import LearnMore from "@/pages/LearnMore";
 import { Outlet } from "react-router-dom";
 
 const queryClient = new QueryClient();
@@ -61,6 +63,8 @@ const App = () => (
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/legal" element={<Legal />} />
               <Route path="/whitepaper" element={<Whitepaper />} />
+              <Route path="/explore-solutions" element={<ExploreSolutions />} />
+              <Route path="/learn-more" element={<LearnMore />} />
               
               {/* Protected routes - Add authentication check here in a real app */}
               <Route element={<ResponsiveLayout />}>
