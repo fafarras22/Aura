@@ -1,11 +1,11 @@
 
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
-import { User } from "@/context/DeveloperModeContext";
+import { User } from "@/context/developer-mode/types";
 import { useMobile } from "@/hooks/use-mobile";
 import { Shield, User as UserIcon } from 'lucide-react';
 
-interface DashboardHeaderProps {
+export interface DashboardHeaderProps {
   currentUser: User | null;
 }
 

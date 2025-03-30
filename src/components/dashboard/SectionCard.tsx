@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import { AppleButton } from '@/components/ui/apple-button';
 
-interface SectionCardProps {
+export interface SectionCardProps {
   title: string;
   description?: string;
   onToggle: () => void;

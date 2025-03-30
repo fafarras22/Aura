@@ -11,11 +11,88 @@ import { LoginDialog } from "@/components/dashboard/LoginDialog";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { useNavigate } from "react-router-dom";
 import { ContainerManagement } from "@/components/dashboard/ContainerManagement";
+import { Thermometer, Droplet, Wind, Activity } from "lucide-react";
+import { format } from "date-fns";
 
 const Dashboard = () => {
   const [showLoginDialog, setShowLoginDialog] = useState<boolean>(false);
-  const { login, loginAsAdmin, currentUser, isDeveloperMode } = useDeveloperMode();
+  const { login, loginAsAdmin, currentUser, isDeveloperMode, getContainerData } = useDeveloperMode();
   const navigate = useNavigate();
+  
+  // Section card states
+  const [expandedSections, setExpandedSections] = useState({
+    sensors: true,
+    sales: true,
+    tokenization: true,
+    locations: true
+  });
+  
+  // Toggle section expanded state
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+  
+  // Mock data for the dashboard components
+  const mockData = {
+    criticalAlertsCount: 1,
+    upcomingHarvestsCount: 3,
+    containerCount: getContainerData().length || 3,
+    
+    // Sales data
+    salesData: {
+      id: "sales-1",
+      containerName: "Jakarta Farm Container",
+      totalSales: 1250,
+      totalRevenue: 85000000,
+      supermarketClient: {
+        name: "Superindo Market",
+        imageUrl: ""
+      },
+      monthlySales: [120, 150, 180, 210, 250, 340],
+      recurringCustomers: [
+        { id: "cust-1", name: "Customer 1", imageUrl: "" },
+        { id: "cust-2", name: "Customer 2", imageUrl: "" },
+        { id: "cust-3", name: "Customer 3", imageUrl: "" }
+      ]
+    },
+    
+    // Tokenization data
+    tokenData: {
+      totalValue: 125000000,
+      totalTokens: 12500,
+      activeContracts: 3,
+      totalInvestors: 18,
+      averageReturn: 12.5,
+      recentActivities: [
+        {
+          id: "token-act-1",
+          type: "invested",
+          description: "New investment",
+          tokenAmount: 500,
+          date: format(new Date(), "dd MMM yyyy"),
+          transactionHash: "0x1234567890abcdef"
+        },
+        {
+          id: "token-act-2",
+          type: "harvested",
+          description: "Harvest yield distributed",
+          tokenAmount: 250,
+          date: format(new Date(), "dd MMM yyyy"),
+          transactionHash: "0x0987654321fedcba"
+        }
+      ]
+    },
+    
+    // Farm locations
+    farmLocations: [
+      { id: "loc-1", name: "Jakarta Farm", status: "active", coordinates: [106.8456, -6.2088] },
+      { id: "loc-2", name: "Bandung Farm", status: "maintenance", coordinates: [107.6191, -6.9175] },
+      { id: "loc-3", name: "Surabaya Farm", status: "active", coordinates: [112.7378, -7.2575] }
+    ]
+  };
   
   // Check if user is logged in when component mounts
   useEffect(() => {
@@ -59,41 +136,62 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <DashboardHeader />
+      <DashboardHeader currentUser={currentUser} />
       
-      <QuickStats />
+      <QuickStats 
+        criticalAlertsCount={mockData.criticalAlertsCount}
+        upcomingHarvestsCount={mockData.upcomingHarvestsCount}
+        containerCount={mockData.containerCount}
+      />
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="col-span-1 md:col-span-2 space-y-6">
-          <SectionCard title="Environmental Sensors">
+          <SectionCard 
+            title="Environmental Sensors" 
+            onToggle={() => toggleSection('sensors')}
+            isExpanded={expandedSections.sensors}
+            summary={<div className="text-sm text-muted-foreground">4 active sensors monitoring your farm</div>}
+          >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <SensorCard 
                 title="Temperature" 
                 value={25.3} 
                 unit="°C" 
-                change={+1.2} 
+                icon={<Thermometer className="w-5 h-5" />}
                 status="normal"
+                progress={65}
+                minValue={15}
+                maxValue={35}
               />
               <SensorCard 
                 title="Humidity" 
                 value={64} 
                 unit="%" 
-                change={-3.5}
+                icon={<Droplet className="w-5 h-5" />}
                 status="normal"
+                progress={64}
+                minValue={0}
+                maxValue={100}
               />
               <SensorCard 
                 title="CO2 Level" 
                 value={415} 
                 unit="ppm" 
-                change={+12}
-                status="normal" 
+                icon={<Wind className="w-5 h-5" />}
+                status="normal"
+                progress={41.5}
+                minValue={0}
+                maxValue={1000}
               />
               <SensorCard 
                 title="Water pH" 
                 value={6.2} 
                 unit="pH" 
-                change={-0.3}
-                status="warning" 
+                icon={<Activity className="w-5 h-5" />}
+                status="warning"
+                progress={62}
+                minValue={0}
+                maxValue={10}
               />
             </div>
           </SectionCard>
@@ -101,18 +199,28 @@ const Dashboard = () => {
           {/* Container Management Component (Admin-only) */}
           {isDeveloperMode && <ContainerManagement />}
           
-          <SectionCard title="Sales Status">
+          <SectionCard 
+            title="Sales Status"
+            onToggle={() => toggleSection('sales')}
+            isExpanded={expandedSections.sales}
+            summary={<div className="text-sm text-muted-foreground">Total sales: {mockData.salesData.totalSales} units</div>}
+          >
             <div className="grid grid-cols-1 gap-4">
-              <SalesStatusCard />
+              <SalesStatusCard data={mockData.salesData} />
             </div>
           </SectionCard>
         </div>
         
         <div className="space-y-6">
-          <TokenizationOverview />
+          <TokenizationOverview tokenData={mockData.tokenData} />
           
-          <SectionCard title="Container Locations">
-            <FarmLocationsOverview />
+          <SectionCard 
+            title="Container Locations"
+            onToggle={() => toggleSection('locations')}
+            isExpanded={expandedSections.locations}
+            summary={<div className="text-sm text-muted-foreground">{mockData.farmLocations.length} farm locations</div>}
+          >
+            <FarmLocationsOverview farmLocations={mockData.farmLocations} />
           </SectionCard>
         </div>
       </div>

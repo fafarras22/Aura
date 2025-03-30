@@ -5,9 +5,9 @@ import { ReactNode } from "react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
-type SensorStatus = 'normal' | 'warning' | 'error';
+export type SensorStatus = 'normal' | 'warning' | 'error';
 
-interface SensorCardProps {
+export interface SensorCardProps {
   title: string;
   value: number | string;
   unit: string;
@@ -53,8 +53,8 @@ export function SensorCard({
       <CardContent>
         <div className="flex items-center justify-between mb-4">
           <div className="text-3xl font-bold">{value}</div>
-          <div className="text-xl text-gray-500">{unit}</div>
-          <div className="text-akar-green p-2 rounded-full bg-akar-lightgreen/20">{icon}</div>
+          <div className="text-xl text-gray-500 dark:text-gray-400">{unit}</div>
+          <div className="text-akar-green p-2 rounded-full bg-akar-lightgreen/20 dark:bg-green-900/30">{icon}</div>
         </div>
         
         {progress !== undefined && (
@@ -67,7 +67,7 @@ export function SensorCard({
               )}
             />
             {minValue !== undefined && maxValue !== undefined && (
-              <div className="flex justify-between text-xs text-gray-500">
+              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
                 <span>{minValue}</span>
                 <span>{maxValue}</span>
               </div>
@@ -76,7 +76,7 @@ export function SensorCard({
         )}
         
         {lastUpdated && (
-          <div className="mt-4 text-xs text-gray-500">
+          <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
             Last updated: {lastUpdated}
           </div>
         )}

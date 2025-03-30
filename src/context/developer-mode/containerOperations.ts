@@ -36,7 +36,7 @@ export const toggleContainerStatus = (
     if (container.id === containerId) {
       return {
         ...container,
-        status: active ? 'active' : 'inactive'
+        status: active ? 'active' as const : 'inactive' as const
       };
     }
     return container;
