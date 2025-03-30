@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TokenOverview } from '@/components/tokenization/TokenOverview';
 import { TokenAllocation } from '@/components/tokenization/TokenAllocation';
-import { TokenInvestments } from '@/components/tokenization/TokenInvestments';
+import TokenInvestments from '@/components/tokenization/TokenInvestments';
 import { TokenTransactions } from '@/components/tokenization/TokenTransactions';
 import { TokenPurchase } from '@/components/tokenization/TokenPurchase';
 import { TokenPurchaseModal } from '@/components/tokenization/TokenPurchaseModal';
