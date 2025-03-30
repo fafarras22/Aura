@@ -668,4 +668,4 @@ const Home = () => {
                 className="h-10 mb-4 brightness-0 invert"
               />
               <p className="text-gray-400 text-sm mb-4">
-                Revolutionizing sustainable farming
+                Revolutionizing sustainable farming through smart
