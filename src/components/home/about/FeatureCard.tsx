@@ -10,12 +10,16 @@ interface FeatureCardProps {
 
 export const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl hover:shadow-md transition-all">
-      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+    <div 
+      className="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl hover:shadow-md transition-all"
+      itemScope
+      itemType="https://schema.org/Service"
+    >
+      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4" aria-hidden="true">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-3 dark:text-white">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400">
+      <h3 className="text-xl font-semibold mb-3 dark:text-white" itemProp="name">{title}</h3>
+      <p className="text-gray-600 dark:text-gray-400" itemProp="description">
         {description}
       </p>
     </div>

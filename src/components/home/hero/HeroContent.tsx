@@ -13,7 +13,7 @@ export const HeroContent: React.FC<HeroContentProps> = ({
   title, subtitle, explore, learnMore 
 }) => {
   return (
-    <div>
+    <div className="hero-content">
       <h1 className="text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6">
         {title}
       </h1>
@@ -21,10 +21,18 @@ export const HeroContent: React.FC<HeroContentProps> = ({
         {subtitle}
       </p>
       <div className="flex flex-wrap gap-4">
-        <AppleButton variant="green" className="px-8 py-3">
+        <AppleButton 
+          variant="green" 
+          className="px-8 py-3"
+          aria-label={explore}
+        >
           {explore}
         </AppleButton>
-        <AppleButton variant="secondary" className="px-8 py-3">
+        <AppleButton 
+          variant="secondary" 
+          className="px-8 py-3"
+          aria-label={learnMore}
+        >
           {learnMore}
         </AppleButton>
       </div>
