@@ -40,7 +40,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50 dark:bg-gray-900">
-        <AppSidebar isDeveloperMode={isDeveloperMode} />
+        <AppSidebar />
         <div className="flex-1 flex flex-col">
           <header className="h-16 border-b flex items-center justify-between px-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-gray-200 dark:border-gray-800 sticky top-0 z-30">
             <div className="flex items-center gap-4">

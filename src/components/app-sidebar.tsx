@@ -1,4 +1,3 @@
-
 import { 
   Leaf, 
   Droplet, 
@@ -145,7 +144,7 @@ export function AppSidebar() {
             onError={() => setAkarLogo("/placeholder.svg")}
           />
           {isDeveloperMode && (
-            <Badge variant="warning" className="px-2 py-1 text-xs rounded-full">
+            <Badge variant="secondary" className="px-2 py-1 text-xs rounded-full">
               Developer Mode
             </Badge>
           )}
