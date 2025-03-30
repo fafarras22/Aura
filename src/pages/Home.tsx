@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -482,14 +483,14 @@ const Home = () => {
           <div className="relative rounded-2xl overflow-hidden mb-16 h-[400px]">
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
             <img 
-              src="/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png" 
-              alt="AKAR Technology - Data-driven farming" 
+              src="/lovable-uploads/ff02fd5a-28c4-466b-99d9-ea6213beb2c5.png" 
+              alt="AKAR Real-time Monitoring" 
               className="w-full h-full object-cover"
             />
             <div className="absolute top-1/2 left-12 transform -translate-y-1/2 z-20 max-w-lg">
-              <h3 className="text-3xl font-bold text-white mb-4">Smart Monitoring Systems</h3>
+              <h3 className="text-3xl font-bold text-white mb-4">Data-Driven Farming</h3>
               <p className="text-white/90 mb-6">
-                Our proprietary sensor network provides continuous data on all critical growing parameters, ensuring optimal conditions around the clock.
+                Our proprietary sensor network continuously monitors all critical growing parameters, ensuring optimal conditions and maximum crop yields.
               </p>
               <Button variant="apple" className="rounded-full">
                 Explore Technology
@@ -668,4 +669,53 @@ const Home = () => {
                 className="h-10 mb-4 brightness-0 invert"
               />
               <p className="text-gray-400 text-sm mb-4">
-                Revolutionizing sustainable farming through smart
+                Revolutionizing sustainable farming through smart container technology for a greener Indonesia.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Solutions</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Container Farms</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Monitoring Systems</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Crop Management</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Consultancy</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">About Us</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Careers</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">News</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Contact</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Connect</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Instagram</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Twitter</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">LinkedIn</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">Email</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-500 text-sm">© 2023 AKAR Technologies. All rights reserved.</p>
+            <div className="flex gap-6 mt-4 md:mt-0">
+              <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">Privacy Policy</a>
+              <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">Terms of Service</a>
+              <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">Cookies</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Home;
