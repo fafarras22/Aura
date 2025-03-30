@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
@@ -267,7 +266,7 @@ const Settings = () => {
                 <Label htmlFor="companyName">Company Name</Label>
                 <Input 
                   id="companyName" 
-                  defaultValue="AKAR Vertical Farming" 
+                  defaultValue="PT Tumbuh Dimana Sadja" 
                   disabled={!isDeveloperMode}
                 />
               </div>

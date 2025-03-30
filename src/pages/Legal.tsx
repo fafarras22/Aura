@@ -19,7 +19,7 @@ const Legal = () => {
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">Legal Entity Information</h2>
           <p>
-            AKAR operates as PT AKAR Teknologi Indonesia, a limited liability company established and registered under the laws of the Republic of Indonesia.
+            AKAR operates as PT Tumbuh Dimana Sadja, a limited liability company established and registered under the laws of the Republic of Indonesia.
           </p>
           <ul className="list-disc list-inside space-y-2 pl-4">
             <li><strong>Company Registration Number:</strong> 123456789012345</li>
@@ -57,7 +57,7 @@ const Legal = () => {
             <li>$AKR tokens are utility tokens that represent rights to agricultural assets and services</li>
             <li>These tokens are not classified as securities under current Indonesian regulations</li>
             <li>AKAR tokens operate on the Polygon PoS (Proof of Stake) blockchain</li>
-            <li>Token holders do not receive ownership in PT AKAR Teknologi Indonesia</li>
+            <li>Token holders do not receive ownership in PT Tumbuh Dimana Sadja</li>
             <li>Revenue sharing from agricultural production is governed by smart contracts</li>
           </ul>
           <p>
@@ -68,7 +68,7 @@ const Legal = () => {
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">Intellectual Property</h2>
           <p>
-            The following intellectual property rights are owned by PT AKAR Teknologi Indonesia:
+            The following intellectual property rights are owned by PT Tumbuh Dimana Sadja:
           </p>
           <ul className="list-disc list-inside space-y-2 pl-4">
             <li><strong>Trademarks:</strong> "AKAR", "AKAR Farm", "AKAR Token", and the AKAR logo are registered trademarks in Indonesia and other jurisdictions</li>
@@ -136,7 +136,7 @@ const Legal = () => {
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">Corporate Governance</h2>
           <p>
-            PT AKAR Teknologi Indonesia is governed by:
+            PT Tumbuh Dimana Sadja is governed by:
           </p>
           <ul className="list-disc list-inside space-y-2 pl-4">
             <li><strong>Board of Directors:</strong> Responsible for day-to-day operations and strategic direction</li>

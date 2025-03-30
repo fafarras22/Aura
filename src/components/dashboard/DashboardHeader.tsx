@@ -15,11 +15,16 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ currentUser })
   
   return (
     <div className="flex justify-between items-center">
-      <h1 className={`font-bold tracking-tight ${isMobile ? 'text-2xl' : 'text-3xl'}`}>Dashboard</h1>
+      <h1 className={`font-bold tracking-tight ${isMobile ? 'text-xl' : 'text-3xl'}`}>Dashboard</h1>
       {!isMobile && (
         <div className="text-sm text-muted-foreground">
           Last updated: {new Date().toLocaleTimeString()}
         </div>
+      )}
+      {isMobile && currentUser.role === 'admin' && (
+        <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300 text-xs">
+          Admin
+        </Badge>
       )}
     </div>
   );
