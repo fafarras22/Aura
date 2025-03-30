@@ -16,6 +16,7 @@ import Harvest from "@/pages/Harvest";
 import Calendar from "@/pages/Calendar";
 import Analytics from "@/pages/Analytics";
 import Settings from "@/pages/Settings";
+import Tokenization from "@/pages/Tokenization";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/cctv" element={<CCTV />} />
               <Route path="/harvest" element={<Harvest />} />
+              <Route path="/tokenization" element={<Tokenization />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/settings" element={<Settings />} />

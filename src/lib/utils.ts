@@ -38,3 +38,13 @@ export function getStatusColor(status: string): string {
       return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
   }
 }
+
+export function calculateTokenPrice(basePrice: number, yieldRate: number, timeHeld: number): number {
+  // Simple token price calculation based on base price, yield rate, and time held
+  // In a real app, this would be much more complex and would come from blockchain data
+  return basePrice * (1 + (yieldRate / 100) * (timeHeld / 12));
+}
+
+export function calculateROI(initialInvestment: number, currentValue: number): number {
+  return ((currentValue - initialInvestment) / initialInvestment) * 100;
+}

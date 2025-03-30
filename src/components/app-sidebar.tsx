@@ -1,5 +1,5 @@
 
-import { Leaf, Droplet, Thermometer, Activity, AlertTriangle, Camera, Calendar, Settings, Home, BarChart2 } from "lucide-react";
+import { Leaf, Droplet, Thermometer, Activity, AlertTriangle, Camera, Calendar, Settings, Home, BarChart2, CircleDollarSign } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -34,6 +34,7 @@ export function AppSidebar({ isDeveloperMode = false }: { isDeveloperMode?: bool
     { title: "Sensors", path: "/sensors", icon: Activity },
     { title: "Water System", path: "/water", icon: Droplet },
     { title: "Climate", path: "/climate", icon: Thermometer },
+    { title: "Tokenization", path: "/tokenization", icon: CircleDollarSign },
     { title: "Alerts", path: "/alerts", icon: AlertTriangle },
     { title: "CCTV", path: "/cctv", icon: Camera },
     { title: "Harvest", path: "/harvest", icon: Leaf },

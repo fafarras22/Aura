@@ -1,10 +1,10 @@
 
+import React, { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { SensorCard } from "@/components/dashboard/SensorCard";
 import { ContainerUpgrade } from "@/components/dashboard/ContainerUpgrade";
-import { SalesStatusCard } from "@/components/dashboard/SalesStatusCard";
-import { FarmLocationsMap } from "@/components/dashboard/FarmLocationsMap";
 import { TokenizationOverview } from "@/components/dashboard/TokenizationOverview";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   getMockSensorData, 
   getMockAlerts, 
@@ -13,14 +13,16 @@ import {
   getMockFarmLocations,
   getMockTokenizationData
 } from "@/services/mockDataService";
-import { Thermometer, Droplet, Wind, Zap, FlaskConical, Waves, AlertCircle, Droplets } from "lucide-react";
+import { Thermometer, Droplet, Wind, Zap, FlaskConical, Waves, AlertCircle, Droplets, ArrowRight } from "lucide-react";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { format, parseISO } from 'date-fns';
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { isDeveloperMode } = useDeveloperMode();
+  const navigate = useNavigate();
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  
   const sensorData = getMockSensorData();
   const alerts = getMockAlerts();
   const harvests = getMockHarvests();
@@ -31,8 +33,8 @@ const Dashboard = () => {
   // Get upcoming harvests (status === 'ready')
   const upcomingHarvests = harvests.filter(harvest => harvest.status === 'ready');
   
-  // Filter for unread alerts
-  const unreadAlerts = alerts.filter(alert => !alert.isRead);
+  // Filter for critical alerts
+  const criticalAlerts = alerts.filter(alert => alert.type === 'error' && !alert.isRead);
 
   // Map icon name to icon component
   const getIconComponent = (iconName: string) => {
@@ -49,6 +51,14 @@ const Dashboard = () => {
     }
   };
 
+  const toggleSection = (section: string) => {
+    if (expandedSection === section) {
+      setExpandedSection(null);
+    } else {
+      setExpandedSection(section);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -58,168 +68,245 @@ const Dashboard = () => {
         </div>
       </div>
       
-      {/* Container Upgrade Section */}
-      <ContainerUpgrade />
-      
       {/* Quick Stats Summary */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="py-3">
-            <CardTitle className="text-sm font-medium">Total Sensors</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{sensorData.length}</div>
-            <p className="text-xs text-muted-foreground">
-              {sensorData.filter(s => s.status === 'normal').length} normal, 
-              {' '}{sensorData.filter(s => s.status === 'warning').length} warnings, 
-              {' '}{sensorData.filter(s => s.status === 'error').length} errors
-            </p>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-green-100 p-3 rounded-full">
+                <Zap className="h-6 w-6 text-green-700" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">System Status</p>
+                <h4 className="text-2xl font-bold text-akar-green">Operational</h4>
+              </div>
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="py-3">
-            <CardTitle className="text-sm font-medium">Unread Alerts</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{unreadAlerts.length}</div>
-            <p className="text-xs text-muted-foreground">
-              {unreadAlerts.filter(a => a.type === 'error').length} critical issues need attention
-            </p>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-red-100 p-3 rounded-full">
+                <AlertCircle className="h-6 w-6 text-red-700" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Critical Alerts</p>
+                <h4 className="text-2xl font-bold">{criticalAlerts.length}</h4>
+              </div>
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="py-3">
-            <CardTitle className="text-sm font-medium">System Status</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-akar-green">Operational</div>
-            <p className="text-xs text-muted-foreground">All systems functioning normally</p>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <FlaskConical className="h-6 w-6 text-blue-700" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Harvests Ready</p>
+                <h4 className="text-2xl font-bold">{upcomingHarvests.length}</h4>
+              </div>
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="py-3">
-            <CardTitle className="text-sm font-medium">Harvests Ready</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{upcomingHarvests.length}</div>
-            <p className="text-xs text-muted-foreground">
-              {upcomingHarvests.length > 0 
-                ? `${upcomingHarvests[0]?.plantName} is ready to harvest` 
-                : 'No harvests currently ready'}
-            </p>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-purple-100 p-3 rounded-full">
+                <ArrowRight className="h-6 w-6 text-purple-700" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Container Farms</p>
+                <h4 className="text-2xl font-bold">{farmLocations.length}</h4>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
       
-      {/* Tokenization Section */}
-      <TokenizationOverview tokenData={tokenizationData} />
-      
-      {/* Farm Locations Map */}
-      <FarmLocationsMap locations={farmLocations} />
-
-      {/* Sales Status Section */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Sales Status</h2>
-        <div className="grid gap-6">
-          {containerSalesData.map((salesData) => (
-            <SalesStatusCard key={salesData.id} salesData={salesData} />
-          ))}
-        </div>
-      </div>
-
-      {/* Sensor Grid */}
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Sensor Readings</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {sensorData.map((sensor) => (
-            <SensorCard
-              key={sensor.id}
-              title={sensor.name}
-              value={sensor.value}
-              unit={sensor.unit}
-              icon={getIconComponent(sensor.iconName)}
-              status={sensor.status}
-              progress={(sensor.value - sensor.minValue) / (sensor.maxValue - sensor.minValue) * 100}
-              minValue={sensor.minValue}
-              maxValue={sensor.maxValue}
-              lastUpdated={sensor.lastUpdated}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Quick Look at Alerts and Harvests */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Latest Alerts */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Alerts</CardTitle>
-            <CardDescription>Latest system notifications and alerts</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {alerts.length === 0 ? (
-              <p className="text-muted-foreground text-center py-4">No alerts to display</p>
-            ) : (
-              alerts.slice(0, 3).map(alert => (
-                <Alert key={alert.id} variant={
-                  alert.type === 'error' ? 'destructive' : 'default'
-                }>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <AlertTitle className="flex items-center gap-2">
-                        {alert.title}
-                        {!alert.isRead && <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800">New</Badge>}
-                      </AlertTitle>
-                      <AlertDescription>{alert.message}</AlertDescription>
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {format(parseISO(alert.timestamp), 'MMM d, h:mm a')}
-                    </div>
-                  </div>
-                </Alert>
-              ))
-            )}
+      {/* Container Upgrade Section - Summary */}
+      <Card>
+        <CardHeader className="pb-2">
+          <div className="flex justify-between items-center">
+            <CardTitle>Container Farm Upgrades</CardTitle>
+            <Button variant="ghost" size="sm" onClick={() => toggleSection('upgrade')}>
+              {expandedSection === 'upgrade' ? 'Hide Details' : 'Show Details'}
+            </Button>
+          </div>
+          <CardDescription>Available container farm upgrades and capacity options</CardDescription>
+        </CardHeader>
+        {expandedSection === 'upgrade' && (
+          <CardContent>
+            <ContainerUpgrade />
           </CardContent>
-        </Card>
-
-        {/* Upcoming Harvests */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Upcoming Harvests</CardTitle>
-            <CardDescription>Plants that are ready or soon to be harvested</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {upcomingHarvests.length === 0 ? (
-              <p className="text-muted-foreground text-center py-4">No upcoming harvests</p>
-            ) : (
-              upcomingHarvests.map(harvest => (
-                <div key={harvest.id} className="flex items-start space-x-4">
-                  <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
-                    <img 
-                      src={harvest.images[0]} 
-                      alt={harvest.plantName} 
-                      className="w-full h-full object-cover"
-                    />
+        )}
+      </Card>
+      
+      {/* Tokenization Section - Summary */}
+      <Card>
+        <CardHeader className="pb-2">
+          <div className="flex justify-between items-center">
+            <CardTitle>Tokenization Overview</CardTitle>
+            <div className="flex gap-2">
+              <Button variant="ghost" size="sm" onClick={() => toggleSection('tokenization')}>
+                {expandedSection === 'tokenization' ? 'Hide Details' : 'Show Details'}
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/tokenization')}>
+                Full View
+              </Button>
+            </div>
+          </div>
+          <CardDescription>ERC-20 tokens on Polygon representing your farm produce</CardDescription>
+        </CardHeader>
+        {expandedSection === 'tokenization' ? (
+          <CardContent>
+            <TokenizationOverview tokenData={tokenizationData} />
+          </CardContent>
+        ) : (
+          <CardContent className="pt-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Total Token Value</div>
+                <div className="text-xl font-bold">IDR {tokenizationData.totalValue.toLocaleString()}</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Active Contracts</div>
+                <div className="text-xl font-bold">{tokenizationData.activeContracts}</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Avg. Return Rate</div>
+                <div className="text-xl font-bold">{tokenizationData.averageReturn}%</div>
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+      
+      {/* Sales Status - Summary */}
+      <Card>
+        <CardHeader className="pb-2">
+          <div className="flex justify-between items-center">
+            <CardTitle>Sales Status</CardTitle>
+            <Button variant="ghost" size="sm" onClick={() => toggleSection('sales')}>
+              {expandedSection === 'sales' ? 'Hide Details' : 'Show Details'}
+            </Button>
+          </div>
+          <CardDescription>Current sales data across supermarkets and recurring customers</CardDescription>
+        </CardHeader>
+        {expandedSection === 'sales' ? (
+          <CardContent>
+            <div className="grid gap-6">
+              {containerSalesData.slice(0, 1).map((salesData) => (
+                <div key={salesData.id}>
+                  <div className="mb-4">
+                    <Badge className="mb-1">{salesData.containerName}</Badge>
+                    <h3 className="text-lg font-semibold">{salesData.productName}</h3>
+                    <p className="text-muted-foreground">{salesData.location}</p>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="font-medium">{harvest.plantName}</h4>
-                    <div className="text-sm text-muted-foreground">
-                      Ready for harvest • {harvest.container}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div className="bg-muted p-4 rounded-lg">
+                      <div className="text-sm text-muted-foreground">Current Price</div>
+                      <div className="text-xl font-bold">IDR {salesData.currentPrice.toLocaleString()}/kg</div>
                     </div>
-                    <div className="flex items-center mt-1">
-                      <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                        Ready
-                      </Badge>
+                    <div className="bg-muted p-4 rounded-lg">
+                      <div className="text-sm text-muted-foreground">Monthly Sales</div>
+                      <div className="text-xl font-bold">{salesData.monthlySales} kg</div>
+                    </div>
+                    <div className="bg-muted p-4 rounded-lg">
+                      <div className="text-sm text-muted-foreground">Supermarket Clients</div>
+                      <div className="text-xl font-bold">{salesData.supermarketClients}</div>
+                    </div>
+                    <div className="bg-muted p-4 rounded-lg">
+                      <div className="text-sm text-muted-foreground">Recurring Customers</div>
+                      <div className="text-xl font-bold">{salesData.recurringCustomers}</div>
                     </div>
                   </div>
                 </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
-      </div>
+              ))}
 
-      {/* Developer Only Section */}
+              <Button variant="outline">View All Sales Data</Button>
+            </div>
+          </CardContent>
+        ) : (
+          <CardContent className="pt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Avg. Price</div>
+                <div className="text-xl font-bold">IDR 55,000/kg</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Total Sales</div>
+                <div className="text-xl font-bold">1,250 kg/month</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Supermarkets</div>
+                <div className="text-xl font-bold">10 clients</div>
+              </div>
+              <div className="p-4 bg-muted rounded-lg">
+                <div className="text-sm text-muted-foreground mb-1">Customers</div>
+                <div className="text-xl font-bold">215 recurring</div>
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+      
+      {/* Sensor Readings - Summary */}
+      <Card>
+        <CardHeader className="pb-2">
+          <div className="flex justify-between items-center">
+            <CardTitle>Sensor Readings</CardTitle>
+            <div className="flex gap-2">
+              <Button variant="ghost" size="sm" onClick={() => toggleSection('sensors')}>
+                {expandedSection === 'sensors' ? 'Hide Details' : 'Show Details'}
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/sensors')}>
+                Full View
+              </Button>
+            </div>
+          </div>
+          <CardDescription>Live readings from all container farm sensors</CardDescription>
+        </CardHeader>
+        {expandedSection === 'sensors' ? (
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {sensorData.slice(0, 8).map((sensor) => (
+                <SensorCard
+                  key={sensor.id}
+                  title={sensor.name}
+                  value={sensor.value}
+                  unit={sensor.unit}
+                  icon={getIconComponent(sensor.iconName)}
+                  status={sensor.status}
+                  progress={(sensor.value - sensor.minValue) / (sensor.maxValue - sensor.minValue) * 100}
+                  minValue={sensor.minValue}
+                  maxValue={sensor.maxValue}
+                  lastUpdated={sensor.lastUpdated}
+                />
+              ))}
+            </div>
+          </CardContent>
+        ) : (
+          <CardContent className="pt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {sensorData.filter(s => s.status !== 'normal').slice(0, 4).map((sensor) => (
+                <div key={sensor.id} className="p-4 bg-muted rounded-lg">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="text-sm text-muted-foreground">{sensor.name}</div>
+                    <Badge variant={sensor.status === 'warning' ? 'outline' : 'destructive'} className="text-xs">
+                      {sensor.status.toUpperCase()}
+                    </Badge>
+                  </div>
+                  <div className="text-xl font-bold">{sensor.value}{sensor.unit}</div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Developer Only Section - kept same */}
       {isDeveloperMode && (
         <Card className="border-dashed border-2 border-yellow-300">
           <CardHeader>
