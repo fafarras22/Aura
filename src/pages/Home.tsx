@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -629,4 +630,18 @@ const Home = () => {
                     </h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                       {language === 'en' 
-                        ? 'Start with any investment size that fits your
+                        ? 'Start with any investment size that fits your portfolio' 
+                        : 'Mulai dengan ukuran investasi apa pun yang sesuai dengan portofolio Anda'}
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Home;
