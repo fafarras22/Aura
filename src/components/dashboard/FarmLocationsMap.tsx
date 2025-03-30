@@ -15,6 +15,7 @@ export interface FarmLocation {
   status: 'active' | 'inactive' | 'maintenance';
   containers: number;
   address: string;
+  coordinates?: [number, number]; // Added for backward compatibility
 }
 
 interface FarmLocationsMapProps {
@@ -40,8 +41,19 @@ export const FarmLocationsMap: React.FC<FarmLocationsMapProps> = ({ locations })
       accessToken: MAPBOX_TOKEN,
     });
     
+    // Process locations to ensure they have coordinates for backward compatibility
+    const processedLocations = locations.map(location => {
+      if (!location.coordinates) {
+        return {
+          ...location,
+          coordinates: [location.location.lng, location.location.lat]
+        };
+      }
+      return location;
+    });
+    
     // Add markers for each location
-    locations.forEach(location => {
+    processedLocations.forEach(location => {
       // Create marker element
       const el = document.createElement('div');
       el.className = 'farm-marker';

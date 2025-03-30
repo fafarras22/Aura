@@ -8,19 +8,19 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Clock, AlertTriangle, Settings, Plus, Eye, Download, MoreVertical, Maximize2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { getMockCameras, Camera } from "@/services/mockDataService";
+import { getMockCCTVCameras, CCTVCamera } from "@/services/mockDataService";
 
 const CCTV = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [selectedCamera, setSelectedCamera] = useState<string | null>(null);
-  const cameras = getMockCameras();
+  const cameras = getMockCCTVCameras();
   
-  const handleCameraSelect = (cameraId: number) => {
-    setSelectedCamera(cameraId.toString());
+  const handleCameraSelect = (cameraId: string) => {
+    setSelectedCamera(cameraId);
   };
   
   const activeCamera = selectedCamera 
-    ? cameras.find(camera => camera.id.toString() === selectedCamera) 
+    ? cameras.find(camera => camera.id === selectedCamera) 
     : null;
 
   return (

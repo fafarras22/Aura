@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -6,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Thermometer, Wind, Leaf, BarChart2 } from "lucide-react";
 import { SensorCard } from "@/components/dashboard/SensorCard";
-import { getMockSensorData } from "@/services/mockDataService";
+import { getMockSensorData, SensorStatus } from "@/services/mockDataService";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { Button } from "@/components/ui/button";
 

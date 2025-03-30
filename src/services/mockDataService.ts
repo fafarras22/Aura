@@ -1,4 +1,3 @@
-
 import { faker } from '@faker-js/faker';
 
 // Farm location interface
@@ -83,6 +82,7 @@ export interface ContainerSalesData {
     name: string;
     location: string;
     contractValue: number;
+    imageUrl?: string;
   };
   priceRange?: {
     min: number;
@@ -98,6 +98,7 @@ export interface ContainerSalesData {
     id: string;
     name: string;
     purchaseFrequency: string;
+    imageUrl?: string;
   }[];
 }
 
@@ -124,6 +125,9 @@ export interface CCTVCamera {
   lastMotion: Date;
   preview: string;
 }
+
+// Alias type for Camera for backward compatibility
+export type Camera = CCTVCamera;
 
 // Climate sensor reading
 export interface ClimateReading {
@@ -231,6 +235,9 @@ export const getMockCCTVCameras = (): CCTVCamera[] => {
   ];
 };
 
+// Alias function for backward compatibility
+export const getMockCameras = getMockCCTVCameras;
+
 // Generate data for container sales
 export const getMockContainerSalesData = (): ContainerSalesData[] => {
   const mockContainerSales: ContainerSalesData[] = [
@@ -258,7 +265,8 @@ export const getMockContainerSalesData = (): ContainerSalesData[] => {
       supermarketClient: {
         name: 'Farm Fresh Supermarket',
         location: 'Jakarta Central',
-        contractValue: 250000000
+        contractValue: 250000000,
+        imageUrl: '/lovable-uploads/farm-fresh-logo.png'
       },
       priceRange: {
         min: 45000,
@@ -273,10 +281,10 @@ export const getMockContainerSalesData = (): ContainerSalesData[] => {
         { month: 'Apr', sales: 450 }
       ],
       recurringCustomers: [
-        { id: 'c1', name: 'Hotel Indonesia Kempinski', purchaseFrequency: 'Weekly' },
-        { id: 'c2', name: 'Grand Hyatt Jakarta', purchaseFrequency: 'Bi-weekly' },
-        { id: 'c3', name: 'Warung Tekko', purchaseFrequency: 'Daily' },
-        { id: 'c4', name: 'MRT Central Kitchen', purchaseFrequency: 'Weekly' }
+        { id: 'c1', name: 'Hotel Indonesia Kempinski', purchaseFrequency: 'Weekly', imageUrl: '/lovable-uploads/kempinski-logo.png' },
+        { id: 'c2', name: 'Grand Hyatt Jakarta', purchaseFrequency: 'Bi-weekly', imageUrl: '/lovable-uploads/hyatt-logo.png' },
+        { id: 'c3', name: 'Warung Tekko', purchaseFrequency: 'Daily', imageUrl: '/lovable-uploads/warung-tekko-logo.png' },
+        { id: 'c4', name: 'MRT Central Kitchen', purchaseFrequency: 'Weekly', imageUrl: '/lovable-uploads/mrt-logo.png' }
       ]
     }
   ];
@@ -390,20 +398,22 @@ export const getMockContainerStatus = (): ContainerStatus[] => {
   ];
 };
 
-// ADDING THE MISSING EXPORTS
-
 // Sensor data interface
 export interface SensorData {
   id: string;
   name: string;
   value: number;
   unit: string;
-  status: 'normal' | 'warning' | 'critical';
+  status: 'normal' | 'warning' | 'error'; // Changed critical to error for consistency
   iconName: string;
   lastUpdated: string;
   minValue: number;
   maxValue: number;
+  category?: string; // Added category field
 }
+
+// Type alias for backward compatibility
+export type SensorStatus = 'normal' | 'warning' | 'error';
 
 // Mock sensor data
 export const getMockSensorData = (): SensorData[] => {
@@ -417,7 +427,8 @@ export const getMockSensorData = (): SensorData[] => {
       iconName: 'thermometer',
       lastUpdated: '2 minutes ago',
       minValue: 20,
-      maxValue: 30
+      maxValue: 30,
+      category: 'climate'
     },
     {
       id: 's2',
@@ -428,7 +439,8 @@ export const getMockSensorData = (): SensorData[] => {
       iconName: 'droplets',
       lastUpdated: '5 minutes ago',
       minValue: 40,
-      maxValue: 80
+      maxValue: 80,
+      category: 'climate'
     },
     {
       id: 's3',
@@ -439,7 +451,8 @@ export const getMockSensorData = (): SensorData[] => {
       iconName: 'wind',
       lastUpdated: '3 minutes ago',
       minValue: 400,
-      maxValue: 1200
+      maxValue: 1200,
+      category: 'climate'
     },
     {
       id: 's4',
@@ -450,7 +463,8 @@ export const getMockSensorData = (): SensorData[] => {
       iconName: 'zap',
       lastUpdated: '1 minute ago',
       minValue: 300,
-      maxValue: 800
+      maxValue: 800,
+      category: 'climate'
     },
     {
       id: 's5',
@@ -461,7 +475,8 @@ export const getMockSensorData = (): SensorData[] => {
       iconName: 'flask-conical',
       lastUpdated: '7 minutes ago',
       minValue: 5.5,
-      maxValue: 6.5
+      maxValue: 6.5,
+      category: 'water'
     },
     {
       id: 's6',
@@ -472,7 +487,8 @@ export const getMockSensorData = (): SensorData[] => {
       iconName: 'droplet',
       lastUpdated: '10 minutes ago',
       minValue: 500,
-      maxValue: 1000
+      maxValue: 1000,
+      category: 'water'
     },
     {
       id: 's7',
@@ -483,18 +499,68 @@ export const getMockSensorData = (): SensorData[] => {
       iconName: 'thermometer',
       lastUpdated: '5 minutes ago',
       minValue: 18,
-      maxValue: 24
+      maxValue: 24,
+      category: 'water'
     },
     {
       id: 's8',
       name: 'Dissolved Oxygen',
       value: 5.2,
       unit: 'mg/L',
-      status: 'critical',
+      status: 'error', // Changed from critical to error
       iconName: 'waves',
       lastUpdated: '2 minutes ago',
       minValue: 6,
-      maxValue: 8.5
+      maxValue: 8.5,
+      category: 'water'
+    },
+    {
+      id: 's9',
+      name: 'Energy Consumption',
+      value: 1.2,
+      unit: 'kWh',
+      status: 'normal',
+      iconName: 'zap',
+      lastUpdated: '1 minute ago',
+      minValue: 0.8,
+      maxValue: 2.0,
+      category: 'energy'
+    },
+    {
+      id: 's10',
+      name: 'Power Output',
+      value: 2.4,
+      unit: 'kW',
+      status: 'normal',
+      iconName: 'zap',
+      lastUpdated: '3 minutes ago',
+      minValue: 1.5,
+      maxValue: 3.0,
+      category: 'energy'
+    },
+    {
+      id: 's11',
+      name: 'Air Quality',
+      value: 85,
+      unit: 'AQI',
+      status: 'normal',
+      iconName: 'wind',
+      lastUpdated: '6 minutes ago',
+      minValue: 0,
+      maxValue: 100,
+      category: 'environment'
+    },
+    {
+      id: 's12',
+      name: 'Soil Moisture',
+      value: 42,
+      unit: '%',
+      status: 'warning',
+      iconName: 'droplet',
+      lastUpdated: '4 minutes ago',
+      minValue: 30,
+      maxValue: 60,
+      category: 'environment'
     }
   ];
 };
@@ -572,6 +638,11 @@ export interface Harvest {
   estimatedYield: number;
   actualYield?: number;
   notes: string;
+  // Additional properties for compatibility
+  crop?: string;
+  quantity?: number;
+  unit?: string;
+  date?: string;
 }
 
 // Mock harvests
@@ -582,53 +653,73 @@ export const getMockHarvests = (): Harvest[] => {
     {
       id: 'h1',
       cropName: 'Baby Spinach',
+      crop: 'Baby Spinach', // For backward compatibility
       containerNumber: '001',
       plantedDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 20), // 20 days ago
       harvestDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 2), // 2 days from now
       status: 'growing',
       estimatedYield: 45,
-      notes: 'Growth looks excellent, ahead of schedule'
+      notes: 'Growth looks excellent, ahead of schedule',
+      quantity: 45, // For backward compatibility
+      unit: 'kg', // For backward compatibility
+      date: '2 days from now' // For backward compatibility
     },
     {
       id: 'h2',
       cropName: 'Kale',
+      crop: 'Kale', // For backward compatibility
       containerNumber: '002',
       plantedDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 28), // 28 days ago
       harvestDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 1), // Yesterday
       status: 'ready',
       estimatedYield: 38,
-      notes: 'Ready for harvest, quality looks outstanding'
+      notes: 'Ready for harvest, quality looks outstanding',
+      quantity: 38, // For backward compatibility
+      unit: 'kg', // For backward compatibility
+      date: 'Yesterday' // For backward compatibility
     },
     {
       id: 'h3',
       cropName: 'Arugula',
+      crop: 'Arugula', // For backward compatibility
       containerNumber: '003',
       plantedDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 35), // 35 days ago
       harvestDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 5), // 5 days ago
       status: 'harvested',
       estimatedYield: 40,
       actualYield: 42,
-      notes: 'Yield exceeded expectations, excellent quality'
+      notes: 'Yield exceeded expectations, excellent quality',
+      quantity: 40, // For backward compatibility
+      unit: 'kg', // For backward compatibility
+      date: '5 days ago' // For backward compatibility
     },
     {
       id: 'h4',
       cropName: 'Basil',
+      crop: 'Basil', // For backward compatibility
       containerNumber: '001',
       plantedDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 15), // 15 days ago
       harvestDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 10), // 10 days from now
       status: 'growing',
       estimatedYield: 30,
-      notes: 'Growth slightly slower than expected, adjusted nutrients'
+      notes: 'Growth slightly slower than expected, adjusted nutrients',
+      quantity: 30, // For backward compatibility
+      unit: 'kg', // For backward compatibility
+      date: '10 days from now' // For backward compatibility
     },
     {
       id: 'h5',
       cropName: 'Lettuce - Butterhead',
+      crop: 'Lettuce - Butterhead', // For backward compatibility
       containerNumber: '002',
       plantedDate: new Date(now.getTime() - 1000 * 60 * 60 * 24 * 25), // 25 days ago
       harvestDate: new Date(now.getTime() + 1000 * 60 * 60 * 24 * 0), // Today
       status: 'ready',
       estimatedYield: 50,
-      notes: 'Perfect timing, harvest teams notified'
+      notes: 'Perfect timing, harvest teams notified',
+      quantity: 50, // For backward compatibility
+      unit: 'kg', // For backward compatibility
+      date: 'Today' // For backward compatibility
     }
   ];
 };
@@ -663,6 +754,17 @@ export interface TokenizationData {
     startDate: string;
     endDate: string;
     status: 'active' | 'completed';
+  }[];
+  // Added properties for compatibility
+  totalTokens?: number;
+  totalInvestors?: number;
+  recentActivities?: {
+    id: string;
+    type: 'invested' | 'harvested' | 'other';
+    description: string;
+    tokenAmount: number;
+    date: string;
+    transactionHash?: string;
   }[];
 }
 
@@ -764,6 +866,34 @@ export const getMockTokenizationData = (): TokenizationData => {
         startDate: '2023-07-01',
         endDate: '2023-10-01',
         status: 'completed'
+      }
+    ],
+    // Adding missing properties
+    totalTokens: 750000,
+    totalInvestors: 325,
+    recentActivities: [
+      {
+        id: 'act1',
+        type: 'invested',
+        description: 'New investment in Jakarta Farm Expansion',
+        tokenAmount: 2500,
+        date: '2 days ago',
+        transactionHash: '0x8f7d8b9c1d2e3f4a5b6c7d8e9f0a1b2c'
+      },
+      {
+        id: 'act2',
+        type: 'harvested',
+        description: 'Harvest dividend distributed to token holders',
+        tokenAmount: 1200,
+        date: '1 week ago',
+        transactionHash: '0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'
+      },
+      {
+        id: 'act3',
+        type: 'other',
+        description: 'System upgrade completed for tokenization platform',
+        tokenAmount: 0,
+        date: '2 weeks ago'
       }
     ]
   };

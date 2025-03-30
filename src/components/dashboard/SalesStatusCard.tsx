@@ -47,13 +47,15 @@ export function SalesStatusCard({ data }: SalesStatusCardProps) {
             </CardTitle>
             <CardDescription className="flex items-center mt-1">
               <span className="mr-2">Client:</span>
-              <Avatar className="h-6 w-6 mr-2">
-                {data.supermarketClient.imageUrl && (
-                  <AvatarImage src={data.supermarketClient.imageUrl || ""} alt={data.supermarketClient.name} />
-                )}
-                <AvatarFallback>{data.supermarketClient.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <span>{truncateName(data.supermarketClient.name)}</span>
+              {data.supermarketClient && (
+                <Avatar className="h-6 w-6 mr-2">
+                  {data.supermarketClient.imageUrl && (
+                    <AvatarImage src={data.supermarketClient.imageUrl} alt={data.supermarketClient.name} />
+                  )}
+                  <AvatarFallback>{data.supermarketClient.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+              )}
+              <span>{data.supermarketClient ? truncateName(data.supermarketClient.name) : 'Unknown'}</span>
             </CardDescription>
           </div>
           <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">
@@ -64,7 +66,7 @@ export function SalesStatusCard({ data }: SalesStatusCardProps) {
       <CardContent>
         <div className="grid gap-2">
           <div className="flex justify-between items-baseline">
-            <div className="text-2xl font-bold">{formatNumber(data.totalSales)} units</div>
+            <div className="text-2xl font-bold">{data.totalSales ? formatNumber(data.totalSales) : 0} units</div>
             <div className="text-sm text-muted-foreground">
               {data.totalRevenue ? formatCurrency(data.totalRevenue) : 'Revenue data unavailable'}
             </div>
@@ -110,13 +112,13 @@ export function SalesStatusCard({ data }: SalesStatusCardProps) {
           <div className="mt-3">
             <div className="text-sm font-medium mb-1">Top Customers</div>
             <div className="flex flex-wrap gap-1">
-              {data.recurringCustomers.slice(0, 5).map((customer) => (
+              {data.recurringCustomers && data.recurringCustomers.slice(0, 5).map((customer) => (
                 <Avatar key={customer.id} className="h-8 w-8 border-2 border-white">
                   {customer.imageUrl && <AvatarImage src={customer.imageUrl} alt={customer.name} />}
                   <AvatarFallback>{customer.name.charAt(0)}</AvatarFallback>
                 </Avatar>
               ))}
-              {data.recurringCustomers.length > 5 && (
+              {data.recurringCustomers && data.recurringCustomers.length > 5 && (
                 <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs">
                   +{data.recurringCustomers.length - 5}
                 </div>
