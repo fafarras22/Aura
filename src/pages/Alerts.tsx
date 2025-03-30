@@ -1,229 +1,317 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
+
+import React, { useState } from 'react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Bell, ChevronDown, AlertCircle, Filter, Calendar, CheckCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { getMockAlerts } from "@/services/mockDataService";
-import { useDeveloperMode } from "@/context/DeveloperModeContext";
-import { Bell, BellOff, Info, AlertTriangle, AlertCircle, Check, Mail, Smartphone, Users, History } from "lucide-react";
-import { useState } from "react";
-import { format, parseISO } from "date-fns";
-import { useToast } from "@/hooks/use-toast";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AppleButton } from '@/components/ui/apple-button';
+
+type AlertSeverity = 'warning' | 'error' | 'info';
+
+interface Alert {
+  id: string;
+  title: string;
+  message: string;
+  timestamp: Date;
+  severity: AlertSeverity;
+  containerNumber: string;
+  resolved: boolean;
+}
 
 const Alerts = () => {
-  const { isDeveloperMode } = useDeveloperMode();
-  const alerts = getMockAlerts();
-  const { toast } = useToast();
+  const [selectedTab, setSelectedTab] = useState<string>("all");
+  const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(true);
+  const [emailNotifications, setEmailNotifications] = useState<boolean>(true);
+  const [smsNotifications, setSmsNotifications] = useState<boolean>(false);
+  const [currentAlerts, setCurrentAlerts] = useState<Alert[]>(mockAlerts);
 
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [emailAlertsEnabled, setEmailAlertsEnabled] = useState(true);
-  const [smsAlertsEnabled, setSmsAlertsEnabled] = useState(true);
-  
-  // Filter by alert type
-  const infoAlerts = alerts.filter(alert => alert.type === 'info');
-  const warningAlerts = alerts.filter(alert => alert.type === 'warning');
-  const errorAlerts = alerts.filter(alert => alert.type === 'error');
-
-  const getAlertIcon = (type: 'info' | 'warning' | 'error') => {
-    switch (type) {
-      case 'info': return <Info className="h-5 w-5" />;
-      case 'warning': return <AlertTriangle className="h-5 w-5" />;
-      case 'error': return <AlertCircle className="h-5 w-5" />;
-    }
+  const resolveAlert = (id: string) => {
+    setCurrentAlerts(currentAlerts.map(alert => 
+      alert.id === id ? { ...alert, resolved: true } : alert
+    ));
   };
 
-  const handleClearAll = () => {
-    toast({
-      title: "All Alerts Cleared",
-      description: "All alerts have been marked as read.",
-    });
-  };
-
-  const handleTestAlarm = () => {
-    toast({
-      variant: "destructive",
-      title: "Test Alarm Triggered",
-      description: "This is a test of the alarm system. No action needed.",
-    });
-  };
+  const filteredAlerts = currentAlerts.filter(alert => {
+    if (selectedTab === "resolved") return alert.resolved;
+    if (selectedTab === "unresolved") return !alert.resolved;
+    if (selectedTab === "critical") return alert.severity === "error" && !alert.resolved;
+    return true;
+  });
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight">System Alerts</h1>
-        <div className="flex space-x-2">
-          <Button variant="outline" onClick={handleClearAll}>
-            <Check className="mr-2 h-4 w-4" />
-            Mark All Read
-          </Button>
-          {isDeveloperMode && (
-            <Button variant="destructive" onClick={handleTestAlarm}>
-              Test Alarm
-            </Button>
-          )}
+    <div className="container mx-auto p-4 space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Alerts & Notifications</h1>
+          <p className="text-muted-foreground mt-1">
+            Monitor system alerts and manage your notification preferences
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="gap-2">
+                <Filter size={16} />
+                Filter
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Filter Alerts</DialogTitle>
+                <DialogDescription>
+                  Customize which alerts you want to see.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="col-span-2">Time Range</Label>
+                  <Select defaultValue="today">
+                    <SelectTrigger className="col-span-2">
+                      <SelectValue placeholder="Select Range" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="today">Today</SelectItem>
+                      <SelectItem value="week">Last 7 days</SelectItem>
+                      <SelectItem value="month">Last 30 days</SelectItem>
+                      <SelectItem value="custom">Custom Range</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="col-span-2">Severity</Label>
+                  <Select defaultValue="all">
+                    <SelectTrigger className="col-span-2">
+                      <SelectValue placeholder="Select Severity" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Severities</SelectItem>
+                      <SelectItem value="error">Critical</SelectItem>
+                      <SelectItem value="warning">Warning</SelectItem>
+                      <SelectItem value="info">Information</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="col-span-2">Container</Label>
+                  <Select defaultValue="all">
+                    <SelectTrigger className="col-span-2">
+                      <SelectValue placeholder="Select Container" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Containers</SelectItem>
+                      <SelectItem value="c001">Container 001</SelectItem>
+                      <SelectItem value="c002">Container 002</SelectItem>
+                      <SelectItem value="c003">Container 003</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Apply Filters</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="gap-2">
+                <Bell size={16} />
+                Alert Settings
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Alert Settings</DialogTitle>
+                <DialogDescription>
+                  Customize how you receive alerts and notifications.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="notifications">Enable Notifications</Label>
+                  <Switch 
+                    id="notifications" 
+                    checked={notificationsEnabled}
+                    onCheckedChange={setNotificationsEnabled}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="email-notifications">Email Notifications</Label>
+                  <Switch 
+                    id="email-notifications" 
+                    checked={emailNotifications}
+                    onCheckedChange={setEmailNotifications}
+                    disabled={!notificationsEnabled}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="sms-notifications">SMS Notifications</Label>
+                  <Switch 
+                    id="sms-notifications" 
+                    checked={smsNotifications}
+                    onCheckedChange={setSmsNotifications}
+                    disabled={!notificationsEnabled}
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="col-span-2">Minimum Alert Level</Label>
+                  <Select defaultValue="warning">
+                    <SelectTrigger className="col-span-2">
+                      <SelectValue placeholder="Select Level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="info">Information</SelectItem>
+                      <SelectItem value="warning">Warning</SelectItem>
+                      <SelectItem value="error">Critical</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Save Settings</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xl font-medium flex items-center">
-              <Info className="mr-2 h-5 w-5 text-blue-500" />
-              Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{infoAlerts.length}</div>
-            <p className="text-sm text-muted-foreground">System information and updates</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xl font-medium flex items-center">
-              <AlertTriangle className="mr-2 h-5 w-5 text-amber-500" />
-              Warnings
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{warningAlerts.length}</div>
-            <p className="text-sm text-muted-foreground">Conditions needing attention</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xl font-medium flex items-center">
-              <AlertCircle className="mr-2 h-5 w-5 text-red-500" />
-              Critical
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{errorAlerts.length}</div>
-            <p className="text-sm text-muted-foreground">Issues requiring immediate action</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Notification Settings</CardTitle>
-          <CardDescription>Configure how you receive alerts</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Bell className="h-5 w-5" />
-                <Label htmlFor="notifications">Push Notifications</Label>
-              </div>
-              <Switch 
-                id="notifications" 
-                checked={notificationsEnabled} 
-                onCheckedChange={setNotificationsEnabled} 
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Mail className="h-5 w-5" />
-                <Label htmlFor="email">Email Alerts</Label>
-              </div>
-              <Switch 
-                id="email" 
-                checked={emailAlertsEnabled} 
-                onCheckedChange={setEmailAlertsEnabled} 
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Smartphone className="h-5 w-5" />
-                <Label htmlFor="sms">SMS Alerts</Label>
-              </div>
-              <Switch 
-                id="sms" 
-                checked={smsAlertsEnabled} 
-                onCheckedChange={setSmsAlertsEnabled} 
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Alerts</CardTitle>
-          <CardDescription>History of system alerts and notifications</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {alerts.length === 0 ? (
-            <div className="text-center py-8">
-              <BellOff className="mx-auto h-12 w-12 text-muted-foreground opacity-50" />
-              <p className="mt-2 text-muted-foreground">No alerts to display</p>
-            </div>
+      <Tabs defaultValue="all" className="w-full" onValueChange={setSelectedTab}>
+        <TabsList className="grid grid-cols-4 mb-4">
+          <TabsTrigger value="all">All Alerts</TabsTrigger>
+          <TabsTrigger value="unresolved">Unresolved</TabsTrigger>
+          <TabsTrigger value="critical">Critical</TabsTrigger>
+          <TabsTrigger value="resolved">Resolved</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value={selectedTab} className="space-y-4">
+          {filteredAlerts.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center pt-10 pb-10">
+                <CheckCircle size={48} className="text-muted-foreground mb-4" />
+                <h3 className="text-xl font-semibold mb-2">No Alerts Found</h3>
+                <p className="text-muted-foreground text-center max-w-md">
+                  There are no alerts matching your current filter criteria. Adjust your filters or check back later.
+                </p>
+              </CardContent>
+            </Card>
           ) : (
-            <div className="space-y-4">
-              {alerts.map(alert => (
-                <Alert key={alert.id} variant={
-                  alert.type === 'error' ? 'destructive' : 
-                  alert.type === 'warning' ? 'default' : 'default'
-                }>
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start gap-3">
-                      <div className="mt-0.5">
-                        {getAlertIcon(alert.type)}
-                      </div>
-                      <div>
-                        <AlertTitle className="flex items-center gap-2">
-                          {alert.title}
-                          {!alert.isRead && <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800">New</Badge>}
-                        </AlertTitle>
-                        <AlertDescription className="mt-1">{alert.message}</AlertDescription>
-                        <div className="mt-2 flex items-center gap-2">
-                          <Badge variant="outline">{alert.category}</Badge>
-                          <span className="text-xs text-muted-foreground">
-                            {format(parseISO(alert.timestamp), 'MMM d, h:mm a')}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    {isDeveloperMode && (
-                      <Button size="sm" variant="ghost">Resolve</Button>
-                    )}
-                  </div>
-                </Alert>
-              ))}
-            </div>
+            filteredAlerts.map(alert => (
+              <AlertCard 
+                key={alert.id} 
+                alert={alert} 
+                onResolve={() => resolveAlert(alert.id)} 
+              />
+            ))
           )}
-        </CardContent>
-      </Card>
-
-      {isDeveloperMode && (
-        <Card className="border-dashed border-2 border-yellow-300">
-          <CardHeader>
-            <CardTitle>Alert System Configuration (Admin Only)</CardTitle>
-            <CardDescription>Advanced settings for the alert system</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Button variant="outline" className="w-full justify-start">
-                  <Bell className="mr-2 h-4 w-4" />
-                  Configure Alert Thresholds
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Users className="mr-2 h-4 w-4" />
-                  Manage Alert Recipients
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <History className="mr-2 h-4 w-4" />
-                  View Alert Logs
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
+
+const AlertCard = ({ alert, onResolve }: { alert: Alert, onResolve: () => void }) => {
+  const getBadgeVariant = (severity: AlertSeverity) => {
+    switch (severity) {
+      case "error": return "destructive";
+      case "warning": return "warning";
+      case "info": return "secondary";
+      default: return "secondary";
+    }
+  };
+
+  return (
+    <Card className={`${alert.resolved ? 'opacity-70' : ''}`}>
+      <CardHeader className="pb-2">
+        <div className="flex justify-between items-start">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle size={16} className={`${
+                alert.severity === "error" ? "text-destructive" : 
+                alert.severity === "warning" ? "text-amber-500" : "text-blue-500"
+              }`} />
+              {alert.title}
+            </CardTitle>
+            <CardDescription className="flex items-center mt-1 gap-2">
+              <span>Container {alert.containerNumber}</span>
+              <span>•</span>
+              <span>{alert.timestamp.toLocaleString()}</span>
+            </CardDescription>
+          </div>
+          <Badge variant={getBadgeVariant(alert.severity)}>
+            {alert.severity.toUpperCase()}
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm">{alert.message}</p>
+      </CardContent>
+      <CardFooter className="flex justify-between pt-0">
+        <Button variant="ghost" size="sm" className="gap-1">
+          <Calendar size={14} />
+          View History
+        </Button>
+        {!alert.resolved && (
+          <AppleButton onClick={onResolve} size="sm" variant="green">
+            Mark as Resolved
+          </AppleButton>
+        )}
+      </CardFooter>
+    </Card>
+  );
+};
+
+// Mock data
+const mockAlerts: Alert[] = [
+  {
+    id: "1",
+    title: "Temperature Exceeds Threshold",
+    message: "Container 001 has recorded a temperature of 32°C, exceeding the safe threshold of 28°C for current crops.",
+    timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
+    severity: "error",
+    containerNumber: "001",
+    resolved: false
+  },
+  {
+    id: "2",
+    title: "Water Level Low",
+    message: "Container 002 water reservoir is at 15% capacity. Refill recommended within the next 12 hours.",
+    timestamp: new Date(Date.now() - 1000 * 60 * 120), // 2 hours ago
+    severity: "warning",
+    containerNumber: "002",
+    resolved: false
+  },
+  {
+    id: "3",
+    title: "CO2 Level Warning",
+    message: "Container 001 CO2 levels have been fluctuating between 600-1000 ppm over the last 6 hours.",
+    timestamp: new Date(Date.now() - 1000 * 60 * 360), // 6 hours ago
+    severity: "warning",
+    containerNumber: "001",
+    resolved: true
+  },
+  {
+    id: "4",
+    title: "System Maintenance Complete",
+    message: "Scheduled maintenance on Container 003 completed successfully. All systems operational.",
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12), // 12 hours ago
+    severity: "info",
+    containerNumber: "003",
+    resolved: true
+  },
+  {
+    id: "5",
+    title: "Humidity Level Critical",
+    message: "Container 002 humidity has dropped to 30%, significantly below the 50-60% required range.",
+    timestamp: new Date(Date.now() - 1000 * 60 * 45), // 45 minutes ago
+    severity: "error",
+    containerNumber: "002",
+    resolved: false
+  }
+];
 
 export default Alerts;

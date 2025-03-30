@@ -1,685 +1,334 @@
 
 import { faker } from '@faker-js/faker';
 
-// Sensor data interfaces and functions
-export interface SensorData {
+// Farm location interface
+export interface FarmLocation {
   id: string;
   name: string;
-  value: number;
-  unit: string;
-  category: 'climate' | 'water' | 'energy' | 'environment';
-  status: 'normal' | 'warning' | 'error';
-  iconName: string;
-  lastUpdated: string;
-  minValue: number;
-  maxValue: number;
+  location: { lat: number; lng: number };
+  status: 'active' | 'inactive' | 'maintenance';
+  containers: number;
+  address: string;
 }
 
-export function getMockSensorData(): SensorData[] {
-  // Create the specific sensors with appropriate data
+// Data for container farms
+export const getMockFarmLocations = (): FarmLocation[] => {
   return [
     {
       id: '1',
-      name: 'Outside Temperature',
-      value: faker.number.int({ min: 24, max: 35 }),
-      unit: '°C',
-      category: 'climate',
-      status: faker.helpers.arrayElement(['normal', 'warning', 'normal', 'normal']),
-      iconName: 'thermometer',
-      lastUpdated: faker.date.recent().toLocaleTimeString(),
-      minValue: 20,
-      maxValue: 40
+      name: 'Jakarta Central Farm',
+      location: { lat: -6.2088, lng: 106.8456 },
+      status: 'active',
+      containers: 8,
+      address: 'Jl. Sudirman No. 123, Jakarta'
     },
     {
       id: '2',
-      name: 'Inside Temperature',
-      value: faker.number.int({ min: 20, max: 28 }),
-      unit: '°C',
-      category: 'climate',
-      status: faker.helpers.arrayElement(['normal', 'normal', 'warning', 'normal']),
-      iconName: 'thermometer',
-      lastUpdated: faker.date.recent().toLocaleTimeString(),
-      minValue: 18,
-      maxValue: 30
+      name: 'Bali Eco Center',
+      location: { lat: -8.3405, lng: 115.0920 },
+      status: 'active',
+      containers: 5,
+      address: 'Jl. Sunset Road 45, Kuta, Bali'
     },
     {
       id: '3',
-      name: 'TDS (Total Dissolved Solids)',
-      value: faker.number.int({ min: 500, max: 1500 }),
-      unit: 'ppm',
-      category: 'water',
-      status: faker.helpers.arrayElement(['normal', 'warning', 'error', 'normal']),
-      iconName: 'flask-conical',
-      lastUpdated: faker.date.recent().toLocaleTimeString(),
-      minValue: 400,
-      maxValue: 1800
+      name: 'Surabaya Hub',
+      location: { lat: -7.2575, lng: 112.7521 },
+      status: 'maintenance',
+      containers: 6,
+      address: 'Jl. Pemuda 102, Surabaya'
     },
     {
       id: '4',
-      name: 'Humidity',
-      value: faker.number.int({ min: 50, max: 90 }),
-      unit: '%',
-      category: 'climate',
-      status: faker.helpers.arrayElement(['normal', 'warning', 'normal', 'normal']),
-      iconName: 'droplet',
-      lastUpdated: faker.date.recent().toLocaleTimeString(),
-      minValue: 40,
-      maxValue: 95
+      name: 'Medan Center',
+      location: { lat: 3.5952, lng: 98.6722 },
+      status: 'active',
+      containers: 4,
+      address: 'Jl. Gatot Subroto 78, Medan'
     },
     {
       id: '5',
-      name: 'CO2',
-      value: faker.number.int({ min: 400, max: 1200 }),
-      unit: 'ppm',
-      category: 'environment',
-      status: faker.helpers.arrayElement(['normal', 'normal', 'normal', 'warning']),
-      iconName: 'wind',
-      lastUpdated: faker.date.recent().toLocaleTimeString(),
-      minValue: 350,
-      maxValue: 1500
+      name: 'Makassar Facility',
+      location: { lat: -5.1477, lng: 119.4327 },
+      status: 'inactive',
+      containers: 3,
+      address: 'Jl. Pettarani 55, Makassar'
     },
     {
       id: '6',
-      name: 'Dissolved Oxygen (DO)',
-      value: faker.number.float({ min: 5, max: 12, fractionDigits: 1 }),
-      unit: 'mg/L',
-      category: 'water',
-      status: faker.helpers.arrayElement(['normal', 'warning', 'normal', 'normal']),
-      iconName: 'droplet',
-      lastUpdated: faker.date.recent().toLocaleTimeString(),
-      minValue: 4,
-      maxValue: 14
+      name: 'Bandung Research Center',
+      location: { lat: -6.9175, lng: 107.6191 },
+      status: 'active',
+      containers: 7,
+      address: 'Jl. Asia Afrika 133, Bandung'
     },
     {
       id: '7',
-      name: 'Plant Nutrients (NPK)',
-      value: faker.number.int({ min: 80, max: 100 }),
-      unit: '%',
-      category: 'environment',
-      status: faker.helpers.arrayElement(['normal', 'normal', 'warning', 'normal']),
-      iconName: 'flask-conical',
-      lastUpdated: faker.date.recent().toLocaleTimeString(),
-      minValue: 75,
-      maxValue: 100
-    },
-    {
-      id: '8',
-      name: 'Electrical Conductivity',
-      value: faker.number.float({ min: 1.0, max: 3.0, fractionDigits: 1 }),
-      unit: 'mS/cm',
-      category: 'water',
-      status: faker.helpers.arrayElement(['normal', 'normal', 'warning', 'error']),
-      iconName: 'zap',
-      lastUpdated: faker.date.recent().toLocaleTimeString(),
-      minValue: 0.5,
-      maxValue: 4.0
-    },
-    {
-      id: '9',
-      name: 'Water Level',
-      value: faker.number.int({ min: 60, max: 100 }),
-      unit: '%',
-      category: 'water',
-      status: faker.helpers.arrayElement(['normal', 'warning', 'normal', 'normal']),
-      iconName: 'waves',
-      lastUpdated: faker.date.recent().toLocaleTimeString(),
-      minValue: 50,
-      maxValue: 100
+      name: 'Yogyakarta Innovation Hub',
+      location: { lat: -7.8014, lng: 110.3644 },
+      status: 'active',
+      containers: 4,
+      address: 'Jl. Malioboro 42, Yogyakarta'
     }
   ];
-}
+};
 
-// Alert interfaces and functions
-export interface Alert {
-  id: number;
-  type: string;
-  message: string;
-  time: string;
-  status: 'active' | 'resolved';
-  isRead: boolean;
-  title: string;
-  category: string;
-  timestamp: string;
-}
-
-export function getMockAlerts(): Alert[] {
-  return [
-    {
-      id: 1,
-      type: 'Temperature',
-      title: 'High Temperature',
-      message: 'Temperature too high',
-      time: '2 minutes ago',
-      status: 'active',
-      isRead: false,
-      category: 'warning',
-      timestamp: new Date().toISOString()
-    },
-    {
-      id: 2,
-      type: 'Water Level',
-      title: 'Low Water Level',
-      message: 'Water level too low',
-      time: '15 minutes ago',
-      status: 'active',
-      isRead: false,
-      category: 'error',
-      timestamp: new Date().toISOString()
-    },
-    {
-      id: 3,
-      type: 'Nutrients',
-      title: 'Nutrient Deficiency',
-      message: 'Nutrient levels critical',
-      time: '30 minutes ago',
-      status: 'resolved',
-      isRead: true,
-      category: 'error',
-      timestamp: new Date().toISOString()
-    },
-    {
-      id: 4,
-      type: 'CO2',
-      title: 'High CO2 Levels',
-      message: 'CO2 levels too high',
-      time: '1 hour ago',
-      status: 'resolved',
-      isRead: true,
-      category: 'warning',
-      timestamp: new Date().toISOString()
-    }
-  ];
-}
-
-// Tokenization interfaces and functions
-export interface TokenizationData {
-  totalTokens: number;
-  circulatingSupply: number;
-  tokenPrice: number;
-  averageReturn: number;
-  marketCap: number;
-  userHoldings: number;
-  totalInvestors: number;
-  totalValue: number;
-  activeContracts: number;
-  recentTransactions: Array<{
-    id: number;
-    type: string;
-    amount: number;
-    date: string;
-  }>;
-  recentActivities?: Array<{
-    id: number;
-    type: string;
-    description: string;
-    tokenAmount: number;
-    date: string;
-    transactionHash?: string;
-  }>;
-  investments: Array<{
-    id: number;
-    name: string;
-    roi: number;
-    amount: number;
-    status: string;
-  }>;
-  allocationData: Array<{
-    name: string;
-    value: number;
-    color: string;
-  }>;
-}
-
-export function getMockTokenizationData(): TokenizationData {
-  return {
-    totalTokens: 1000000,
-    circulatingSupply: 750000,
-    tokenPrice: 20, // in MATIC
-    averageReturn: 12.5,
-    marketCap: 750000 * 20,
-    userHoldings: faker.number.int({ min: 5, max: 100 }),
-    totalInvestors: faker.number.int({ min: 2000, max: 3000 }),
-    totalValue: 15000000,
-    activeContracts: 5,
-    recentTransactions: [
-      {
-        id: 1,
-        type: 'Purchase',
-        amount: 10,
-        date: '2023-05-15'
-      },
-      {
-        id: 2,
-        type: 'Reward',
-        amount: 1.5,
-        date: '2023-06-01'
-      },
-      {
-        id: 3,
-        type: 'Purchase',
-        amount: 5,
-        date: '2023-06-15'
-      }
-    ],
-    recentActivities: [
-      {
-        id: 1,
-        type: 'invested',
-        description: 'New investment in Farm A',
-        tokenAmount: 50,
-        date: '2 days ago',
-        transactionHash: '0x3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b'
-      },
-      {
-        id: 2,
-        type: 'harvested',
-        description: 'Harvest rewards distributed',
-        tokenAmount: 15,
-        date: '1 week ago',
-        transactionHash: '0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b'
-      },
-      {
-        id: 3,
-        type: 'transfer',
-        description: 'Tokens transferred to wallet',
-        tokenAmount: 25,
-        date: '2 weeks ago',
-        transactionHash: '0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b'
-      }
-    ],
-    investments: [
-      {
-        id: 1,
-        name: 'Container Farm A',
-        roi: 12.5,
-        amount: 50,
-        status: 'active'
-      },
-      {
-        id: 2,
-        name: 'Container Farm B',
-        roi: 10.2,
-        amount: 25,
-        status: 'pending'
-      },
-      {
-        id: 3,
-        name: 'Expansion Project',
-        roi: 15.0,
-        amount: 30,
-        status: 'active'
-      }
-    ],
-    allocationData: [
-      { name: 'Operations', value: 30, color: '#4CAF50' },
-      { name: 'Research', value: 15, color: '#2196F3' },
-      { name: 'Marketing', value: 10, color: '#FF9800' },
-      { name: 'Development', value: 25, color: '#9C27B0' },
-      { name: 'Reserve', value: 20, color: '#607D8B' }
-    ]
-  };
-}
-
-// Harvest interfaces and functions
-export interface Harvest {
-  id: number;
-  crop: string;
-  status: 'ready' | 'in progress' | 'completed';
-  quantity: number;
-  unit: string;
-  date: string;
-}
-
-export function getMockHarvests(): Harvest[] {
-  return [
-    {
-      id: 1,
-      crop: 'Lettuce',
-      status: 'ready',
-      quantity: 50,
-      unit: 'kg',
-      date: '2023-06-15'
-    },
-    {
-      id: 2,
-      crop: 'Spinach',
-      status: 'in progress',
-      quantity: 30,
-      unit: 'kg',
-      date: '2023-06-22'
-    },
-    {
-      id: 3,
-      crop: 'Kale',
-      status: 'completed',
-      quantity: 45,
-      unit: 'kg',
-      date: '2023-06-01'
-    },
-    {
-      id: 4,
-      crop: 'Basil',
-      status: 'ready',
-      quantity: 20,
-      unit: 'kg',
-      date: '2023-06-10'
-    },
-    {
-      id: 5,
-      crop: 'Tomatoes',
-      status: 'in progress',
-      quantity: 100,
-      unit: 'kg',
-      date: '2023-06-30'
-    },
-    {
-      id: 6,
-      crop: 'Cucumbers',
-      status: 'completed',
-      quantity: 80,
-      unit: 'kg',
-      date: '2023-05-25'
-    }
-  ];
-}
-
-// Camera interfaces and functions
-export interface Camera {
-  id: number;
-  name: string;
-  location: string;
-  status: string;
-  lastMotion: string;
-  lastSnapshot?: string;
-  lastUpdated?: string;
-}
-
-export function getMockCameras(): Camera[] {
-  return [
-    {
-      id: 1,
-      name: 'Front Container',
-      location: 'External - Front Entrance',
-      status: 'online',
-      lastMotion: faker.date.recent().toLocaleTimeString(),
-      lastSnapshot: faker.date.recent().toISOString(),
-      lastUpdated: faker.date.recent().toISOString()
-    },
-    {
-      id: 2,
-      name: 'Rear Container',
-      location: 'External - Rear Access',
-      status: 'online',
-      lastMotion: faker.date.recent().toLocaleTimeString(),
-      lastSnapshot: faker.date.recent().toISOString(),
-      lastUpdated: faker.date.recent().toISOString()
-    },
-    {
-      id: 3,
-      name: 'Growing Area A',
-      location: 'Internal - Section A',
-      status: 'online',
-      lastMotion: faker.date.recent().toLocaleTimeString(),
-      lastSnapshot: faker.date.recent().toISOString(),
-      lastUpdated: faker.date.recent().toISOString()
-    },
-    {
-      id: 4,
-      name: 'Growing Area B',
-      location: 'Internal - Section B',
-      status: 'offline',
-      lastMotion: '-',
-      lastSnapshot: null,
-      lastUpdated: faker.date.recent().toISOString()
-    },
-    {
-      id: 5,
-      name: 'Water System',
-      location: 'Internal - Utility Room',
-      status: 'online',
-      lastMotion: faker.date.recent().toLocaleTimeString(),
-      lastSnapshot: faker.date.recent().toISOString(),
-      lastUpdated: faker.date.recent().toISOString()
-    },
-    {
-      id: 6,
-      name: 'Control Room',
-      location: 'Internal - Front Section',
-      status: 'online',
-      lastMotion: faker.date.recent().toLocaleTimeString(),
-      lastSnapshot: faker.date.recent().toISOString(),
-      lastUpdated: faker.date.recent().toISOString()
-    }
-  ];
-}
-
-// Farm location interfaces and functions
-export interface FarmLocation {
-  id: number;
-  name: string;
-  location: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
-  status: 'active' | 'maintenance' | 'offline';
-  crops: string[];
-  capacity: number;
-  utilization: number;
-  lastHarvest: string;
-  nextHarvest: string;
-}
-
-export function getMockFarmLocations(): FarmLocation[] {
-  return [
-    {
-      id: 1,
-      name: 'Jakarta Hub',
-      location: 'Jakarta, Indonesia',
-      coordinates: { lat: -6.2088, lng: 106.8456 },
-      status: 'active',
-      crops: ['Lettuce', 'Kale', 'Basil'],
-      capacity: 100,
-      utilization: 85,
-      lastHarvest: '2023-06-01',
-      nextHarvest: '2023-06-15'
-    },
-    {
-      id: 2,
-      name: 'Bali Eco-Center',
-      location: 'Denpasar, Bali',
-      coordinates: { lat: -8.6705, lng: 115.2126 },
-      status: 'active',
-      crops: ['Spinach', 'Tomatoes', 'Herbs'],
-      capacity: 75,
-      utilization: 90,
-      lastHarvest: '2023-06-05',
-      nextHarvest: '2023-06-20'
-    },
-    {
-      id: 3,
-      name: 'Bandung Mountain Farm',
-      location: 'Bandung, West Java',
-      coordinates: { lat: -6.9175, lng: 107.6191 },
-      status: 'maintenance',
-      crops: ['Strawberries', 'Lettuce', 'Kale'],
-      capacity: 50,
-      utilization: 60,
-      lastHarvest: '2023-05-25',
-      nextHarvest: '2023-06-10'
-    },
-    {
-      id: 4,
-      name: 'Surabaya Port',
-      location: 'Surabaya, East Java',
-      coordinates: { lat: -7.2575, lng: 112.7521 },
-      status: 'active',
-      crops: ['Lettuce', 'Herbs', 'Cucumbers'],
-      capacity: 100,
-      utilization: 95,
-      lastHarvest: '2023-06-03',
-      nextHarvest: '2023-06-18'
-    },
-    {
-      id: 5,
-      name: 'Makassar Coastal',
-      location: 'Makassar, South Sulawesi',
-      coordinates: { lat: -5.1477, lng: 119.4327 },
-      status: 'active',
-      crops: ['Lettuce', 'Spinach', 'Herbs'],
-      capacity: 75,
-      utilization: 80,
-      lastHarvest: '2023-06-04',
-      nextHarvest: '2023-06-19'
-    }
-  ];
-}
-
-// Container sales data interfaces and functions
-export interface Customer {
-  id: number;
-  name: string;
-  imageUrl?: string;
-  purchaseFrequency: 'weekly' | 'biweekly' | 'monthly';
-  totalSpent: number;
-}
-
-export interface SupermarketClient {
-  id: number;
-  name: string;
-  location: string;
-  imageUrl?: string;
-  contractStartDate: string;
-  contractEndDate: string;
-}
-
+// Container sales data 
 export interface ContainerSalesData {
-  id: number;
-  containerName: string;
-  supermarketClient: SupermarketClient;
-  priceRange: {
-    min: number;
-    max: number;
-  };
-  totalSales: number;
-  totalRevenue: number;
-  monthlySales: number[];
-  recurringCustomers: Customer[];
+  month: string;
+  amount: number;
 }
 
-export function getMockContainerSalesData(): ContainerSalesData[] {
+// Interface for Container Status
+export interface ContainerStatus {
+  id: string;
+  name: string;
+  status: 'active' | 'inactive' | 'maintenance';
+  currentTemp: number;
+  targetTemp: number;
+  humidity: number;
+  waterLevel: number;
+  lastHarvest: string;
+  nextMaintenance: string;
+  harvestPerformance: number;
+}
+
+// Interface for CCTV Camera
+export interface CCTVCamera {
+  id: string;
+  name: string;
+  location: string;
+  status: 'online' | 'offline';
+  lastMotion: Date;
+  preview: string;
+}
+
+// Climate sensor reading
+export interface ClimateReading {
+  id: string;
+  timestamp: Date;
+  temperature: number;
+  humidity: number;
+  co2: number;
+  light: number;
+}
+
+// Water sensor reading
+export interface WaterReading {
+  id: string;
+  timestamp: Date;
+  ph: number;
+  ec: number;
+  tds: number;
+  do: number;
+  level: number;
+  temperature: number;
+}
+
+// Generate mock sensor data
+export const getMockClimateData = (days = 7): ClimateReading[] => {
+  const data: ClimateReading[] = [];
+  const now = new Date();
+  
+  for (let i = 0; i < days * 24; i++) {
+    const timestamp = new Date(now);
+    timestamp.setHours(now.getHours() - i);
+    
+    data.push({
+      id: faker.string.uuid(),
+      timestamp,
+      temperature: faker.number.float({ min: 20, max: 30, precision: 0.1 }),
+      humidity: faker.number.float({ min: 40, max: 80, precision: 0.1 }),
+      co2: faker.number.float({ min: 350, max: 1000, precision: 1 }),
+      light: faker.number.float({ min: 0, max: 1000, precision: 1 }),
+    });
+  }
+  
+  return data;
+};
+
+// Generate mock water data
+export const getMockWaterData = (days = 7): WaterReading[] => {
+  const data: WaterReading[] = [];
+  const now = new Date();
+  
+  for (let i = 0; i < days * 24; i++) {
+    const timestamp = new Date(now);
+    timestamp.setHours(now.getHours() - i);
+    
+    data.push({
+      id: faker.string.uuid(),
+      timestamp,
+      ph: faker.number.float({ min: 5.5, max: 7.5, precision: 0.1 }),
+      ec: faker.number.float({ min: 1.0, max: 3.0, precision: 0.01 }),
+      tds: faker.number.float({ min: 500, max: 1500, precision: 1 }),
+      do: faker.number.float({ min: 4, max: 8, precision: 0.1 }),
+      level: faker.number.float({ min: 60, max: 100, precision: 0.1 }),
+      temperature: faker.number.float({ min: 18, max: 25, precision: 0.1 }),
+    });
+  }
+  
+  return data;
+};
+
+// Generate mock CCTV cameras
+export const getMockCCTVCameras = (): CCTVCamera[] => {
   return [
     {
-      id: 1,
-      containerName: 'Jakarta Premium Greens',
-      supermarketClient: {
-        id: 101,
-        name: 'FreshMart Supermarket',
-        location: 'Central Jakarta',
-        imageUrl: null,
-        contractStartDate: '2023-01-15',
-        contractEndDate: '2024-01-14'
-      },
-      priceRange: {
-        min: 50000,
-        max: 65000
-      },
-      totalSales: 450,
-      totalRevenue: 25000000,
-      monthlySales: [320, 350, 380, 410, 430, 450],
-      recurringCustomers: [
-        {
-          id: 1001,
-          name: 'Restaurant A',
-          imageUrl: null,
-          purchaseFrequency: 'weekly',
-          totalSpent: 5000000
-        },
-        {
-          id: 1002,
-          name: 'Restaurant B',
-          imageUrl: null,
-          purchaseFrequency: 'biweekly',
-          totalSpent: 3500000
-        },
-        {
-          id: 1003,
-          name: 'Hotel A',
-          imageUrl: null,
-          purchaseFrequency: 'weekly',
-          totalSpent: 4800000
-        },
-        {
-          id: 1004,
-          name: 'Catering Service',
-          imageUrl: null,
-          purchaseFrequency: 'weekly',
-          totalSpent: 4200000
-        },
-        {
-          id: 1005,
-          name: 'Health Food Store',
-          imageUrl: null,
-          purchaseFrequency: 'biweekly',
-          totalSpent: 2800000
-        },
-        {
-          id: 1006,
-          name: 'Local Market Vendor',
-          imageUrl: null,
-          purchaseFrequency: 'weekly',
-          totalSpent: 3100000
-        }
-      ]
+      id: "cam1",
+      name: "Main Entrance",
+      location: "Jakarta Central Farm",
+      status: "online",
+      lastMotion: new Date(Date.now() - 1000 * 60 * 15),
+      preview: "/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png"
     },
     {
-      id: 2,
-      containerName: 'Bandung Fresh Produce',
-      supermarketClient: {
-        id: 102,
-        name: 'GreenGrocer',
-        location: 'Bandung City Center',
-        imageUrl: null,
-        contractStartDate: '2023-02-01',
-        contractEndDate: '2024-01-31'
-      },
-      priceRange: {
-        min: 45000,
-        max: 60000
-      },
-      totalSales: 380,
-      totalRevenue: 20000000,
-      monthlySales: [280, 300, 330, 350, 370, 380],
-      recurringCustomers: [
-        {
-          id: 2001,
-          name: 'Restaurant C',
-          imageUrl: null,
-          purchaseFrequency: 'weekly',
-          totalSpent: 4200000
-        },
-        {
-          id: 2002,
-          name: 'Restaurant D',
-          imageUrl: null,
-          purchaseFrequency: 'monthly',
-          totalSpent: 1500000
-        },
-        {
-          id: 2003,
-          name: 'School Cafeteria',
-          imageUrl: null,
-          purchaseFrequency: 'weekly',
-          totalSpent: 3800000
-        },
-        {
-          id: 2004,
-          name: 'Juice Bar Chain',
-          imageUrl: null,
-          purchaseFrequency: 'biweekly',
-          totalSpent: 2500000
-        }
-      ]
+      id: "cam2",
+      name: "Container Farm Interior",
+      location: "Jakarta Central Farm",
+      status: "online",
+      lastMotion: new Date(Date.now() - 1000 * 60 * 45),
+      preview: "/lovable-uploads/ae9d74be-8813-4c4b-b946-cf1190243702.png"
+    },
+    {
+      id: "cam3",
+      name: "Storage Area",
+      location: "Jakarta Central Farm",
+      status: "offline",
+      lastMotion: new Date(Date.now() - 1000 * 60 * 120),
+      preview: "/lovable-uploads/e60ccc9b-594d-461b-9ef9-2b157e19b0a1.png"
+    },
+    {
+      id: "cam4",
+      name: "External Surroundings",
+      location: "Jakarta Central Farm",
+      status: "online",
+      lastMotion: new Date(Date.now() - 1000 * 60 * 10),
+      preview: "/lovable-uploads/ff02fd5a-28c4-466b-99d9-ea6213beb2c5.png"
     }
   ];
+};
+
+// Generate data for container sales
+export const getMockContainerSalesData = (): ContainerSalesData[] => {
+  return [
+    { month: 'Jan', amount: 2400 },
+    { month: 'Feb', amount: 1398 },
+    { month: 'Mar', amount: 9800 },
+    { month: 'Apr', amount: 3908 },
+    { month: 'May', amount: 4800 },
+    { month: 'Jun', amount: 3800 },
+    { month: 'Jul', amount: 4300 },
+    { month: 'Aug', amount: 5300 },
+    { month: 'Sep', amount: 4800 },
+    { month: 'Oct', amount: 6800 },
+    { month: 'Nov', amount: 7300 },
+    { month: 'Dec', amount: 9400 }
+  ];
+};
+
+// Fix for CCTV.tsx by updating the cameras type
+export const getMockCCTVCameraById = (id: string): CCTVCamera | undefined => {
+  return getMockCCTVCameras().find(camera => camera.id === id);
+};
+
+// Dashboard stats
+export interface DashboardStat {
+  id: string;
+  title: string;
+  value: string | number;
+  change: number;
+  changeType: 'increase' | 'decrease';
+  icon: string;
 }
+
+export const getMockDashboardStats = (): DashboardStat[] => {
+  return [
+    {
+      id: '1',
+      title: 'Active Containers',
+      value: 24,
+      change: 8.1,
+      changeType: 'increase',
+      icon: 'box'
+    },
+    {
+      id: '2',
+      title: 'Crop Yield (kg)',
+      value: '1,245',
+      change: 12.5,
+      changeType: 'increase',
+      icon: 'sprout'
+    },
+    {
+      id: '3',
+      title: 'Water Usage (L)',
+      value: '3,427',
+      change: 3.2,
+      changeType: 'decrease',
+      icon: 'droplet'
+    },
+    {
+      id: '4',
+      title: 'Sensors Active',
+      value: 156,
+      change: 5.4,
+      changeType: 'increase',
+      icon: 'activity'
+    }
+  ];
+};
+
+// Status for container
+export const getMockContainerStatus = (): ContainerStatus[] => {
+  return [
+    {
+      id: '1',
+      name: 'Container 001',
+      status: 'active',
+      currentTemp: 24.5,
+      targetTemp: 25.0,
+      humidity: 68,
+      waterLevel: 87,
+      lastHarvest: '2 days ago',
+      nextMaintenance: 'In 5 days',
+      harvestPerformance: 92
+    },
+    {
+      id: '2',
+      name: 'Container 002',
+      status: 'maintenance',
+      currentTemp: 22.3,
+      targetTemp: 25.0,
+      humidity: 55,
+      waterLevel: 45,
+      lastHarvest: '1 week ago',
+      nextMaintenance: 'In progress',
+      harvestPerformance: 68
+    },
+    {
+      id: '3',
+      name: 'Container 003',
+      status: 'active',
+      currentTemp: 25.2,
+      targetTemp: 25.0,
+      humidity: 72,
+      waterLevel: 92,
+      lastHarvest: '4 days ago',
+      nextMaintenance: 'In 10 days',
+      harvestPerformance: 95
+    },
+    {
+      id: '4',
+      name: 'Container 004',
+      status: 'inactive',
+      currentTemp: 21.0,
+      targetTemp: 25.0,
+      humidity: 40,
+      waterLevel: 10,
+      lastHarvest: '3 weeks ago',
+      nextMaintenance: 'Scheduled for next week',
+      harvestPerformance: 0
+    }
+  ];
+};

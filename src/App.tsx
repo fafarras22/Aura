@@ -23,6 +23,14 @@ import Analytics from "@/pages/Analytics";
 import Settings from "@/pages/Settings";
 import Tokenization from "@/pages/Tokenization";
 import NotFound from "@/pages/NotFound";
+import About from "@/pages/About";
+import Careers from "@/pages/Careers";
+import News from "@/pages/News";
+import Partners from "@/pages/Partners";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
+import TermsOfService from "@/pages/TermsOfService";
+import Legal from "@/pages/Legal";
+import Whitepaper from "@/pages/Whitepaper";
 import { Outlet } from "react-router-dom";
 
 const queryClient = new QueryClient();
@@ -45,6 +53,14 @@ const App = () => (
               {/* Public routes */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/partners" element={<Partners />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/legal" element={<Legal />} />
+              <Route path="/whitepaper" element={<Whitepaper />} />
               
               {/* Protected routes - Add authentication check here in a real app */}
               <Route element={<ResponsiveLayout />}>

@@ -1,95 +1,99 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { MapPin } from "lucide-react";
-import { FarmLocation } from "@/services/mockDataService";
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { useTheme } from '@/components/ui/theme-provider';
+
+// Dummy token - in a real app this should be set as an environment variable
+const MAPBOX_TOKEN = 'pk.dummy.token';
+
+// Updated interface to match what's used in the component
+export interface FarmLocation {
+  id: string;
+  name: string;
+  location: { lat: number; lng: number };
+  status: 'active' | 'inactive' | 'maintenance';
+  containers: number;
+  address: string;
+}
 
 interface FarmLocationsMapProps {
   locations: FarmLocation[];
 }
 
-export const FarmLocationsMap = ({ locations }: FarmLocationsMapProps) => {
-  const mapRef = useRef<HTMLDivElement>(null);
+export const FarmLocationsMap: React.FC<FarmLocationsMapProps> = ({ locations }) => {
+  const mapContainer = useRef<HTMLDivElement>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
+  const { theme } = useTheme();
   
   useEffect(() => {
-    // This is a placeholder for a real map implementation
-    // In a production environment, you would use a mapping library like Mapbox, Google Maps, or Leaflet
-    if (!mapRef.current) return;
+    if (!mapContainer.current) return;
     
-    // Mock map initialization
-    const mapContainer = mapRef.current;
-    mapContainer.innerHTML = '';
-    
-    // Create a simple mock map with dots for locations
-    const mapElement = document.createElement('div');
-    mapElement.className = 'relative w-full h-full rounded-md overflow-hidden bg-gray-100';
-    
-    // Add the map image (using a placeholder)
-    const mapImage = document.createElement('img');
-    mapImage.src = '/lovable-uploads/5dc7ab47-f164-425c-8978-1b96ad8b36e6.png';
-    mapImage.className = 'w-full h-full object-cover opacity-70';
-    mapElement.appendChild(mapImage);
-    
-    // Add location markers
-    locations.forEach(location => {
-      const markerElement = document.createElement('div');
-      markerElement.className = 'absolute flex flex-col items-center';
-      markerElement.style.left = `${location.coordinates.x}%`;
-      markerElement.style.top = `${location.coordinates.y}%`;
-      
-      const pinElement = document.createElement('div');
-      pinElement.className = 'w-4 h-4 bg-red-500 rounded-full animate-pulse shadow-lg relative z-10';
-      markerElement.appendChild(pinElement);
-      
-      // Simulate a pin drop shadow effect
-      const shadowElement = document.createElement('div');
-      shadowElement.className = 'w-4 h-1 bg-black/20 rounded-full mt-0.5 blur-sm';
-      markerElement.appendChild(shadowElement);
-      
-      mapElement.appendChild(markerElement);
+    // Initialize map
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: theme === 'dark' 
+        ? 'mapbox://styles/mapbox/dark-v10' 
+        : 'mapbox://styles/mapbox/light-v10',
+      center: [118.0149, -2.6000], // Center on Indonesia
+      zoom: 3.5,
+      accessToken: MAPBOX_TOKEN,
     });
     
-    mapContainer.appendChild(mapElement);
-  }, [locations]);
+    // Add markers for each location
+    locations.forEach(location => {
+      // Create marker element
+      const el = document.createElement('div');
+      el.className = 'farm-marker';
+      
+      // Set color based on status
+      if (location.status === 'active') {
+        el.style.backgroundColor = '#4CAF50';
+      } else if (location.status === 'maintenance') {
+        el.style.backgroundColor = '#FFC107';
+      } else {
+        el.style.backgroundColor = '#F44336';
+      }
+      
+      el.style.width = '20px';
+      el.style.height = '20px';
+      el.style.borderRadius = '50%';
+      el.style.border = '2px solid white';
+      el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)';
+      
+      // Add popup
+      const popup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML(`
+          <div>
+            <h3 style="margin: 0 0 5px; font-weight: 600;">${location.name}</h3>
+            <p style="margin: 0 0 5px;">${location.address}</p>
+            <p style="margin: 0; color: ${
+              location.status === 'active' ? '#4CAF50' : 
+              location.status === 'maintenance' ? '#FFC107' : '#F44336'
+            }">
+              Status: ${location.status.toUpperCase()}
+            </p>
+            <p>Containers: ${location.containers}</p>
+          </div>
+        `);
+      
+      // Add to map
+      new mapboxgl.Marker(el)
+        .setLngLat([location.location.lng, location.location.lat])
+        .setPopup(popup)
+        .addTo(map.current!);
+    });
+    
+    // Cleanup on unmount
+    return () => {
+      map.current?.remove();
+    };
+  }, [locations, theme]);
   
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <div>
-            <CardTitle>Farm Locations</CardTitle>
-            <CardDescription>All AKAR container farms in North Jakarta</CardDescription>
-          </div>
-          <Badge variant="outline" className="bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
-            {locations.length} Farms
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-4">
-          <div ref={mapRef} className="w-full h-64 rounded-md overflow-hidden border border-border">
-            {/* Map will be rendered here */}
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {locations.map((location, index) => (
-              <div 
-                key={location.id} 
-                className="flex items-center gap-2 p-2 rounded-md border border-border"
-              >
-                <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-md flex items-center justify-center">
-                  <MapPin className="h-4 w-4 text-primary" />
-                </div>
-                <div className="overflow-hidden">
-                  <p className="text-sm font-medium truncate">Farm #{index + 1}</p>
-                  <p className="text-xs text-muted-foreground truncate">{location.address}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <div 
+      ref={mapContainer} 
+      className="w-full h-full min-h-[300px] rounded-lg overflow-hidden"
+    />
   );
 };
