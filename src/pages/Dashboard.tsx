@@ -8,7 +8,6 @@ import { SensorCard } from "@/components/dashboard/SensorCard";
 import { FarmLocationsOverview } from "@/components/dashboard/FarmLocationsOverview";
 import { SalesStatusCard } from "@/components/dashboard/SalesStatusCard";
 import { LoginDialog } from "@/components/dashboard/LoginDialog";
-import { Tab } from "@headlessui/react";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { useNavigate } from "react-router-dom";
 import { ContainerManagement } from "@/components/dashboard/ContainerManagement";
@@ -66,13 +65,12 @@ const Dashboard = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="col-span-1 md:col-span-2 space-y-6">
-          <SectionCard title="Environmental Sensors" viewAllPath="/sensors">
+          <SectionCard title="Environmental Sensors">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <SensorCard 
                 title="Temperature" 
                 value={25.3} 
                 unit="°C" 
-                type="temperature" 
                 change={+1.2} 
                 status="normal"
               />
@@ -80,7 +78,6 @@ const Dashboard = () => {
                 title="Humidity" 
                 value={64} 
                 unit="%" 
-                type="humidity" 
                 change={-3.5}
                 status="normal"
               />
@@ -88,7 +85,6 @@ const Dashboard = () => {
                 title="CO2 Level" 
                 value={415} 
                 unit="ppm" 
-                type="co2" 
                 change={+12}
                 status="normal" 
               />
@@ -96,7 +92,6 @@ const Dashboard = () => {
                 title="Water pH" 
                 value={6.2} 
                 unit="pH" 
-                type="pH" 
                 change={-0.3}
                 status="warning" 
               />
@@ -106,7 +101,7 @@ const Dashboard = () => {
           {/* Container Management Component (Admin-only) */}
           {isDeveloperMode && <ContainerManagement />}
           
-          <SectionCard title="Sales Status" viewAllPath={isDeveloperMode ? "/analytics" : undefined}>
+          <SectionCard title="Sales Status">
             <div className="grid grid-cols-1 gap-4">
               <SalesStatusCard />
             </div>
@@ -116,7 +111,7 @@ const Dashboard = () => {
         <div className="space-y-6">
           <TokenizationOverview />
           
-          <SectionCard title="Container Locations" viewAllPath="/locations">
+          <SectionCard title="Container Locations">
             <FarmLocationsOverview />
           </SectionCard>
         </div>
