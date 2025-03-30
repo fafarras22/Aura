@@ -6,7 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
-import { Calculator, CreditCard, Wallet } from 'lucide-react';
+import { Calculator, CreditCard, Wallet, Users, ExternalLink } from 'lucide-react';
 
 interface TokenPurchaseProps {
   tokenData: any;
@@ -41,14 +41,31 @@ export const TokenPurchase = ({ tokenData }: TokenPurchaseProps) => {
   
   return (
     <div className="grid gap-6 lg:grid-cols-2">
-      <Card>
-        <CardHeader>
+      <Card className="bg-white shadow-md border-0">
+        <CardHeader className="pb-3 space-y-1">
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle>Purchase $AKR Tokens</CardTitle>
-              <CardDescription>Invest in the future of sustainable farming</CardDescription>
+              <CardTitle className="text-xl font-bold">Purchase $AKR Tokens</CardTitle>
+              <CardDescription>Invest in sustainable farming</CardDescription>
             </div>
-            <Badge className="bg-primary/10 text-primary">Current Price: {tokenPrice} MATIC</Badge>
+            <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+              Price: {tokenPrice} MATIC
+            </Badge>
+          </div>
+          
+          {/* Community stats highlight */}
+          <div className="flex items-center gap-2 mt-2 p-2 bg-primary/5 rounded-lg">
+            <Users className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium">{tokenData.totalInvestors || 2500}+ investors</span>
+            <div className="ml-auto flex gap-2">
+              <a href="https://discord.gg/akarfarm" target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
+                Discord <ExternalLink className="inline h-3 w-3" />
+              </a>
+              <span className="text-gray-400">|</span>
+              <a href="https://t.me/akarfarm" target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
+                Telegram <ExternalLink className="inline h-3 w-3" />
+              </a>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -73,20 +90,22 @@ export const TokenPurchase = ({ tokenData }: TokenPurchaseProps) => {
               </div>
             </div>
             
-            <div className="flex items-center justify-between p-3 bg-muted rounded-md">
-              <div className="flex items-center gap-2">
-                <Calculator className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm">Total Cost</span>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center justify-between p-3 bg-muted rounded-md">
+                <div className="flex items-center gap-2">
+                  <Calculator className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">Total Cost</span>
+                </div>
+                <span className="font-semibold">{totalCost} MATIC</span>
               </div>
-              <span className="font-semibold">{totalCost} MATIC</span>
-            </div>
-            
-            <div className="flex items-center justify-between p-3 bg-green-50 text-green-700 rounded-md">
-              <div className="flex items-center gap-2">
-                <Calculator className="h-4 w-4" />
-                <span className="text-sm">Est. Annual Return</span>
+              
+              <div className="flex items-center justify-between p-3 bg-green-50 text-green-700 rounded-md">
+                <div className="flex items-center gap-2">
+                  <Calculator className="h-4 w-4" />
+                  <span className="text-sm">Est. Return</span>
+                </div>
+                <span className="font-semibold">~{estimatedReturn.toFixed(2)}</span>
               </div>
-              <span className="font-semibold">~{estimatedReturn.toFixed(2)} MATIC</span>
             </div>
             
             <div>
@@ -122,7 +141,7 @@ export const TokenPurchase = ({ tokenData }: TokenPurchaseProps) => {
         </CardContent>
         <CardFooter>
           <Button 
-            className="w-full" 
+            className="w-full bg-green-600 hover:bg-green-700 text-white" 
             onClick={handlePurchase}
             disabled={isProcessing}
           >
@@ -131,10 +150,10 @@ export const TokenPurchase = ({ tokenData }: TokenPurchaseProps) => {
         </CardFooter>
       </Card>
       
-      <Card>
+      <Card className="bg-white shadow-md border-0">
         <CardHeader>
-          <CardTitle>Your AKR Portfolio</CardTitle>
-          <CardDescription>Track your token performance</CardDescription>
+          <CardTitle className="text-xl font-bold">Your AKR Portfolio</CardTitle>
+          <CardDescription>Track your investment performance</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -147,7 +166,7 @@ export const TokenPurchase = ({ tokenData }: TokenPurchaseProps) => {
               </div>
               <div className="h-2 bg-gray-200 rounded-full mb-2">
                 <div 
-                  className="h-2 bg-primary rounded-full"
+                  className="h-2 bg-green-600 rounded-full"
                   style={{ width: `${Math.min((tokenData.userHoldings || 0) / 100 * 100, 100)}%` }}
                 ></div>
               </div>
@@ -160,7 +179,7 @@ export const TokenPurchase = ({ tokenData }: TokenPurchaseProps) => {
             <div className="grid grid-cols-2 gap-4">
               <div className="p-4 border rounded-lg">
                 <h4 className="text-xs text-muted-foreground mb-1">Annual Return</h4>
-                <p className="text-xl font-bold text-primary">
+                <p className="text-xl font-bold text-green-600">
                   {tokenData.averageReturn}%
                 </p>
               </div>

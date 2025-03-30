@@ -12,6 +12,7 @@ interface NavItem {
   path: string;
   label: string;
   icon: React.ReactNode;
+  isPrimary?: boolean;
 }
 
 export function MobileLayout({ children }: { children: React.ReactNode }) {
@@ -29,9 +30,9 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
   const navItems: NavItem[] = [
     { path: '/dashboard', label: 'Dashboard', icon: <Home className="w-5 h-5" /> },
     { path: '/sensors', label: 'Sensors', icon: <Leaf className="w-5 h-5" /> },
+    { path: '/tokenization', label: 'Tokenization', icon: <Layers className="w-5 h-5" />, isPrimary: true },
     { path: '/water', label: 'Water', icon: <Droplet className="w-5 h-5" /> },
     { path: '/climate', label: 'Climate', icon: <Wind className="w-5 h-5" /> },
-    { path: '/tokenization', label: 'Tokenization', icon: <Layers className="w-5 h-5" /> },
   ];
 
   return (
@@ -47,7 +48,7 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
           >
             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
-          <h1 className="text-lg font-medium">AKAR FarmWatch</h1>
+          <h1 className="text-lg font-medium">AKAR Farm</h1>
         </div>
         <div className="flex items-center gap-2">
           <Button 
@@ -119,16 +120,22 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
       {/* Bottom Navigation Bar for Mobile */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 z-30">
         <div className="flex justify-around">
-          {navItems.slice(0, 5).map((item) => (
+          {navItems.map((item, index) => (
             <TooltipProvider key={item.path}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    variant="ghost"
+                    variant={location.pathname === item.path ? "default" : "ghost"}
                     size="icon"
                     className={`p-3 rounded-none ${
-                      location.pathname === item.path ? 'text-primary' : 'text-gray-500'
-                    }`}
+                      item.isPrimary
+                        ? location.pathname === item.path
+                          ? 'bg-green-600 text-white hover:bg-green-700'
+                          : 'text-green-600 hover:bg-green-50'
+                        : location.pathname === item.path
+                          ? 'text-primary-foreground'
+                          : 'text-gray-500'
+                    } ${index === 2 ? 'relative -top-3 rounded-full shadow-lg' : ''}`}
                     onClick={() => navigate(item.path)}
                   >
                     {item.icon}
@@ -145,7 +152,7 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
 
       {/* Notification */}
       <AppleNotification
-        title="Welcome to AKAR FarmWatch"
+        title="Welcome to AKAR Farm"
         description="Monitor your farm's status in real-time with our advanced dashboard."
         isVisible={showNotification}
         onClose={() => setShowNotification(false)}

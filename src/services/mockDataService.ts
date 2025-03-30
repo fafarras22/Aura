@@ -1,100 +1,163 @@
 
 import { faker } from '@faker-js/faker';
 
-export interface SensorData {
-  id: string;
-  name: string;
-  value: number;
-  unit: string;
-  iconName: string;
-  status: 'normal' | 'warning' | 'error';
-  minValue: number;
-  maxValue: number;
-  lastUpdated: string;
-  category?: string; // Added for Climate, Sensors, Water pages
-}
+export const getMockSensorData = () => {
+  return Array.from({ length: 12 }, (_, i) => ({
+    id: faker.string.uuid(),
+    name: faker.lorem.words(2),
+    value: faker.number.float({
+      min: 10,
+      max: 30,
+      fractionDigits: 1
+    }),
+    unit: faker.helpers.arrayElement(['°C', '%', 'ppm', 'm/s']),
+    iconName: faker.helpers.arrayElement([
+      'thermometer',
+      'droplet',
+      'wind',
+      'zap',
+      'flask-conical',
+      'waves',
+      'alert-circle'
+    ]),
+    status: faker.helpers.arrayElement(['normal', 'warning', 'error']),
+    minValue: faker.number.float({
+      min: 0,
+      max: 10,
+      fractionDigits: 1
+    }),
+    maxValue: faker.number.float({
+      min: 30,
+      max: 50,
+      fractionDigits: 1
+    }),
+    lastUpdated: faker.date.recent().toLocaleTimeString(),
+    category: faker.helpers.arrayElement(['climate', 'water', 'energy', 'environment'])
+  }));
+};
 
-export interface Alert {
-  id: string;
-  type: 'info' | 'warning' | 'error';
-  message: string;
-  timestamp: string;
-  isRead: boolean;
-  title?: string; // Added for Alerts.tsx
-  category?: string; // Added for Alerts.tsx
-}
+export const getMockAlerts = () => {
+  return Array.from({ length: 5 }, () => ({
+    id: faker.string.uuid(),
+    type: faker.helpers.arrayElement(['info', 'warning', 'error']),
+    message: faker.lorem.sentence(),
+    timestamp: faker.date.recent().toLocaleString(),
+    isRead: faker.datatype.boolean(),
+    title: faker.lorem.words(3),
+    category: faker.helpers.arrayElement(['sensor', 'system', 'security', 'maintenance'])
+  }));
+};
 
-export interface Harvest {
-  id: string;
-  plantName: string;  // Added for Harvest.tsx
-  plantType: string;  // Added for Harvest.tsx
-  plantedDate: string; // Added for Harvest.tsx
-  estimatedHarvestDate: string; // Added for Harvest.tsx
-  actualHarvestDate?: string; // Added for Harvest.tsx
-  harvestWeight?: number; // Added for Harvest.tsx
-  status: 'ready' | 'growing' | 'harvested'; // Changed from 'ready' | 'in progress' | 'completed'
-  crop: string;
-  quantity: number;
-  unit: string;
-  date: string;
-  container: string; // Added for Harvest.tsx
-  images: string[]; // Added for Harvest.tsx
-}
+export const getMockHarvests = () => {
+  return Array.from({ length: 6 }, () => ({
+    id: faker.string.uuid(),
+    crop: faker.lorem.word(),
+    quantity: faker.number.int({
+      min: 50,
+      max: 200
+    }),
+    unit: 'kg',
+    date: faker.date.future().toLocaleDateString(),
+    status: faker.helpers.arrayElement(['ready', 'in progress', 'completed']),
+    plantName: faker.science.chemicalElement().name,
+    plantType: faker.science.chemicalElement().symbol,
+    plantedDate: faker.date.past().toLocaleDateString(),
+    estimatedHarvestDate: faker.date.future().toLocaleDateString(),
+    actualHarvestDate: faker.date.future().toLocaleDateString(),
+    harvestWeight: faker.number.int({ min: 100, max: 500 }),
+    container: faker.lorem.word(),
+    images: [faker.image.url(), faker.image.url()]
+  }));
+};
 
-export interface ContainerSalesData {
-  id: string;
-  containerName: string;
-  supermarketClient: {
-    name: string;
-    location: string;
-    imageUrl?: string; // Added for SalesStatusCard.tsx
-  };
-  priceRange: {
-    min: number;
-    max: number;
-  };
-  totalSales: number;
-  totalRevenue: number; // Added for SalesStatusCard.tsx
-  monthlySales: Array<{ month: string; sales: number }>; // Added for SalesStatusCard.tsx
-  recurringCustomers: Array<{
-    id: string;
-    name: string;
-    imageUrl?: string; // Added for SalesStatusCard.tsx
-  }>;
-}
+export const getMockContainerSalesData = () => {
+  return Array.from({ length: 3 }, () => ({
+    id: faker.string.uuid(),
+    containerName: faker.lorem.word(),
+    supermarketClient: {
+      name: faker.company.name(),
+      location: faker.location.city(),
+      imageUrl: faker.image.url()
+    },
+    priceRange: {
+      min: faker.number.int({
+        min: 40000,
+        max: 50000
+      }),
+      max: faker.number.int({
+        min: 50000,
+        max: 60000
+      })
+    },
+    totalSales: faker.number.int({
+      min: 500,
+      max: 1500
+    }),
+    recurringCustomers: Array.from({
+      length: faker.number.int({
+        min: 10,
+        max: 50
+      })
+    }, () => ({
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
+      imageUrl: faker.image.avatar()
+    })),
+    monthlySales: Array.from({ length: 12 }, (_, i) => ({
+      month: new Date(0, i).toLocaleString('default', { month: 'short' }),
+      value: faker.number.int({ min: 100, max: 500 })
+    })),
+    totalRevenue: faker.number.int({ min: 5000000, max: 10000000 })
+  }));
+};
 
-export interface ClientData {
-  id: string;
-  name: string;
-  location: string;
-  imageUrl?: string;
-}
+export const getMockFarmLocations = () => {
+  return [
+    {
+      id: 'location1',
+      name: 'Farm A',
+      address: 'Jl. Kebon Jeruk No. 27',
+      coordinates: {
+        x: 25,
+        y: 30
+      }
+    },
+    {
+      id: 'location2',
+      name: 'Farm B',
+      address: 'Jl. Mangga Besar No. 10',
+      coordinates: {
+        x: 45,
+        y: 50
+      }
+    },
+    {
+      id: 'location3',
+      name: 'Farm C',
+      address: 'Jl. Gajah Mada No. 104',
+      coordinates: {
+        x: 70,
+        y: 60
+      }
+    }
+  ];
+};
 
-export interface Camera {
-  id: string;
-  name: string;
-  location: string;
-  isOnline: boolean;
-  lastSnapshot: string;
-}
+export const getMockCameras = () => {
+  return Array.from({ length: 8 }, () => ({
+    id: faker.string.uuid(),
+    name: `Camera ${faker.string.numeric(2)}`,
+    location: faker.location.streetAddress(),
+    status: faker.helpers.arrayElement(['online', 'offline', 'maintenance']),
+    lastSnapshot: faker.image.url(),
+    lastUpdated: faker.date.recent().toLocaleString()
+  }));
+};
 
-export interface FarmLocation {
-  id: string;
-  name: string;
-  address: string;
-  coordinates: {
-    x: number;
-    y: number;
-  };
-}
-
-// Added recentActivities and totalInvestors to TokenizationData
 export interface TokenizationData {
   totalValue: number;
   activeContracts: number;
   averageReturn: number;
-  totalTokens?: number; // Added for TokenizationOverview.tsx
-  totalInvestors?: number; // Added for TokenizationOverview.tsx
   contractTypes: Array<{
     name: string;
     value: number;
@@ -123,131 +186,25 @@ export interface TokenizationData {
     amount: number;
     date: string;
   }>;
-  recentActivities?: Array<{
+  // Adding missing properties
+  totalInvestors: number;
+  totalTokens: number;
+  recentActivities: Array<{
     id: string;
-    description: string;
-    type: string;
-    tokenAmount: number;
     date: string;
-    transactionHash: string;
+    description: string;
+    tokenAmount: number;
+    type: 'invested' | 'harvested' | 'distributed';
   }>;
 }
-
-export const getMockSensorData = (): SensorData[] => {
-  return Array.from({ length: 12 }, (_, i) => ({
-    id: faker.string.uuid(),
-    name: faker.lorem.words(2),
-    value: faker.number.float({ min: 10, max: 30, fractionDigits: 1 }), // Changed precision to fractionDigits
-    unit: faker.helpers.arrayElement(['°C', '%', 'ppm', 'm/s']),
-    iconName: faker.helpers.arrayElement(['thermometer', 'droplet', 'wind', 'zap', 'flask-conical', 'waves', 'alert-circle']),
-    status: faker.helpers.arrayElement(['normal', 'warning', 'error']),
-    minValue: faker.number.float({ min: 0, max: 10, fractionDigits: 1 }), // Changed precision to fractionDigits
-    maxValue: faker.number.float({ min: 30, max: 50, fractionDigits: 1 }), // Changed precision to fractionDigits
-    lastUpdated: faker.date.recent().toLocaleTimeString(),
-    category: faker.helpers.arrayElement(['Temperature', 'Humidity', 'CO2', 'Light', 'Water']), // Added category
-  }));
-};
-
-export const getMockAlerts = (): Alert[] => {
-  return Array.from({ length: 5 }, () => ({
-    id: faker.string.uuid(),
-    type: faker.helpers.arrayElement(['info', 'warning', 'error']),
-    title: faker.lorem.sentence(), // Added title
-    message: faker.lorem.sentence(),
-    timestamp: faker.date.recent().toISOString(), // Changed to ISO format
-    isRead: faker.datatype.boolean(),
-    category: faker.helpers.arrayElement(['System', 'Environment', 'Security', 'Maintenance']), // Added category
-  }));
-};
-
-export const getMockHarvests = (): Harvest[] => {
-  return Array.from({ length: 6 }, () => {
-    const plantedDate = faker.date.past().toISOString();
-    const estimatedHarvestDate = faker.date.future().toISOString();
-    const status = faker.helpers.arrayElement(['ready', 'growing', 'harvested']);
-    
-    return {
-      id: faker.string.uuid(),
-      plantName: faker.helpers.arrayElement(['Lettuce', 'Spinach', 'Kale', 'Basil', 'Tomato']),
-      plantType: faker.helpers.arrayElement(['Leafy Green', 'Herb', 'Fruit']),
-      plantedDate: plantedDate,
-      estimatedHarvestDate: estimatedHarvestDate,
-      actualHarvestDate: status === 'harvested' ? faker.date.recent().toISOString() : undefined,
-      harvestWeight: status === 'harvested' ? faker.number.float({ min: 0.1, max: 5, fractionDigits: 1 }) : undefined,
-      status: status,
-      crop: faker.lorem.word(),
-      quantity: faker.number.int({ min: 50, max: 200 }),
-      unit: 'kg',
-      date: faker.date.future().toLocaleDateString(),
-      container: faker.helpers.arrayElement(['Container A', 'Container B', 'Container C']),
-      images: Array.from({ length: faker.number.int({ min: 1, max: 4 }) }, () => faker.image.url()),
-    };
-  });
-};
-
-export const getMockContainerSalesData = (): ContainerSalesData[] => {
-  return Array.from({ length: 3 }, () => {
-    const min = faker.number.int({ min: 40000, max: 50000 });
-    const max = faker.number.int({ min: 50000, max: 60000 });
-    const totalSales = faker.number.int({ min: 500, max: 1500 });
-    
-    return {
-      id: faker.string.uuid(),
-      containerName: faker.lorem.word(),
-      supermarketClient: {
-        name: faker.company.name(),
-        location: faker.location.city(),
-        imageUrl: faker.image.avatar(),
-      },
-      priceRange: {
-        min,
-        max,
-      },
-      totalSales,
-      totalRevenue: totalSales * (min + max) / 2, // Added totalRevenue
-      monthlySales: Array.from({ length: 6 }, () => ({
-        month: faker.date.month(),
-        sales: faker.number.int({ min: 50, max: 250 }),
-      })), // Added monthlySales
-      recurringCustomers: Array.from({ length: faker.number.int({ min: 10, max: 50 }) }, () => ({
-        id: faker.string.uuid(),
-        name: faker.person.fullName(),
-        imageUrl: faker.image.avatar(),
-      })),
-    };
-  });
-};
-
-export const getMockFarmLocations = (): FarmLocation[] => {
-  return [
-    {
-      id: 'location1',
-      name: 'Farm A',
-      address: 'Jl. Kebon Jeruk No. 27',
-      coordinates: { x: 25, y: 30 },
-    },
-    {
-      id: 'location2',
-      name: 'Farm B',
-      address: 'Jl. Mangga Besar No. 10',
-      coordinates: { x: 45, y: 50 },
-    },
-    {
-      id: 'location3',
-      name: 'Farm C',
-      address: 'Jl. Gajah Mada No. 104',
-      coordinates: { x: 70, y: 60 },
-    },
-  ];
-};
 
 export const getMockTokenizationData = (): TokenizationData => {
   return {
     totalValue: 450000000,
     activeContracts: 24,
     averageReturn: 12.5,
+    totalInvestors: 2546,
     totalTokens: 1000000,
-    totalInvestors: 238,
     contractTypes: [
       { name: 'Standard', value: 45, color: '#4CAF50' },
       { name: 'Premium', value: 30, color: '#2E7D32' },
@@ -289,41 +246,82 @@ export const getMockTokenizationData = (): TokenizationData => {
       { id: 4, type: 'Reward', amount: 3.2, date: '2023-06-25' }
     ],
     recentActivities: [
-      { 
-        id: 'act1',
-        description: 'Invested in Container Farm A',
-        type: 'invested',
-        tokenAmount: 150,
-        date: '2023-06-15',
-        transactionHash: '0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b'
-      },
-      { 
-        id: 'act2',
-        description: 'Harvested yield from Container Farm B',
-        type: 'harvested',
-        tokenAmount: 35,
-        date: '2023-06-20',
-        transactionHash: '0x2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1'
-      },
-      { 
-        id: 'act3',
-        description: 'Received staking rewards',
-        type: 'reward',
-        tokenAmount: 12.5,
-        date: '2023-06-25',
-        transactionHash: '0x3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c'
-      }
+      { id: faker.string.uuid(), date: '2023-06-01', description: 'New investment in Container A', tokenAmount: 250, type: 'invested' },
+      { id: faker.string.uuid(), date: '2023-06-15', description: 'Harvest distribution from Container B', tokenAmount: 75, type: 'harvested' },
+      { id: faker.string.uuid(), date: '2023-07-01', description: 'Quarterly dividend payment', tokenAmount: 120, type: 'distributed' },
+      { id: faker.string.uuid(), date: '2023-07-15', description: 'New investment in Container C', tokenAmount: 300, type: 'invested' },
+      { id: faker.string.uuid(), date: '2023-08-01', description: 'Harvest distribution from Container A', tokenAmount: 90, type: 'harvested' }
     ]
   };
 };
 
-// Add the missing function for CCTV cameras
-export const getMockCameras = (): Camera[] => {
-  return Array.from({ length: 4 }, (_, i) => ({
-    id: `camera-${i + 1}`,
-    name: `Camera ${i + 1}`,
-    location: faker.helpers.arrayElement(['Entry', 'Container A', 'Container B', 'Container C', 'Warehouse']),
-    isOnline: faker.datatype.boolean(0.8), // 80% chance of being online
-    lastSnapshot: faker.image.url()
-  }));
-};
+export interface ClientData {
+  name: string;
+  location: string;
+  imageUrl: string;
+}
+
+export interface SensorData {
+  id: string;
+  name: string;
+  value: number;
+  unit: string;
+  iconName: string;
+  status: string;
+  minValue: number;
+  maxValue: number;
+  lastUpdated: string;
+  category: string;
+}
+
+export interface Alert {
+  id: string;
+  type: string;
+  message: string;
+  timestamp: string;
+  isRead: boolean;
+  title: string;
+  category: string;
+}
+
+export interface Harvest {
+  id: string;
+  crop: string;
+  quantity: number;
+  unit: string;
+  date: string;
+  status: 'ready' | 'in progress' | 'completed';
+  plantName: string;
+  plantType: string;
+  plantedDate: string;
+  estimatedHarvestDate: string;
+  actualHarvestDate: string;
+  harvestWeight: number;
+  container: string;
+  images: string[];
+}
+
+export interface ContainerSalesData {
+  id: string;
+  containerName: string;
+  supermarketClient: {
+    name: string;
+    location: string;
+    imageUrl: string;
+  };
+  priceRange: {
+    min: number;
+    max: number;
+  };
+  totalSales: number;
+  recurringCustomers: Array<{
+    id: string;
+    name: string;
+    imageUrl: string;
+  }>;
+  monthlySales: Array<{
+    month: string;
+    value: number;
+  }>;
+  totalRevenue: number;
+}
