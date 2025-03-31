@@ -16,7 +16,7 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
   const translatedContent = {
     en: {
       sectionTitle: 'Tokenization',
-      subtitle: 'Blockchain technology brings unprecedented transparency, security, and liquidity to agricultural investments. Each token represents real ownership in productive farm assets.',
+      subtitle: 'Blockchain technology brings transparency, security, and liquidity to agricultural investments. Each token represents real ownership in productive farm assets.',
       item1: {
         title: 'Transparent Investment',
         description: 'Full visibility into farm operations and performance'
@@ -29,22 +29,22 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
         {
           icon: <CircleDollarSign className="h-5 w-5 text-green-600" />,
           title: 'Liquidity & Flexibility',
-          description: 'Unlike traditional agricultural investments, tokenized assets can be traded on secondary markets, providing investors with liquidity and flexibility to adjust their portfolio.'
+          description: 'Trade tokenized assets on secondary markets for greater portfolio flexibility.'
         },
         {
           icon: <FileText className="h-5 w-5 text-green-600" />,
           title: 'Smart Contracts',
-          description: 'Automated smart contracts distribute returns based on pre-defined conditions, eliminating intermediaries and ensuring fair and transparent profit sharing.'
+          description: 'Automated smart contracts distribute returns based on pre-defined conditions.'
         },
         {
           icon: <Wallet className="h-5 w-5 text-green-600" />,
           title: 'Diversification',
-          description: 'Invest across multiple farming projects and crops to spread risk and optimize returns, all from a single platform.'
+          description: 'Invest across multiple farming projects to spread risk and optimize returns.'
         },
         {
           icon: <Lock className="h-5 w-5 text-green-600" />,
           title: 'Secure Digital Assets',
-          description: 'All assets are secured through blockchain technology with institutional-grade security measures and regular audits by third-party experts.'
+          description: 'Assets secured through blockchain with institutional-grade security measures.'
         }
       ]
     },
@@ -63,22 +63,22 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
         {
           icon: <CircleDollarSign className="h-5 w-5 text-green-600" />,
           title: 'Likuiditas & Fleksibilitas',
-          description: 'Tidak seperti investasi pertanian tradisional, aset yang ditokenisasi dapat diperdagangkan di pasar sekunder, memberikan investor likuiditas dan fleksibilitas untuk menyesuaikan portofolio mereka.'
+          description: 'Perdagangkan aset yang ditokenisasi di pasar sekunder untuk fleksibilitas portofolio yang lebih besar.'
         },
         {
           icon: <FileText className="h-5 w-5 text-green-600" />,
           title: 'Kontrak Pintar',
-          description: 'Kontrak pintar otomatis mendistribusikan pengembalian berdasarkan kondisi yang telah ditentukan, menghilangkan perantara dan memastikan pembagian keuntungan yang adil dan transparan.'
+          description: 'Kontrak pintar otomatis mendistribusikan pengembalian berdasarkan kondisi yang telah ditentukan.'
         },
         {
           icon: <Wallet className="h-5 w-5 text-green-600" />,
           title: 'Diversifikasi',
-          description: 'Investasikan di berbagai proyek pertanian dan tanaman untuk menyebarkan risiko dan mengoptimalkan pengembalian, semua dari satu platform.'
+          description: 'Investasikan di berbagai proyek pertanian untuk menyebarkan risiko dan mengoptimalkan pengembalian.'
         },
         {
           icon: <Lock className="h-5 w-5 text-green-600" />,
           title: 'Aset Digital Aman',
-          description: 'Semua aset diamankan melalui teknologi blockchain dengan langkah-langkah keamanan tingkat institusional dan audit rutin oleh ahli pihak ketiga.'
+          description: 'Aset diamankan melalui blockchain dengan langkah-langkah keamanan tingkat institusional.'
         }
       ]
     },
@@ -97,22 +97,22 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
         {
           icon: <CircleDollarSign className="h-5 w-5 text-green-600" />,
           title: '유동성 및 유연성',
-          description: '전통적인 농업 투자와 달리 토큰화된 자산은 2차 시장에서 거래될 수 있어 투자자에게 유동성과 포트폴리오 조정 유연성을 제공합니다.'
+          description: '토큰화된 자산을 2차 시장에서 거래하여 포트폴리오 유연성을 높이세요.'
         },
         {
           icon: <FileText className="h-5 w-5 text-green-600" />,
           title: '스마트 계약',
-          description: '자동화된 스마트 계약은 미리 정의된 조건에 따라 수익을 분배하여 중개인을 제거하고 공정하고 투명한 이익 공유를 보장합니다.'
+          description: '자동화된 스마트 계약은 미리 정의된 조건에 따라 수익을 분배합니다.'
         },
         {
           icon: <Wallet className="h-5 w-5 text-green-600" />,
           title: '다각화',
-          description: '단일 플랫폼에서 여러 농업 프로젝트와 작물에 투자하여 위험을 분산하고 수익을 최적화하세요.'
+          description: '여러 농업 프로젝트에 투자하여 위험을 분산하고 수익을 최적화하세요.'
         },
         {
           icon: <Lock className="h-5 w-5 text-green-600" />,
           title: '안전한 디지털 자산',
-          description: '모든 자산은 기관급 보안 조치와 제3자 전문가의 정기적인 감사를 통해 블록체인 기술로 보호됩니다.'
+          description: '모든 자산은 기관급 보안 조치를 통해 블록체인 기술로 보호됩니다.'
         }
       ]
     }
