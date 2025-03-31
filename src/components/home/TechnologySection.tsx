@@ -89,19 +89,19 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
   };
 
   return (
-    <section id="technology" className="py-20 bg-white dark:bg-gray-900">
+    <section id="technology" className="py-12 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold mb-4 dark:text-white">{content[language].title}</h2>
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <h2 className="text-3xl font-bold mb-3 dark:text-white">{content[language].title}</h2>
           <p className="text-gray-600 dark:text-gray-400">
             {content[language].subtitle}
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {content[language].technologies.map((tech, index) => (
             <div key={index} className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl">
-              <div className="flex items-center mb-4">
+              <div className="flex items-center mb-3">
                 <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
                   {tech.icon}
                 </div>

@@ -45,10 +45,10 @@ export const IndonesiaImpactSection: React.FC<IndonesiaImpactSectionProps> = ({ 
   };
 
   return (
-    <section id="indonesia" className={`py-10 ${isMobile ? 'py-10' : 'py-20'} bg-white dark:bg-gray-900`}>
+    <section id="indonesia" className={`py-8 ${isMobile ? 'py-8' : 'py-12'} bg-white dark:bg-gray-900`}>
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-16">
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold mb-4 dark:text-white`}>
+        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-10">
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold mb-3 dark:text-white`}>
             {content[language].title}
           </h2>
           <p className={`text-gray-600 dark:text-gray-400 ${isMobile ? 'text-sm' : 'text-base'}`}>

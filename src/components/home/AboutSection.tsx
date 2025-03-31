@@ -30,16 +30,16 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ content }) => {
   ];
 
   return (
-    <section id="about" className="bg-white dark:bg-gray-950 py-20">
+    <section id="about" className="bg-white dark:bg-gray-950 py-12">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold mb-4 dark:text-white">{content.title}</h2>
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <h2 className="text-3xl font-bold mb-3 dark:text-white">{content.title}</h2>
           <p className="text-gray-600 dark:text-gray-400">
             {content.description}
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <FeatureCard
               key={index}

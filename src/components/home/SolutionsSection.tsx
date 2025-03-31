@@ -97,22 +97,22 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({ language }) 
   ];
 
   return (
-    <section id="solutions" className="py-20 bg-gray-50 dark:bg-gray-900">
+    <section id="solutions" className="py-12 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold mb-4 dark:text-white">{content[language].title}</h2>
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <h2 className="text-3xl font-bold mb-3 dark:text-white">{content[language].title}</h2>
           <p className="text-gray-600 dark:text-gray-400">
             {content[language].subtitle}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {content[language].cards.map((card, index) => (
-            <div key={index} className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-6">
+            <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4">
                 {icons[index]}
               </div>
-              <h3 className="text-xl font-semibold mb-3 dark:text-white">{card.title}</h3>
+              <h3 className="text-xl font-semibold mb-2 dark:text-white">{card.title}</h3>
               <p className="text-gray-600 dark:text-gray-400">{card.description}</p>
             </div>
           ))}

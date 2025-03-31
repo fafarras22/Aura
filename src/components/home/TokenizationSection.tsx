@@ -119,10 +119,10 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
   };
 
   return (
-    <section id="tokenization" className="bg-gray-50 dark:bg-gray-900 py-20">
+    <section id="tokenization" className="bg-gray-50 dark:bg-gray-900 py-12">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold mb-4 dark:text-white">
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <h2 className="text-3xl font-bold mb-3 dark:text-white">
             {translatedContent[language].sectionTitle}
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
@@ -130,13 +130,13 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
-            <h3 className="text-2xl font-bold mb-4 dark:text-white">{content.tokenization.title}</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <h3 className="text-2xl font-bold mb-3 dark:text-white">{content.tokenization.title}</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-5">
               {content.tokenization.description}
             </p>
-            <ul className="space-y-4 mb-8">
+            <ul className="space-y-3 mb-6">
               <li className="flex items-start gap-3">
                 <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
                   <span className="text-primary font-medium text-sm">1</span>
@@ -168,8 +168,8 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {translatedContent[language].details.map((detail, index) => (
-              <div key={index} className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm">
-                <div className="flex items-center mb-3">
+              <div key={index} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                <div className="flex items-center mb-2">
                   <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3">
                     {detail.icon}
                   </div>
