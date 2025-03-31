@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Server, Clock, CloudCog, Flower2, ShieldCheck } from "lucide-react";
+import { Server, CloudCog, Flower2, ShieldCheck } from "lucide-react";
 
 interface TechnologySectionProps {
   language: 'en' | 'id' | 'ko';
@@ -31,11 +31,6 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
           icon: <ShieldCheck className="h-5 w-5 text-green-600" />,
           title: "Blockchain Security",
           description: "Immutable record-keeping ensures data integrity and transparent supply chain tracking."
-        },
-        {
-          icon: <Clock className="h-5 w-5 text-green-600" />,
-          title: "Automated Maintenance",
-          description: "Self-monitoring systems that adjust conditions and alert operators when intervention is needed."
         }
       ]
     },
@@ -62,11 +57,6 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
           icon: <ShieldCheck className="h-5 w-5 text-green-600" />,
           title: "Keamanan Blockchain",
           description: "Pencatatan yang tidak dapat diubah memastikan integritas data dan pelacakan rantai pasok yang transparan."
-        },
-        {
-          icon: <Clock className="h-5 w-5 text-green-600" />,
-          title: "Pemeliharaan Otomatis",
-          description: "Sistem pemantauan mandiri yang menyesuaikan kondisi dan memperingatkan operator ketika intervensi diperlukan."
         }
       ]
     },
@@ -93,11 +83,6 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
           icon: <ShieldCheck className="h-5 w-5 text-green-600" />,
           title: "블록체인 보안",
           description: "변경 불가능한 기록 보관으로 데이터 무결성과 투명한 공급망 추적을 보장합니다."
-        },
-        {
-          icon: <Clock className="h-5 w-5 text-green-600" />,
-          title: "자동화된 유지보수",
-          description: "조건을 조정하고 개입이 필요할 때 운영자에게 경고하는 자체 모니터링 시스템."
         }
       ]
     }
@@ -113,7 +98,7 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {content[language].technologies.map((tech, index) => (
             <div key={index} className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl">
               <div className="flex items-center mb-4">
