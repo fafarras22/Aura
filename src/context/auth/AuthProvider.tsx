@@ -5,11 +5,12 @@ import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { AuthContextProps, AuthState } from './types';
 import { 
-  handleSignUp, 
-  handleSignIn, 
-  handleGoogleSignIn, 
-  handleAppleSignIn, 
-  handleSignOut 
+  signUpWithEmail, 
+  signInWithEmail, 
+  signInWithGoogle, 
+  signInWithApple, 
+  signOutUser,
+  getCurrentSession
 } from './authService';
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -48,31 +49,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signUp = async (email: string, password: string, name: string) => {
-    return handleSignUp(email, password, name, toast);
+    return signUpWithEmail(email, password, name);
   };
 
   const signIn = async (email: string, password: string) => {
-    return handleSignIn(email, password, toast);
+    return signInWithEmail(email, password);
   };
 
-  const signInWithGoogle = async () => {
-    return handleGoogleSignIn(toast);
+  const signInWithGoogleAuth = async () => {
+    return signInWithGoogle();
   };
 
-  const signInWithApple = async () => {
-    return handleAppleSignIn(toast);
+  const signInWithAppleAuth = async () => {
+    return signInWithApple();
   };
 
   const signOut = async () => {
-    return handleSignOut(toast);
+    return signOutUser();
   };
 
   const value = {
     ...authState,
     signUp,
     signIn,
-    signInWithGoogle,
-    signInWithApple,
+    signInWithGoogle: signInWithGoogleAuth,
+    signInWithApple: signInWithAppleAuth,
     signOut
   };
 
