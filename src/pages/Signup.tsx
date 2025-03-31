@@ -1,12 +1,12 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useDeveloperMode } from "@/context/DeveloperModeContext";
+import { useAuth } from "@/context/AuthContext";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -18,9 +18,16 @@ const Signup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { login } = useDeveloperMode();
+  const { signUp, user } = useAuth();
 
-  const handleSignup = (e: React.FormEvent) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
+
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (password !== confirmPassword) {
@@ -43,23 +50,19 @@ const Signup = () => {
     
     setIsLoading(true);
     
-    // Simulate signup process
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const { success } = await signUp(email, password, name);
       
-      // In a real app, this would create a new user account in the database
-      toast({
-        title: "Account created",
-        description: "Welcome to AKAR FarmWatch!",
-      });
-      
-      // Automatically log in the user as a client/guest
-      const loginSuccess = login(name, password);
-      
-      if (loginSuccess) {
-        navigate("/dashboard");
+      if (success) {
+        // Redirect to login page or show verification message
+        setIsLoading(false);
+        navigate("/login");
+      } else {
+        setIsLoading(false);
       }
-    }, 1500);
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -183,13 +186,13 @@ const Signup = () => {
                 />
                 <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-700">
                   I agree to the{" "}
-                  <a href="/terms-of-service" className="font-medium text-primary hover:text-primary/80">
+                  <Link to="/terms-of-service" className="font-medium text-primary hover:text-primary/80">
                     Terms of Service
-                  </a>{" "}
+                  </Link>{" "}
                   and{" "}
-                  <a href="/privacy-policy" className="font-medium text-primary hover:text-primary/80">
+                  <Link to="/privacy-policy" className="font-medium text-primary hover:text-primary/80">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </label>
               </div>
 

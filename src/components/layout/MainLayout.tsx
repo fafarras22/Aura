@@ -2,6 +2,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
+import { useAuth } from "@/context/AuthContext";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { AppleNotification } from "@/components/ui/apple-notification";
@@ -24,6 +25,7 @@ import {
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
   const { isDeveloperMode, toggleDeveloperMode, currentUser } = useDeveloperMode();
+  const { user, signOut } = useAuth();
   const [showNotification, setShowNotification] = useState(false);
   const navigate = useNavigate();
 
@@ -32,10 +34,14 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     setTimeout(() => setShowNotification(false), 5000);
   };
 
-  const handleSignOut = () => {
-    // In a real app, this would include authentication logic
+  const handleSignOut = async () => {
+    await signOut();
     navigate('/login');
   };
+
+  // Get the display name (either from Supabase user or fallback to DeveloperMode)
+  const displayName = user?.user_metadata?.name || currentUser?.name || 'User';
+  const userInitial = displayName.charAt(0) || 'U';
 
   return (
     <SidebarProvider>
@@ -61,7 +67,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                 <Bell className="w-5 h-5" />
               </AppleButton>
 
-              {currentUser?.role === 'admin' && (
+              {(currentUser?.role === 'admin' || user?.app_metadata?.role === 'admin') && (
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">
                     {isDeveloperMode ? "Developer Mode" : "Client Mode"}
@@ -79,15 +85,15 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                     <Avatar className="h-8 w-8 border border-primary/20">
                       <AvatarImage src="" alt="@user" />
                       <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary">
-                        {currentUser?.name.charAt(0) || 'U'}
+                        {userInitial}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>{currentUser?.name || 'User'}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{displayName}</DropdownMenuLabel>
                   <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
-                    {currentUser?.role === 'admin' ? 'Administrator' : 'Client User'}
+                    {(currentUser?.role === 'admin' || user?.app_metadata?.role === 'admin') ? 'Administrator' : 'Client User'}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate('/settings')}>

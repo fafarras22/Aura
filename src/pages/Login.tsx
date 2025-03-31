@@ -1,44 +1,44 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff, ArrowRight, Info } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useAuth } from "@/context/AuthContext";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { login, loginAsAdmin } = useDeveloperMode();
+  const { signIn, user } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Try regular user login first
-    const loginSuccess = login(username, password);
-    
-    // If username contains "admin", try admin login
-    if (!loginSuccess && username.toLowerCase().includes("admin")) {
-      const adminLoginSuccess = loginAsAdmin(password);
+    try {
+      const { success } = await signIn(email, password);
       
-      if (adminLoginSuccess) {
-        navigate("/dashboard");
-        return;
+      if (success) {
+        // Successful login will automatically redirect through the useEffect
+      } else {
+        setIsLoading(false);
       }
-    }
-    
-    if (loginSuccess) {
-      navigate("/dashboard");
-    } else {
+    } catch (error) {
       setIsLoading(false);
     }
   };
@@ -71,20 +71,20 @@ const Login = () => {
           <div className="mt-8 bg-white py-8 px-4 shadow-sm rounded-lg sm:px-10 border border-gray-200">
             <form className="space-y-6" onSubmit={handleLogin}>
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                  Username
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
                 </label>
                 <div className="mt-1">
                   <Input
-                    id="username"
-                    name="username"
-                    type="text"
-                    autoComplete="username"
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
                     required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="Your username"
+                    placeholder="your.email@example.com"
                   />
                 </div>
               </div>
@@ -121,11 +121,11 @@ const Login = () => {
               <Alert variant="outline" className="bg-blue-50 border-blue-200">
                 <Info className="h-4 w-4 text-blue-500" />
                 <AlertDescription className="text-xs text-blue-700">
-                  <strong>Login Credentials:</strong>
+                  <strong>Demo Information:</strong>
                   <ul className="mt-1 ml-4 list-disc">
-                    <li>Client: Username "Guest" / Password "guest123"</li>
-                    <li>Admin: Username "Muhammad Farras" / Password "admin123"</li>
-                    <li>Admin mode can also be accessed with admin password: "admin@akar2025"</li>
+                    <li>Create a new account with any email and password</li>
+                    <li>Check your email for verification (skip in demo)</li>
+                    <li>Use these credentials to sign in anytime</li>
                   </ul>
                 </AlertDescription>
               </Alert>

@@ -5,10 +5,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DeveloperModeProvider } from "@/context/DeveloperModeContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { MobileLayout } from "@/components/layout/MobileLayout";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
@@ -44,55 +46,64 @@ const ResponsiveLayout = () => {
   return isMobile ? <MobileLayout><Outlet /></MobileLayout> : <MainLayout><Outlet /></MainLayout>;
 };
 
+// Protected layout that requires authentication
+const ProtectedLayout = () => (
+  <ProtectedRoute>
+    <ResponsiveLayout />
+  </ProtectedRoute>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light">
       <TooltipProvider>
-        <DeveloperModeProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/careers" element={<Careers />} />
-              <Route path="/news" element={<News />} />
-              <Route path="/partners" element={<Partners />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-of-service" element={<TermsOfService />} />
-              <Route path="/legal" element={<Legal />} />
-              <Route path="/whitepaper" element={<Whitepaper />} />
-              <Route path="/explore-solutions" element={<ExploreSolutions />} />
-              <Route path="/learn-more" element={<LearnMore />} />
-              
-              {/* Protected routes - Add authentication check here in a real app */}
-              <Route element={<ResponsiveLayout />}>
-                <Route path="/dashboard" element={<Dashboard />} />
+        <AuthProvider>
+          <DeveloperModeProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                {/* Public routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/partners" element={<Partners />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/legal" element={<Legal />} />
+                <Route path="/whitepaper" element={<Whitepaper />} />
+                <Route path="/explore-solutions" element={<ExploreSolutions />} />
+                <Route path="/learn-more" element={<LearnMore />} />
                 
-                {/* Internal Environment */}
-                <Route path="/internal-environment" element={<Navigate to="/sensors" replace />} />
-                <Route path="/sensors" element={<Sensors />} />
-                <Route path="/water" element={<Water />} />
-                <Route path="/climate" element={<Climate />} />
-                
-                {/* External Environment */}
-                <Route path="/external-environment" element={<Navigate to="/alerts" replace />} />
-                <Route path="/alerts" element={<Alerts />} />
-                <Route path="/cctv" element={<CCTV />} />
-                <Route path="/calendar" element={<Calendar />} />
-                
-                <Route path="/tokenization" element={<Tokenization />} />
-                <Route path="/harvest" element={<Harvest />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/settings" element={<Settings />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </DeveloperModeProvider>
+                {/* Protected routes that require authentication */}
+                <Route element={<ProtectedLayout />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  
+                  {/* Internal Environment */}
+                  <Route path="/internal-environment" element={<Navigate to="/sensors" replace />} />
+                  <Route path="/sensors" element={<Sensors />} />
+                  <Route path="/water" element={<Water />} />
+                  <Route path="/climate" element={<Climate />} />
+                  
+                  {/* External Environment */}
+                  <Route path="/external-environment" element={<Navigate to="/alerts" replace />} />
+                  <Route path="/alerts" element={<Alerts />} />
+                  <Route path="/cctv" element={<CCTV />} />
+                  <Route path="/calendar" element={<Calendar />} />
+                  
+                  <Route path="/tokenization" element={<Tokenization />} />
+                  <Route path="/harvest" element={<Harvest />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/settings" element={<Settings />} />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </DeveloperModeProvider>
+        </AuthProvider>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
