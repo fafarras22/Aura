@@ -2,7 +2,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/auth";
 import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { AppleNotification } from "@/components/ui/apple-notification";

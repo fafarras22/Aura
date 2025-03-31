@@ -1,27 +1,42 @@
 
 import { supabase } from '@/lib/supabase';
-import { ToastProps } from '@/hooks/use-toast';
+import { Session, User } from '@supabase/supabase-js';
+import { toast } from "@/components/ui/use-toast";
 
-// Function to handle sign up
-export const handleSignUp = async (
+// Get current session data
+export const getCurrentSession = async (): Promise<{ user: User | null; session: Session | null }> => {
+  const { data: { session }, error } = await supabase.auth.getSession();
+  
+  if (error) {
+    console.error('Error getting session:', error.message);
+    return { user: null, session: null };
+  }
+  
+  return { 
+    user: session?.user || null,
+    session: session
+  };
+};
+
+// Sign up with email and password
+export const signUpWithEmail = async (
   email: string, 
-  password: string, 
-  name: string,
-  showToast: (props: ToastProps) => void
-) => {
+  password: string,
+  name: string
+): Promise<{ error: any | null; success: boolean }> => {
   try {
-    const { error, data } = await supabase.auth.signUp({ 
-      email, 
+    const { data, error } = await supabase.auth.signUp({
+      email,
       password,
       options: {
         data: {
-          name: name
+          name
         }
       }
     });
-    
+
     if (error) {
-      showToast({
+      toast({
         title: "Sign up failed",
         description: error.message,
         variant: "destructive"
@@ -29,125 +44,108 @@ export const handleSignUp = async (
       return { error, success: false };
     }
 
-    // If signUp is successful
-    showToast({
-      title: "Account created!",
-      description: "Check your email for a confirmation link."
+    toast({
+      title: "Sign up successful",
+      description: "Please check your email to verify your account.",
     });
     
     return { error: null, success: true };
-  } catch (error: any) {
-    showToast({
+  } catch (error) {
+    toast({
       title: "Sign up failed",
-      description: error.message,
+      description: "An unexpected error occurred.",
       variant: "destructive"
     });
     return { error, success: false };
   }
 };
 
-// Function to handle sign in
-export const handleSignIn = async (
+// Sign in with email and password
+export const signInWithEmail = async (
   email: string, 
-  password: string,
-  showToast: (props: ToastProps) => void
-) => {
+  password: string
+): Promise<{ error: any | null; success: boolean }> => {
   try {
-    const { error, data } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
     });
 
     if (error) {
-      showToast({
-        title: "Login failed",
+      toast({
+        title: "Sign in failed",
         description: error.message,
         variant: "destructive"
       });
       return { error, success: false };
     }
 
-    showToast({
-      title: "Login successful",
-      description: `Welcome back, ${data.user.user_metadata.name || 'User'}!`
+    toast({
+      title: "Sign in successful",
+      description: "Welcome back!",
     });
     
     return { error: null, success: true };
-  } catch (error: any) {
-    showToast({
-      title: "Login failed",
-      description: error.message,
+  } catch (error) {
+    toast({
+      title: "Sign in failed",
+      description: "An unexpected error occurred.",
       variant: "destructive"
     });
     return { error, success: false };
   }
 };
 
-// Function to handle social sign in (Google)
-export const handleGoogleSignIn = async (showToast: (props: ToastProps) => void) => {
+// Sign in with Google
+export const signInWithGoogle = async (): Promise<{ error: any | null; success: boolean }> => {
   try {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/dashboard`
+        redirectTo: window.location.origin + '/dashboard'
       }
     });
 
     if (error) {
-      showToast({
-        title: "Google login failed",
-        description: error.message,
-        variant: "destructive"
-      });
       return { error, success: false };
     }
     
     return { error: null, success: true };
-  } catch (error: any) {
-    showToast({
-      title: "Google login failed",
-      description: error.message,
-      variant: "destructive"
-    });
+  } catch (error) {
     return { error, success: false };
   }
 };
 
-// Function to handle social sign in (Apple)
-export const handleAppleSignIn = async (showToast: (props: ToastProps) => void) => {
+// Sign in with Apple
+export const signInWithApple = async (): Promise<{ error: any | null; success: boolean }> => {
   try {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: `${window.location.origin}/dashboard`
+        redirectTo: window.location.origin + '/dashboard'
       }
     });
 
     if (error) {
-      showToast({
-        title: "Apple login failed",
-        description: error.message,
-        variant: "destructive"
-      });
       return { error, success: false };
     }
     
     return { error: null, success: true };
-  } catch (error: any) {
-    showToast({
-      title: "Apple login failed",
-      description: error.message,
-      variant: "destructive"
-    });
+  } catch (error) {
     return { error, success: false };
   }
 };
 
-// Function to handle sign out
-export const handleSignOut = async (showToast: (props: ToastProps) => void) => {
-  await supabase.auth.signOut();
-  showToast({
-    title: "Logged out",
-    description: "You have been successfully logged out."
-  });
+// Sign out
+export const signOutUser = async (): Promise<void> => {
+  const { error } = await supabase.auth.signOut();
+  
+  if (error) {
+    console.error('Error signing out:', error.message);
+    toast({
+      title: "Sign out failed",
+      description: error.message,
+      variant: "destructive"
+    });
+  }
 };

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User } from "@/context/DeveloperModeContext";
+import { User } from "@/context/developer-mode/types";
 import { useMobile } from "@/hooks/use-mobile";
 
 interface WelcomeCardProps {
