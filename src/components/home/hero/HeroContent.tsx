@@ -22,7 +22,10 @@ export const HeroContent: React.FC<HeroContentProps> = ({
 }) => {
   return (
     <div className="space-y-6">
-      <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
+      <h1 
+        id="hero-heading"
+        className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight"
+      >
         {title}
       </h1>
       <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl leading-relaxed">
@@ -33,14 +36,16 @@ export const HeroContent: React.FC<HeroContentProps> = ({
           className="gap-2 px-6" 
           size="lg" 
           onClick={onExploreClick}
+          aria-label={explore}
         >
-          {explore} <ArrowRight className="h-4 w-4" />
+          {explore} <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Button>
         <Button 
           variant="outline" 
           className="gap-2 px-6" 
           size="lg"
           onClick={onLearnMoreClick}
+          aria-label={learnMore}
         >
           {learnMore}
         </Button>

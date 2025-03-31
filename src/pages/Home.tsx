@@ -7,7 +7,9 @@ import { AboutSection } from "@/components/home/AboutSection";
 import { IndonesiaImpactSection } from "@/components/home/IndonesiaImpactSection";
 import { TechnologySection } from "@/components/home/TechnologySection";
 import { TokenizationSection } from "@/components/home/TokenizationSection";
+import { SolutionsSection } from "@/components/home/SolutionsSection";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
@@ -73,8 +75,40 @@ const Home = () => {
     navigate('/learn-more');
   };
 
+  const getPageTitle = () => {
+    switch(language) {
+      case 'id':
+        return 'AKAR FarmWatch - Teknologi Pertanian Kontainer Berkelanjutan';
+      case 'ko':
+        return 'AKAR FarmWatch - 지속 가능한 컨테이너 농업 기술';
+      default:
+        return 'AKAR FarmWatch - Sustainable Container Farming Technology';
+    }
+  };
+
+  const getPageDescription = () => {
+    switch(language) {
+      case 'id':
+        return 'AKAR FarmWatch menyediakan solusi pertanian kontainer cerdas dengan integrasi blockchain untuk pertanian berkelanjutan di Indonesia dan sekitarnya.';
+      case 'ko':
+        return 'AKAR FarmWatch는 인도네시아와 그 너머의 지속 가능한 농업을 위한 블록체인 통합이 포함된 스마트 컨테이너 농업 솔루션을 제공합니다.';
+      default:
+        return 'AKAR FarmWatch provides smart container farming solutions with blockchain integration for sustainable agriculture in Indonesia and beyond.';
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
+      <Helmet>
+        <title>{getPageTitle()}</title>
+        <meta name="description" content={getPageDescription()} />
+        <meta name="og:title" content={getPageTitle()} />
+        <meta name="og:description" content={getPageDescription()} />
+        <meta name="twitter:title" content={getPageTitle()} />
+        <meta name="twitter:description" content={getPageDescription()} />
+        <html lang={language} />
+      </Helmet>
+
       {/* Header/Navigation */}
       <HomeHeader language={language} setLanguage={setLanguage} />
 
@@ -88,11 +122,14 @@ const Home = () => {
       {/* About section */}
       <AboutSection content={content[language].about} />
       
-      {/* Indonesia Impact section */}
-      <IndonesiaImpactSection language={language} />
+      {/* Solutions section */}
+      <SolutionsSection language={language} />
       
       {/* Technology section */}
       <TechnologySection language={language} />
+      
+      {/* Indonesia Impact section */}
+      <IndonesiaImpactSection language={language} />
       
       {/* Tokenization section */}
       <TokenizationSection language={language} content={content[language]} />

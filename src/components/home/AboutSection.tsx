@@ -30,23 +30,35 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ content }) => {
   ];
 
   return (
-    <section id="about" className="bg-white dark:bg-gray-950 py-12">
+    <section 
+      id="about" 
+      className="bg-white dark:bg-gray-950 py-8 md:py-10"
+      aria-labelledby="about-heading"
+      itemScope
+      itemType="https://schema.org/Organization"
+    >
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <h2 className="text-3xl font-bold mb-3 dark:text-white">{content.title}</h2>
-          <p className="text-gray-600 dark:text-gray-400">
+        <div className="text-center max-w-3xl mx-auto mb-8">
+          <h2 id="about-heading" className="text-3xl font-bold mb-3 dark:text-white" itemProp="name">{content.title}</h2>
+          <p className="text-gray-600 dark:text-gray-400" itemProp="description">
             {content.description}
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          itemScope
+          itemType="https://schema.org/ItemList"
+        >
           {features.map((feature, index) => (
-            <FeatureCard
-              key={index}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-            />
+            <div key={index} itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+              <meta itemProp="position" content={`${index + 1}`} />
+              <FeatureCard
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+              />
+            </div>
           ))}
         </div>
       </div>

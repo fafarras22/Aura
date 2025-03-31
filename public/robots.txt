@@ -3,7 +3,7 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Main sitemap location
 Sitemap: https://akarfarmwatch.com/sitemap.xml
 
 # Specific crawler instructions
@@ -19,5 +19,12 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-# Disallow specific areas if needed
-# Disallow: /private-area/
+# Allow all bots to index important content
+Allow: /about
+Allow: /explore-solutions
+Allow: /learn-more
+Allow: /tokenization
+
+# Disallow access to development/test areas if any
+# Disallow: /dev/
+# Disallow: /test/

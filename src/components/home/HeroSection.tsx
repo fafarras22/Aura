@@ -23,10 +23,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const isMobile = useMobile();
   
   return (
-    <section className="relative w-full min-h-[80vh] flex items-center">
+    <section 
+      className="relative w-full min-h-[80vh] flex items-center"
+      aria-labelledby="hero-heading"
+    >
       <div className="absolute inset-0 z-0 bg-gradient-to-r from-white via-white to-accent/20 dark:from-gray-950 dark:via-gray-950 dark:to-accent/5"></div>
-      <div className="container mx-auto px-4 z-10 py-6 md:py-12">
-        <div className={`grid grid-cols-1 md:grid-cols-2 ${isMobile ? 'gap-4' : 'gap-8'} items-center`}>
+      <div className="container mx-auto px-4 z-10 py-4 md:py-8">
+        <div className={`grid grid-cols-1 md:grid-cols-2 ${isMobile ? 'gap-4' : 'gap-6'} items-center`}>
           {/* For mobile, show the HeroImage first, then content */}
           {isMobile ? (
             <>
