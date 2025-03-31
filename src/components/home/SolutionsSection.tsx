@@ -1,6 +1,6 @@
 
 import React from "react";
-import { LeafyGreen, Database, BarChart2, GanttChart, Globe2 } from "lucide-react";
+import { LeafyGreen, Database, BarChart2 } from "lucide-react";
 
 interface SolutionsSectionProps {
   language: 'en' | 'id' | 'ko';
@@ -23,14 +23,6 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({ language }) 
         {
           title: "Real-Time Analytics",
           description: "Detailed growth and performance metrics to optimize yields and resource utilization."
-        },
-        {
-          title: "Tokenized Investments",
-          description: "Fractional ownership of farm assets through security tokens, democratizing agricultural investment."
-        },
-        {
-          title: "Global Deployment",
-          description: "Modular design allows for rapid deployment in any location, from urban centers to remote villages."
         }
       ]
     },
@@ -49,14 +41,6 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({ language }) 
         {
           title: "Analitik Real-Time",
           description: "Metrik pertumbuhan dan kinerja yang detail untuk mengoptimalkan hasil dan pemanfaatan sumber daya."
-        },
-        {
-          title: "Investasi Tertokenisasi",
-          description: "Kepemilikan fraksional aset pertanian melalui token keamanan, demokratisasi investasi pertanian."
-        },
-        {
-          title: "Penerapan Global",
-          description: "Desain modular memungkinkan penerapan cepat di lokasi manapun, dari pusat kota hingga desa terpencil."
         }
       ]
     },
@@ -75,14 +59,6 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({ language }) 
         {
           title: "실시간 분석",
           description: "수확량과 자원 활용을 최적화하기 위한 상세한 성장 및 성능 지표."
-        },
-        {
-          title: "토큰화된 투자",
-          description: "보안 토큰을 통한 농장 자산의 부분 소유권, 농업 투자의 민주화."
-        },
-        {
-          title: "글로벌 배포",
-          description: "모듈식 설계로 도시 중심지부터 외딴 마을까지 어느 위치에서나 신속한 배포가 가능합니다."
         }
       ]
     }
@@ -91,9 +67,7 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({ language }) 
   const icons = [
     <LeafyGreen className="h-7 w-7 text-green-600" />,
     <Database className="h-7 w-7 text-green-600" />,
-    <BarChart2 className="h-7 w-7 text-green-600" />,
-    <GanttChart className="h-7 w-7 text-green-600" />,
-    <Globe2 className="h-7 w-7 text-green-600" />
+    <BarChart2 className="h-7 w-7 text-green-600" />
   ];
 
   return (
