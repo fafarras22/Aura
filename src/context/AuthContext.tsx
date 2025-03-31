@@ -10,6 +10,8 @@ interface AuthContextProps {
   isLoading: boolean;
   signUp: (email: string, password: string, name: string) => Promise<{ error: any | null, success: boolean }>;
   signIn: (email: string, password: string) => Promise<{ error: any | null, success: boolean }>;
+  signInWithGoogle: () => Promise<{ error: any | null, success: boolean }>;
+  signInWithApple: () => Promise<{ error: any | null, success: boolean }>;
   signOut: () => Promise<void>;
 }
 
@@ -111,6 +113,64 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Google login failed",
+          description: error.message,
+          variant: "destructive"
+        });
+        return { error, success: false };
+      }
+      
+      return { error: null, success: true };
+    } catch (error: any) {
+      toast({
+        title: "Google login failed",
+        description: error.message,
+        variant: "destructive"
+      });
+      return { error, success: false };
+    }
+  };
+
+  const signInWithApple = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'apple',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Apple login failed",
+          description: error.message,
+          variant: "destructive"
+        });
+        return { error, success: false };
+      }
+      
+      return { error: null, success: true };
+    } catch (error: any) {
+      toast({
+        title: "Apple login failed",
+        description: error.message,
+        variant: "destructive"
+      });
+      return { error, success: false };
+    }
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
     toast({
@@ -125,6 +185,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     isLoading,
     signUp,
     signIn,
+    signInWithGoogle,
+    signInWithApple,
     signOut
   };
 
