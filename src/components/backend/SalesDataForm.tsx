@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/lib/supabase";
 import { Plus, Upload, Download, Trash2, Save } from "lucide-react";
+import { useDBSetup } from "@/lib/db-setup";
 
 interface SupermarketClient {
   name: string;
@@ -26,14 +27,41 @@ interface ContainerSalesData {
 
 export const SalesDataForm = () => {
   const { toast } = useToast();
+  const { initializeDB } = useDBSetup();
   const [salesData, setSalesData] = useState<Partial<ContainerSalesData>[]>([]);
   const [selectedContainer, setSelectedContainer] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [containers, setContainers] = useState<{id: string, name: string}[]>([]);
+  const [dbInitialized, setDbInitialized] = useState<boolean>(false);
+  
+  // Initialize the database on component mount
+  useEffect(() => {
+    const setupDB = async () => {
+      const success = await initializeDB();
+      setDbInitialized(success);
+      return success;
+    };
+    
+    setupDB();
+  }, [initializeDB]);
   
   // Load containers for the dropdown
   useEffect(() => {
     const fetchContainers = async () => {
+      if (!dbInitialized) {
+        // Using mock data if the database is not available
+        const mockContainers = [
+          { id: "container-1", name: "Pluit Village Mall" },
+          { id: "container-2", name: "Green Garden Residence" },
+          { id: "container-3", name: "BSD City Container" },
+        ];
+        setContainers(mockContainers);
+        if (mockContainers.length > 0) {
+          setSelectedContainer(mockContainers[0].id);
+        }
+        return;
+      }
+      
       try {
         const { data, error } = await supabase
           .from('containers')
@@ -41,24 +69,54 @@ export const SalesDataForm = () => {
           
         if (error) throw error;
         
-        if (data) {
+        if (data && data.length > 0) {
           setContainers(data);
-          if (data.length > 0) {
-            setSelectedContainer(data[0].id);
+          setSelectedContainer(data[0].id);
+        } else {
+          // If no containers in db, insert some defaults
+          const defaultContainers = [
+            { name: "Pluit Village Mall", location: "Jakarta", capacity: 500, status: "active" },
+            { name: "Green Garden Residence", location: "Jakarta", capacity: 300, status: "active" },
+            { name: "BSD City Container", location: "Tangerang", capacity: 450, status: "active" },
+          ];
+          
+          for (const container of defaultContainers) {
+            await supabase.from('containers').insert(container);
+          }
+          
+          // Fetch again
+          const { data: newData } = await supabase
+            .from('containers')
+            .select('id, name');
+          
+          if (newData && newData.length > 0) {
+            setContainers(newData);
+            setSelectedContainer(newData[0].id);
           }
         }
       } catch (error) {
         console.error("Error fetching containers:", error);
         toast({
           title: "Error fetching containers",
-          description: "Please try again or check your connection.",
+          description: "Using mock data instead.",
           variant: "destructive",
         });
+        
+        // Use mock data as fallback
+        const mockContainers = [
+          { id: "container-1", name: "Pluit Village Mall" },
+          { id: "container-2", name: "Green Garden Residence" },
+          { id: "container-3", name: "BSD City Container" },
+        ];
+        setContainers(mockContainers);
+        if (mockContainers.length > 0) {
+          setSelectedContainer(mockContainers[0].id);
+        }
       }
     };
     
     fetchContainers();
-  }, [toast]);
+  }, [dbInitialized, toast]);
   
   // Load sales data for selected container
   useEffect(() => {
@@ -68,6 +126,24 @@ export const SalesDataForm = () => {
       setLoading(true);
       
       try {
+        if (!dbInitialized) {
+          // Mock data if no database
+          const mockSalesData = [
+            {
+              id: "sales-1",
+              containerName: containers.find(c => c.id === selectedContainer)?.name || "",
+              totalSales: 5000,
+              totalRevenue: 225000000,
+              monthlySales: [2500, 2700, 2200, 3000, 3200, 3500],
+              supermarketClient: { name: "Indomaret" },
+              recurringCustomers: 350
+            }
+          ];
+          setSalesData(mockSalesData);
+          setLoading(false);
+          return;
+        }
+        
         const { data, error } = await supabase
           .from('sales_data')
           .select('*')
@@ -75,34 +151,52 @@ export const SalesDataForm = () => {
           
         if (error) throw error;
         
-        if (data) {
+        if (data && data.length > 0) {
           // Transform data to match the ContainerSalesData interface
           const transformedData = data.map(item => ({
             id: item.id,
             containerName: item.container_name,
             totalSales: item.total_sales,
             totalRevenue: item.total_revenue,
-            monthlySales: item.monthly_sales,
+            monthlySales: item.monthly_sales || [0, 0, 0, 0, 0, 0],
             supermarketClient: item.supermarket_client,
             recurringCustomers: item.recurring_customers
           }));
           
           setSalesData(transformedData);
+        } else {
+          // No data for this container, start with an empty record
+          setSalesData([]);
         }
       } catch (error) {
         console.error("Error fetching sales data:", error);
         toast({
           title: "Error fetching sales data",
-          description: "Please try again or check your connection.",
+          description: "Using mock data instead.",
           variant: "destructive",
         });
+        
+        // Use mock data as fallback
+        const mockSalesData = [
+          {
+            id: Math.random().toString(36).substr(2, 9),
+            containerName: containers.find(c => c.id === selectedContainer)?.name || "",
+            totalSales: 5000,
+            totalRevenue: 225000000,
+            monthlySales: [2500, 2700, 2200, 3000, 3200, 3500],
+            supermarketClient: { name: "Indomaret" },
+            recurringCustomers: 350
+          }
+        ];
+        setSalesData(mockSalesData);
       } finally {
         setLoading(false);
       }
     };
     
     fetchSalesData();
-  }, [selectedContainer, toast]);
+  }, [selectedContainer, containers, dbInitialized, toast]);
+
   
   const handleAddSalesRecord = () => {
     const newSalesRecord: Partial<ContainerSalesData> = {
@@ -133,9 +227,19 @@ export const SalesDataForm = () => {
     setLoading(true);
     
     try {
+      if (!dbInitialized) {
+        // In mock mode, just show success message
+        toast({
+          title: "Sales data saved",
+          description: "Data saved in mock mode (no database connection).",
+        });
+        setLoading(false);
+        return;
+      }
+      
       // Transform data back to database format
       const transformedData = salesData.map(item => ({
-        id: item.id,
+        id: item.id && !item.id.includes('-') ? item.id : undefined,  // Use undefined for UUID generation
         container_id: selectedContainer,
         container_name: item.containerName,
         total_sales: item.totalSales,
@@ -148,7 +252,7 @@ export const SalesDataForm = () => {
       // Use upsert to handle both insert and update
       const { error } = await supabase
         .from('sales_data')
-        .upsert(transformedData);
+        .upsert(transformedData, { onConflict: 'id' });
         
       if (error) throw error;
       
@@ -167,6 +271,7 @@ export const SalesDataForm = () => {
       setLoading(false);
     }
   };
+  
   
   const handleImportCSV = () => {
     // Placeholder for CSV import functionality
@@ -193,6 +298,7 @@ export const SalesDataForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        
         <div className="flex flex-col md:flex-row gap-4 justify-between">
           <div className="w-full md:w-1/3">
             <Label htmlFor="container-select">Select Container</Label>
@@ -233,6 +339,7 @@ export const SalesDataForm = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
           </div>
         ) : (
+          
           <div className="space-y-6">
             {salesData.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
