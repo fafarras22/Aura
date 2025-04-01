@@ -7,7 +7,7 @@ import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { useAuth } from "@/context/auth";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Lock, Database, BarChart2, Users, Settings, FileText, RefreshCw } from "lucide-react";
+import { Lock, Database, BarChart2, Users, Settings, FileText, RefreshCw, Leaf } from "lucide-react";
 import { BackendHeader } from "@/components/backend/BackendHeader";
 import { SalesDataForm } from "@/components/backend/SalesDataForm";
 import { ContainerDataForm } from "@/components/backend/ContainerDataForm";
@@ -15,6 +15,7 @@ import { ProjectionsForm } from "@/components/backend/ProjectionsForm";
 import { UserManagementPanel } from "@/components/backend/UserManagementPanel";
 import { SystemSettingsForm } from "@/components/backend/SystemSettingsForm";
 import { IntegrationsPanel } from "@/components/backend/IntegrationsPanel";
+import { ProductionDataForm } from "@/components/backend/ProductionDataForm";
 
 const BackendDashboard = () => {
   const { isDeveloperMode, currentUser } = useDeveloperMode();
@@ -71,7 +72,7 @@ const BackendDashboard = () => {
         </Badge>
         
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-8">
+          <TabsList className="grid grid-cols-3 md:grid-cols-7 mb-8">
             <TabsTrigger value="sales" className="flex items-center">
               <BarChart2 className="mr-2 h-4 w-4" />
               <span className="hidden md:inline">Sales Data</span>
@@ -81,6 +82,11 @@ const BackendDashboard = () => {
               <Database className="mr-2 h-4 w-4" />
               <span className="hidden md:inline">Containers</span>
               <span className="md:hidden">Cont.</span>
+            </TabsTrigger>
+            <TabsTrigger value="production">
+              <Leaf className="mr-2 h-4 w-4" />
+              <span className="hidden md:inline">Production</span>
+              <span className="md:hidden">Prod.</span>
             </TabsTrigger>
             <TabsTrigger value="projections">
               <RefreshCw className="mr-2 h-4 w-4" />
@@ -110,6 +116,10 @@ const BackendDashboard = () => {
           
           <TabsContent value="containers" className="space-y-4">
             <ContainerDataForm />
+          </TabsContent>
+          
+          <TabsContent value="production" className="space-y-4">
+            <ProductionDataForm />
           </TabsContent>
           
           <TabsContent value="projections" className="space-y-4">

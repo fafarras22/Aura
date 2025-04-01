@@ -12,6 +12,9 @@ import {
   Settings as SettingsIcon, 
   Thermometer, 
   Server,
+  Leaf,
+  TrendingUp,
+  ChartBar,
   LucideIcon
 } from "lucide-react";
 
@@ -61,6 +64,29 @@ export const menuItems: MenuItem[] = [
       { name: "Containers", path: "/containers" },
       { name: "Harvest", path: "/harvest" },
       { name: "Alerts", path: "/alerts" },
+    ],
+    adminOnly: false,
+  },
+  {
+    category: "production",
+    label: "Production Data",
+    icon: Leaf,
+    items: [
+      { name: "Vegetables", path: "/production/vegetables" },
+      { name: "Fruits", path: "/production/fruits" },
+      { name: "Herbs", path: "/production/herbs" },
+      { name: "Sales Analysis", path: "/production/sales" },
+    ],
+    adminOnly: false,
+  },
+  {
+    category: "sales",
+    label: "Sales Performance",
+    icon: TrendingUp,
+    items: [
+      { name: "Daily Sales", path: "/sales/daily" },
+      { name: "Monthly Trends", path: "/sales/monthly" },
+      { name: "Container Comparison", path: "/sales/comparison" },
     ],
     adminOnly: false,
   },
