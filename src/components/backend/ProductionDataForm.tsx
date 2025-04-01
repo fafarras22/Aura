@@ -43,7 +43,7 @@ interface ProductionData {
 
 export const ProductionDataForm = () => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<'vegetables' | 'fruits' | 'herbs'>('vegetables');
+  const [activeTab, setActiveTab] = useState<'vegetable' | 'fruit' | 'herb'>('vegetable');
   const [containers, setContainers] = useState<{id: string, name: string}[]>([]);
   const [products, setProducts] = useState<ProductType[]>([]);
   const [productionData, setProductionData] = useState<Partial<ProductionData>[]>([]);
@@ -411,21 +411,21 @@ export const ProductionDataForm = () => {
         
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
           <TabsList className="grid grid-cols-3 mb-4">
-            <TabsTrigger value="vegetables" className="flex items-center gap-1">
+            <TabsTrigger value="vegetable" className="flex items-center gap-1">
               <Leaf className="h-4 w-4" />
               Vegetables
             </TabsTrigger>
-            <TabsTrigger value="fruits" className="flex items-center gap-1">
+            <TabsTrigger value="fruit" className="flex items-center gap-1">
               <ChartBar className="h-4 w-4" />
               Fruits
             </TabsTrigger>
-            <TabsTrigger value="herbs" className="flex items-center gap-1">
+            <TabsTrigger value="herb" className="flex items-center gap-1">
               <TrendingUp className="h-4 w-4" />
               Herbs
             </TabsTrigger>
           </TabsList>
           
-          {['vegetables', 'fruits', 'herbs'].map((tab) => (
+          {['vegetable', 'fruit', 'herb'].map((tab) => (
             <TabsContent key={tab} value={tab} className="space-y-4">
               {loading ? (
                 <div className="flex justify-center py-8">

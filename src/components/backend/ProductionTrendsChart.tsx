@@ -21,9 +21,9 @@ import { TrendingUp, TrendingDown, Leaf } from 'lucide-react';
 
 interface ProductionTrend {
   date: string;
-  vegetables: number;
-  fruits: number;
-  herbs: number;
+  vegetable: number;
+  fruit: number;
+  herb: number;
   total: number;
 }
 
@@ -44,7 +44,7 @@ export const ProductionTrendsChart: React.FC<ProductionTrendsChartProps> = ({
   containerData
 }) => {
   const [timeFrame, setTimeFrame] = useState<'daily' | 'monthly'>('daily');
-  const [productType, setProductType] = useState<'all' | 'vegetables' | 'fruits' | 'herbs'>('all');
+  const [productType, setProductType] = useState<'all' | 'vegetable' | 'fruit' | 'herb'>('all');
   
   const data = timeFrame === 'daily' ? dailyData : monthlyData;
   
@@ -94,9 +94,9 @@ export const ProductionTrendsChart: React.FC<ProductionTrendsChartProps> = ({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Products</SelectItem>
-                <SelectItem value="vegetables">Vegetables</SelectItem>
-                <SelectItem value="fruits">Fruits</SelectItem>
-                <SelectItem value="herbs">Herbs</SelectItem>
+                <SelectItem value="vegetable">Vegetables</SelectItem>
+                <SelectItem value="fruit">Fruits</SelectItem>
+                <SelectItem value="herb">Herbs</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -153,10 +153,10 @@ export const ProductionTrendsChart: React.FC<ProductionTrendsChartProps> = ({
                   formatter={(value) => formatCurrency(Number(value))}
                 />
                 <Legend />
-                {(productType === 'all' || productType === 'vegetables') && (
+                {(productType === 'all' || productType === 'vegetable') && (
                   <Area 
                     type="monotone" 
-                    dataKey="vegetables" 
+                    dataKey="vegetable" 
                     name="Vegetables" 
                     stackId="1"
                     stroke="#10b981" 
@@ -164,10 +164,10 @@ export const ProductionTrendsChart: React.FC<ProductionTrendsChartProps> = ({
                     fillOpacity={0.6}
                   />
                 )}
-                {(productType === 'all' || productType === 'fruits') && (
+                {(productType === 'all' || productType === 'fruit') && (
                   <Area 
                     type="monotone" 
-                    dataKey="fruits" 
+                    dataKey="fruit" 
                     name="Fruits" 
                     stackId="1"
                     stroke="#3b82f6" 
@@ -175,10 +175,10 @@ export const ProductionTrendsChart: React.FC<ProductionTrendsChartProps> = ({
                     fillOpacity={0.6}
                   />
                 )}
-                {(productType === 'all' || productType === 'herbs') && (
+                {(productType === 'all' || productType === 'herb') && (
                   <Area 
                     type="monotone" 
-                    dataKey="herbs" 
+                    dataKey="herb" 
                     name="Herbs" 
                     stackId="1"
                     stroke="#8b5cf6" 
