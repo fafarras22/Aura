@@ -17,6 +17,7 @@ import {
   FileText, 
   Globe, 
   Link, 
+  Plus,
   RefreshCw, 
   Save, 
   Settings, 

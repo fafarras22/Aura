@@ -13,8 +13,20 @@ import { format } from "date-fns";
 import { CalendarIcon, Plus, Save, Trash2 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { ContainerData } from "@/context/developer-mode/types";
 import { cn } from "@/lib/utils";
+
+// Define the proper ContainerData interface
+interface ContainerData {
+  id: string;
+  name: string;
+  owner: string;
+  status: string;
+  location: string;
+  nextPaymentDue: string; // Use string for ISO date format
+  currentYield: number;
+  projectedYield: number;
+  createdAt: string; // Use string for ISO date format
+}
 
 export const ContainerDataForm = () => {
   const { toast } = useToast();

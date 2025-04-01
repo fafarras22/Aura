@@ -3,16 +3,8 @@ import React from 'react';
 import { 
   SidebarMenu, 
 } from "@/components/ui/sidebar";
-import { NavItem, SubItem } from './NavItem';
-import { LucideIcon } from 'lucide-react';
-
-export interface MenuItem {
-  title: string;
-  path: string;
-  icon: LucideIcon;
-  adminOnly?: boolean;
-  subItems?: SubItem[];
-}
+import { NavItem } from './NavItem';
+import { MenuItem } from './menuItems';
 
 interface NavigationMenuProps {
   menuItems: MenuItem[];
@@ -36,14 +28,17 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     <SidebarMenu>
       {filteredItems.map((item) => (
         <NavItem
-          key={item.title}
-          title={item.title}
-          path={item.path}
+          key={item.category}
+          title={item.label}
+          path={item.items[0]?.path || "#"}
           icon={item.icon}
-          subItems={item.subItems}
-          adminOnly={item.adminOnly}
-          isOpen={openCategories.includes(item.title.toLowerCase())}
-          onToggle={() => toggleCategory(item.title.toLowerCase())}
+          subItems={item.items.map(subItem => ({
+            title: subItem.name,
+            path: subItem.path,
+            icon: item.icon
+          }))}
+          isOpen={openCategories.includes(item.category)}
+          onToggle={() => toggleCategory(item.category)}
         />
       ))}
     </SidebarMenu>

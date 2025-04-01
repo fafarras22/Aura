@@ -11,10 +11,26 @@ import {
   Bell, 
   Settings as SettingsIcon, 
   Thermometer, 
-  Server
+  Server,
+  LucideIcon
 } from "lucide-react";
 
-export const menuItems = [
+// Define the interface for submenu items
+export interface SubMenuItem {
+  name: string;
+  path: string;
+}
+
+// Define the interface for main menu items
+export interface MenuItem {
+  category: string;
+  label: string;
+  icon: LucideIcon;
+  items: SubMenuItem[];
+  adminOnly?: boolean;
+}
+
+export const menuItems: MenuItem[] = [
   {
     category: "dashboard",
     label: "Dashboard",

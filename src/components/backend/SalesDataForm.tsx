@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,7 +8,21 @@ import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/lib/supabase";
 import { Plus, Upload, Download, Trash2, Save } from "lucide-react";
-import { ContainerSalesData } from "@/services/mockDataService";
+
+interface SupermarketClient {
+  name: string;
+  contact?: string;
+}
+
+interface ContainerSalesData {
+  id: string;
+  containerName: string;
+  totalSales: number;
+  totalRevenue: number;
+  monthlySales: number[]; // Array of numbers instead of complex objects
+  supermarketClient?: SupermarketClient;
+  recurringCustomers?: number;
+}
 
 export const SalesDataForm = () => {
   const { toast } = useToast();
@@ -97,7 +110,7 @@ export const SalesDataForm = () => {
       containerName: containers.find(c => c.id === selectedContainer)?.name || "",
       totalSales: 0,
       totalRevenue: 0,
-      monthlySales: [0, 0, 0, 0, 0, 0]
+      monthlySales: [0, 0, 0, 0, 0, 0] // Array of numbers
     };
     
     setSalesData([...salesData, newSalesRecord]);
