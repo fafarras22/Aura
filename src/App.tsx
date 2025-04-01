@@ -1,7 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainLayout from '@/components/layout/MainLayout';
-import MobileLayout from '@/components/layout/MobileLayout';
+import { MainLayout } from '@/components/layout/MainLayout';
+import { MobileLayout } from '@/components/layout/MobileLayout';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { DeveloperModeProvider } from '@/context/DeveloperModeContext';
