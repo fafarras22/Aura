@@ -1,45 +1,78 @@
 
 import { 
-  Leaf, 
-  Droplet, 
-  Thermometer, 
-  Activity, 
-  AlertTriangle, 
-  Camera, 
-  Calendar, 
-  Settings, 
-  Home, 
   BarChart2, 
-  CircleDollarSign,
-  MonitorSmartphone,
-  Globe
+  Box, 
+  Calendar, 
+  Camera, 
+  CircleDollarSign, 
+  Droplets, 
+  Home, 
+  LineChart,
+  Bell, 
+  Settings as SettingsIcon, 
+  Thermometer, 
+  Server
 } from "lucide-react";
-import { MenuItem } from './NavigationMenu';
 
-export const menuItems: MenuItem[] = [
-  { title: "Dashboard", path: "/dashboard", icon: Home },
-  { 
-    title: "Internal Environment", 
-    path: "/internal-environment", 
-    icon: MonitorSmartphone,
-    subItems: [
-      { title: "Sensors", path: "/sensors", icon: Activity },
-      { title: "Water System", path: "/water", icon: Droplet },
-      { title: "Climate", path: "/climate", icon: Thermometer },
-    ]
+export const menuItems = [
+  {
+    category: "dashboard",
+    label: "Dashboard",
+    icon: Home,
+    items: [
+      { name: "Overview", path: "/dashboard" },
+      { name: "Analytics", path: "/analytics" },
+      { name: "Calendar", path: "/calendar" },
+    ],
   },
-  { 
-    title: "External Environment", 
-    path: "/external-environment", 
-    icon: Globe,
-    subItems: [
-      { title: "Alerts", path: "/alerts", icon: AlertTriangle },
-      { title: "CCTV", path: "/cctv", icon: Camera },
-      { title: "Calendar", path: "/calendar", icon: Calendar },
-    ]
+  {
+    category: "monitoring",
+    label: "Monitoring",
+    icon: LineChart,
+    items: [
+      { name: "Climate", path: "/climate" },
+      { name: "Water", path: "/water" },
+      { name: "Sensors", path: "/sensors" },
+      { name: "CCTV", path: "/cctv" },
+    ],
+    adminOnly: false,
   },
-  { title: "Tokenization", path: "/tokenization", icon: CircleDollarSign },
-  { title: "Harvest", path: "/harvest", icon: Leaf },
-  { title: "Analytics", path: "/analytics", icon: BarChart2, adminOnly: true },
-  { title: "Settings", path: "/settings", icon: Settings, adminOnly: true },
+  {
+    category: "farming",
+    label: "Farm Management",
+    icon: Box,
+    items: [
+      { name: "Containers", path: "/containers" },
+      { name: "Harvest", path: "/harvest" },
+      { name: "Alerts", path: "/alerts" },
+    ],
+    adminOnly: false,
+  },
+  {
+    category: "tokenization",
+    label: "Tokenization",
+    icon: CircleDollarSign,
+    items: [
+      { name: "Tokenization", path: "/tokenization" },
+    ],
+    adminOnly: false,
+  },
+  {
+    category: "settings",
+    label: "Settings",
+    icon: SettingsIcon,
+    items: [
+      { name: "Settings", path: "/settings" },
+    ],
+    adminOnly: false,
+  },
+  {
+    category: "admin",
+    label: "Administration",
+    icon: Server,
+    items: [
+      { name: "Backend Dashboard", path: "/backend" },
+    ],
+    adminOnly: true,
+  },
 ];
