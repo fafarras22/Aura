@@ -152,7 +152,7 @@ const Home = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
       <Helmet>
-        <title>AKAR FarmWatch - Sustainable Farming with Blockchain</title>
+        <title>AKAR Farm - Sustainable Farming with Blockchain</title>
         <meta name="description" content="Invest in sustainable container farming with AKAR. Stake AKR tokens and earn rewards from farm produce." />
         <html lang={language} />
       </Helmet>
@@ -631,7 +631,7 @@ const Home = () => {
           
           <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              © 2023 AKAR FarmWatch. All rights reserved.
+              © 2023 AKAR Farm. All rights reserved.
             </p>
             
             <div className="flex items-center gap-4">
