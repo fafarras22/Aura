@@ -8,33 +8,37 @@ import {
 } from "@/services/mockDataService";
 
 export const useDashboardData = () => {
-  const { getContainerData } = useDeveloperMode();
+  const { isDeveloperMode, getContainerData } = useDeveloperMode();
+  
+  // Get container data from the developer mode context
+  const containers = getContainerData();
+  const containerCount = containers.length || 3;
 
   // Mock data for the dashboard components
   const mockData = {
-    criticalAlertsCount: 1,
-    upcomingHarvestsCount: 3,
-    containerCount: getContainerData().length || 3,
+    criticalAlertsCount: isDeveloperMode ? 3 : 1,
+    upcomingHarvestsCount: isDeveloperMode ? 8 : 3,
+    containerCount,
     
     // Sales data
     salesData: {
       id: "sales-1",
       containerName: "Jakarta Farm Container",
-      totalSales: 1250,
-      totalRevenue: 85000000,
+      totalSales: isDeveloperMode ? 3250 : 1250,
+      totalRevenue: isDeveloperMode ? 220000000 : 85000000,
       supermarketClient: {
         name: "Superindo Market",
         imageUrl: "",
         location: "Jakarta",
-        contractValue: 75000000
+        contractValue: isDeveloperMode ? 180000000 : 75000000
       },
       monthlySales: [
-        { month: "Jan", sales: 120 },
-        { month: "Feb", sales: 150 },
-        { month: "Mar", sales: 180 },
-        { month: "Apr", sales: 210 },
-        { month: "May", sales: 250 },
-        { month: "Jun", sales: 340 }
+        { month: "Jan", sales: isDeveloperMode ? 320 : 120 },
+        { month: "Feb", sales: isDeveloperMode ? 350 : 150 },
+        { month: "Mar", sales: isDeveloperMode ? 380 : 180 },
+        { month: "Apr", sales: isDeveloperMode ? 410 : 210 },
+        { month: "May", sales: isDeveloperMode ? 450 : 250 },
+        { month: "Jun", sales: isDeveloperMode ? 540 : 340 }
       ],
       recurringCustomers: [
         { id: "cust-1", name: "Customer 1", imageUrl: "" },
@@ -42,22 +46,22 @@ export const useDashboardData = () => {
         { id: "cust-3", name: "Customer 3", imageUrl: "" }
       ],
       month: "Current",
-      amount: 85000000
+      amount: isDeveloperMode ? 220000000 : 85000000
     } as ContainerSalesData,
     
     // Tokenization data
     tokenData: {
-      totalValue: 125000000,
-      totalTokens: 12500,
-      activeContracts: 3,
-      totalInvestors: 18,
-      averageReturn: 12.5,
+      totalValue: isDeveloperMode ? 325000000 : 125000000,
+      totalTokens: isDeveloperMode ? 32500 : 12500,
+      activeContracts: isDeveloperMode ? 7 : 3,
+      totalInvestors: isDeveloperMode ? 42 : 18,
+      averageReturn: isDeveloperMode ? 14.5 : 12.5,
       recentActivities: [
         {
           id: "token-act-1",
           type: "invested",
           description: "New investment",
-          tokenAmount: 500,
+          tokenAmount: isDeveloperMode ? 1200 : 500,
           date: format(new Date(), "dd MMM yyyy"),
           transactionHash: "0x1234567890abcdef"
         },
@@ -65,14 +69,14 @@ export const useDashboardData = () => {
           id: "token-act-2",
           type: "harvested",
           description: "Harvest yield distributed",
-          tokenAmount: 250,
+          tokenAmount: isDeveloperMode ? 600 : 250,
           date: format(new Date(), "dd MMM yyyy"),
           transactionHash: "0x0987654321fedcba"
         }
       ],
-      tokenBalance: 5000,
-      tokenPrice: 10000,
-      tokenChange: 2.5,
+      tokenBalance: isDeveloperMode ? 12000 : 5000,
+      tokenPrice: isDeveloperMode ? 10000 : 10000,
+      tokenChange: isDeveloperMode ? 3.5 : 2.5,
       tokenChangeType: "increase" as const,
       tokenHolders: [],
       investments: [],
@@ -89,7 +93,7 @@ export const useDashboardData = () => {
         name: "Jakarta Farm", 
         status: "active" as const, 
         location: { lat: 106.8456, lng: -6.2088 },
-        containers: 5,
+        containers: isDeveloperMode ? 5 : 1,
         address: "Jl. Sudirman 123, Jakarta"
       },
       { 
@@ -97,7 +101,7 @@ export const useDashboardData = () => {
         name: "Bandung Farm", 
         status: "maintenance" as const, 
         location: { lat: 107.6191, lng: -6.9175 },
-        containers: 3,
+        containers: isDeveloperMode ? 3 : 1,
         address: "Jl. Asia Afrika 45, Bandung"
       },
       { 
@@ -105,7 +109,7 @@ export const useDashboardData = () => {
         name: "Surabaya Farm", 
         status: "active" as const, 
         location: { lat: 112.7378, lng: -7.2575 },
-        containers: 4, 
+        containers: isDeveloperMode ? 4 : 1, 
         address: "Jl. Pemuda 88, Surabaya"
       }
     ] as FarmLocation[]
