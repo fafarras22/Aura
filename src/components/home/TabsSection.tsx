@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Shield, Leaf, Terminal } from "lucide-react";
 
@@ -163,7 +163,7 @@ export const TabsSection: React.FC<TabsSectionProps> = ({ language }) => {
           {content[language].security.description}
         </p>
         
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {content[language].security.features.map((feature, index) => (
             <div key={index} className="flex items-start gap-2">
               <Shield className="h-5 w-5 text-green-600 mt-0.5" />
@@ -182,7 +182,7 @@ export const TabsSection: React.FC<TabsSectionProps> = ({ language }) => {
           {content[language].sustainability.description}
         </p>
         
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {content[language].sustainability.features.map((feature, index) => (
             <div key={index} className="flex items-start gap-2">
               <Leaf className="h-5 w-5 text-green-600 mt-0.5" />
@@ -201,7 +201,7 @@ export const TabsSection: React.FC<TabsSectionProps> = ({ language }) => {
           {content[language].technology.description}
         </p>
         
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {content[language].technology.features.map((feature, index) => (
             <div key={index} className="flex items-start gap-2">
               <Terminal className="h-5 w-5 text-green-600 mt-0.5" />
