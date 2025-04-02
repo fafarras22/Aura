@@ -1,16 +1,16 @@
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import React from 'react';
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Clock, TrendingUp } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { InfoIcon, TrendingUp } from "lucide-react";
 
 export interface ContainerProject {
   id: string;
   name: string;
-  description?: string;
   imageUrl?: string;
+  description?: string;
   totalTokens: number;
   filledTokens: number;
   apy: number;
@@ -23,101 +23,94 @@ interface ContainerCardProps {
   onAction: (containerId: string) => void;
 }
 
-export const ContainerCard = ({ container, onAction }: ContainerCardProps) => {
-  const { 
-    id, 
-    name, 
-    imageUrl, 
-    totalTokens, 
-    filledTokens, 
-    apy, 
-    runtimeDays,
-    status
-  } = container;
-  
-  const [imgError, setImgError] = useState(false);
-  
-  // Calculate progress percentage
-  const progressPercentage = (filledTokens / totalTokens) * 100;
-  
-  // Format remaining tokens
-  const remainingTokens = totalTokens - filledTokens;
-  
-  // Determine button text based on status
-  const buttonText = status === 'ico' ? 'Participate' : 'Stake Now';
-  
-  // Fallback image if the original fails to load
-  const displayImage = imgError || !imageUrl
-    ? 'https://images.unsplash.com/photo-1473187983305-f615310e7daa'
-    : imageUrl;
-  
+export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onAction }) => {
+  const percentFilled = (container.filledTokens / container.totalTokens) * 100;
+
+  const getActionLabel = () => {
+    switch (container.status) {
+      case 'live': return 'Invest Now';
+      case 'ico': return 'Join ICO';
+      case 'upcoming': return 'Set Reminder';
+      case 'completed': return 'View Details';
+      default: return 'View Details';
+    }
+  };
+
+  const getStatusLabel = () => {
+    switch (container.status) {
+      case 'live': return 'LIVE';
+      case 'ico': return 'ICO';
+      case 'upcoming': return 'UPCOMING';
+      case 'completed': return 'COMPLETED';
+      default: return container.status.toUpperCase();
+    }
+  };
+
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-all border-2 border-gray-200 hover:border-primary/40">
-      <div className="h-40 overflow-hidden">
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-md">
+      <div className="relative h-48 overflow-hidden">
         <img 
-          src={displayImage} 
-          alt={name}
+          src={container.imageUrl || '/placeholder-image.jpg'} 
+          alt={container.name}
           className="w-full h-full object-cover"
-          onError={() => setImgError(true)}
         />
+        <Badge 
+          className="absolute top-3 right-3" 
+          variant={
+            container.status === 'live' ? "default" : 
+            container.status === 'ico' ? "secondary" : 
+            container.status === 'upcoming' ? "outline" : 
+            "destructive"
+          }
+        >
+          {getStatusLabel()}
+        </Badge>
       </div>
-      
-      <CardContent className="py-4">
-        <div className="flex justify-between items-start">
-          <h3 className="text-lg font-semibold">{name}</h3>
-          <Badge 
-            variant={
-              status === 'live' ? "default" : 
-              status === 'upcoming' ? "outline" : 
-              status === 'ico' ? "secondary" : 
-              "destructive"
-            }
-            className="uppercase text-xs"
-          >
-            {status}
-          </Badge>
+
+      <CardHeader className="pb-2">
+        <div className="space-y-1">
+          <h3 className="font-bold text-lg leading-tight">{container.name}</h3>
+          {container.description && (
+            <p className="text-sm text-muted-foreground line-clamp-2">{container.description}</p>
+          )}
         </div>
-        
-        <div className="mt-4 space-y-4">
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-muted-foreground">Allocation Progress</span>
-            <span className="font-medium">{Math.round(progressPercentage)}%</span>
+      </CardHeader>
+
+      <CardContent className="pb-3">
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <div className="text-sm text-muted-foreground">APY</div>
+            <div className="flex items-center">
+              <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
+              <span className="font-bold text-green-600">{container.apy}%</span>
+            </div>
           </div>
-          
-          <Progress value={progressPercentage} className="h-2" />
-          
+          <div>
+            <div className="text-sm text-muted-foreground">Runtime</div>
+            <div className="font-bold">{container.runtimeDays} days</div>
+          </div>
+        </div>
+
+        <div className="space-y-1">
           <div className="flex justify-between text-sm">
-            <span className="font-medium">{remainingTokens} / {totalTokens} AKR</span>
-            <span className="text-muted-foreground">Remaining</span>
+            <span>Funding Progress</span>
+            <span className="font-medium">{percentFilled.toFixed(1)}%</span>
           </div>
-        </div>
-        
-        <div className="mt-4 grid grid-cols-2 gap-4">
-          <div className="bg-muted rounded-md p-2 text-center">
-            <div className="flex items-center justify-center gap-1 text-green-600 mb-1">
-              <TrendingUp className="h-4 w-4" />
-              <span className="font-semibold">{apy}%</span>
-            </div>
-            <p className="text-xs text-muted-foreground">Current APY</p>
-          </div>
-          
-          <div className="bg-muted rounded-md p-2 text-center">
-            <div className="flex items-center justify-center gap-1 text-blue-600 mb-1">
-              <Clock className="h-4 w-4" />
-              <span className="font-semibold">{runtimeDays}</span>
-            </div>
-            <p className="text-xs text-muted-foreground">Duration (days)</p>
+          <Progress value={percentFilled} className="h-2" />
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <span>{container.filledTokens.toLocaleString()} AKR</span>
+            <span>{container.totalTokens.toLocaleString()} AKR</span>
           </div>
         </div>
       </CardContent>
-      
-      <CardFooter className="pb-4 pt-0">
+
+      <CardFooter>
         <Button 
+          onClick={() => onAction(container.id)} 
           className="w-full"
-          onClick={() => onAction(id)}
-          variant={status === 'ico' ? "secondary" : "default"}
+          variant={container.status === 'completed' ? "outline" : "default"}
         >
-          {buttonText}
+          {getActionLabel()}
         </Button>
       </CardFooter>
     </Card>
