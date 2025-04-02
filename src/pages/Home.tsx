@@ -15,6 +15,7 @@ import { useDBSetup } from "@/lib/db-setup";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/logo/Logo";
+import { TabsSection } from "@/components/home/TabsSection";
 import { 
   Wallet, 
   Languages, 
@@ -550,88 +551,7 @@ const Home = () => {
             </div>
             
             <div className="space-y-6">
-              <Tabs defaultValue="security" className="w-full">
-                <TabsList className="mb-4">
-                  <TabsTrigger value="security">Security</TabsTrigger>
-                  <TabsTrigger value="sustainability">Sustainability</TabsTrigger>
-                  <TabsTrigger value="technology">Technology</TabsTrigger>
-                </TabsList>
-                
-                <div data-state="active" data-value="security" role="tabpanel" className="space-y-6 mt-4" tabIndex={0}>
-                  <h2 className="text-3xl font-bold">Secure by Design</h2>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    AKAR's blockchain technology ensures immutable records, transparent transactions, and secure ownership of your farm investments. Every token is backed by real agricultural assets.
-                  </p>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-start gap-2">
-                      <Shield className="h-5 w-5 text-green-600 mt-0.5" />
-                      <div>
-                        <h4 className="font-medium">Audited Smart Contracts</h4>
-                        <p className="text-sm text-muted-foreground">All code audited by security experts</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-2">
-                      <Shield className="h-5 w-5 text-green-600 mt-0.5" />
-                      <div>
-                        <h4 className="font-medium">Asset-Backed Tokens</h4>
-                        <p className="text-sm text-muted-foreground">Each token represents real farm assets</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div data-state="inactive" data-value="sustainability" role="tabpanel" className="space-y-6 mt-4 hidden" tabIndex={-1}>
-                  <h2 className="text-3xl font-bold">Sustainable Agriculture</h2>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    Our container farms use 95% less water than traditional farming while producing up to 300% more yield per square meter, creating truly sustainable food production.
-                  </p>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-start gap-2">
-                      <Leaf className="h-5 w-5 text-green-600 mt-0.5" />
-                      <div>
-                        <h4 className="font-medium">Zero Pesticides</h4>
-                        <p className="text-sm text-muted-foreground">Clean growing environment eliminates need for chemicals</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-2">
-                      <Leaf className="h-5 w-5 text-green-600 mt-0.5" />
-                      <div>
-                        <h4 className="font-medium">Carbon Negative</h4>
-                        <p className="text-sm text-muted-foreground">Our operations remove more carbon than they emit</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div data-state="inactive" data-value="technology" role="tabpanel" className="space-y-6 mt-4 hidden" tabIndex={-1}>
-                  <h2 className="text-3xl font-bold">Cutting-Edge Technology</h2>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    Advanced IoT sensors, machine learning algorithms, and blockchain integration create a truly next-generation farming platform.
-                  </p>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="flex items-start gap-2">
-                      <Terminal className="h-5 w-5 text-green-600 mt-0.5" />
-                      <div>
-                        <h4 className="font-medium">AI-Powered Growth</h4>
-                        <p className="text-sm text-muted-foreground">Machine learning optimizes growth conditions</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-2">
-                      <Terminal className="h-5 w-5 text-green-600 mt-0.5" />
-                      <div>
-                        <h4 className="font-medium">Real-Time Monitoring</h4>
-                        <p className="text-sm text-muted-foreground">24/7 remote monitoring and control</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Tabs>
+              <TabsSection language={language} />
             </div>
           </div>
         </div>
