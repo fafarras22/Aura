@@ -1,128 +1,189 @@
 
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { Helmet } from "react-helmet";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Calendar as CalendarIcon, CheckCircle, Clock, PackageCheck, PackagePlus, XCircle } from "lucide-react";
-import { getMockHarvests } from "@/services/mockDataService";
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
+import { Input } from "@/components/ui/input";
+import { getMockHarvests } from "@/services/mock-data";
+import { Search, Calendar, Clock, Leaf, ArrowDown, ArrowUp, Filter } from "lucide-react";
 
 const Harvest = () => {
+  const [view, setView] = useState("upcoming");
+  const [searchTerm, setSearchTerm] = useState("");
   const harvests = getMockHarvests();
 
-  // Filter harvests by status
-  const readyHarvests = harvests.filter(harvest => harvest.status === 'ready');
-  const growingHarvests = harvests.filter(harvest => harvest.status === 'growing');
-  const harvestedHarvests = harvests.filter(harvest => harvest.status === 'harvested');
+  // Filter harvests based on view and search term
+  const filteredHarvests = harvests.filter(harvest => 
+    (view === "upcoming" && (harvest.status === "growing" || harvest.status === "ready")) || 
+    (view === "completed" && harvest.status === "harvested") ||
+    view === "all"
+  ).filter(harvest => 
+    harvest.cropName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    harvest.containerNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Sort harvests by date
+  const sortedHarvests = [...filteredHarvests].sort((a, b) => {
+    if (view === "completed") {
+      return new Date(b.harvestDate).getTime() - new Date(a.harvestDate).getTime(); // Most recent first
+    }
+    return new Date(a.harvestDate).getTime() - new Date(b.harvestDate).getTime(); // Soonest first
+  });
+
+  // Calculate statistics
+  const totalUpcoming = harvests.filter(h => h.status === "growing" || h.status === "ready").length;
+  const readyToHarvest = harvests.filter(h => h.status === "ready").length;
+  const totalHarvested = harvests.filter(h => h.status === "harvested").length;
+
+  const formatDate = (date: Date) => {
+    const now = new Date();
+    const diffDays = Math.round((date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Tomorrow";
+    if (diffDays === -1) return "Yesterday";
+    if (diffDays > 0 && diffDays < 7) return `In ${diffDays} days`;
+    if (diffDays < 0 && diffDays > -7) return `${Math.abs(diffDays)} days ago`;
+    
+    return date.toLocaleDateString();
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Harvest</h1>
-          <p className="text-muted-foreground">
-            Manage and track all harvest activities in the container farm
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800">
-            {readyHarvests.length} Ready
-          </Badge>
-          <Badge variant="outline" className="bg-yellow-50 text-yellow-600 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400 dark:border-yellow-800">
-            {growingHarvests.length} Growing
-          </Badge>
-          <Badge variant="outline" className="bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800">
-            {harvestedHarvests.length} Harvested
-          </Badge>
-        </div>
-      </div>
+    <div className="container mx-auto p-6">
+      <Helmet>
+        <title>Harvest Management | AKAR Farm</title>
+      </Helmet>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Harvest Overview</CardTitle>
-          <CardDescription>
-            Track the status of each harvest and manage upcoming harvests
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {harvests.map(harvest => (
-            <div key={harvest.id} className="border rounded-lg p-4 dark:border-gray-800">
-              <div className="flex items-center justify-between mb-2">
-                <div className="text-lg font-semibold">{harvest.cropName}</div>
-                {harvest.status === 'ready' && (
-                  <Badge variant="success">
-                    <PackagePlus className="h-4 w-4 mr-2" />
-                    Ready
-                  </Badge>
-                )}
-                {harvest.status === 'growing' && (
-                  <Badge variant="secondary">
-                    <Clock className="h-4 w-4 mr-2" />
-                    Growing
-                  </Badge>
-                )}
-                {harvest.status === 'harvested' && (
-                  <Badge variant="default">
-                    <PackageCheck className="h-4 w-4 mr-2" />
-                    Harvested
-                  </Badge>
-                )}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Quantity: {harvest.estimatedYield} kg
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Date: {format(harvest.harvestDate, 'MMM dd, yyyy')}
-              </div>
-              <div className="mt-2">
-                <HarvestScheduleCard />
-              </div>
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <h1 className="text-3xl font-bold">Harvest Schedule</h1>
+          
+          <div className="flex gap-2">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search harvests..."
+                className="pl-8 w-[200px] md:w-[260px]"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
-          ))}
-        </CardContent>
-      </Card>
+            <Button variant="outline" size="icon">
+              <Filter className="h-4 w-4" />
+            </Button>
+            <Button variant="outline">
+              <Calendar className="mr-2 h-4 w-4" />
+              Calendar View
+            </Button>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-medium">Upcoming Harvests</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-green-600">{totalUpcoming}</div>
+              <p className="text-sm text-muted-foreground">Scheduled harvests</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-medium">Ready to Harvest</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-amber-600">{readyToHarvest}</div>
+              <p className="text-sm text-muted-foreground">
+                {readyToHarvest > 0 ? "Requires immediate attention" : "No crops ready at this time"}
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-medium">Completed</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-blue-600">{totalHarvested}</div>
+              <p className="text-sm text-muted-foreground">Successfully harvested</p>
+            </CardContent>
+          </Card>
+        </div>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle>Harvest Schedule</CardTitle>
+              <Tabs defaultValue={view} onValueChange={setView}>
+                <TabsList>
+                  <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+                  <TabsTrigger value="completed">Completed</TabsTrigger>
+                  <TabsTrigger value="all">All</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+            <CardDescription>
+              {view === "upcoming" ? "Scheduled and ready harvests" : 
+               view === "completed" ? "Previously harvested crops" : "All harvests"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Crop</TableHead>
+                  <TableHead>Container</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Planted Date</TableHead>
+                  <TableHead>Harvest Date</TableHead>
+                  <TableHead className="text-right">Yield</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sortedHarvests.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center text-muted-foreground">
+                      No harvests found matching your criteria.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  sortedHarvests.map((harvest) => (
+                    <TableRow key={harvest.id}>
+                      <TableCell className="font-medium">{harvest.cropName}</TableCell>
+                      <TableCell>{harvest.containerNumber}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            harvest.status === "growing" ? "outline" :
+                            harvest.status === "ready" ? "warning" : "success"
+                          }
+                        >
+                          {harvest.status === "growing" ? "Growing" :
+                           harvest.status === "ready" ? "Ready" : "Harvested"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{formatDate(harvest.plantedDate)}</TableCell>
+                      <TableCell>{formatDate(harvest.harvestDate)}</TableCell>
+                      <TableCell className="text-right">
+                        {harvest.status === "harvested" && harvest.actualYield ? 
+                          `${harvest.actualYield} kg` : 
+                          `${harvest.estimatedYield} kg (est.)`}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
 
 export default Harvest;
-
-function HarvestScheduleCard() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-
-  return (
-    <Card className="w-full dark:border-gray-800">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Harvest Schedule</CardTitle>
-        <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-      </CardHeader>
-      <CardContent className="pl-2 pt-0">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"ghost"}
-              className={cn(
-                "w-full justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              className="rounded-md border"
-            />
-          </PopoverContent>
-        </Popover>
-      </CardContent>
-    </Card>
-  );
-}

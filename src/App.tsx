@@ -16,6 +16,15 @@ import Settings from '@/pages/Settings';
 import BackendDashboard from '@/pages/BackendDashboard';
 import Projects from '@/pages/Projects';
 import ProjectDetails from '@/pages/ProjectDetails';
+import Climate from '@/pages/Climate';
+import Water from '@/pages/Water';
+import Sensors from '@/pages/Sensors';
+import CCTV from '@/pages/CCTV';
+import Containers from '@/pages/Containers';
+import Harvest from '@/pages/Harvest';
+import Alerts from '@/pages/Alerts';
+import Vegetables from '@/pages/production/Vegetables';
+import DailySales from '@/pages/sales/Daily';
 import './App.css';
 
 // Add ethers to window to ensure it's accessible
@@ -63,6 +72,86 @@ function App() {
                 element={
                   <MainLayout>
                     <Settings />
+                  </MainLayout>
+                } 
+              />
+              
+              {/* Monitoring routes */}
+              <Route 
+                path="/climate" 
+                element={
+                  <MainLayout>
+                    <Climate />
+                  </MainLayout>
+                } 
+              />
+              <Route 
+                path="/water" 
+                element={
+                  <MainLayout>
+                    <Water />
+                  </MainLayout>
+                } 
+              />
+              <Route 
+                path="/sensors" 
+                element={
+                  <MainLayout>
+                    <Sensors />
+                  </MainLayout>
+                } 
+              />
+              <Route 
+                path="/cctv" 
+                element={
+                  <MainLayout>
+                    <CCTV />
+                  </MainLayout>
+                } 
+              />
+              
+              {/* Farm Management routes */}
+              <Route 
+                path="/containers" 
+                element={
+                  <MainLayout>
+                    <Containers />
+                  </MainLayout>
+                } 
+              />
+              <Route 
+                path="/harvest" 
+                element={
+                  <MainLayout>
+                    <Harvest />
+                  </MainLayout>
+                } 
+              />
+              <Route 
+                path="/alerts" 
+                element={
+                  <MainLayout>
+                    <Alerts />
+                  </MainLayout>
+                } 
+              />
+              
+              {/* Production Data routes */}
+              <Route 
+                path="/production/vegetables" 
+                element={
+                  <MainLayout>
+                    <Vegetables />
+                  </MainLayout>
+                } 
+              />
+              
+              {/* Sales Performance routes */}
+              <Route 
+                path="/sales/daily" 
+                element={
+                  <MainLayout>
+                    <DailySales />
                   </MainLayout>
                 } 
               />
