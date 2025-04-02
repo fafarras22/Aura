@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -35,6 +35,8 @@ export const ContainerCard = ({ container, onAction }: ContainerCardProps) => {
     status
   } = container;
   
+  const [imgError, setImgError] = useState(false);
+  
   // Calculate progress percentage
   const progressPercentage = (filledTokens / totalTokens) * 100;
   
@@ -44,13 +46,19 @@ export const ContainerCard = ({ container, onAction }: ContainerCardProps) => {
   // Determine button text based on status
   const buttonText = status === 'ico' ? 'Participate' : 'Stake Now';
   
+  // Fallback image if the original fails to load
+  const displayImage = imgError || !imageUrl
+    ? 'https://images.unsplash.com/photo-1473187983305-f615310e7daa'
+    : imageUrl;
+  
   return (
     <Card className="overflow-hidden hover:shadow-md transition-all border-2 border-gray-200 hover:border-primary/40">
       <div className="h-40 overflow-hidden">
         <img 
-          src={imageUrl || 'https://via.placeholder.com/400x200?text=AKAR+Farm'} 
+          src={displayImage} 
           alt={name}
           className="w-full h-full object-cover"
+          onError={() => setImgError(true)}
         />
       </div>
       

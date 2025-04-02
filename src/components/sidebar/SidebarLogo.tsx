@@ -7,7 +7,10 @@ interface SidebarLogoProps {
 }
 
 export const SidebarLogo: React.FC<SidebarLogoProps> = ({ isDeveloperMode }) => {
-  const [logoPath, setLogoPath] = useState("/lovable-uploads/e60ccc9b-594d-461b-9ef9-2b157e19b0a1.png");
+  const [logoError, setLogoError] = useState(false);
+  const logoPath = logoError 
+    ? "/placeholder.svg" 
+    : "/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png";
 
   return (
     <div className="flex flex-col items-center space-y-2">
@@ -15,7 +18,7 @@ export const SidebarLogo: React.FC<SidebarLogoProps> = ({ isDeveloperMode }) => 
         src={logoPath}
         alt="AKAR Logo"
         className="h-12"
-        onError={() => setLogoPath("/placeholder.svg")}
+        onError={() => setLogoError(true)}
       />
       {isDeveloperMode && (
         <Badge variant="secondary" className="px-2 py-1 text-xs rounded-full">

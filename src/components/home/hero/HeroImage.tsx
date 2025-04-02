@@ -1,9 +1,14 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useMobile } from "@/hooks/use-mobile";
 
 export const HeroImage: React.FC = () => {
   const isMobile = useMobile();
+  const [imageError, setImageError] = useState(false);
+  
+  const imagePath = imageError 
+    ? "https://images.unsplash.com/photo-1473187983305-f615310e7daa" 
+    : "/lovable-uploads/ae9d74be-8813-4c4b-b946-cf1190243702.png";
   
   return (
     <div 
@@ -12,10 +17,11 @@ export const HeroImage: React.FC = () => {
       aria-label="AKAR Container Farm"
     >
       <img 
-        src="/lovable-uploads/ae9d74be-8813-4c4b-b946-cf1190243702.png" 
+        src={imagePath} 
         alt="AKAR Smart Container Farm with hydroponics system for sustainable urban agriculture" 
         className="w-full h-full object-cover"
         loading="eager"
+        onError={() => setImageError(true)}
       />
       {isMobile && (
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">

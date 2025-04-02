@@ -30,6 +30,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   const { wallet, disconnect } = useWallet();
   const [showNotification, setShowNotification] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const navigate = useNavigate();
 
   const triggerNotification = () => {
@@ -51,6 +52,10 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     ? wallet.address.substring(2, 4).toUpperCase() 
     : 'W';
 
+  const logoPath = logoError 
+    ? "/placeholder.svg" 
+    : "/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png";
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50 dark:bg-gray-900">
@@ -60,7 +65,12 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-4">
               <SidebarTrigger className="p-2 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-md" />
               <div className="h-8 w-8 rounded-md overflow-hidden bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
-                <img src="/lovable-uploads/c5b2d24e-f106-4e89-af2d-efaced4463bb.png" alt="AKAR Logo" className="h-7" />
+                <img 
+                  src={logoPath} 
+                  alt="AKAR Logo" 
+                  className="h-7" 
+                  onError={() => setLogoError(true)}
+                />
               </div>
             </div>
             
