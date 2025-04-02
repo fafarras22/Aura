@@ -81,11 +81,23 @@ const config = {
           '50%': { transform: 'scale(1.1)' },
           '100%': { transform: 'scale(1)' },
         },
+        "pulse-warning": {
+          '0%': { opacity: '1' },
+          '50%': { opacity: '0.6' },
+          '100%': { opacity: '1' },
+        },
+        "pulse-error": {
+          '0%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.8', transform: 'scale(1.05)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse": "pulse 1.5s infinite ease-in-out",
+        "pulse-warning": "pulse-warning 1.5s infinite ease-in-out",
+        "pulse-error": "pulse-error 1s infinite ease-in-out",
       },
     },
   },

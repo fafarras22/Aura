@@ -108,11 +108,11 @@
 }
 
 .sensor-warning {
-  @apply animate-pulse-warning;
+  @apply animate-pulse-warning text-yellow-600 dark:text-yellow-400;
 }
 
 .sensor-error {
-  @apply animate-pulse-error;
+  @apply animate-pulse-error text-red-600 dark:text-red-400;
 }
 
 /* Apple-like card styles */
