@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 
+// Export the main hook function
 export function useMobile(): boolean {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -27,3 +28,6 @@ export function useMobile(): boolean {
 
   return isMobile;
 }
+
+// Add an alias for the same function to maintain backward compatibility
+export const useIsMobile = useMobile;
