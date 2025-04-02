@@ -14,7 +14,6 @@ import Analytics from '@/pages/Analytics';
 import NotFound from '@/pages/NotFound';
 import Settings from '@/pages/Settings';
 import BackendDashboard from '@/pages/BackendDashboard';
-import Projects from '@/pages/Projects';
 import ProjectDetails from '@/pages/ProjectDetails';
 import FarmProjects from '@/pages/FarmProjects';
 import FarmProjectDetails from '@/pages/FarmProjectDetails';
@@ -157,18 +156,10 @@ function App() {
                   </MainLayout>
                 } 
               />
-              
-              {/* Project routes */}
+
+              {/* Project details */}
               <Route 
-                path="/projects" 
-                element={
-                  <MainLayout>
-                    <Projects />
-                  </MainLayout>
-                } 
-              />
-              <Route 
-                path="/projects/:id" 
+                path="/project/:id" 
                 element={
                   <MainLayout>
                     <ProjectDetails />

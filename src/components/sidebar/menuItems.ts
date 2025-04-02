@@ -96,6 +96,7 @@ export const menuItems: MenuItem[] = [
     icon: CircleDollarSign,
     items: [
       { name: "Tokenization", path: "/tokenization" },
+      { name: "Farm Projects", path: "/farm-projects" },
     ],
     adminOnly: false,
   },
