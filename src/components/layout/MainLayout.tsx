@@ -135,14 +135,13 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           <Footer />
         </div>
 
-        {showNotification && (
-          <AppleNotification 
-            title="Hint" 
-            description="You can switch to developer mode to see all farms."
-            icon={<Leaf className="h-6 w-6 text-green-700" />}
-            onClose={() => setShowNotification(false)}
-          />
-        )}
+        <AppleNotification 
+          title="Hint" 
+          description="You can switch to developer mode to see all farms."
+          icon={<Leaf className="h-6 w-6 text-green-700" />}
+          onClose={() => setShowNotification(false)}
+          isVisible={showNotification}
+        />
         
         <WalletConnectModal
           open={showWalletModal}
