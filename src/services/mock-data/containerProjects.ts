@@ -72,6 +72,39 @@ export const getMockContainerProjects = (): ContainerProject[] => {
       apy: 13.8,
       runtimeDays: 365,
       status: 'live'
+    },
+    {
+      id: 'container-g',
+      name: 'Container G - Berry Farm',
+      description: 'Year-round berry cultivation using hydroponics',
+      imageUrl: 'https://images.unsplash.com/photo-1626184793609-9c59614ae4a7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+      totalTokens: 1200,
+      filledTokens: 800,
+      apy: 15.5,
+      runtimeDays: 365,
+      status: 'live'
+    },
+    {
+      id: 'container-h',
+      name: 'Container H - Mushroom Lab',
+      description: 'Specialty mushroom cultivation in controlled environment',
+      imageUrl: 'https://images.unsplash.com/photo-1607529694761-25412a69b8de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+      totalTokens: 1000,
+      filledTokens: 450,
+      apy: 17.2,
+      runtimeDays: 180,
+      status: 'live'
+    },
+    {
+      id: 'container-i',
+      name: 'Container I - Tomato Tower',
+      description: 'Vertical growing system specialized for tomato varieties',
+      imageUrl: 'https://images.unsplash.com/photo-1592967240998-67992fdb95b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+      totalTokens: 1500,
+      filledTokens: 300,
+      apy: 14.8,
+      runtimeDays: 365,
+      status: 'upcoming'
     }
   ];
 };

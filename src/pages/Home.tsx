@@ -29,43 +29,7 @@ import {
   DollarSign
 } from "lucide-react";
 import { Helmet } from "react-helmet";
-
-// Mock featured container data
-const FEATURED_CONTAINERS: ContainerProject[] = [
-  {
-    id: 'container-a',
-    name: 'Container A - Premium Herbs',
-    description: 'High-yield herb farming in climate-controlled environment',
-    imageUrl: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-    totalTokens: 1000,
-    filledTokens: 960,
-    apy: 12.5,
-    runtimeDays: 365,
-    status: 'live'
-  },
-  {
-    id: 'container-b',
-    name: 'Container B - Exotic Fruits',
-    description: 'Specialized container for rare tropical fruits',
-    imageUrl: 'https://images.unsplash.com/photo-1473187983305-f615310e7daa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-    totalTokens: 1000,
-    filledTokens: 200,
-    apy: 18.5,
-    runtimeDays: 365,
-    status: 'live'
-  },
-  {
-    id: 'container-c',
-    name: 'Container C - Organic Greens ICO',
-    description: 'Initial container offering for new organic greens project',
-    imageUrl: 'https://images.unsplash.com/photo-1611735341450-74d61e660ad2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-    totalTokens: 1000,
-    filledTokens: 100,
-    apy: 15.0,
-    runtimeDays: 180,
-    status: 'ico'
-  }
-];
+import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
 
 const Home = () => {
   const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
@@ -104,7 +68,7 @@ const Home = () => {
         .from('containers')
         .select('*')
         .order('filled_tokens', { ascending: false })
-        .limit(3);
+        .limit(9); // Increased from 3 to 9
         
       if (error) throw error;
       
@@ -125,19 +89,19 @@ const Home = () => {
         setFeaturedContainers(transformedData);
       } else {
         // Use mock data if no database data
-        setFeaturedContainers(FEATURED_CONTAINERS);
+        setFeaturedContainers(getMockContainerProjects());
       }
     } catch (error) {
       console.error('Error fetching featured containers:', error);
       // Fallback to mock data
-      setFeaturedContainers(FEATURED_CONTAINERS);
+      setFeaturedContainers(getMockContainerProjects());
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleExploreClick = () => {
-    navigate('/projects');
+    navigate('/farm-projects'); // Updated from '/projects' to '/farm-projects'
   };
 
   const handleConnectWallet = () => {
@@ -164,8 +128,8 @@ const Home = () => {
           
           <div className="flex items-center gap-4">
             <nav className="hidden md:flex items-center gap-6">
-              <Link to="/projects" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
-                Projects
+              <Link to="/farm-projects" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
+                Farm Projects
               </Link>
               <Link to="/dashboard" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
                 Dashboard
@@ -323,7 +287,7 @@ const Home = () => {
           
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
                 <div key={i} className="h-[400px] rounded-md bg-muted animate-pulse" />
               ))}
             </div>
@@ -604,7 +568,7 @@ const Home = () => {
             <div>
               <h3 className="font-bold mb-4">Products</h3>
               <ul className="space-y-2">
-                <li><Link to="/projects" className="text-muted-foreground hover:text-primary">Farm Projects</Link></li>
+                <li><Link to="/farm-projects" className="text-muted-foreground hover:text-primary">Farm Projects</Link></li>
                 <li><Link to="/tokenization" className="text-muted-foreground hover:text-primary">$AKR Token</Link></li>
                 <li><Link to="/analytics" className="text-muted-foreground hover:text-primary">Analytics</Link></li>
               </ul>
