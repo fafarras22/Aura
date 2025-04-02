@@ -16,6 +16,8 @@ import Settings from '@/pages/Settings';
 import BackendDashboard from '@/pages/BackendDashboard';
 import Projects from '@/pages/Projects';
 import ProjectDetails from '@/pages/ProjectDetails';
+import FarmProjects from '@/pages/FarmProjects';
+import FarmProjectDetails from '@/pages/FarmProjectDetails';
 import Climate from '@/pages/Climate';
 import Water from '@/pages/Water';
 import Sensors from '@/pages/Sensors';
@@ -110,7 +112,7 @@ function App() {
                 } 
               />
               
-              {/* Farm Management routes */}
+              {/* Farm management routes */}
               <Route 
                 path="/containers" 
                 element={
@@ -136,7 +138,7 @@ function App() {
                 } 
               />
               
-              {/* Production Data routes */}
+              {/* Production data routes */}
               <Route 
                 path="/production/vegetables" 
                 element={
@@ -146,7 +148,7 @@ function App() {
                 } 
               />
               
-              {/* Sales Performance routes */}
+              {/* Sales performance routes */}
               <Route 
                 path="/sales/daily" 
                 element={
@@ -174,9 +176,27 @@ function App() {
                 } 
               />
               
-              {/* Backend route (admin only) */}
+              {/* Farm Projects routes (new) */}
               <Route 
-                path="/backend" 
+                path="/farm-projects" 
+                element={
+                  <MainLayout>
+                    <FarmProjects />
+                  </MainLayout>
+                } 
+              />
+              <Route 
+                path="/farm-projects/:id" 
+                element={
+                  <MainLayout>
+                    <FarmProjectDetails />
+                  </MainLayout>
+                } 
+              />
+              
+              {/* Admin routes */}
+              <Route 
+                path="/admin/*" 
                 element={
                   <MainLayout>
                     <BackendDashboard />
@@ -184,21 +204,10 @@ function App() {
                 } 
               />
               
-              {/* Mobile view */}
-              <Route 
-                path="/mobile" 
-                element={
-                  <MobileLayout>
-                    <Dashboard />
-                  </MobileLayout>
-                } 
-              />
-              
-              {/* Catch-all route for 404 */}
+              {/* Not found */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Router>
-          <Toaster />
         </WalletProvider>
       </DeveloperModeProvider>
     </ThemeProvider>

@@ -125,8 +125,8 @@ const Containers = () => {
                         </div>
                         <Badge 
                           variant={
-                            container.status === 'active' ? 'success' : 
-                            container.status === 'maintenance' ? 'secondary' : 'outline'
+                            container.status === 'active' ? "default" : 
+                            container.status === 'maintenance' ? "secondary" : "outline"
                           }
                         >
                           {container.status.charAt(0).toUpperCase() + container.status.slice(1)}
