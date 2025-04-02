@@ -1,209 +1,122 @@
-import React, { useState } from 'react';
-import { Menu, X, Home, Leaf, Droplet, Wind, Bell, Settings, Layers, ChevronRight, LogOut } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useDeveloperMode } from '@/context/DeveloperModeContext';
-import { AppleNotification } from '@/components/ui/apple-notification';
-import { Switch } from '@/components/ui/switch';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BottomHeader } from './BottomHeader';
-import { Footer } from './Footer';
-import { FloatingContactButton } from './FloatingContactButton';
-import { Logo } from '@/components/logo/Logo';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 
-interface NavItem {
-  path: string;
-  label: string;
-  icon: React.ReactNode;
-  isPrimary?: boolean;
+import React, { ReactNode, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { 
+  Home, 
+  LayoutDashboard, 
+  Sprout, 
+  Coins, 
+  BarChart2, 
+  Settings, 
+  Menu, 
+  X 
+} from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+
+interface MobileLayoutProps {
+  children: ReactNode;
 }
 
-export function MobileLayout({ children }: { children: React.ReactNode }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
-  const { isDeveloperMode, toggleDeveloperMode, isAdminLoggedIn, currentUser, logout } = useDeveloperMode();
+export const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const triggerNotification = () => {
-    setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 5000);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  const isActive = (path: string) => {
+    return location.pathname === path ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-accent';
   };
-
-  const navItems: NavItem[] = [
-    { path: '/dashboard', label: 'Dashboard', icon: <Home className="w-5 h-5" /> },
-    { path: '/sensors', label: 'Sensors', icon: <Leaf className="w-5 h-5" /> },
-    { path: '/tokenization', label: 'Tokenization', icon: <Layers className="w-5 h-5" />, isPrimary: true },
-    { path: '/water', label: 'Water', icon: <Droplet className="w-5 h-5" /> },
-    { path: '/climate', label: 'Climate', icon: <Wind className="w-5 h-5" /> },
-  ];
-
-  const handleSignOut = () => {
-    logout();
-    navigate('/login');
+  
+  const navigateTo = (path: string) => {
+    navigate(path);
+    setIsMenuOpen(false);
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
-      {/* Mobile Header - Simplified for app-like experience */}
-      <header className="h-14 border-b flex items-center justify-between px-3 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-gray-200 dark:border-gray-800 sticky top-0 z-30">
-        <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden h-8 w-8"
-          >
-            {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </Button>
-          <Logo size="sm" showText={true} />
+    <div className="flex flex-col h-screen">
+      {/* Mobile header */}
+      <header className="h-16 border-b flex items-center justify-between px-4">
+        <div className="flex items-center">
+          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64 p-0">
+              <div className="h-16 border-b flex items-center px-6">
+                <h1 className="text-xl font-bold">AKAR FarmWatch</h1>
+              </div>
+              
+              <div className="py-4 px-3 space-y-1">
+                <Button 
+                  variant="ghost" 
+                  className={`w-full justify-start ${isActive('/')}`}
+                  onClick={() => navigateTo('/')}
+                >
+                  <Home className="mr-2 h-4 w-4" />
+                  Home
+                </Button>
+                
+                <Button 
+                  variant="ghost" 
+                  className={`w-full justify-start ${isActive('/dashboard')}`}
+                  onClick={() => navigateTo('/dashboard')}
+                >
+                  <LayoutDashboard className="mr-2 h-4 w-4" />
+                  Dashboard
+                </Button>
+                
+                <Button 
+                  variant="ghost" 
+                  className={`w-full justify-start ${isActive('/farm-projects')}`}
+                  onClick={() => navigateTo('/farm-projects')}
+                >
+                  <Sprout className="mr-2 h-4 w-4" />
+                  Farm Projects
+                </Button>
+                
+                <Button 
+                  variant="ghost" 
+                  className={`w-full justify-start ${isActive('/tokenization')}`}
+                  onClick={() => navigateTo('/tokenization')}
+                >
+                  <Coins className="mr-2 h-4 w-4" />
+                  Tokenization
+                </Button>
+                
+                <Button 
+                  variant="ghost" 
+                  className={`w-full justify-start ${isActive('/analytics')}`}
+                  onClick={() => navigateTo('/analytics')}
+                >
+                  <BarChart2 className="mr-2 h-4 w-4" />
+                  Analytics
+                </Button>
+                
+                <Button 
+                  variant="ghost" 
+                  className={`w-full justify-start ${isActive('/settings')}`}
+                  onClick={() => navigateTo('/settings')}
+                >
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
+          <h1 className="text-lg font-bold ml-2">AKAR FarmWatch</h1>
         </div>
         
-        <div className="flex items-center gap-1">
-          <ThemeToggle />
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={triggerNotification}
-            className="h-8 w-8"
-          >
-            <Bell className="w-4 h-4" />
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-7 w-7 border border-primary/20">
-                  <AvatarImage src="" alt="@user" />
-                  <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary text-xs">
-                    {currentUser ? currentUser.name.charAt(0) : 'U'}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>{currentUser ? currentUser.name : 'User'}</DropdownMenuLabel>
-              <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
-                {currentUser?.role === 'admin' ? 'Administrator' : 'Client User'}
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/settings')}>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleSignOut} className="text-red-500 focus:text-red-500 dark:text-red-400 dark:focus:text-red-400">
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Sign out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <Button variant="outline" size="sm">
+          Connect Wallet
+        </Button>
       </header>
-
-      {/* Mobile Navigation Drawer - Simplified for better mobile experience */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black/50 dark:bg-black/70" onClick={() => setIsMenuOpen(false)}>
-          <div 
-            className="fixed top-14 left-0 h-[calc(100vh-3.5rem)] w-64 bg-white dark:bg-gray-900 z-50 p-3 overflow-y-auto border-r border-gray-200 dark:border-gray-800"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mb-3 flex items-center gap-2 pb-3 border-b border-gray-200 dark:border-gray-800">
-              <Avatar className="h-9 w-9">
-                <AvatarImage src="" alt="@user" />
-                <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary">
-                  {currentUser ? currentUser.name.charAt(0) : 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-medium text-sm">{currentUser ? currentUser.name : 'User'}</p>
-                <p className="text-xs text-muted-foreground">
-                  {currentUser?.role === 'admin' ? 'Administrator' : 'Client User'}
-                </p>
-              </div>
-            </div>
-            
-            <nav className="space-y-0.5">
-              {navItems.map((item) => (
-                <Button
-                  key={item.path}
-                  variant="ghost"
-                  size="sm"
-                  className={`w-full justify-start h-10 ${
-                    location.pathname === item.path 
-                      ? 'bg-primary/10 text-primary dark:bg-primary/20' 
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-800'
-                  }`}
-                  onClick={() => {
-                    navigate(item.path);
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  <div className="flex items-center w-full">
-                    <span className="mr-3">{item.icon}</span>
-                    <span className="text-sm">{item.label}</span>
-                    <ChevronRight className="w-3 h-3 ml-auto" />
-                  </div>
-                </Button>
-              ))}
-            </nav>
-            
-            <div className="mt-6 pt-3 border-t border-gray-200 dark:border-gray-800">
-              {isAdminLoggedIn && (
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Developer Mode</span>
-                  <Switch
-                    checked={isDeveloperMode}
-                    onCheckedChange={toggleDeveloperMode}
-                  />
-                </div>
-              )}
-              
-              {/* Sign Out Button */}
-              <Button 
-                variant="ghost" 
-                size="sm"
-                className="w-full mt-3 justify-start text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 dark:hover:text-red-400 dark:text-red-400"
-                onClick={handleSignOut}
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                <span className="text-sm">Sign Out</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Main Content - Simplified with better padding for mobile */}
-      <main className="flex-1 p-3 overflow-auto pb-20">
+      
+      {/* Main content */}
+      <main className="flex-1 overflow-auto p-4">
         {children}
       </main>
-
-      {/* Fixed footer for mobile view - positioned before the bottom navigation */}
-      <div className="pb-16 md:pb-0">
-        <Footer />
-      </div>
-
-      {/* Bottom Header using the dedicated component */}
-      <BottomHeader />
-
-      {/* Notification */}
-      <AppleNotification
-        title="AKAR Farm Update"
-        description="Monitor your farm's status in real-time with our advanced dashboard."
-        isVisible={showNotification}
-        onClose={() => setShowNotification(false)}
-        icon={<Bell className="w-5 h-5 text-primary" />}
-      />
-      
-      <FloatingContactButton />
     </div>
   );
-}
+};

@@ -1,152 +1,98 @@
 
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { useDeveloperMode } from "@/context/DeveloperModeContext";
-import { useWallet } from "@/context/WalletContext";
-import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
-import { AppleNotification } from "@/components/ui/apple-notification";
-import { Bell, Leaf, LogOut, Settings, Wallet } from "lucide-react";
-import { AppleButton } from "@/components/ui/apple-button";
-import { useNavigate } from "react-router-dom";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from "@/components/ui/button";
-import { Footer } from "./Footer";
-import { FloatingContactButton } from "./FloatingContactButton";
-import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
-import { shortenAddress } from "@/lib/web3";
-import { Logo } from "@/components/logo/Logo";
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import React, { ReactNode } from 'react';
+import { Button } from '@/components/ui/button';
+import { Home, LayoutDashboard, Sprout, Coins, BarChart2, Settings, Menu } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-export function MainLayout({ children }: { children: React.ReactNode }) {
-  const { isDeveloperMode, toggleDeveloperMode, currentUser } = useDeveloperMode();
-  const { wallet, disconnect } = useWallet();
-  const [showNotification, setShowNotification] = useState(false);
-  const [showWalletModal, setShowWalletModal] = useState(false);
+interface MainLayoutProps {
+  children: ReactNode;
+}
+
+export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
-
-  const triggerNotification = () => {
-    setShowNotification(true);
-    setTimeout(() => setShowNotification(false), 5000);
-  };
-
-  // Handle wallet disconnection
-  const handleDisconnectWallet = () => {
-    disconnect();
-  };
+  const location = useLocation();
   
-  // Get display name/initial for avatar
-  const walletDisplay = wallet.connected 
-    ? shortenAddress(wallet.address)
-    : 'Connect Wallet';
-  
-  const avatarInitial = wallet.connected 
-    ? wallet.address.substring(2, 4).toUpperCase() 
-    : 'W';
+  const isActive = (path: string) => {
+    return location.pathname === path ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground hover:bg-accent';
+  };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gray-50 dark:bg-gray-900">
-        <AppSidebar />
-        <div className="flex-1 flex flex-col">
-          <header className="h-16 border-b flex items-center justify-between px-6 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-gray-200 dark:border-gray-800 sticky top-0 z-30">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger className="p-2 hover:bg-slate-100 dark:hover:bg-gray-800 rounded-md" />
-              <Logo size="sm" />
-            </div>
-            
-            <div className="flex items-center gap-3">
-              {isDeveloperMode && (
-                <div className="flex items-center gap-2 mr-2">
-                  <Switch 
-                    checked={isDeveloperMode} 
-                    onCheckedChange={toggleDeveloperMode} 
-                    id="developer-mode" 
-                  />
-                  <label htmlFor="developer-mode" className="text-xs font-medium cursor-pointer">
-                    Developer Mode
-                  </label>
-                </div>
-              )}
-              
-              <ThemeToggle />
-              
-              {wallet.connected ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="gap-2">
-                      <Avatar className="h-6 w-6">
-                        <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                          {avatarInitial}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-sm hidden md:inline">{walletDisplay}</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Wallet</DropdownMenuLabel>
-                    <DropdownMenuItem 
-                      className="text-xs text-muted-foreground"
-                      disabled
-                    >
-                      {wallet.address}
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/tokenization')}>
-                      My Investments
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/settings')}>
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>Settings</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleDisconnectWallet} className="text-red-600">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Disconnect Wallet</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Button 
-                  variant="default" 
-                  className="gap-2"
-                  onClick={() => setShowWalletModal(true)}
-                >
-                  <Wallet className="h-4 w-4" />
-                  <span className="hidden md:inline">Connect Wallet</span>
-                </Button>
-              )}
-            </div>
-          </header>
-
-          <main className="flex-1 p-6">
-            {children}
-          </main>
-          
-          <Footer />
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <div className="w-64 border-r bg-background hidden md:block">
+        <div className="h-16 border-b flex items-center px-6">
+          <h1 className="text-xl font-bold">AKAR FarmWatch</h1>
         </div>
-
-        <AppleNotification 
-          title="Hint" 
-          description="You can switch to developer mode to see all farms."
-          icon={<Leaf className="h-6 w-6 text-green-700" />}
-          onClose={() => setShowNotification(false)}
-          isVisible={showNotification}
-        />
         
-        <WalletConnectModal
-          open={showWalletModal}
-          onOpenChange={setShowWalletModal}
-        />
+        <div className="py-4 px-3 space-y-1">
+          <Button 
+            variant="ghost" 
+            className={`w-full justify-start ${isActive('/')}`}
+            onClick={() => navigate('/')}
+          >
+            <Home className="mr-2 h-4 w-4" />
+            Home
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            className={`w-full justify-start ${isActive('/dashboard')}`}
+            onClick={() => navigate('/dashboard')}
+          >
+            <LayoutDashboard className="mr-2 h-4 w-4" />
+            Dashboard
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            className={`w-full justify-start ${isActive('/farm-projects')}`}
+            onClick={() => navigate('/farm-projects')}
+          >
+            <Sprout className="mr-2 h-4 w-4" />
+            Farm Projects
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            className={`w-full justify-start ${isActive('/tokenization')}`}
+            onClick={() => navigate('/tokenization')}
+          >
+            <Coins className="mr-2 h-4 w-4" />
+            Tokenization
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            className={`w-full justify-start ${isActive('/analytics')}`}
+            onClick={() => navigate('/analytics')}
+          >
+            <BarChart2 className="mr-2 h-4 w-4" />
+            Analytics
+          </Button>
+          
+          <Button 
+            variant="ghost" 
+            className={`w-full justify-start ${isActive('/settings')}`}
+            onClick={() => navigate('/settings')}
+          >
+            <Settings className="mr-2 h-4 w-4" />
+            Settings
+          </Button>
+        </div>
       </div>
-    </SidebarProvider>
+      
+      {/* Main content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <header className="h-16 border-b flex items-center justify-end px-6">
+          <Button variant="outline" size="sm">
+            Connect Wallet
+          </Button>
+        </header>
+        
+        <main className="flex-1 overflow-auto p-6">
+          {children}
+        </main>
+      </div>
+    </div>
   );
-}
+};
