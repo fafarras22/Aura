@@ -1,110 +1,117 @@
 
 import { ContainerProject } from '@/components/containers/ContainerCard';
 
-/**
- * Get mock container projects data for demonstration mode
- * @returns Array of mock container projects
- */
-export const getMockContainerProjects = (): ContainerProject[] => {
+export function getMockContainerProjects(): ContainerProject[] {
   return [
     {
-      id: 'container-a',
-      name: 'Container A - Premium Herbs',
-      description: 'High-yield herb farming in climate-controlled environment. This container specializes in premium culinary herbs like basil, mint, and rosemary that are supplied to high-end restaurants and specialty food markets. The controlled environment allows year-round production regardless of external climate conditions.',
-      imageUrl: 'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-      totalTokens: 1000,
-      filledTokens: 960,
-      apy: 12.5,
-      runtimeDays: 365,
-      status: 'live'
-    },
-    {
-      id: 'container-b',
-      name: 'Container B - Exotic Fruits',
-      description: 'Specialized container for rare tropical fruits. This innovative project cultivates exotic fruits like dragon fruit, rambutan, and passion fruit in a precisely controlled tropical microclimate. These high-value crops command premium prices in specialty markets and are typically unavailable locally, creating a unique market position with limited competition.',
-      imageUrl: 'https://images.unsplash.com/photo-1473187983305-f615310e7daa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-      totalTokens: 1000,
-      filledTokens: 200,
-      apy: 18.5,
-      runtimeDays: 365,
-      status: 'live'
-    },
-    {
-      id: 'container-c',
-      name: 'Container C - Organic Greens ICO',
-      description: 'Initial container offering for new organic greens project. This upcoming container will focus on certified organic leafy greens using an advanced hydroponic system. The ICO funding will support setup costs including specialized lighting, water filtration systems, and organic certification processes. Once operational, produce will be distributed to organic grocery chains and health food stores.',
-      imageUrl: 'https://images.unsplash.com/photo-1611735341450-74d61e660ad2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-      totalTokens: 1000,
-      filledTokens: 100,
-      apy: 15.0,
-      runtimeDays: 180,
-      status: 'ico'
-    },
-    {
-      id: 'container-d',
-      name: 'Container D - Microgreens Expansion',
-      description: 'Expanding our microgreens production capacity. This container is dedicated to high-intensity microgreens cultivation, focusing on specialty varieties like sunflower, pea shoots, and radish microgreens. With a rapid 7-14 day growth cycle, this container achieves exceptional capital efficiency with multiple harvests per month, supplying fresh microgreens to restaurants, juice bars, and health food stores.',
-      imageUrl: 'https://images.unsplash.com/photo-1620654458511-52bb2fc847dc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-      totalTokens: 1500,
-      filledTokens: 500,
-      apy: 14.2,
-      runtimeDays: 365,
-      status: 'live'
-    },
-    {
-      id: 'container-e',
-      name: 'Container E - Vertical Farm Tech',
-      description: 'Next-generation vertical farming technology showcase. This container features our most advanced growing technology, utilizing AI-controlled lighting, automated nutrient delivery, and IoT sensors to maximize crop yields while minimizing resource usage. The container serves as both a production facility and a demonstration of cutting-edge agricultural innovation available for franchise opportunities.',
-      imageUrl: 'https://images.unsplash.com/photo-1621456941931-cb157a247ca8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-      totalTokens: 2000,
-      filledTokens: 200,
-      apy: 16.8,
-      runtimeDays: 730,
-      status: 'upcoming'
-    },
-    {
-      id: 'container-f',
-      name: 'Container F - Hydroponic System',
-      description: 'Advanced water-based growing system for leafy greens. This container utilizes a state-of-the-art NFT (Nutrient Film Technique) hydroponic system to grow premium lettuces and leafy greens with 95% less water than conventional farming. The closed-loop system recirculates water and nutrients, creating an environmentally sustainable operation that produces clean, pesticide-free greens with consistent quality year-round.',
-      imageUrl: 'https://images.unsplash.com/photo-1606224547053-093d2d5cd7fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-      totalTokens: 1800,
-      filledTokens: 1200,
-      apy: 13.8,
-      runtimeDays: 365,
-      status: 'live'
-    },
-    {
-      id: 'container-g',
-      name: 'Container G - Berry Farm',
-      description: 'Year-round berry cultivation using hydroponics. This specialized container creates ideal growing conditions for strawberries, blueberries, and blackberries using advanced hydroponic techniques. The controlled environment eliminates seasonal limitations, allowing for continuous berry production regardless of outside weather conditions, while significantly reducing pest issues that typically affect berry farms.',
-      imageUrl: 'https://images.unsplash.com/photo-1626184793609-9c59614ae4a7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-      totalTokens: 1200,
-      filledTokens: 800,
+      id: "container1",
+      name: "Lettuce Farm Jakarta",
+      imageUrl: "/lovable-uploads/532be948-74b8-4d14-a726-8fa51d204cf7.png",
+      description: "High-yield lettuce farming container with AI-powered climate control and IoT monitoring.",
+      totalTokens: 10000,
+      filledTokens: 6540,
       apy: 15.5,
       runtimeDays: 365,
-      status: 'live'
+      status: "live"
     },
     {
-      id: 'container-h',
-      name: 'Container H - Mushroom Lab',
-      description: 'Specialty mushroom cultivation in controlled environment. This container is dedicated to growing gourmet and medicinal mushrooms including shiitake, lion's mane, and oyster varieties. The precision-controlled environment creates ideal conditions for mushroom cultivation, while the specialized substrate production area allows for complete vertical integration of the growing process, maximizing efficiency and yield.',
-      imageUrl: 'https://images.unsplash.com/photo-1607529694761-25412a69b8de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-      totalTokens: 1000,
-      filledTokens: 450,
-      apy: 17.2,
-      runtimeDays: 180,
-      status: 'live'
+      id: "container2",
+      name: "Tomato Hub Bandung",
+      imageUrl: "/lovable-uploads/e60ccc9b-594d-461b-9ef9-2b157e19b0a1.png",
+      description: "Specialized container for growing premium tomato varieties with precision nutrient delivery.",
+      totalTokens: 8000,
+      filledTokens: 7200,
+      apy: 18.2,
+      runtimeDays: 300,
+      status: "live"
     },
     {
-      id: 'container-i',
-      name: 'Container I - Tomato Tower',
-      description: 'Vertical growing system specialized for tomato varieties. This container features a vertical hydroponic system optimized for vine crops, with specialized trellising and plant support structures. The project focuses on high-value heirloom and specialty tomato varieties, supplying premium produce to restaurants, farmers' markets, and specialty grocers with an emphasis on unique flavor profiles unavailable in conventional supermarkets.',
-      imageUrl: 'https://images.unsplash.com/photo-1592967240998-67992fdb95b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
-      totalTokens: 1500,
-      filledTokens: 300,
-      apy: 14.8,
+      id: "container3",
+      name: "Herb Garden Bali",
+      imageUrl: "/lovable-uploads/ae9d74be-8813-4c4b-b946-cf1190243702.png",
+      description: "Artisanal herb container supplying fresh culinary herbs to Bali's premium resorts and restaurants.",
+      totalTokens: 5000,
+      filledTokens: 2750,
+      apy: 16.8,
       runtimeDays: 365,
-      status: 'upcoming'
+      status: "live"
+    },
+    {
+      id: "container4",
+      name: "Strawberry Vertical Farm",
+      imageUrl: "/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png",
+      description: "Innovative vertical farming system growing premium strawberries year-round with minimal water usage.",
+      totalTokens: 12000,
+      filledTokens: 3500,
+      apy: 19.5,
+      runtimeDays: 730,
+      status: "upcoming"
+    },
+    {
+      id: "container5",
+      name: "Microgreens Specialist",
+      imageUrl: "/lovable-uploads/b795ce5f-6c21-4dec-8060-90844a893974.png",
+      description: "Specialized container producing high-margin microgreens for Jakarta's fine dining establishments.",
+      totalTokens: 6000,
+      filledTokens: 4500,
+      apy: 20.2,
+      runtimeDays: 365,
+      status: "ico"
+    },
+    {
+      id: "container6",
+      name: "Kale & Spinach Farm",
+      imageUrl: "/lovable-uploads/c5b2d24e-f106-4e89-af2d-efaced4463bb.png",
+      description: "Leafy greens farm optimized for maximum nutrition and yield with smart monitoring technology.",
+      totalTokens: 15000,
+      filledTokens: 15000,
+      apy: 17.8,
+      runtimeDays: 365,
+      status: "completed"
+    },
+    {
+      id: "container7",
+      name: "Pepper Innovation Hub",
+      imageUrl: "/lovable-uploads/ff02fd5a-28c4-466b-99d9-ea6213beb2c5.png",
+      description: "Specialized in growing rare pepper varieties with controlled conditions for maximum flavor development.",
+      totalTokens: 9000,
+      filledTokens: 4200,
+      apy: 16.4,
+      runtimeDays: 365,
+      status: "live"
+    },
+    {
+      id: "container8",
+      name: "Cucumber Vertical System",
+      imageUrl: "/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png",
+      description: "Advanced hydroponic system for growing premium cucumbers with 90% less water than traditional farming.",
+      totalTokens: 7500,
+      filledTokens: 3800,
+      apy: 15.9,
+      runtimeDays: 365,
+      status: "upcoming"
+    },
+    {
+      id: "container9",
+      name: "Premium Salad Mix",
+      imageUrl: "/lovable-uploads/1fe7dc27-86fd-4951-be87-72e09e824c9b.png",
+      description: "Diverse salad greens grown in carefully controlled environments for consistent quality and flavor profiles.",
+      totalTokens: 11000,
+      filledTokens: 8700,
+      apy: 17.2,
+      runtimeDays: 365,
+      status: "live"
+    },
+    {
+      id: "container10",
+      name: "Berry Experimental Farm",
+      imageUrl: "/lovable-uploads/532be948-74b8-4d14-a726-8fa51d204cf7.png",
+      description: "Research-focused container farm developing new methods for growing berries in tropical climates.",
+      totalTokens: 20000,
+      filledTokens: 5400,
+      apy: 21.5,
+      runtimeDays: 730,
+      status: "ico"
     }
   ];
-};
+}
