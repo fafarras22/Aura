@@ -34,9 +34,6 @@ export const Logo: React.FC<LogoProps> = ({
         className={`${sizeClasses[size]}`}
         onError={() => setLogoError(true)}
       />
-      {showText && (
-        <span className="font-bold text-xl">AKAR</span>
-      )}
     </div>
   );
 };
