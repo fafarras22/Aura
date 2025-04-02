@@ -79,3 +79,75 @@ export const getMockHarvests = (): Harvest[] => {
     }
   ];
 };
+
+// Create a new function for the Harvest.tsx page which returns data in the format it expects
+export const getMockHarvestData = () => {
+  return [
+    { 
+      id: "h1", 
+      containerName: "Container 001", 
+      cropType: "Lettuce", 
+      weight: 42.3, 
+      quality: 96, 
+      harvestDate: "2024-04-12", 
+      batchNumber: "LET-2405-01", 
+      assignedTo: "John Doe",
+      status: "completed"
+    },
+    { 
+      id: "h2", 
+      containerName: "Container 003", 
+      cropType: "Basil", 
+      weight: 36.8, 
+      quality: 92, 
+      harvestDate: "2024-04-14", 
+      batchNumber: "BAS-2405-01", 
+      assignedTo: "Sarah Chen",
+      status: "completed"
+    },
+    { 
+      id: "h3", 
+      containerName: "Container 005", 
+      cropType: "Kale", 
+      weight: 29.4, 
+      quality: 88, 
+      harvestDate: "2024-04-18", 
+      batchNumber: "KAL-2405-01", 
+      assignedTo: "Mike Johnson",
+      status: "scheduled"
+    },
+    { 
+      id: "h4", 
+      containerName: "Container 002", 
+      cropType: "Spinach", 
+      weight: 31.7, 
+      quality: 94, 
+      harvestDate: "2024-04-20", 
+      batchNumber: "SPI-2405-01", 
+      assignedTo: "Lisa Wong",
+      status: "scheduled"
+    },
+    { 
+      id: "h5", 
+      containerName: "Container 007", 
+      cropType: "Arugula", 
+      weight: 28.2, 
+      quality: 91, 
+      harvestDate: "2024-04-22", 
+      batchNumber: "ARU-2405-01", 
+      assignedTo: "David Smith",
+      status: "scheduled"
+    },
+    { 
+      id: "h6", 
+      containerName: "Container 004", 
+      cropType: "Tomatoes", 
+      weight: 45.6, 
+      quality: 97, 
+      harvestDate: "2024-04-08", 
+      batchNumber: "TOM-2404-02", 
+      assignedTo: "Emma Davis",
+      status: "completed"
+    }
+  ];
+};
