@@ -1,12 +1,12 @@
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ContainerProject } from "@/components/containers/ContainerCard";
-import { ProjectCard } from "./ProjectCard";
+import { ContainerCard } from "@/components/containers/ContainerCard";
+import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Wallet } from "lucide-react";
 
 interface ContainerProjectsListProps {
-  containerProjects: ContainerProject[];
+  containerProjects: any[];
   isWalletConnected: boolean;
   onConnectWallet: () => void;
 }
@@ -16,69 +16,37 @@ export const ContainerProjectsList: React.FC<ContainerProjectsListProps> = ({
   isWalletConnected,
   onConnectWallet
 }) => {
-  // Filter projects by status for display
-  const liveProjects = containerProjects.filter(project => project.status === 'live');
-  const upcomingProjects = containerProjects.filter(project => project.status === 'upcoming');
-  const icoProjects = containerProjects.filter(project => project.status === 'ico');
+  const handleContainerAction = (containerId: string) => {
+    if (!isWalletConnected) {
+      onConnectWallet();
+      return;
+    }
+    
+    // Handle container action based on status
+    console.log(`Container action for ${containerId}`);
+  };
   
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle>Available Farm Projects</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="mb-4">
-            <h3 className="text-lg font-medium mb-3">Live Projects</h3>
-            {liveProjects.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {liveProjects.map(project => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    isWalletConnected={isWalletConnected}
-                    onConnectWallet={onConnectWallet}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="text-muted-foreground text-center py-6">No live projects available at the moment.</p>
-            )}
-          </div>
-          
-          {icoProjects.length > 0 && (
-            <div className="mb-4">
-              <h3 className="text-lg font-medium mb-3">Initial Container Offerings (ICO)</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {icoProjects.map(project => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    isWalletConnected={isWalletConnected}
-                    onConnectWallet={onConnectWallet}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {upcomingProjects.length > 0 && (
-            <div>
-              <h3 className="text-lg font-medium mb-3">Upcoming Projects</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {upcomingProjects.map(project => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    isWalletConnected={isWalletConnected}
-                    onConnectWallet={onConnectWallet}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {!isWalletConnected && (
+        <Alert variant="default" className="border-blue-300 bg-blue-50 dark:bg-blue-900/20">
+          <Wallet className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          <AlertTitle>Connect Your Wallet</AlertTitle>
+          <AlertDescription>
+            Connect your wallet to stake $AKR tokens and earn rewards from farm container projects.
+          </AlertDescription>
+        </Alert>
+      )}
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {containerProjects.map((container) => (
+          <ContainerCard 
+            key={container.id} 
+            container={container} 
+            onAction={handleContainerAction}
+          />
+        ))}
+      </div>
     </div>
   );
 };
