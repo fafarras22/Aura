@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,6 +16,8 @@ import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/logo/Logo";
 import { TabsSection } from "@/components/home/TabsSection";
+import { HeroSection } from "@/components/home/HeroSection";
+import { AboutSection } from "@/components/home/AboutSection";
 import { 
   Wallet, 
   Languages, 
@@ -55,6 +56,18 @@ const Home = () => {
     circulatingSupply: 3500000,
     marketCap: 52500000
   });
+
+  const heroContent = {
+    title: "Invest in",
+    subtitle: "Stake $AKR tokens, own a share of container farms, and earn consistent returns from real agricultural production.",
+    explore: "Explore Projects",
+    learnMore: "Connect Wallet",
+  };
+  
+  const aboutContent = {
+    title: "Sustainable Container Farming",
+    description: "Our IoT-enabled smart containers use cutting-edge technology to grow crops efficiently with minimal environmental impact."
+  };
 
   useEffect(() => {
     // Initialize DB on component mount
@@ -203,71 +216,15 @@ const Home = () => {
         </div>
       </header>
 
-      {/* Hero section with immediate investment focus */}
-      <section className="py-12 md:py-24 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <Badge variant="outline" className="px-3 py-1 text-sm bg-primary/10 text-primary border-primary/30">
-                Sustainable Farming on Blockchain
-              </Badge>
-              
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-                <span className="text-gray-900 dark:text-gray-100">Invest in </span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-                  Container Farming
-                </span>
-              </h1>
-              
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-xl leading-relaxed">
-                Stake $AKR tokens, own a share of container farms, and earn consistent returns from real agricultural production.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  size="lg" 
-                  className="gap-2 group"
-                  onClick={handleExploreClick}
-                >
-                  Explore Projects
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  onClick={handleConnectWallet}
-                >
-                  Connect Wallet
-                </Button>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-4 pt-4">
-                <div>
-                  <div className="text-2xl font-bold">12-20%</div>
-                  <div className="text-sm text-muted-foreground">Annual Yield</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold">24/7</div>
-                  <div className="text-sm text-muted-foreground">Monitoring</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold">100%</div>
-                  <div className="text-sm text-muted-foreground">Transparent</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="rounded-xl overflow-hidden border shadow-lg">
-              <img 
-                src={"/lovable-uploads/1fe7dc27-86fd-4951-be87-72e09e824c9b.png"}
-                alt="AKAR Container Farming"
-                className="w-full h-auto object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero section with game */}
+      <HeroSection 
+        content={heroContent}
+        onExploreClick={handleExploreClick}
+        onLearnMoreClick={handleConnectWallet}
+      />
+      
+      {/* About Section */}
+      <AboutSection content={aboutContent} />
       
       {/* Featured container projects */}
       <section className="py-16 bg-white dark:bg-gray-950">

@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 
 interface HeroContentProps {
@@ -12,43 +13,63 @@ interface HeroContentProps {
   onLearnMoreClick?: () => void;
 }
 
-export const HeroContent: React.FC<HeroContentProps> = ({ 
-  title, 
-  subtitle, 
-  explore, 
+export const HeroContent: React.FC<HeroContentProps> = ({
+  title,
+  subtitle,
+  explore,
   learnMore,
   onExploreClick,
   onLearnMoreClick
 }) => {
   return (
-    <div className="space-y-6">
-      <h1 
-        id="hero-heading"
-        className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight"
-      >
-        {title}
+    <div className="space-y-6 max-w-lg">
+      <Badge variant="outline" className="px-3 py-1 text-sm bg-primary/10 text-primary border-primary/30">
+        Sustainable Farming on Blockchain
+      </Badge>
+      
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+        <span className="text-gray-900 dark:text-gray-100">{title} </span>
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+          Container Farming
+        </span>
       </h1>
-      <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl leading-relaxed">
+      
+      <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
         {subtitle}
       </p>
+      
       <div className="flex flex-col sm:flex-row gap-4">
         <Button 
-          className="gap-2 px-6" 
           size="lg" 
+          className="gap-2 group"
           onClick={onExploreClick}
-          aria-label={explore}
         >
-          {explore} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          {explore}
+          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </Button>
+        
         <Button 
           variant="outline" 
-          className="gap-2 px-6" 
           size="lg"
           onClick={onLearnMoreClick}
-          aria-label={learnMore}
         >
           {learnMore}
         </Button>
+      </div>
+      
+      <div className="grid grid-cols-3 gap-4 pt-2">
+        <div>
+          <div className="text-2xl font-bold">12-20%</div>
+          <div className="text-sm text-muted-foreground">Annual Yield</div>
+        </div>
+        <div>
+          <div className="text-2xl font-bold">24/7</div>
+          <div className="text-sm text-muted-foreground">Monitoring</div>
+        </div>
+        <div>
+          <div className="text-2xl font-bold">100%</div>
+          <div className="text-sm text-muted-foreground">Transparent</div>
+        </div>
       </div>
     </div>
   );
