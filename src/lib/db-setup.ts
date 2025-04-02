@@ -34,6 +34,27 @@ export const setupTables = async (): Promise<boolean> => {
       const { error: salesDataError } = await supabase.rpc('create_sales_data_table');
       if (salesDataError) throw salesDataError;
     }
+    
+    // Create projects table
+    const projectsTableExists = await tableExists('projects');
+    if (!projectsTableExists) {
+      const { error: projectsError } = await supabase.rpc('create_projects_table');
+      if (projectsError) throw projectsError;
+    }
+    
+    // Create token_investments table
+    const tokenInvestmentsTableExists = await tableExists('token_investments');
+    if (!tokenInvestmentsTableExists) {
+      const { error: tokenInvestmentsError } = await supabase.rpc('create_token_investments_table');
+      if (tokenInvestmentsError) throw tokenInvestmentsError;
+    }
+    
+    // Create users table
+    const usersTableExists = await tableExists('users');
+    if (!usersTableExists) {
+      const { error: usersError } = await supabase.rpc('create_users_table');
+      if (usersError) throw usersError;
+    }
 
     return true;
   } catch (error) {
@@ -72,6 +93,11 @@ export const useDBSetup = () => {
                 location TEXT,
                 capacity INTEGER,
                 status TEXT,
+                total_tokens INTEGER DEFAULT 1000,
+                filled_tokens INTEGER DEFAULT 0,
+                apy NUMERIC DEFAULT 12.5,
+                runtime_days INTEGER DEFAULT 365,
+                image_url TEXT,
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
                 updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
               );
@@ -91,6 +117,11 @@ export const useDBSetup = () => {
                 location TEXT,
                 capacity INTEGER,
                 status TEXT,
+                total_tokens INTEGER DEFAULT 1000,
+                filled_tokens INTEGER DEFAULT 0,
+                apy NUMERIC DEFAULT 12.5,
+                runtime_days INTEGER DEFAULT 365,
+                image_url TEXT,
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
                 updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
               );
@@ -136,6 +167,157 @@ export const useDBSetup = () => {
                 monthly_sales JSONB DEFAULT '[]'::jsonb,
                 supermarket_client JSONB DEFAULT '{}'::jsonb,
                 recurring_customers INTEGER DEFAULT 0,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+              );
+            `
+          });
+          if (directCreateError) throw directCreateError;
+        }
+        
+        // Create projects table function
+        const { error: createProjectsFnError } = await supabase.rpc('exec_sql', {
+          sql_command: `
+            CREATE OR REPLACE FUNCTION create_projects_table()
+            RETURNS void AS $$
+            BEGIN
+              CREATE TABLE IF NOT EXISTS projects (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                name TEXT NOT NULL,
+                description TEXT,
+                status TEXT DEFAULT 'active',
+                project_type TEXT DEFAULT 'staking',
+                total_investment_amount NUMERIC DEFAULT 0,
+                tokens_allocated INTEGER DEFAULT 0,
+                total_tokens INTEGER DEFAULT 1000,
+                min_investment NUMERIC DEFAULT 100,
+                apy NUMERIC DEFAULT 12.5,
+                start_date TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                end_date TIMESTAMP WITH TIME ZONE,
+                image_url TEXT,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+              );
+            END;
+            $$ LANGUAGE plpgsql;
+          `
+        });
+        
+        if (createProjectsFnError) {
+          console.error('Error creating projects table function:', createProjectsFnError);
+          // Try direct creation
+          const { error: directCreateError } = await supabase.rpc('exec_sql', {
+            sql_command: `
+              CREATE TABLE IF NOT EXISTS projects (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                name TEXT NOT NULL,
+                description TEXT,
+                status TEXT DEFAULT 'active',
+                project_type TEXT DEFAULT 'staking',
+                total_investment_amount NUMERIC DEFAULT 0,
+                tokens_allocated INTEGER DEFAULT 0,
+                total_tokens INTEGER DEFAULT 1000,
+                min_investment NUMERIC DEFAULT 100,
+                apy NUMERIC DEFAULT 12.5,
+                start_date TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                end_date TIMESTAMP WITH TIME ZONE,
+                image_url TEXT,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+              );
+            `
+          });
+          if (directCreateError) throw directCreateError;
+        }
+        
+        // Create token_investments table function
+        const { error: createTokenInvestmentsFnError } = await supabase.rpc('exec_sql', {
+          sql_command: `
+            CREATE OR REPLACE FUNCTION create_token_investments_table()
+            RETURNS void AS $$
+            BEGIN
+              CREATE TABLE IF NOT EXISTS token_investments (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                user_id UUID,
+                wallet_address TEXT NOT NULL,
+                project_id UUID REFERENCES projects(id),
+                container_id UUID REFERENCES containers(id),
+                amount NUMERIC NOT NULL,
+                token_amount INTEGER NOT NULL,
+                status TEXT DEFAULT 'active',
+                transaction_hash TEXT,
+                investment_date TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                end_date TIMESTAMP WITH TIME ZONE,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+              );
+            END;
+            $$ LANGUAGE plpgsql;
+          `
+        });
+        
+        if (createTokenInvestmentsFnError) {
+          console.error('Error creating token_investments table function:', createTokenInvestmentsFnError);
+          // Try direct creation
+          const { error: directCreateError } = await supabase.rpc('exec_sql', {
+            sql_command: `
+              CREATE TABLE IF NOT EXISTS token_investments (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                user_id UUID,
+                wallet_address TEXT NOT NULL,
+                project_id UUID REFERENCES projects(id),
+                container_id UUID REFERENCES containers(id),
+                amount NUMERIC NOT NULL,
+                token_amount INTEGER NOT NULL,
+                status TEXT DEFAULT 'active',
+                transaction_hash TEXT,
+                investment_date TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                end_date TIMESTAMP WITH TIME ZONE,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+              );
+            `
+          });
+          if (directCreateError) throw directCreateError;
+        }
+        
+        // Create users table function
+        const { error: createUsersFnError } = await supabase.rpc('exec_sql', {
+          sql_command: `
+            CREATE OR REPLACE FUNCTION create_users_table()
+            RETURNS void AS $$
+            BEGIN
+              CREATE TABLE IF NOT EXISTS users (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                wallet_address TEXT UNIQUE NOT NULL,
+                email TEXT,
+                name TEXT,
+                role TEXT DEFAULT 'investor',
+                total_invested NUMERIC DEFAULT 0,
+                token_balance NUMERIC DEFAULT 0,
+                staked_balance NUMERIC DEFAULT 0,
+                created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+                updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+              );
+            END;
+            $$ LANGUAGE plpgsql;
+          `
+        });
+        
+        if (createUsersFnError) {
+          console.error('Error creating users table function:', createUsersFnError);
+          // Try direct creation
+          const { error: directCreateError } = await supabase.rpc('exec_sql', {
+            sql_command: `
+              CREATE TABLE IF NOT EXISTS users (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                wallet_address TEXT UNIQUE NOT NULL,
+                email TEXT,
+                name TEXT,
+                role TEXT DEFAULT 'investor',
+                total_invested NUMERIC DEFAULT 0,
+                token_balance NUMERIC DEFAULT 0,
+                staked_balance NUMERIC DEFAULT 0,
                 created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
                 updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
               );

@@ -5,72 +5,83 @@ import { MobileLayout } from '@/components/layout/MobileLayout';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { DeveloperModeProvider } from '@/context/DeveloperModeContext';
-import { AuthProvider } from '@/context/auth/AuthProvider';
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { WalletProvider } from '@/context/WalletContext';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
-import Login from '@/pages/Login';
-import Signup from '@/pages/Signup';
 import Dashboard from '@/pages/Dashboard';
 import Tokenization from '@/pages/Tokenization';
 import Analytics from '@/pages/Analytics';
 import NotFound from '@/pages/NotFound';
 import Settings from '@/pages/Settings';
 import BackendDashboard from '@/pages/BackendDashboard';
+import Projects from '@/pages/Projects';
+import ProjectDetails from '@/pages/ProjectDetails';
 import './App.css';
+
+// Add ethers to window to ensure it's accessible
+import { ethers } from 'ethers';
+(window as any).ethers = ethers;
 
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="akar-theme">
       <DeveloperModeProvider>
-        <AuthProvider>
+        <WalletProvider>
           <Router>
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
               
-              {/* Protected routes */}
+              {/* Dashboard and analytics */}
               <Route 
                 path="/dashboard" 
                 element={
-                  <ProtectedRoute>
-                    <MainLayout>
-                      <Dashboard />
-                    </MainLayout>
-                  </ProtectedRoute>
+                  <MainLayout>
+                    <Dashboard />
+                  </MainLayout>
                 } 
               />
               <Route 
                 path="/analytics" 
                 element={
-                  <ProtectedRoute>
-                    <MainLayout>
-                      <Analytics />
-                    </MainLayout>
-                  </ProtectedRoute>
+                  <MainLayout>
+                    <Analytics />
+                  </MainLayout>
                 } 
               />
               <Route 
                 path="/tokenization" 
                 element={
-                  <ProtectedRoute>
-                    <MainLayout>
-                      <Tokenization />
-                    </MainLayout>
-                  </ProtectedRoute>
+                  <MainLayout>
+                    <Tokenization />
+                  </MainLayout>
                 } 
               />
               <Route 
                 path="/settings" 
                 element={
-                  <ProtectedRoute>
-                    <MainLayout>
-                      <Settings />
-                    </MainLayout>
-                  </ProtectedRoute>
+                  <MainLayout>
+                    <Settings />
+                  </MainLayout>
+                } 
+              />
+              
+              {/* Project routes */}
+              <Route 
+                path="/projects" 
+                element={
+                  <MainLayout>
+                    <Projects />
+                  </MainLayout>
+                } 
+              />
+              <Route 
+                path="/projects/:id" 
+                element={
+                  <MainLayout>
+                    <ProjectDetails />
+                  </MainLayout>
                 } 
               />
               
@@ -78,11 +89,9 @@ function App() {
               <Route 
                 path="/backend" 
                 element={
-                  <ProtectedRoute>
-                    <MainLayout>
-                      <BackendDashboard />
-                    </MainLayout>
-                  </ProtectedRoute>
+                  <MainLayout>
+                    <BackendDashboard />
+                  </MainLayout>
                 } 
               />
               
@@ -101,7 +110,7 @@ function App() {
             </Routes>
           </Router>
           <Toaster />
-        </AuthProvider>
+        </WalletProvider>
       </DeveloperModeProvider>
     </ThemeProvider>
   );
