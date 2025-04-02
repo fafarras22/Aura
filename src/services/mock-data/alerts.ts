@@ -1,53 +1,52 @@
 
 import { Alert } from './types';
 
-// Mock alerts
 export const getMockAlerts = (): Alert[] => {
   return [
     {
-      id: 'a1',
-      title: 'Temperature Threshold Exceeded',
-      message: 'Container 001 temperature has exceeded 28°C. Check cooling systems immediately.',
-      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-      type: 'error',
-      containerNumber: '001',
-      isRead: false
+      id: "alert-1",
+      title: "High Temperature Warning",
+      message: "Container JKT-001 temperature exceeds 30°C",
+      type: "warning",
+      containerNumber: "JKT-001",
+      isRead: false,
+      timestamp: new Date().toISOString()
     },
     {
-      id: 'a2',
-      title: 'Low Water Level',
-      message: 'Container 002 water level is at 15%. Refill required within 8 hours.',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-      type: 'warning',
-      containerNumber: '002',
-      isRead: false
+      id: "alert-2",
+      title: "Low Water Level",
+      message: "Container BDG-003 water level below 20%",
+      type: "error",
+      containerNumber: "BDG-003",
+      isRead: false,
+      timestamp: new Date(Date.now() - 3600000).toISOString()
     },
     {
-      id: 'a3',
-      title: 'CO2 Level Warning',
-      message: 'Container 001 CO2 levels have been above 900ppm for 3 hours.',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 4), // 4 hours ago
-      type: 'warning',
-      containerNumber: '001',
-      isRead: true
+      id: "alert-3",
+      title: "Nutrient Level Optimal",
+      message: "Container SBY-002 nutrient levels normalized",
+      type: "info",
+      containerNumber: "SBY-002",
+      isRead: true,
+      timestamp: new Date(Date.now() - 86400000).toISOString()
     },
     {
-      id: 'a4',
-      title: 'System Update Completed',
-      message: 'Automatic system update completed for all container management systems.',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12), // 12 hours ago
-      type: 'info',
-      containerNumber: 'ALL',
-      isRead: true
+      id: "alert-4",
+      title: "Power Fluctuation",
+      message: "Container JKT-001 experiencing power fluctuations",
+      type: "warning",
+      containerNumber: "JKT-001",
+      isRead: false,
+      timestamp: new Date(Date.now() - 172800000).toISOString()
     },
     {
-      id: 'a5',
-      title: 'pH Level Critical',
-      message: 'Container 003 pH level has dropped to 4.9, below safe threshold. Adjust nutrient mix immediately.',
-      timestamp: new Date(Date.now() - 1000 * 60 * 15), // 15 minutes ago
-      type: 'error',
-      containerNumber: '003',
-      isRead: false
+      id: "alert-5",
+      title: "CO2 Level High",
+      message: "Container SBY-002 CO2 level above normal",
+      type: "warning",
+      containerNumber: "SBY-002",
+      isRead: true,
+      timestamp: new Date(Date.now() - 259200000).toISOString()
     }
   ];
 };
