@@ -2,13 +2,17 @@
 import { useEffect, useState } from "react";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
-import { DashboardLogin } from "@/components/dashboard/DashboardLogin";
+import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
+import { useWallet } from "@/context/WalletContext";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { useDashboardData } from "@/components/dashboard/useDashboardData";
+import { Button } from "@/components/ui/button";
+import { Wallet } from "lucide-react";
 
 const Dashboard = () => {
-  const [showLoginDialog, setShowLoginDialog] = useState<boolean>(false);
-  const { login, loginAsAdmin, currentUser, isDeveloperMode } = useDeveloperMode();
+  const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
+  const { wallet } = useWallet();
+  const { isDeveloperMode, currentUser } = useDeveloperMode();
   
   // Section card states
   const [expandedSections, setExpandedSections] = useState({
@@ -29,36 +33,34 @@ const Dashboard = () => {
     }));
   };
   
-  // Check if user is logged in when component mounts
+  // Check if wallet is connected when component mounts
   useEffect(() => {
-    if (!currentUser) {
-      setShowLoginDialog(true);
+    if (!wallet.connected) {
+      setShowWalletModal(true);
     }
-  }, [currentUser]);
+  }, [wallet.connected]);
   
-  const handleLoginSubmit = (type: 'admin' | 'user', username: string, password: string) => {
-    let success = false;
-    
-    if (type === 'admin') {
-      success = loginAsAdmin(password);
-    } else {
-      success = login(username, password);
-    }
-    
-    if (success) {
-      setShowLoginDialog(false);
-    }
-    
-    return success;
-  };
-
-  if (!currentUser) {
+  if (!wallet.connected) {
     return (
-      <DashboardLogin
-        showLoginDialog={showLoginDialog}
-        setShowLoginDialog={setShowLoginDialog}
-        onLogin={handleLoginSubmit}
-      />
+      <div className="flex flex-col items-center justify-center min-h-[80vh] p-8">
+        <h2 className="text-2xl font-bold mb-4">Connect Wallet to Access Dashboard</h2>
+        <p className="text-muted-foreground mb-8 text-center max-w-md">
+          Please connect your wallet to access the AKAR FarmWatch dashboard.
+        </p>
+        <Button 
+          onClick={() => setShowWalletModal(true)}
+          size="lg"
+          className="gap-2"
+        >
+          <Wallet className="h-5 w-5" />
+          Connect Wallet
+        </Button>
+        
+        <WalletConnectModal
+          open={showWalletModal}
+          onOpenChange={setShowWalletModal}
+        />
+      </div>
     );
   }
 

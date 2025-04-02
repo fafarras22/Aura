@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -26,7 +27,9 @@ import {
   Shield, 
   Leaf,
   BarChart,
-  DollarSign
+  DollarSign,
+  Clock,
+  Gift
 } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
