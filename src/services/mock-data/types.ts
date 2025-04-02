@@ -72,3 +72,79 @@ export interface Alert {
   isRead: boolean;
   timestamp: Date | string;
 }
+
+// New types needed for other mock data files
+export interface CCTVCamera {
+  id: string;
+  name: string;
+  location: string;
+  status: 'online' | 'offline';
+  lastMotion: Date;
+  preview: string;
+  imageUrl: string;
+  lastRecording: Date;
+}
+
+export interface ContainerStatus {
+  id: string;
+  name: string;
+  status: 'active' | 'maintenance' | 'inactive';
+  currentTemp: number;
+  targetTemp: number;
+  humidity: number;
+  waterLevel: number;
+  lastHarvest: string;
+  nextMaintenance: string;
+  harvestPerformance: number;
+}
+
+export interface DashboardStat {
+  id: string;
+  title: string;
+  value: number | string;
+  change: number;
+  changeType: 'increase' | 'decrease' | 'stable';
+  icon: string;
+}
+
+export interface Harvest {
+  id: string;
+  cropName: string;
+  containerName: string;
+  harvestDate: string;
+  amount: number;
+  unit: string;
+  status: 'scheduled' | 'harvested' | 'in-progress';
+  notes?: string;
+}
+
+export interface ClimateReading {
+  timestamp: string;
+  temperature: number;
+  humidity: number;
+  co2: number;
+  light: number;
+}
+
+export interface WaterReading {
+  timestamp: string;
+  ph: number;
+  ec: number;
+  tds: number;
+  do: number;
+  level: number;
+  temperature: number;
+}
+
+export interface SensorData {
+  id: string;
+  name: string;
+  value: number;
+  unit: string;
+  status: 'normal' | 'warning' | 'error';
+  category: 'climate' | 'water' | 'energy' | 'environment';
+  lastUpdated: string;
+}
+
+// SensorStatus used in SensorCard component
+export type SensorStatus = 'normal' | 'warning' | 'error';

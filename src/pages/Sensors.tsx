@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,8 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { AlertTriangle, Check, Download, ExternalLink, Filter, Search, Settings, Thermometer, Droplet, Wind, FlaskConical, Zap, Activity } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { getMockSensorData, getMockClimateData, getMockWaterData } from "@/services/mock-data";
+import { getMockSensorData, getMockClimateData, getMockWaterData } from "@/services/mockDataService";
 import { SensorCard } from "@/components/sensors/SensorCard";
+import { SensorStatus } from "@/services/mock-data/types";
 
 const Sensors = () => {
   const [category, setCategory] = useState("all");
@@ -159,7 +159,7 @@ const Sensors = () => {
                       value={sensor.value}
                       unit={sensor.unit}
                       icon={getSensorIcon(sensor.name)}
-                      status={sensor.status}
+                      status={sensor.status as SensorStatus}
                       lastUpdated={sensor.lastUpdated}
                     />
                   ))}
@@ -185,7 +185,7 @@ const Sensors = () => {
                         value={sensor.value}
                         unit={sensor.unit}
                         icon={getSensorIcon(sensor.name)}
-                        status={sensor.status}
+                        status={sensor.status as SensorStatus}
                         lastUpdated={sensor.lastUpdated}
                       />
                     ))
@@ -235,7 +235,7 @@ const Sensors = () => {
                         value={sensor.value}
                         unit={sensor.unit}
                         icon={getSensorIcon(sensor.name)}
-                        status={sensor.status}
+                        status={sensor.status as SensorStatus}
                         lastUpdated={sensor.lastUpdated}
                       />
                     ))
@@ -290,7 +290,7 @@ const Sensors = () => {
                         value={sensor.value}
                         unit={sensor.unit}
                         icon={getSensorIcon(sensor.name)}
-                        status={sensor.status}
+                        status={sensor.status as SensorStatus}
                         lastUpdated={sensor.lastUpdated}
                       />
                     ))
@@ -317,7 +317,7 @@ const Sensors = () => {
                         value={sensor.value}
                         unit={sensor.unit}
                         icon={getSensorIcon(sensor.name)}
-                        status={sensor.status}
+                        status={sensor.status as SensorStatus}
                         lastUpdated={sensor.lastUpdated}
                       />
                     ))

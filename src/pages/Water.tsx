@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,8 +5,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { SensorCard } from "@/components/sensors/SensorCard";
-import { getMockWaterData, getMockSensorData } from "@/services/mock-data";
+import { getMockWaterData, getMockSensorData } from "@/services/mockDataService";
 import { Droplet, FlaskConical, Waves, Thermometer } from "lucide-react";
+import { SensorStatus } from "@/services/mock-data/types";
 
 const Water = () => {
   const [timeRange, setTimeRange] = useState("24h");
@@ -57,7 +57,7 @@ const Water = () => {
                 sensor.name === "Water Temperature" ? <Thermometer className="h-5 w-5" /> :
                 <Waves className="h-5 w-5" />
               }
-              status={sensor.status}
+              status={sensor.status as SensorStatus}
               lastUpdated={sensor.lastUpdated}
             />
           ))}

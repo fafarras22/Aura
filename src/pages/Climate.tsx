@@ -1,20 +1,19 @@
-
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { SensorCard } from "@/components/sensors/SensorCard";
-import { getMockClimateData, getMockSensorData } from "@/services/mock-data";
-import { Thermometer, Droplets, Wind, Zap } from "lucide-react";
+import { getMockClimateData, getMockSensorData } from "@/services/mockDataService";
+import { Thermometer, Droplet, Wind, Sun } from "lucide-react";
+import { SensorStatus } from "@/services/mock-data/types";
 
 const Climate = () => {
   const [timeRange, setTimeRange] = useState("24h");
   const climateData = getMockClimateData(7);
-  const sensorData = getMockSensorData().filter(sensor => sensor.category === 'climate');
   
-  // Format data for charts
-  const chartData = climateData.map(reading => ({
+  // Format chart data
+  const formattedClimateData = climateData.map(reading => ({
     time: new Date(reading.timestamp).toLocaleTimeString(),
     temperature: reading.temperature,
     humidity: reading.humidity,
@@ -42,29 +41,53 @@ const Climate = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {sensorData.map((sensor) => (
-            <SensorCard
-              key={sensor.id}
-              name={sensor.name}
-              value={sensor.value}
-              unit={sensor.unit}
-              icon={
-                sensor.name === "Temperature" ? <Thermometer className="h-5 w-5" /> :
-                sensor.name === "Humidity" ? <Droplets className="h-5 w-5" /> :
-                sensor.name === "CO2 Level" ? <Wind className="h-5 w-5" /> :
-                <Zap className="h-5 w-5" />
-              }
-              status={sensor.status}
-              lastUpdated={sensor.lastUpdated}
-            />
-          ))}
+          <SensorCard 
+            title="Temperature" 
+            value={25.3} 
+            unit="°C" 
+            icon={<Thermometer className="w-5 h-5" />}
+            status={"normal" as SensorStatus}
+            progress={65}
+            minValue={15}
+            maxValue={35}
+          />
+          <SensorCard 
+            title="Humidity" 
+            value={64} 
+            unit="%" 
+            icon={<Droplet className="w-5 h-5" />}
+            status={"normal" as SensorStatus}
+            progress={64}
+            minValue={0}
+            maxValue={100}
+          />
+          <SensorCard 
+            title="CO2 Level" 
+            value={415} 
+            unit="ppm" 
+            icon={<Wind className="w-5 h-5" />}
+            status={"normal" as SensorStatus}
+            progress={41.5}
+            minValue={0}
+            maxValue={1000}
+          />
+          <SensorCard 
+            title="Light Intensity" 
+            value={850} 
+            unit="lux" 
+            icon={<Sun className="w-5 h-5" />}
+            status={"normal" as SensorStatus}
+            progress={85}
+            minValue={0}
+            maxValue={1000}
+          />
         </div>
         
         <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Temperature Trends</CardTitle>
             <CardDescription>
-              Temperature changes over the past {timeRange === "24h" ? "24 hours" : 
+              Temperature readings over the past {timeRange === "24h" ? "24 hours" : 
                 timeRange === "7d" ? "7 days" : 
                 timeRange === "30d" ? "30 days" : "90 days"}
             </CardDescription>
@@ -72,21 +95,21 @@ const Climate = () => {
           <CardContent>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData}>
+                <LineChart data={formattedClimateData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="time" />
-                  <YAxis domain={['auto', 'auto']} />
-                  <Tooltip />
+                  <YAxis domain={[20, 30]} />
+                  <Tooltip formatter={(value) => [`${value}°C`, "Temperature"]} />
                   <Legend />
-                  <Area 
+                  <Line 
                     type="monotone" 
                     dataKey="temperature" 
-                    stroke="#ff7300" 
-                    fill="#ff7300" 
-                    fillOpacity={0.2} 
-                    name="Temperature (°C)" 
+                    stroke="#f97316" 
+                    strokeWidth={2} 
+                    dot={false} 
+                    name="Temperature" 
                   />
-                </AreaChart>
+                </LineChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
@@ -95,25 +118,36 @@ const Climate = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Humidity</CardTitle>
-              <CardDescription>Humidity levels over time</CardDescription>
+              <CardTitle>Humidity & CO2</CardTitle>
+              <CardDescription>Correlation between humidity and CO2 levels</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[250px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData}>
+                  <LineChart data={formattedClimateData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="time" />
-                    <YAxis domain={[40, 90]} />
+                    <YAxis yAxisId="left" domain={[0, 100]} />
+                    <YAxis yAxisId="right" orientation="right" domain={[300, 500]} />
                     <Tooltip />
                     <Legend />
                     <Line 
+                      yAxisId="left"
                       type="monotone" 
                       dataKey="humidity" 
                       stroke="#3b82f6" 
                       strokeWidth={2} 
                       dot={false} 
                       name="Humidity (%)" 
+                    />
+                    <Line 
+                      yAxisId="right"
+                      type="monotone" 
+                      dataKey="co2" 
+                      stroke="#10b981" 
+                      strokeWidth={2} 
+                      dot={false} 
+                      name="CO2 (ppm)" 
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -123,25 +157,25 @@ const Climate = () => {
           
           <Card>
             <CardHeader>
-              <CardTitle>CO2 Levels</CardTitle>
-              <CardDescription>Carbon dioxide concentration</CardDescription>
+              <CardTitle>Light Intensity</CardTitle>
+              <CardDescription>Light levels throughout the day</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[250px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData}>
+                  <LineChart data={formattedClimateData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="time" />
-                    <YAxis domain={[300, 1200]} />
-                    <Tooltip />
+                    <YAxis domain={[0, 1000]} />
+                    <Tooltip formatter={(value) => [`${value} lux`, "Light"]} />
                     <Legend />
                     <Line 
                       type="monotone" 
-                      dataKey="co2" 
-                      stroke="#10b981" 
+                      dataKey="light" 
+                      stroke="#eab308" 
                       strokeWidth={2} 
                       dot={false} 
-                      name="CO2 (ppm)" 
+                      name="Light Intensity" 
                     />
                   </LineChart>
                 </ResponsiveContainer>

@@ -6,25 +6,29 @@ import { LucideIcon } from 'lucide-react';
 
 interface NavLinkProps {
   to: string;
-  label: string;
+  children: React.ReactNode; // Changed from 'label' to 'children'
   icon?: LucideIcon;
   exact?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  isActive?: boolean; // Added to support explicit active state from parent
 }
 
 export const NavLink: React.FC<NavLinkProps> = ({ 
   to, 
-  label, 
+  children, // Changed from 'label' to 'children'
   icon: Icon, 
   exact = false,
   disabled = false,
-  onClick
+  onClick,
+  isActive: explicitIsActive
 }) => {
   const location = useLocation();
-  const isActive = exact 
-    ? location.pathname === to
-    : location.pathname.startsWith(to);
+  const isActive = explicitIsActive !== undefined 
+    ? explicitIsActive
+    : exact 
+      ? location.pathname === to
+      : location.pathname.startsWith(to);
   
   return (
     <Link
@@ -39,7 +43,7 @@ export const NavLink: React.FC<NavLinkProps> = ({
       onClick={onClick}
     >
       {Icon && <Icon className="mr-2 h-4 w-4" />}
-      {label}
+      {children}
     </Link>
   );
 };
