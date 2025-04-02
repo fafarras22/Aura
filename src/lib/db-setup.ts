@@ -1,6 +1,13 @@
 
-import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  createContainersTable,
+  createSalesDataTable, 
+  createProjectsTable, 
+  createTokenInvestmentsTable, 
+  createUsersTable,
+  supabase 
+} from '@/lib/supabase';
 
 // Hook to use in components
 export const useDBSetup = () => {
@@ -43,112 +50,6 @@ export const useDBSetup = () => {
         variant: "destructive",
       });
       return false;
-    }
-  };
-
-  const createContainersTable = async () => {
-    console.log("Checking containers table...");
-    
-    // Check if table exists by trying to fetch a record
-    const { error } = await supabase
-      .from('containers')
-      .select('id')
-      .limit(1);
-      
-    if (error && error.code === '42P01') { // Table doesn't exist
-      console.log("Creating containers table...");
-      
-      // We need to use rpc for creating tables since sql() isn't available
-      const { error: createError } = await supabase.rpc('create_containers_table');
-      
-      if (createError) {
-        console.error("Error creating containers table:", createError);
-        throw new Error(`Failed to create containers table: ${createError.message}`);
-      }
-    }
-  };
-
-  const createSalesDataTable = async () => {
-    console.log("Checking sales_data table...");
-    
-    // Check if table exists by trying to fetch a record
-    const { error } = await supabase
-      .from('sales_data')
-      .select('id')
-      .limit(1);
-      
-    if (error && error.code === '42P01') { // Table doesn't exist
-      console.log("Creating sales_data table...");
-      
-      const { error: createError } = await supabase.rpc('create_sales_data_table');
-      
-      if (createError) {
-        console.error("Error creating sales_data table:", createError);
-        throw new Error(`Failed to create sales_data table: ${createError.message}`);
-      }
-    }
-  };
-
-  const createProjectsTable = async () => {
-    console.log("Checking projects table...");
-    
-    // Check if table exists by trying to fetch a record
-    const { error } = await supabase
-      .from('projects')
-      .select('id')
-      .limit(1);
-      
-    if (error && error.code === '42P01') { // Table doesn't exist
-      console.log("Creating projects table...");
-      
-      const { error: createError } = await supabase.rpc('create_projects_table');
-      
-      if (createError) {
-        console.error("Error creating projects table:", createError);
-        throw new Error(`Failed to create projects table: ${createError.message}`);
-      }
-    }
-  };
-
-  const createTokenInvestmentsTable = async () => {
-    console.log("Checking token_investments table...");
-    
-    // Check if table exists by trying to fetch a record
-    const { error } = await supabase
-      .from('token_investments')
-      .select('id')
-      .limit(1);
-      
-    if (error && error.code === '42P01') { // Table doesn't exist
-      console.log("Creating token_investments table...");
-      
-      const { error: createError } = await supabase.rpc('create_token_investments_table');
-      
-      if (createError) {
-        console.error("Error creating token_investments table:", createError);
-        throw new Error(`Failed to create token_investments table: ${createError.message}`);
-      }
-    }
-  };
-
-  const createUsersTable = async () => {
-    console.log("Checking users table...");
-    
-    // Check if table exists by trying to fetch a record
-    const { error } = await supabase
-      .from('users')
-      .select('id')
-      .limit(1);
-      
-    if (error && error.code === '42P01') { // Table doesn't exist
-      console.log("Creating users table...");
-      
-      const { error: createError } = await supabase.rpc('create_users_table');
-      
-      if (createError) {
-        console.error("Error creating users table:", createError);
-        throw new Error(`Failed to create users table: ${createError.message}`);
-      }
     }
   };
 
