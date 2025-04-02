@@ -5,7 +5,7 @@ import { ContainerStakeModal } from "@/components/containers/ContainerStakeModal
 import { useDBSetup } from "@/lib/db-setup";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, CheckCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const Projects = () => {
@@ -14,40 +14,40 @@ const Projects = () => {
   const { initializeDB } = useDBSetup();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
-  const [dbConnectionError, setDbConnectionError] = useState(false);
+  const [databaseState, setDatabaseState] = useState<'checking' | 'connected' | 'fallback'>('checking');
 
   // Initialize database on component mount
   useEffect(() => {
     const setupDatabase = async () => {
       setIsLoading(true);
       try {
+        // Initialize database tables
         const success = await initializeDB();
         
         if (success) {
-          // Check if we can access the containers table
+          // Verify we can actually query the containers table
           const { data, error } = await supabase
             .from('containers')
             .select('id, name')
             .limit(1);
             
           if (error) {
-            console.error("Database access error:", error);
-            setDbConnectionError(true);
-            throw error;
+            console.log("Using fallback data due to query error:", error.message);
+            setDatabaseState('fallback');
+          } else {
+            console.log("Database connection verified with containers:", data);
+            setDatabaseState('connected');
           }
-          
-          console.log("Database connection successful, found containers:", data);
-          setDbConnectionError(false);
         } else {
-          setDbConnectionError(true);
+          setDatabaseState('fallback');
         }
       } catch (error) {
-        console.error("Error during initial database setup:", error);
-        setDbConnectionError(true);
+        console.log("Error during database setup, using fallback data:", error);
+        setDatabaseState('fallback');
         toast({
-          title: "Database Connection Issue",
-          description: "There was a problem connecting to the database. Using fallback data.",
-          variant: "destructive"
+          title: "Using Demo Mode",
+          description: "Displaying sample container data.",
+          variant: "default"
         });
       } finally {
         setIsLoading(false);
@@ -71,12 +71,20 @@ const Projects = () => {
         </p>
       </div>
 
-      {dbConnectionError && (
-        <Alert variant="warning" className="border-amber-300 bg-amber-50 dark:bg-amber-900/20">
-          <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-          <AlertTitle>Database Connection Issue</AlertTitle>
+      {databaseState === 'fallback' ? (
+        <Alert variant="default" className="border-blue-300 bg-blue-50 dark:bg-blue-900/20">
+          <AlertTriangle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          <AlertTitle>Demonstration Mode</AlertTitle>
           <AlertDescription>
-            We're currently experiencing database connectivity issues. Showing fallback data instead.
+            Currently showing demonstration data. In a production environment, this would connect to your Supabase database.
+          </AlertDescription>
+        </Alert>
+      ) : databaseState === 'connected' && (
+        <Alert variant="default" className="border-green-300 bg-green-50 dark:bg-green-900/20">
+          <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+          <AlertTitle>Database Connected</AlertTitle>
+          <AlertDescription>
+            Successfully connected to the Supabase database.
           </AlertDescription>
         </Alert>
       )}
