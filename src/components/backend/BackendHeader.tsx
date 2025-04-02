@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from 'react-router-dom';
 import { Database, FileText } from 'lucide-react';
+import { Logo } from '@/components/logo/Logo';
 
 export const BackendHeader: React.FC = () => {
   const { isDeveloperMode, currentUser } = useDeveloperMode();
@@ -20,7 +21,10 @@ export const BackendHeader: React.FC = () => {
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">AKAR Backend Dashboard</h1>
+          <div className="flex items-center gap-3 mb-2">
+            <Logo size="md" />
+            <h1 className="text-3xl font-bold tracking-tight">Backend Dashboard</h1>
+          </div>
           <p className="text-muted-foreground mt-1">
             Manage all data, projections, and integrations
           </p>

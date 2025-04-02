@@ -1,10 +1,11 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Languages } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Logo } from "@/components/logo/Logo";
 
 interface HomeHeaderProps {
   language: 'en' | 'id' | 'ko';
@@ -13,27 +14,18 @@ interface HomeHeaderProps {
 
 export const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
   const navigate = useNavigate();
-  const [logoError, setLogoError] = useState(false);
   
   const handleDashboardClick = () => {
     navigate('/login');
   };
   
-  const logoPath = logoError 
-    ? "/placeholder.svg" 
-    : "/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png";
-  
   return (
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30 backdrop-blur-md bg-white/90 dark:bg-gray-950/90">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <img 
-            src={logoPath} 
-            alt="AKAR Logo" 
-            className="h-10"
-            onError={() => setLogoError(true)}
-          />
-        </div>
+        <Link to="/">
+          <Logo size="lg" showText={true} />
+        </Link>
+        
         <div className="flex items-center gap-6">
           <nav className="hidden md:flex items-center gap-6">
             <a href="#about" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">

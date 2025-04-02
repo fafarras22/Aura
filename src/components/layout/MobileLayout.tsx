@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Menu, X, Home, Leaf, Droplet, Wind, Bell, Settings, Layers, ChevronRight, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BottomHeader } from './BottomHeader';
 import { Footer } from './Footer';
 import { FloatingContactButton } from './FloatingContactButton';
+import { Logo } from '@/components/logo/Logo';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -65,11 +65,9 @@ export function MobileLayout({ children }: { children: React.ReactNode }) {
           >
             {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </Button>
-          <div className="h-7 w-7 rounded-md overflow-hidden bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
-            <img src="/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png" alt="AKAR Logo" className="h-6" />
-          </div>
-          <span className="font-medium text-sm">AKAR</span>
+          <Logo size="sm" showText={true} />
         </div>
+        
         <div className="flex items-center gap-1">
           <ThemeToggle />
           <Button 

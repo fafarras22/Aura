@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import { useWallet } from "@/context/WalletContext";
 import { useDBSetup } from "@/lib/db-setup";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
+import { Logo } from "@/components/logo/Logo";
 import { 
   Wallet, 
   Languages, 
@@ -159,14 +159,7 @@ const Home = () => {
       {/* Header/Navigation */}
       <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30 backdrop-blur-md bg-white/90 dark:bg-gray-950/90">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <img 
-              src="/lovable-uploads/c5b2d24e-f106-4e89-af2d-efaced4463bb.png" 
-              alt="AKAR Logo" 
-              className="h-10"
-            />
-            <span className="font-bold text-xl">AKAR</span>
-          </div>
+          <Logo size="lg" showText={true} />
           
           <div className="flex items-center gap-4">
             <nav className="hidden md:flex items-center gap-6">
@@ -631,13 +624,8 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <img 
-                  src="/lovable-uploads/c5b2d24e-f106-4e89-af2d-efaced4463bb.png" 
-                  alt="AKAR Logo" 
-                  className="h-8"
-                />
-                <span className="font-bold text-xl">AKAR</span>
+              <div className="mb-4">
+                <Logo size="md" showText={true} />
               </div>
               
               <p className="text-muted-foreground">
