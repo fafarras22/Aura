@@ -1,68 +1,57 @@
-
 import { ContainerData, User } from './types';
 import { toast } from "@/components/ui/use-toast";
 
-// Function to get container data based on role and containerId
+// Function to toggle container status (active/inactive)
+export const toggleContainerStatus = (
+  containers: ContainerData[],
+  containerId: string,
+  active: boolean
+): ContainerData[] => {
+  return containers.map(container => {
+    if (container.id === containerId) {
+      return {
+        ...container,
+        status: active ? 'active' : 'maintenance'
+      };
+    }
+    return container;
+  });
+};
+
+// Function to send payment reminder notification
+export const sendPaymentReminderNotification = (containerId: string): void => {
+  // In a real app, this would send an actual notification or email
+  console.log(`Payment reminder sent for container ${containerId}`);
+  
+  toast({
+    title: "Reminder Sent",
+    description: `Payment reminder has been sent for container ${containerId}`,
+    variant: "default"
+  });
+};
+
+// Function to get filtered container data
 export const getFilteredContainerData = (
   containers: ContainerData[],
   isDeveloperMode: boolean,
   currentUser: User | null,
   containerId?: string
 ): ContainerData[] => {
-  // Admin or developer mode can see all containers
-  if (isDeveloperMode || (currentUser && currentUser.role === 'admin')) {
+  // If in developer mode, show all containers
+  if (isDeveloperMode) {
+    // If a specific containerId is provided, filter by it
+    if (containerId) {
+      return containers.filter(container => container.id === containerId);
+    }
+    // Otherwise return all containers
     return containers;
   }
   
-  // Client can only see their own container
-  if (currentUser && currentUser.role === 'client') {
-    return containers.filter(container => 
-      container.id === (containerId || currentUser.containerId)
-    );
+  // For regular users, only show containers they have access to
+  if (currentUser?.role === 'client' && currentUser?.containerId) {
+    return containers.filter(container => container.id === currentUser.containerId);
   }
   
-  // If no user is logged in, return empty array
+  // Fallback: empty array if no user or no matches
   return [];
 };
-
-// Function to toggle container operation status (renamed to toggleContainerStatus for clearer naming)
-export const toggleContainerStatus = (
-  containers: ContainerData[],
-  containerId: string, 
-  active: boolean
-): ContainerData[] => {
-  // Update container status
-  const updatedContainers = containers.map(container => {
-    if (container.id === containerId) {
-      return {
-        ...container,
-        status: active ? 'active' as const : 'inactive' as const
-      };
-    }
-    return container;
-  });
-  
-  toast({
-    title: `Container ${active ? 'Activated' : 'Deactivated'}`,
-    description: `Container ${containerId} has been ${active ? 'activated' : 'deactivated'}.`,
-    variant: active ? "default" : "destructive"
-  });
-
-  return updatedContainers;
-};
-
-// Function to send payment reminder to client (renamed to sendPaymentReminderNotification)
-export const sendPaymentReminderNotification = (
-  containerId: string
-): void => {
-  // Find container (would normally look up in database)
-  toast({
-    title: "Payment Reminder Sent",
-    description: `Payment reminder sent to owner of container ${containerId}.`,
-    variant: "default"
-  });
-};
-
-// Original function names maintained for compatibility
-export const toggleContainer = toggleContainerStatus;
-export const sendPaymentReminder = sendPaymentReminderNotification;

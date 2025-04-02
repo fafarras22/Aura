@@ -1,67 +1,111 @@
 
-// Admin and user credentials - in a real app, this would be stored securely on the server
-export const ADMIN_PASSWORD = "admin@akar2025"; 
+import { User, ContainerData } from './types';
 
-export const USERS = [
-  { id: "admin-1", name: "Muhammad Farras", role: "admin" as const },
-  { id: "client-1", name: "Guest", role: "client" as const, containerId: "CONT-001" }
-];
+// Mock admin password - in a real application, this would be securely stored
+export const ADMIN_PASSWORD = 'admin123';
 
-// Mock container data - in a real app, this would come from a database
-export const CONTAINERS = [
-  { 
-    id: "CONT-001", 
-    name: "Jakarta Farm Container A", 
-    location: "Jakarta", 
-    status: "active" as const, 
-    owner: "Guest",
-    lastPayment: new Date(2025, 2, 15),
-    nextPaymentDue: new Date(2025, 3, 15)
+// Mock users
+export const USERS: User[] = [
+  {
+    id: 'admin-1',
+    name: 'Administrator',
+    role: 'admin',
+    avatar: '/lovable-uploads/ff02fd5a-28c4-466b-99d9-ea6213beb2c5.png'
   },
-  { 
-    id: "CONT-002", 
-    name: "Surabaya Farm Container B", 
-    location: "Surabaya", 
-    status: "active" as const, 
-    owner: "Company B",
-    lastPayment: new Date(2025, 2, 10),
-    nextPaymentDue: new Date(2025, 3, 10)
+  {
+    id: 'user-1',
+    name: 'Muhammad Farras',
+    role: 'client',
+    containerId: 'container-1',
+    avatar: '/lovable-uploads/ae9d74be-8813-4c4b-b946-cf1190243702.png'
   },
-  { 
-    id: "CONT-003", 
-    name: "Bandung Farm Container C", 
-    location: "Bandung", 
-    status: "maintenance" as const, 
-    owner: "Company C",
-    lastPayment: new Date(2025, 1, 25),
-    nextPaymentDue: new Date(2025, 2, 25)
+  {
+    id: 'user-2',
+    name: 'Guest',
+    role: 'client',
+    containerId: 'container-2',
+    avatar: '/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png'
   }
 ];
 
-// User credentials - in a real app, these would be hashed and stored securely
-export const USER_PASSWORDS: Record<string, string> = {
-  "Muhammad Farras": "admin123",
-  "Guest": "guest123"
+// Mock user passwords - in a real application, passwords would be hashed
+export const USER_PASSWORDS: { [key: string]: string } = {
+  'Administrator': 'admin123',
+  'Muhammad Farras': 'admin123',
+  'Guest': 'guest123'
 };
 
-// Function to add a new user (for sign-up functionality)
-export const addNewUser = (name: string, password: string) => {
-  // Generate a new user ID
-  const userId = `client-${USERS.length + 1}`;
-  
-  // Create the new user object with containerId (assign a default one for demo)
-  const newUser = {
-    id: userId,
-    name,
-    role: "client" as const,
-    containerId: `CONT-${USERS.length + 1}`, // Auto-assign a container ID
+// Mock containers data
+export const CONTAINERS: ContainerData[] = [
+  {
+    id: 'container-1',
+    name: 'Jakarta Farm Container',
+    location: 'Jakarta, Indonesia',
+    status: 'active',
+    sensors: {
+      temperature: 25.3,
+      humidity: 64,
+      co2: 415,
+      ph: 6.2
+    },
+    currentCapacity: 85,
+    maxCapacity: 100,
+    lastHarvest: '2023-10-15',
+    nextHarvest: '2023-11-05',
+    owner: 'PT Akar Indonesia',
+    client: 'Superindo Market'
+  },
+  {
+    id: 'container-2',
+    name: 'Bandung Farm Container',
+    location: 'Bandung, Indonesia',
+    status: 'maintenance',
+    sensors: {
+      temperature: 24.8,
+      humidity: 60,
+      co2: 430,
+      ph: 6.5
+    },
+    currentCapacity: 65,
+    maxCapacity: 90,
+    lastHarvest: '2023-10-10',
+    nextHarvest: '2023-11-10',
+    owner: 'PT Akar Indonesia',
+    client: 'Hypermart'
+  },
+  {
+    id: 'container-3',
+    name: 'Surabaya Farm Container',
+    location: 'Surabaya, Indonesia',
+    status: 'active',
+    sensors: {
+      temperature: 26.1,
+      humidity: 62,
+      co2: 420,
+      ph: 6.3
+    },
+    currentCapacity: 90,
+    maxCapacity: 100,
+    lastHarvest: '2023-10-20',
+    nextHarvest: '2023-11-15',
+    owner: 'PT Akar Indonesia',
+    client: 'LotteMart'
+  }
+];
+
+// Function to add a new user
+export const addNewUser = (username: string, password: string): User => {
+  const newUser: User = {
+    id: `user-${Date.now()}`,
+    name: username,
+    role: 'client',
+    containerId: 'container-1',
+    avatar: '/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png'
   };
   
-  // Add the user to the USERS array
+  // In a real app, you would save this to a database
   USERS.push(newUser);
-  
-  // Add the password to the USER_PASSWORDS object
-  USER_PASSWORDS[name] = password;
+  USER_PASSWORDS[username] = password;
   
   return newUser;
 };
