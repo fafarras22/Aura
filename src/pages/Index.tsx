@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDBSetup } from "@/lib/db-setup";
 import { useToast } from "@/hooks/use-toast";
+import { SEOMetadata } from "@/components/shared/SEOMetadata";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -49,17 +50,30 @@ const Index = () => {
   // Show a loading spinner while initializing
   if (isInitializing) {
     return (
-      <div className="flex items-center justify-center h-screen bg-white">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold">Initializing AKAR Platform...</h2>
-          <p className="text-muted-foreground">Setting up your database connection</p>
+      <>
+        <SEOMetadata 
+          title="AKAR Farm - Tokenized Agriculture Investment Platform"
+          description="Invest in sustainable farming projects with blockchain technology. AKAR Farm connects investors with agricultural opportunities through tokenization."
+          keywords="agriculture investment, farm tokens, blockchain agriculture, sustainable farming, AKR token"
+        />
+        <div className="flex items-center justify-center h-screen bg-white">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+            <h2 className="text-xl font-semibold">Initializing AKAR Platform...</h2>
+            <p className="text-muted-foreground">Setting up your database connection</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
-  return null;
+  return (
+    <SEOMetadata 
+      title="AKAR Farm - Tokenized Agriculture Investment Platform"
+      description="Invest in sustainable farming projects with blockchain technology. AKAR Farm connects investors with agricultural opportunities through tokenization."
+      keywords="agriculture investment, farm tokens, blockchain agriculture, sustainable farming, AKR token"
+    />
+  );
 };
 
 export default Index;

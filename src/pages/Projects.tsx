@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { ContainerGrid } from "@/components/containers/ContainerGrid";
 import { ContainerStakeModal } from "@/components/containers/ContainerStakeModal";
@@ -8,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { AlertTriangle, CheckCircle, Database } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
+import { SEOMetadata } from "@/components/shared/SEOMetadata";
 
 const Projects = () => {
   const [selectedContainerId, setSelectedContainerId] = useState<string | null>(null);
@@ -77,50 +77,58 @@ const Projects = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Farm Projects</h1>
-        <p className="text-muted-foreground">
-          Invest in container farming projects with $AKR tokens
-        </p>
-      </div>
-
-      {databaseState === 'fallback' && (
-        <Alert variant="default" className="border-blue-300 bg-blue-50 dark:bg-blue-900/20">
-          <Database className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-          <AlertTitle>Demonstration Mode</AlertTitle>
-          <AlertDescription>
-            Currently showing demonstration data. {isDeveloperMode ? 
-              "You are in developer mode with access to all container data." : 
-              "Connect to Supabase to access live data."}
-          </AlertDescription>
-        </Alert>
-      )}
-      
-      {databaseState === 'connected' && (
-        <Alert variant="default" className="border-green-300 bg-green-50 dark:bg-green-900/20">
-          <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
-          <AlertTitle>Database Connected</AlertTitle>
-          <AlertDescription>
-            Successfully connected to the Supabase database.
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      ) : (
-        <ContainerGrid onSelectContainer={handleContainerSelect} />
-      )}
-
-      <ContainerStakeModal
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        containerId={selectedContainerId}
+    <>
+      <SEOMetadata 
+        title="Farm Projects | AKAR Farm Investment Platform"
+        description="Explore and invest in our curated collection of sustainable farming projects. Each container project offers unique investment opportunities."
+        keywords="farm projects, agriculture investment, container farming, AKR token, sustainable agriculture"
       />
-    </div>
+      
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Farm Projects</h1>
+          <p className="text-muted-foreground">
+            Invest in container farming projects with $AKR tokens
+          </p>
+        </div>
+
+        {databaseState === 'fallback' && (
+          <Alert variant="default" className="border-blue-300 bg-blue-50 dark:bg-blue-900/20">
+            <Database className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <AlertTitle>Demonstration Mode</AlertTitle>
+            <AlertDescription>
+              Currently showing demonstration data. {isDeveloperMode ? 
+                "You are in developer mode with access to all container data." : 
+                "Connect to Supabase to access live data."}
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        {databaseState === 'connected' && (
+          <Alert variant="default" className="border-green-300 bg-green-50 dark:bg-green-900/20">
+            <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+            <AlertTitle>Database Connected</AlertTitle>
+            <AlertDescription>
+              Successfully connected to the Supabase database.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          <ContainerGrid onSelectContainer={handleContainerSelect} />
+        )}
+
+        <ContainerStakeModal
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          containerId={selectedContainerId}
+        />
+      </div>
+    </>
   );
 };
 
