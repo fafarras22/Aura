@@ -23,38 +23,30 @@ const Projects = () => {
     const setupDatabase = async () => {
       setIsLoading(true);
       try {
-        // Initialize database tables
+        // Try to connect to the database and check if tables exist
+        const { data, error } = await supabase.from('dummy_check').select('*').limit(1);
+        
+        if (error) {
+          console.log("Database connection error, using fallback data:", error.message);
+          setDatabaseState('fallback');
+          toast({
+            title: "Using Demonstration Data",
+            description: "Could not connect to database. Showing sample container data instead.",
+            variant: "default"
+          });
+          setIsLoading(false);
+          return;
+        }
+        
+        // If we got here, try to initialize the database
         const success = await initializeDB();
         
         if (success) {
-          try {
-            // Verify we can actually query the containers table
-            const { data, error } = await supabase
-              .from('containers')
-              .select('id, name')
-              .limit(1);
-              
-            if (error) {
-              console.log("Using fallback data due to query error:", error.message);
-              setDatabaseState('fallback');
-              toast({
-                title: "Using Demonstration Data",
-                description: "Could not connect to database. Showing sample container data instead.",
-                variant: "default"
-              });
-            } else {
-              console.log("Database connection verified with containers:", data);
-              setDatabaseState('connected');
-            }
-          } catch (queryError) {
-            console.log("Error querying containers table:", queryError);
-            setDatabaseState('fallback');
-            toast({
-              title: "Using Demonstration Data",
-              description: "Connection to database tables failed. Showing sample container data.",
-              variant: "default"
-            });
-          }
+          setDatabaseState('connected');
+          toast({
+            title: "Connected to Database",
+            description: "Successfully connected to the database.",
+          });
         } else {
           setDatabaseState('fallback');
           toast({
@@ -93,7 +85,7 @@ const Projects = () => {
         </p>
       </div>
 
-      {databaseState === 'fallback' ? (
+      {databaseState === 'fallback' && (
         <Alert variant="default" className="border-blue-300 bg-blue-50 dark:bg-blue-900/20">
           <Database className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           <AlertTitle>Demonstration Mode</AlertTitle>
@@ -103,7 +95,9 @@ const Projects = () => {
               "Connect to Supabase to access live data."}
           </AlertDescription>
         </Alert>
-      ) : databaseState === 'connected' && (
+      )}
+      
+      {databaseState === 'connected' && (
         <Alert variant="default" className="border-green-300 bg-green-50 dark:bg-green-900/20">
           <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
           <AlertTitle>Database Connected</AlertTitle>
