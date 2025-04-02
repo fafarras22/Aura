@@ -53,7 +53,8 @@ export const CONTAINERS: ContainerData[] = [
     lastHarvest: '2023-10-15',
     nextHarvest: '2023-11-05',
     owner: 'PT Akar Indonesia',
-    client: 'Superindo Market'
+    client: 'Superindo Market',
+    nextPaymentDue: '2023-12-15'
   },
   {
     id: 'container-2',
@@ -71,7 +72,8 @@ export const CONTAINERS: ContainerData[] = [
     lastHarvest: '2023-10-10',
     nextHarvest: '2023-11-10',
     owner: 'PT Akar Indonesia',
-    client: 'Hypermart'
+    client: 'Hypermart',
+    nextPaymentDue: '2023-12-10'
   },
   {
     id: 'container-3',
@@ -89,7 +91,8 @@ export const CONTAINERS: ContainerData[] = [
     lastHarvest: '2023-10-20',
     nextHarvest: '2023-11-15',
     owner: 'PT Akar Indonesia',
-    client: 'LotteMart'
+    client: 'LotteMart',
+    nextPaymentDue: '2023-12-20'
   }
 ];
 

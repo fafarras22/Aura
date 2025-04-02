@@ -24,6 +24,7 @@ export interface ContainerData {
   nextHarvest?: string;
   owner?: string;
   client?: string;
+  nextPaymentDue?: string;
 }
 
 export interface SuspiciousActivity {

@@ -4,9 +4,10 @@ import { ContainerGrid } from "@/components/containers/ContainerGrid";
 import { ContainerStakeModal } from "@/components/containers/ContainerStakeModal";
 import { useDBSetup } from "@/lib/db-setup";
 import { supabase } from "@/lib/supabase";
-import { useToast } from "@/hooks/use-toast";
-import { AlertTriangle, CheckCircle } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+import { AlertTriangle, CheckCircle, Database } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useDeveloperMode } from "@/context/DeveloperModeContext";
 
 const Projects = () => {
   const [selectedContainerId, setSelectedContainerId] = useState<string | null>(null);
@@ -15,6 +16,7 @@ const Projects = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [databaseState, setDatabaseState] = useState<'checking' | 'connected' | 'fallback'>('checking');
+  const { isDeveloperMode } = useDeveloperMode();
 
   // Initialize database on component mount
   useEffect(() => {
@@ -25,21 +27,41 @@ const Projects = () => {
         const success = await initializeDB();
         
         if (success) {
-          // Verify we can actually query the containers table
-          const { data, error } = await supabase
-            .from('containers')
-            .select('id, name')
-            .limit(1);
-            
-          if (error) {
-            console.log("Using fallback data due to query error:", error.message);
+          try {
+            // Verify we can actually query the containers table
+            const { data, error } = await supabase
+              .from('containers')
+              .select('id, name')
+              .limit(1);
+              
+            if (error) {
+              console.log("Using fallback data due to query error:", error.message);
+              setDatabaseState('fallback');
+              toast({
+                title: "Using Demonstration Data",
+                description: "Could not connect to database. Showing sample container data instead.",
+                variant: "default"
+              });
+            } else {
+              console.log("Database connection verified with containers:", data);
+              setDatabaseState('connected');
+            }
+          } catch (queryError) {
+            console.log("Error querying containers table:", queryError);
             setDatabaseState('fallback');
-          } else {
-            console.log("Database connection verified with containers:", data);
-            setDatabaseState('connected');
+            toast({
+              title: "Using Demonstration Data",
+              description: "Connection to database tables failed. Showing sample container data.",
+              variant: "default"
+            });
           }
         } else {
           setDatabaseState('fallback');
+          toast({
+            title: "Using Demonstration Data",
+            description: "Database initialization failed. Showing sample container data.",
+            variant: "default"
+          });
         }
       } catch (error) {
         console.log("Error during database setup, using fallback data:", error);
@@ -73,10 +95,12 @@ const Projects = () => {
 
       {databaseState === 'fallback' ? (
         <Alert variant="default" className="border-blue-300 bg-blue-50 dark:bg-blue-900/20">
-          <AlertTriangle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          <Database className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           <AlertTitle>Demonstration Mode</AlertTitle>
           <AlertDescription>
-            Currently showing demonstration data. In a production environment, this would connect to your Supabase database.
+            Currently showing demonstration data. {isDeveloperMode ? 
+              "You are in developer mode with access to all container data." : 
+              "Connect to Supabase to access live data."}
           </AlertDescription>
         </Alert>
       ) : databaseState === 'connected' && (
