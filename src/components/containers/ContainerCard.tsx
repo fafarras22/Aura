@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -42,7 +41,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onActio
       case 'ico': return 'ICO';
       case 'upcoming': return 'UPCOMING';
       case 'completed': return 'COMPLETED';
-      default: return container.status.toUpperCase();
+      default: return container.status.toUpperCase(); // This is causing the TypeScript error since 'default' should never be reached with the defined types
     }
   };
 

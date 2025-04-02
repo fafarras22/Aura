@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Thermometer, Droplet, Activity, LineChart, Plant, Clock, Users, CoinsIcon } from "lucide-react";
+import { Thermometer, Droplet, Activity, LineChart, Flower2, Clock, Users, CoinsIcon } from "lucide-react";
 import { ContainerProject } from './ContainerCard';
 import { ProjectStats } from '@/services/mock-data/containerProjects';
 
@@ -174,7 +173,7 @@ export const ContainerDetailsCard: React.FC<ContainerDetailsCardProps> = ({
                   
                   <div className="bg-muted p-3 rounded-md">
                     <div className="flex items-center mb-2">
-                      <Plant className="w-5 h-5 mr-2 text-green-500" />
+                      <Flower2 className="w-5 h-5 mr-2 text-green-500" />
                       <div className="font-medium">Light Hours</div>
                     </div>
                     <div className="text-lg ml-7">{details.climateInfo.lightHours} hours daily</div>
