@@ -81,3 +81,53 @@ export const getMockHarvestData = (harvestId?: string) => {
     }
   };
 };
+
+// This function returns all harvest data for the page
+export const getMockHarvestData2 = () => {
+  return [
+    {
+      id: "harvest-1",
+      cropType: "Premium Lettuce",
+      containerName: "Container A",
+      harvestDate: "2023-09-28",
+      weight: 125,
+      quality: 98,
+      status: "completed",
+      batchNumber: "LT-2309-01",
+      assignedTo: "John Smith"
+    },
+    {
+      id: "harvest-2",
+      cropType: "Cherry Tomatoes",
+      containerName: "Container B",
+      harvestDate: "2023-09-25",
+      weight: 80,
+      quality: 95,
+      status: "completed",
+      batchNumber: "CT-2309-02",
+      assignedTo: "Maria Rodriguez"
+    },
+    {
+      id: "harvest-3",
+      cropType: "Baby Spinach",
+      containerName: "Container C",
+      harvestDate: "2023-10-02",
+      weight: 90,
+      quality: 97,
+      status: "scheduled",
+      batchNumber: "BS-2310-01",
+      assignedTo: "David Wong"
+    },
+    {
+      id: "harvest-4",
+      cropType: "Kale",
+      containerName: "Container A",
+      harvestDate: "2023-10-05",
+      weight: 110,
+      quality: 96,
+      status: "scheduled",
+      batchNumber: "KL-2310-02",
+      assignedTo: "Sarah Johnson"
+    }
+  ];
+};

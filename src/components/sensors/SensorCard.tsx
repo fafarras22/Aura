@@ -12,6 +12,9 @@ interface SensorCardProps {
   icon: ReactNode;
   status: SensorStatus;
   lastUpdated?: string;
+  progress?: number;
+  minValue?: number;
+  maxValue?: number;
 }
 
 export function SensorCard({
@@ -21,6 +24,9 @@ export function SensorCard({
   icon,
   status,
   lastUpdated,
+  progress,
+  minValue,
+  maxValue,
 }: SensorCardProps) {
   const statusColors = {
     normal: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
@@ -42,6 +48,23 @@ export function SensorCard({
           <div className="text-xl text-gray-500 dark:text-gray-400">{unit}</div>
           <div className="text-akar-green p-2 rounded-full bg-akar-lightgreen/20 dark:bg-green-900/30">{icon}</div>
         </div>
+        
+        {progress !== undefined && progress !== null && (
+          <div className="space-y-1">
+            <div className="bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
+              <div 
+                className={`h-full ${status === 'normal' ? 'bg-green-500' : status === 'warning' ? 'bg-yellow-500' : 'bg-red-500'}`}
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            {minValue !== undefined && maxValue !== undefined && (
+              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                <span>{minValue}{unit}</span>
+                <span>{maxValue}{unit}</span>
+              </div>
+            )}
+          </div>
+        )}
         
         {lastUpdated && (
           <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">

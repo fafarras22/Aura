@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export type SensorStatus = 'normal' | 'warning' | 'error';
 
 export interface SensorCardProps {
-  title: string;
+  name: string; // Changed from title to name for consistency
   value: number | string;
   unit: string;
   icon: ReactNode;
@@ -20,7 +20,7 @@ export interface SensorCardProps {
 }
 
 export function SensorCard({
-  title,
+  name, // Changed from title to name
   value,
   unit,
   icon,
@@ -45,7 +45,7 @@ export function SensorCard({
   return (
     <Card className={cardClass}>
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle className="text-md font-medium">{title}</CardTitle>
+        <CardTitle className="text-md font-medium">{name}</CardTitle>
         <Badge variant="outline" className={statusColors[status]}>
           {status === 'normal' ? 'Normal' : status === 'warning' ? 'Warning' : 'Critical'}
         </Badge>

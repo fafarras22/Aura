@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,7 +43,7 @@ const Climate = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <SensorCard 
-            title="Temperature" 
+            name="Temperature" 
             value={25.3} 
             unit="°C" 
             icon={<Thermometer className="w-5 h-5" />}
@@ -52,7 +53,7 @@ const Climate = () => {
             maxValue={35}
           />
           <SensorCard 
-            title="Humidity" 
+            name="Humidity" 
             value={64} 
             unit="%" 
             icon={<Droplet className="w-5 h-5" />}
@@ -62,7 +63,7 @@ const Climate = () => {
             maxValue={100}
           />
           <SensorCard 
-            title="CO2 Level" 
+            name="CO2 Level" 
             value={415} 
             unit="ppm" 
             icon={<Wind className="w-5 h-5" />}
@@ -72,7 +73,7 @@ const Climate = () => {
             maxValue={1000}
           />
           <SensorCard 
-            title="Light Intensity" 
+            name="Light Intensity" 
             value={850} 
             unit="lux" 
             icon={<Sun className="w-5 h-5" />}

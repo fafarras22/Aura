@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 type SensorStatus = "normal" | "warning" | "error";
 
 interface AppleSensorCardProps {
-  title: string;
+  name: string; // Changed from title to name
   value: number;
   unit: string;
   icon: React.ReactNode;
@@ -19,7 +19,7 @@ interface AppleSensorCardProps {
 }
 
 export function AppleSensorCard({
-  title,
+  name, // Changed from title to name
   value,
   unit,
   icon,
@@ -68,7 +68,7 @@ export function AppleSensorCard({
             <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-2">
               {icon}
             </div>
-            <h3 className="font-medium text-sm">{title}</h3>
+            <h3 className="font-medium text-sm">{name}</h3>
           </div>
           <div
             className={cn(

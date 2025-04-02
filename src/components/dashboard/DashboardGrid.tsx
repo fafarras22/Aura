@@ -43,7 +43,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <SensorCard 
-              title="Temperature" 
+              name="Temperature" 
               value={25.3} 
               unit="°C" 
               icon={<Thermometer className="w-5 h-5" />}
@@ -53,7 +53,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
               maxValue={35}
             />
             <SensorCard 
-              title="Humidity" 
+              name="Humidity" 
               value={64} 
               unit="%" 
               icon={<Droplet className="w-5 h-5" />}
@@ -63,7 +63,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
               maxValue={100}
             />
             <SensorCard 
-              title="CO2 Level" 
+              name="CO2 Level" 
               value={415} 
               unit="ppm" 
               icon={<Wind className="w-5 h-5" />}
@@ -73,7 +73,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
               maxValue={1000}
             />
             <SensorCard 
-              title="Water pH" 
+              name="Water pH" 
               value={6.2} 
               unit="pH" 
               icon={<Activity className="w-5 h-5" />}
@@ -108,4 +108,4 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
       />
     </div>
   );
-};
+}

@@ -8,12 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from "recharts";
 import { Calendar, Filter, Plus, SearchIcon, SlidersHorizontal } from "lucide-react";
-import { getMockHarvestData } from "@/services/mock-data";
+import { getMockHarvestData2 } from "@/services/mock-data/harvests";
 
 const Harvest = () => {
   const [view, setView] = useState("active");
   const [searchTerm, setSearchTerm] = useState("");
-  const harvestData = getMockHarvestData();
+  const harvestData = getMockHarvestData2();
   
   const filteredHarvests = harvestData.filter(harvest => 
     harvest.containerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
