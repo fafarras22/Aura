@@ -2,54 +2,48 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getMockHarvests } from "@/services/mock-data";
-import { Search, Calendar, Clock, Leaf, ArrowDown, ArrowUp, Filter } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from "recharts";
+import { Calendar, Filter, Plus, SearchIcon, SlidersHorizontal } from "lucide-react";
+import { getMockHarvestData } from "@/services/mock-data";
 
 const Harvest = () => {
-  const [view, setView] = useState("upcoming");
+  const [view, setView] = useState("active");
   const [searchTerm, setSearchTerm] = useState("");
-  const harvests = getMockHarvests();
-
-  // Filter harvests based on view and search term
-  const filteredHarvests = harvests.filter(harvest => 
-    (view === "upcoming" && (harvest.status === "growing" || harvest.status === "ready")) || 
-    (view === "completed" && harvest.status === "harvested") ||
-    view === "all"
-  ).filter(harvest => 
-    harvest.cropName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    harvest.containerNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  const harvestData = getMockHarvestData();
+  
+  const filteredHarvests = harvestData.filter(harvest => 
+    harvest.containerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    harvest.cropType.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // Sort harvests by date
-  const sortedHarvests = [...filteredHarvests].sort((a, b) => {
-    if (view === "completed") {
-      return new Date(b.harvestDate).getTime() - new Date(a.harvestDate).getTime(); // Most recent first
-    }
-    return new Date(a.harvestDate).getTime() - new Date(b.harvestDate).getTime(); // Soonest first
-  });
-
-  // Calculate statistics
-  const totalUpcoming = harvests.filter(h => h.status === "growing" || h.status === "ready").length;
-  const readyToHarvest = harvests.filter(h => h.status === "ready").length;
-  const totalHarvested = harvests.filter(h => h.status === "harvested").length;
-
-  const formatDate = (date: Date) => {
-    const now = new Date();
-    const diffDays = Math.round((date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) return "Today";
-    if (diffDays === 1) return "Tomorrow";
-    if (diffDays === -1) return "Yesterday";
-    if (diffDays > 0 && diffDays < 7) return `In ${diffDays} days`;
-    if (diffDays < 0 && diffDays > -7) return `${Math.abs(diffDays)} days ago`;
-    
-    return date.toLocaleDateString();
-  };
+  
+  // Format data for charts
+  const monthlyYield = [
+    { name: "Jan", yield: 230 },
+    { name: "Feb", yield: 280 },
+    { name: "Mar", yield: 250 },
+    { name: "Apr", yield: 310 },
+    { name: "May", yield: 290 },
+    { name: "Jun", yield: 340 },
+    { name: "Jul", yield: 380 },
+    { name: "Aug", yield: 350 },
+    { name: "Sep", yield: 400 },
+    { name: "Oct", yield: 380 },
+    { name: "Nov", yield: 340 },
+    { name: "Dec", yield: 360 },
+  ];
+  
+  const cropComparison = [
+    { name: "Lettuce", quantity: 1240, revenue: 9200 },
+    { name: "Basil", quantity: 980, revenue: 12800 },
+    { name: "Kale", quantity: 750, revenue: 6500 },
+    { name: "Spinach", quantity: 890, revenue: 7300 },
+    { name: "Arugula", quantity: 620, revenue: 8100 },
+    { name: "Tomatoes", quantity: 450, revenue: 5900 },
+  ];
 
   return (
     <div className="container mx-auto p-6">
@@ -59,11 +53,11 @@ const Harvest = () => {
       
       <div className="flex flex-col gap-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <h1 className="text-3xl font-bold">Harvest Schedule</h1>
+          <h1 className="text-3xl font-bold">Harvest Management</h1>
           
           <div className="flex gap-2">
             <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search harvests..."
                 className="pl-8 w-[200px] md:w-[260px]"
@@ -72,11 +66,14 @@ const Harvest = () => {
               />
             </div>
             <Button variant="outline" size="icon">
-              <Filter className="h-4 w-4" />
+              <Calendar className="h-4 w-4" />
             </Button>
-            <Button variant="outline">
-              <Calendar className="mr-2 h-4 w-4" />
-              Calendar View
+            <Button variant="outline" size="icon">
+              <SlidersHorizontal className="h-4 w-4" />
+            </Button>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Record Harvest
             </Button>
           </div>
         </div>
@@ -84,103 +81,192 @@ const Harvest = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium">Upcoming Harvests</CardTitle>
+              <CardTitle className="text-lg font-medium">Total Harvested</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-green-600">{totalUpcoming}</div>
-              <p className="text-sm text-muted-foreground">Scheduled harvests</p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium">Ready to Harvest</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-amber-600">{readyToHarvest}</div>
+              <div className="text-3xl font-bold text-green-600">
+                4,120 kg
+              </div>
               <p className="text-sm text-muted-foreground">
-                {readyToHarvest > 0 ? "Requires immediate attention" : "No crops ready at this time"}
+                This year
               </p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium">Completed</CardTitle>
+              <CardTitle className="text-lg font-medium">Scheduled Harvests</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-blue-600">{totalHarvested}</div>
-              <p className="text-sm text-muted-foreground">Successfully harvested</p>
+              <div className="text-3xl font-bold text-blue-600">
+                12
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Next 7 days
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-medium">Yield Efficiency</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-violet-600">
+                87%
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Average across all containers
+              </p>
             </CardContent>
           </Card>
         </div>
         
         <Card>
+          <CardHeader>
+            <CardTitle>Monthly Yield</CardTitle>
+            <CardDescription>Harvested weight (kg) per month in the current year</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={monthlyYield}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="yield" fill="#4ade80" name="Yield (kg)" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle>Harvest Schedule</CardTitle>
+              <CardTitle>Harvest Records</CardTitle>
               <Tabs defaultValue={view} onValueChange={setView}>
                 <TabsList>
-                  <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-                  <TabsTrigger value="completed">Completed</TabsTrigger>
-                  <TabsTrigger value="all">All</TabsTrigger>
+                  <TabsTrigger value="active">Recent</TabsTrigger>
+                  <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
-            <CardDescription>
-              {view === "upcoming" ? "Scheduled and ready harvests" : 
-               view === "completed" ? "Previously harvested crops" : "All harvests"}
-            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Crop</TableHead>
-                  <TableHead>Container</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Planted Date</TableHead>
-                  <TableHead>Harvest Date</TableHead>
-                  <TableHead className="text-right">Yield</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sortedHarvests.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground">
-                      No harvests found matching your criteria.
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  sortedHarvests.map((harvest) => (
-                    <TableRow key={harvest.id}>
-                      <TableCell className="font-medium">{harvest.cropName}</TableCell>
-                      <TableCell>{harvest.containerNumber}</TableCell>
-                      <TableCell>
-                        <Badge
+            {filteredHarvests.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No harvests found matching your search.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {filteredHarvests.map(harvest => (
+                  <Card key={harvest.id} className="overflow-hidden">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="text-lg font-semibold">{harvest.cropType}</h3>
+                          <p className="text-sm text-muted-foreground">Container: {harvest.containerName}</p>
+                        </div>
+                        <Badge 
                           variant={
-                            harvest.status === "growing" ? "outline" :
-                            harvest.status === "ready" ? "warning" : "success"
+                            harvest.status === 'completed' ? 'success' : 
+                            harvest.status === 'scheduled' ? 'secondary' : 'outline'
                           }
                         >
-                          {harvest.status === "growing" ? "Growing" :
-                           harvest.status === "ready" ? "Ready" : "Harvested"}
+                          {harvest.status.charAt(0).toUpperCase() + harvest.status.slice(1)}
                         </Badge>
-                      </TableCell>
-                      <TableCell>{formatDate(harvest.plantedDate)}</TableCell>
-                      <TableCell>{formatDate(harvest.harvestDate)}</TableCell>
-                      <TableCell className="text-right">
-                        {harvest.status === "harvested" && harvest.actualYield ? 
-                          `${harvest.actualYield} kg` : 
-                          `${harvest.estimatedYield} kg (est.)`}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                          <p className="text-sm text-muted-foreground">Weight</p>
+                          <p className="text-md font-medium">{harvest.weight} kg</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Quality</p>
+                          <p className="text-md font-medium">{harvest.quality}%</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Harvest Date</p>
+                          <p className="text-md font-medium">{harvest.harvestDate}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Batch Number</p>
+                          <p className="text-md font-medium">{harvest.batchNumber}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4 pt-4 border-t">
+                        <div className="flex justify-between text-sm">
+                          <div>
+                            <p className="text-muted-foreground">Assigned to</p>
+                            <p>{harvest.assignedTo}</p>
+                          </div>
+                          <div>
+                            <p className="text-muted-foreground">Status</p>
+                            <p className={
+                              harvest.status === 'completed' ? 'text-green-600' :
+                              harvest.status === 'scheduled' ? 'text-blue-600' : ''
+                            }>
+                              {harvest.status.charAt(0).toUpperCase() + harvest.status.slice(1)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Crop Comparison</CardTitle>
+              <CardDescription>Harvest quantity by crop type</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[250px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={cropComparison}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="quantity" fill="#60a5fa" name="Quantity (kg)" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Revenue by Crop</CardTitle>
+              <CardDescription>Estimated revenue from each crop (USD)</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[250px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={cropComparison}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="revenue" stroke="#8b5cf6" strokeWidth={2} name="Revenue (USD)" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
