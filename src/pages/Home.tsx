@@ -152,7 +152,7 @@ const Home = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
       <Helmet>
-        <title>AKAR FarmWatch - Sustainable Container Farming Investments</title>
+        <title>AKAR FarmWatch - Sustainable Farming with Blockchain</title>
         <meta name="description" content="Invest in sustainable container farming with AKAR. Stake AKR tokens and earn rewards from farm produce." />
         <html lang={language} />
       </Helmet>

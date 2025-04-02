@@ -30,3 +30,6 @@ export * from './tokenization';
 
 // Dashboard stats
 export * from './dashboardStats';
+
+// Container projects
+export * from './containerProjects';
