@@ -1,29 +1,29 @@
 
 import { useState, useEffect } from 'react';
 
-/**
- * Custom hook to detect if the current device is a mobile device
- * @returns boolean indicating if the device is mobile
- */
-export const useMobile = (): boolean => {
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+export function useMobile(): boolean {
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkIfMobile = () => {
+    // Check if window is available (not in SSR)
+    if (typeof window === 'undefined') return;
+
+    // Initial check
+    const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    // Check on initial load
-    checkIfMobile();
+    // Check on mount
+    checkMobile();
 
-    // Add event listener for window resize
-    window.addEventListener('resize', checkIfMobile);
+    // Add resize listener
+    window.addEventListener('resize', checkMobile);
 
-    // Clean up event listener
+    // Clean up
     return () => {
-      window.removeEventListener('resize', checkIfMobile);
+      window.removeEventListener('resize', checkMobile);
     };
   }, []);
 
   return isMobile;
-};
+}
