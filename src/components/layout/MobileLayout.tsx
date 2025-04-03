@@ -8,8 +8,7 @@ import {
   Coins, 
   BarChart2, 
   Settings, 
-  Menu, 
-  X 
+  Menu
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -40,7 +39,7 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
       {/* Fixed Header */}
       <AppHeader setShowWalletModal={setShowWalletModal} />
       
-      <div className="flex items-center h-16 px-4 border-b md:hidden">
+      <div className="flex items-center h-16 px-4 border-b md:hidden mt-16"> {/* Added margin top to account for fixed header */}
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon">
@@ -112,7 +111,7 @@ export const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
       </div>
       
       {/* Main content */}
-      <main className="flex-1 overflow-auto p-4">
+      <main className="flex-1 overflow-auto p-4 mt-16"> {/* Added margin top to account for fixed header */}
         {children}
       </main>
       

@@ -1,7 +1,7 @@
 
 import React, { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
-import { Home, LayoutDashboard, Sprout, Coins, BarChart2, Settings, Menu } from 'lucide-react';
+import { Home, LayoutDashboard, Sprout, Coins, BarChart2, Settings } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AppHeader } from './AppHeader';
 import { WalletConnectModal } from '@/components/wallet/WalletConnectModal';
@@ -25,7 +25,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       {/* Fixed Header */}
       <AppHeader setShowWalletModal={setShowWalletModal} />
       
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden pt-16"> {/* Add padding top to account for fixed header */}
         {/* Sidebar */}
         <div className="w-64 border-r bg-background hidden md:block">          
           <div className="py-4 px-3 space-y-1">

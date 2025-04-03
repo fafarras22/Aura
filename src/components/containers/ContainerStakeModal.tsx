@@ -6,7 +6,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -116,10 +115,6 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
         variant: "destructive",
       });
     }
-  };
-
-  const handleWalletConnect = () => {
-    setShowWalletModal(true);
   };
 
   return (

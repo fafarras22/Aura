@@ -20,7 +20,7 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage })
   };
   
   return (
-    <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30 backdrop-blur-md bg-white/90 dark:bg-gray-950/90">
+    <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 fixed top-0 z-50 backdrop-blur-md bg-white/90 dark:bg-gray-950/90">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/">
           <Logo size="lg" />
