@@ -106,7 +106,7 @@ export const WalletConnectModal: React.FC<WalletConnectModalProps> = ({
                 className="flex items-center justify-center gap-3"
               >
                 <img 
-                  src="https://cdn.iconscout.com/icon/free/png-256/free-coinbase-7710866-6358086.png" 
+                  src="https://www.coinbase.com/img/favicon/favicon-32.png" 
                   alt="Coinbase Wallet" 
                   className="h-5 w-5" 
                 />
