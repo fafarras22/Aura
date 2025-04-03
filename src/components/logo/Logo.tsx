@@ -28,6 +28,13 @@ export const Logo: React.FC<LogoProps> = ({
     md: "h-8",
     lg: "h-10",
   };
+
+  // Width mapping for the oval
+  const widthMap = {
+    sm: 28,
+    md: 36, 
+    lg: 48
+  };
   
   return (
     <div className={`flex items-center gap-2 ${className}`}>
@@ -35,15 +42,18 @@ export const Logo: React.FC<LogoProps> = ({
         <img 
           src={logoPath} 
           alt="AKAR Logo" 
-          className={`${sizeClasses[size]} ${isDarkMode ? 'opacity-90' : ''}`}
+          className={`${sizeClasses[size]} ${isDarkMode ? 'opacity-95 z-10' : ''}`}
           onError={() => setLogoError(true)}
         />
         {isDarkMode && (
-          <div className={`absolute inset-0 rounded-full bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm ${sizeClasses[size]}`} 
-               style={{ 
-                 width: size === "sm" ? "24px" : size === "md" ? "32px" : "40px",
-                 animation: "pulse 3s infinite ease-in-out"
-               }} 
+          <div 
+            className="absolute rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 backdrop-blur-sm" 
+            style={{ 
+              width: `${widthMap[size]}px`,
+              height: `${widthMap[size] * 0.9}px`,
+              animation: "logo-glow 3s infinite ease-in-out",
+              transform: "scale(1.1)"
+            }} 
           />
         )}
       </div>

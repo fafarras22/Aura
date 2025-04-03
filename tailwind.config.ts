@@ -92,9 +92,18 @@ const config = {
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
         "logo-glow": {
-          '0%': { boxShadow: '0 0 5px rgba(139, 92, 246, 0.5)' },
-          '50%': { boxShadow: '0 0 15px rgba(139, 92, 246, 0.8)' },
-          '100%': { boxShadow: '0 0 5px rgba(139, 92, 246, 0.5)' },
+          '0%': { 
+            boxShadow: '0 0 5px rgba(139, 92, 246, 0.5)',
+            transform: 'scale(1.1)'
+          },
+          '50%': { 
+            boxShadow: '0 0 15px rgba(139, 92, 246, 0.8)', 
+            transform: 'scale(1.15)'
+          },
+          '100%': { 
+            boxShadow: '0 0 5px rgba(139, 92, 246, 0.5)',
+            transform: 'scale(1.1)'
+          },
         },
       },
       animation: {
