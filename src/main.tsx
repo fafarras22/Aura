@@ -6,7 +6,7 @@ import './index.css'
 import { AuthProvider } from './context/auth/AuthProvider'
 import { ThemeProvider } from './components/ui/theme-provider'
 import { DeveloperModeProvider } from './context/developer-mode'
-import { WalletProvider } from './context/WalletContext'
+import { WalletProvider } from './context/wallet/WalletContext'
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

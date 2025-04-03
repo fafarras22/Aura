@@ -3,7 +3,7 @@ import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Wallet } from 'lucide-react';
-import { useWallet } from '@/context/WalletContext';
+import { useWallet } from '@/context/wallet/WalletContext';
 import { useToast } from '@/hooks/use-toast';
 
 interface ConnectModalWithCallbackProps {

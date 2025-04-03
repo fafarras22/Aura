@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useWallet } from "@/context/WalletContext";
+import { useWallet } from "@/context/wallet/WalletContext";
 import { LogOut } from "lucide-react";
 
 interface WalletConnectModalProps {

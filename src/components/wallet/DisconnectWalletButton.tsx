@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button, ButtonProps } from "@/components/ui/button";
-import { useWallet } from "@/context/WalletContext";
+import { useWallet } from "@/context/wallet/WalletContext";
 import { useToast } from "@/hooks/use-toast";
 import { LogOut } from "lucide-react";
 

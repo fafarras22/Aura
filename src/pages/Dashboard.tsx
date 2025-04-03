@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
-import { useWallet } from "@/context/WalletContext";
+import { useWallet } from "@/context/wallet/WalletContext";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { useDashboardData } from "@/components/dashboard/useDashboardData";
 import { Button } from "@/components/ui/button";

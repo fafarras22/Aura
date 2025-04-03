@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useWallet } from "@/context/WalletContext";
+import { useWallet } from "@/context/wallet/WalletContext";
 import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
 import { ContainerProjectsList } from "@/components/farm-projects/ContainerProjectsList";
 import { ActiveProjects } from "@/components/farm-projects/ActiveProjects";

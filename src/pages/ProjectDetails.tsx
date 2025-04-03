@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Leaf, Clock, TrendingUp, Users, ArrowRight, ChevronLeft, AlertCircle } from "lucide-react";
 import { ContainerProject } from "@/components/containers/ContainerCard";
 import { ContainerStakeModal } from "@/components/containers/ContainerStakeModal";
-import { useWallet } from "@/context/WalletContext";
+import { useWallet } from "@/context/wallet/WalletContext";
 import { useNavigate } from "react-router-dom";
 import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
