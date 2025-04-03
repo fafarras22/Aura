@@ -6,7 +6,7 @@ import { Logo } from '@/components/logo/Logo';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Languages, Wallet } from 'lucide-react';
-import { useWallet } from '@/context/WalletContext';
+import { useWallet } from '@/context/wallet';
 import { DisconnectWalletButton } from '@/components/wallet/DisconnectWalletButton';
 
 interface AppHeaderProps {

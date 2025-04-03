@@ -14,8 +14,8 @@ import FarmProjectDetails from "@/pages/FarmProjectDetails";
 import Tokenization from "@/pages/Tokenization";
 import Analytics from "@/pages/Analytics";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
-import { DeveloperModeProvider } from "@/context/DeveloperModeContext";
-import { WalletProvider } from "@/context/WalletContext";
+import { DeveloperModeProvider } from "@/context/developer-mode";
+import { WalletProvider } from "@/context/wallet";
 
 function App() {
   return (

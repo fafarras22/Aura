@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { useWallet } from "@/context/WalletContext";
+import { useWallet } from "@/context/wallet";
 import { useToast } from "@/hooks/use-toast";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
 import { Skeleton } from "@/components/ui/skeleton";

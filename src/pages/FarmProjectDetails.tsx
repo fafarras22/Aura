@@ -16,7 +16,7 @@ import {
   Info,
   AlertCircle
 } from "lucide-react";
-import { useWallet } from "@/context/WalletContext";
+import { useWallet } from "@/context/wallet";
 import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
 import { useToast } from "@/hooks/use-toast";

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ContainerCard, ContainerProject } from "@/components/containers/ContainerCard";
 import { ContainerStakeModal } from "@/components/containers/ContainerStakeModal";
 import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
-import { useWallet } from "@/context/WalletContext";
+import { useWallet } from "@/context/wallet";
 import { useDBSetup } from "@/lib/db-setup";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
