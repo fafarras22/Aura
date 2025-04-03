@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -32,13 +31,18 @@ import {
   DollarSign,
   Clock,
   Gift,
-  Lock
+  Lock,
+  Tractor,
+  Fish,
+  Droplets,
+  Sun
 } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
+import { Users } from "lucide-react";
 
 const Home = () => {
-  const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
+  const [language, setLanguage] = useState<'en' | 'id' | 'ko' | 'th' | 'vi' | 'ms'>('en');
   const navigate = useNavigate();
   const { wallet } = useWallet();
   const { toast } = useToast();
@@ -61,14 +65,14 @@ const Home = () => {
 
   const heroContent = {
     title: "Invest in",
-    subtitle: "Stake $AKR tokens, own a share of container farms, and earn consistent returns from real agricultural production.",
+    subtitle: "Stake $AKR tokens in agricultural projects across ASEAN. Fund sustainable farming, fisheries, cattle ranches, and more while earning consistent returns.",
     explore: "Explore Projects",
     learnMore: "Connect Wallet",
   };
   
   const aboutContent = {
-    title: "Sustainable Container Farming",
-    description: "Our IoT-enabled smart containers use cutting-edge technology to grow crops efficiently with minimal environmental impact."
+    title: "Sustainable ASEAN Agriculture",
+    description: "Our platform enables you to invest in carefully vetted agricultural projects across Indonesia and ASEAN using blockchain technology for transparency, security, and liquidity."
   };
 
   useEffect(() => {
@@ -101,7 +105,9 @@ const Home = () => {
           filledTokens: item.filled_tokens || 0,
           apy: item.apy || 12.5,
           runtimeDays: item.runtime_days || 365,
-          status: item.status as 'live' | 'upcoming' | 'completed' | 'ico' || 'live'
+          status: item.status as 'live' | 'upcoming' | 'completed' | 'ico' || 'live',
+          type: item.type as 'container' | 'fishery' | 'cattle' | 'palm-oil' | 'rice' | 'greenhouse' || 'container',
+          location: item.location || 'Jakarta, Indonesia'
         }));
         
         setFeaturedContainers(transformedData);
@@ -119,7 +125,7 @@ const Home = () => {
   };
 
   const handleExploreClick = () => {
-    navigate('/farm-projects'); // Updated from '/projects' to '/farm-projects'
+    navigate('/farm-projects');
   };
 
   const handleConnectWallet = () => {
@@ -131,11 +137,21 @@ const Home = () => {
     setShowStakeModal(true);
   };
 
+  // Agricultural project categories
+  const projectCategories = [
+    { id: 'all', name: 'All Projects' },
+    { id: 'container', name: 'Container Farming', icon: <Leaf className="h-4 w-4" /> },
+    { id: 'fishery', name: 'Fishery', icon: <Fish className="h-4 w-4" /> },
+    { id: 'cattle', name: 'Cattle', icon: <Tractor className="h-4 w-4" /> },
+    { id: 'palm-oil', name: 'Palm Oil', icon: <Sun className="h-4 w-4" /> },
+    { id: 'rice', name: 'Rice Fields', icon: <Droplets className="h-4 w-4" /> },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
       <Helmet>
-        <title>AKAR Farm - Sustainable Farming with Blockchain</title>
-        <meta name="description" content="Invest in sustainable container farming with AKAR. Stake AKR tokens and earn rewards from farm produce." />
+        <title>AKAR Farm - Fund ASEAN Agriculture with Blockchain</title>
+        <meta name="description" content="Invest in sustainable agriculture across ASEAN with AKAR. Stake AKR tokens and earn rewards from farming, fisheries, cattle, and palm oil projects." />
         <html lang={language} />
       </Helmet>
 
@@ -147,13 +163,13 @@ const Home = () => {
           <div className="flex items-center gap-4">
             <nav className="hidden md:flex items-center gap-6">
               <Link to="/farm-projects" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
-                Farm Projects
+                Projects
               </Link>
               <Link to="/dashboard" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
                 Dashboard
               </Link>
               <Link to="/tokenization" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
-                Token
+                $AKR Token
               </Link>
               <Link to="/analytics" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
                 Analytics
@@ -186,11 +202,25 @@ const Home = () => {
                       Indonesia
                     </Button>
                     <Button 
-                      variant={language === 'ko' ? "default" : "ghost"} 
-                      onClick={() => setLanguage('ko')}
+                      variant={language === 'th' ? "default" : "ghost"} 
+                      onClick={() => setLanguage('th')}
                       className="justify-start"
                     >
-                      한국어
+                      ไทย
+                    </Button>
+                    <Button 
+                      variant={language === 'vi' ? "default" : "ghost"} 
+                      onClick={() => setLanguage('vi')}
+                      className="justify-start"
+                    >
+                      Tiếng Việt
+                    </Button>
+                    <Button 
+                      variant={language === 'ms' ? "default" : "ghost"} 
+                      onClick={() => setLanguage('ms')}
+                      className="justify-start"
+                    >
+                      Bahasa Melayu
                     </Button>
                   </div>
                 </PopoverContent>
@@ -218,7 +248,7 @@ const Home = () => {
         </div>
       </header>
 
-      {/* Hero section with game */}
+      {/* Hero section with animation */}
       <HeroSection 
         content={heroContent}
         onExploreClick={handleExploreClick}
@@ -228,13 +258,13 @@ const Home = () => {
       {/* About Section */}
       <AboutSection content={aboutContent} />
       
-      {/* Featured container projects */}
+      {/* Featured Projects Section */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-3xl font-bold">Featured Projects</h2>
-              <p className="text-muted-foreground">Invest in these high-yield container farming projects</p>
+              <p className="text-muted-foreground">Invest in high-yield agricultural projects across ASEAN</p>
             </div>
             
             <Button 
@@ -245,6 +275,22 @@ const Home = () => {
               View All Projects
               <ArrowRight className="h-4 w-4" />
             </Button>
+          </div>
+          
+          <div className="flex overflow-x-auto pb-4 mb-8 scrollbar-none">
+            <div className="flex gap-2">
+              {projectCategories.map((category) => (
+                <Button 
+                  key={category.id}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2 whitespace-nowrap"
+                >
+                  {category.icon}
+                  {category.name}
+                </Button>
+              ))}
+            </div>
           </div>
           
           {isLoading ? (
@@ -273,10 +319,11 @@ const Home = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">$AKR Token</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              The native token of the AKAR ecosystem, used for staking, governance, and earning yield from container farming projects.
+              The native token of the AKAR ecosystem, used for investing in agricultural projects, governance, and earning yield from produce sales.
             </p>
           </div>
           
+          {/* Keep existing token metrics grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
               <CardContent className="pt-6">
@@ -405,7 +452,7 @@ const Home = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">How It Works</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Investing in container farming with AKAR is simple, transparent, and secure
+              Investing in agricultural projects across ASEAN is simple, transparent, and secure
             </p>
           </div>
           
@@ -426,7 +473,7 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-bold mb-2">Choose Projects</h3>
               <p className="text-muted-foreground">
-                Browse and select from our vetted container farming projects with various APY options.
+                Browse agricultural investments across Indonesia and ASEAN with various APY options.
               </p>
             </div>
             
@@ -436,7 +483,7 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-bold mb-2">Stake AKR</h3>
               <p className="text-muted-foreground">
-                Stake your AKR tokens in your chosen projects to become a digital farmer.
+                Stake your AKR tokens in your chosen projects to fund real agricultural businesses.
               </p>
             </div>
             
@@ -483,12 +530,80 @@ const Home = () => {
         </div>
       </section>
       
+      {/* ASEAN Impact */}
+      <section className="py-16 bg-white dark:bg-gray-950">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">ASEAN Agricultural Impact</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              AKAR is helping transform farming across Indonesia, Thailand, Vietnam, Malaysia, and the Philippines
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="rounded-lg border bg-card text-card-foreground shadow p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-primary/10 p-2 rounded-full">
+                  <Tractor className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold">Sustainable Farming</h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Our projects implement sustainable farming practices that reduce water usage by up to 90% compared to traditional methods.
+              </p>
+              <div className="mt-auto pt-4 border-t">
+                <div className="flex justify-between">
+                  <span className="text-sm font-medium">Current Impact:</span>
+                  <span className="text-sm font-bold text-primary">2.3M Tons CO2 Saved</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="rounded-lg border bg-card text-card-foreground shadow p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-primary/10 p-2 rounded-full">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold">Local Employment</h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                AKAR projects have created over 15,000 jobs across rural communities in Indonesia, Thailand, and Vietnam.
+              </p>
+              <div className="mt-auto pt-4 border-t">
+                <div className="flex justify-between">
+                  <span className="text-sm font-medium">Current Impact:</span>
+                  <span className="text-sm font-bold text-primary">15,300+ Jobs Created</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="rounded-lg border bg-card text-card-foreground shadow p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-primary/10 p-2 rounded-full">
+                  <DollarSign className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold">Economic Growth</h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Our platform has helped fund over $25M in agricultural projects, increasing farmer income by an average of 35%.
+              </p>
+              <div className="mt-auto pt-4 border-t">
+                <div className="flex justify-between">
+                  <span className="text-sm font-medium">Current Impact:</span>
+                  <span className="text-sm font-bold text-primary">$25M+ Invested</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* Call to action */}
       <section className="py-20 bg-primary/10 dark:bg-primary/5">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Start Farming?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Invest in ASEAN Agriculture?</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-            Join thousands of investors already earning sustainable returns from container farming projects
+            Join thousands of investors already funding sustainable agricultural projects and earning returns
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -523,14 +638,14 @@ const Home = () => {
               </div>
               
               <p className="text-muted-foreground">
-                Revolutionizing farming through sustainable container technology and blockchain tokenization.
+                Revolutionizing agriculture across ASEAN through blockchain technology and sustainable farming investments.
               </p>
             </div>
             
             <div>
               <h3 className="font-bold mb-4">Products</h3>
               <ul className="space-y-2">
-                <li><Link to="/farm-projects" className="text-muted-foreground hover:text-primary">Farm Projects</Link></li>
+                <li><Link to="/farm-projects" className="text-muted-foreground hover:text-primary">Projects</Link></li>
                 <li><Link to="/tokenization" className="text-muted-foreground hover:text-primary">$AKR Token</Link></li>
                 <li><Link to="/analytics" className="text-muted-foreground hover:text-primary">Analytics</Link></li>
               </ul>

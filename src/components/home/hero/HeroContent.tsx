@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
+import { AnimatedProjectTypes } from "./AnimatedProjectTypes";
 
 interface HeroContentProps {
   title: string;
@@ -21,18 +22,25 @@ export const HeroContent: React.FC<HeroContentProps> = ({
   onExploreClick,
   onLearnMoreClick
 }) => {
+  const projectTypes = [
+    "Container Farming",
+    "Fishery",
+    "Cattle",
+    "Palm Oil",
+    "Rice Fields",
+    "Greenhouse"
+  ];
+
   return (
     <div className="space-y-6 max-w-lg">
       <Badge variant="outline" className="px-3 py-1 text-sm bg-primary/10 text-primary border-primary/30">
-        Sustainable Farming on Blockchain
+        ASEAN Agriculture on Blockchain
       </Badge>
       
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-        <span className="text-gray-900 dark:text-gray-100">{title} </span>
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-          Container Farming
-        </span>
-      </h1>
+      <AnimatedProjectTypes 
+        baseText={title}
+        projectTypes={projectTypes}
+      />
       
       <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
         {subtitle}

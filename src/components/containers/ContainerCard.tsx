@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { InfoIcon, TrendingUp } from "lucide-react";
+import { InfoIcon, TrendingUp, Leaf, Fish, Tractor, Sun, Droplets } from "lucide-react";
 
 export interface ContainerProject {
   id: string;
@@ -16,6 +16,8 @@ export interface ContainerProject {
   apy: number;
   runtimeDays: number;
   status: 'live' | 'upcoming' | 'completed' | 'ico';
+  type?: 'container' | 'fishery' | 'cattle' | 'palm-oil' | 'rice' | 'greenhouse';
+  location?: string;
 }
 
 interface ContainerCardProps {
@@ -42,7 +44,19 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onActio
       case 'ico': return 'ICO';
       case 'upcoming': return 'UPCOMING';
       case 'completed': return 'COMPLETED';
-      default: return 'UNKNOWN'; // Changed to a static string to avoid the TypeScript error
+      default: return 'UNKNOWN';
+    }
+  };
+
+  const getProjectTypeIcon = () => {
+    switch (container.type) {
+      case 'fishery': return <Fish className="h-4 w-4 text-blue-500" />;
+      case 'cattle': return <Tractor className="h-4 w-4 text-amber-600" />;
+      case 'palm-oil': return <Sun className="h-4 w-4 text-yellow-500" />;
+      case 'rice': return <Droplets className="h-4 w-4 text-teal-500" />;
+      case 'greenhouse':
+      case 'container':
+      default: return <Leaf className="h-4 w-4 text-green-600" />;
     }
   };
 
@@ -54,24 +68,36 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onActio
           alt={container.name}
           className="w-full h-full object-cover"
         />
-        <Badge 
-          className="absolute top-3 right-3" 
-          variant={
-            container.status === 'live' ? "default" : 
-            container.status === 'ico' ? "secondary" : 
-            container.status === 'upcoming' ? "outline" : 
-            "destructive"
-          }
-        >
-          {getStatusLabel()}
-        </Badge>
+        <div className="absolute top-3 right-3 flex gap-2">
+          <Badge 
+            variant={
+              container.status === 'live' ? "default" : 
+              container.status === 'ico' ? "secondary" : 
+              container.status === 'upcoming' ? "outline" : 
+              "destructive"
+            }
+          >
+            {getStatusLabel()}
+          </Badge>
+        </div>
       </div>
 
       <CardHeader className="pb-2">
         <div className="space-y-1">
-          <h3 className="font-bold text-lg leading-tight">{container.name}</h3>
+          <div className="flex items-center justify-between">
+            <h3 className="font-bold text-lg leading-tight">{container.name}</h3>
+            <div className="flex items-center gap-1">
+              {getProjectTypeIcon()}
+              <span className="text-xs text-muted-foreground">{container.type || 'Container'}</span>
+            </div>
+          </div>
           {container.description && (
             <p className="text-sm text-muted-foreground line-clamp-2">{container.description}</p>
+          )}
+          {container.location && (
+            <div className="text-xs text-muted-foreground">
+              Location: {container.location}
+            </div>
           )}
         </div>
       </CardHeader>
