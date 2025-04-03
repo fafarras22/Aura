@@ -1,332 +1,304 @@
+
 import { useState } from "react";
-import { Helmet } from "react-helmet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { AlertTriangle, Check, Download, ExternalLink, Filter, Search, Settings, Thermometer, Droplet, Wind, FlaskConical, Zap, Activity } from "lucide-react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { getMockSensorData, getMockClimateData, getMockWaterData } from "@/services/mockDataService";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { AppHeader } from "@/components/layout/AppHeader";
+import { useDeveloperMode } from "@/context/DeveloperModeContext";
+import { getMockSensorData, SensorData } from "@/services/mockDataService";
+import { getMockClimateData } from "@/services/mock-data";
+import { Thermometer, Droplet, Wind, Activity, AlertCircle } from "lucide-react";
 import { SensorCard } from "@/components/sensors/SensorCard";
-import { SensorStatus } from "@/services/mock-data/types";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { format } from "date-fns";
+
+// Mock sensor history data
+const generateMockSensorHistory = (days: number, baseValue: number, variance: number) => {
+  const data = [];
+  const now = new Date();
+  
+  for (let i = 0; i < days * 24; i += 4) { // Every 4 hours
+    const date = new Date(now);
+    date.setHours(now.getHours() - i);
+    
+    // Generate random variance within range
+    const randomVariance = (Math.random() * 2 - 1) * variance;
+    const value = baseValue + randomVariance;
+    
+    data.push({
+      timestamp: format(date, "MMM dd, HH:mm"),
+      value: Number(value.toFixed(1))
+    });
+  }
+  
+  return data.reverse();
+};
 
 const Sensors = () => {
-  const [category, setCategory] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [timeRange, setTimeRange] = useState("24h");
+  const { isDeveloperMode } = useDeveloperMode();
+  const [showWalletModal, setShowWalletModal] = useState(false);
+  const [selectedSensor, setSelectedSensor] = useState<SensorData | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   
-  const sensorData = getMockSensorData();
-  const climateData = getMockClimateData(7);
-  const waterData = getMockWaterData(7);
+  // Fetch all sensor data
+  const allSensors = getMockSensorData();
   
-  // Filter sensors based on category and search term
-  const filteredSensors = sensorData.filter(sensor => 
-    (category === "all" || sensor.category === category) &&
-    sensor.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter sensors based on selected category
+  const filteredSensors = selectedCategory === "all" 
+    ? allSensors 
+    : allSensors.filter(sensor => sensor.category === selectedCategory);
   
-  // Count sensors by status
-  const errorCount = sensorData.filter(s => s.status === 'error').length;
-  const warningCount = sensorData.filter(s => s.status === 'warning').length;
-  const normalCount = sensorData.filter(s => s.status === 'normal').length;
+  // Generate mock history data for selected sensor
+  const sensorHistory = selectedSensor 
+    ? generateMockSensorHistory(
+        7, 
+        selectedSensor.value, 
+        selectedSensor.category === "water" ? 0.5 : 
+        selectedSensor.category === "climate" ? 2 : 1
+      )
+    : [];
   
-  // Format temperature data for chart
-  const tempChartData = climateData.map(data => ({
-    time: new Date(data.timestamp).toLocaleTimeString(),
-    temperature: data.temperature
-  })).slice(0, 24);
-  
-  // Get icon for sensor
-  const getSensorIcon = (name: string) => {
-    if (name.includes('Temperature')) return <Thermometer className="h-5 w-5" />;
-    if (name.includes('Humidity') || name.includes('Water') || name.includes('Moisture')) return <Droplet className="h-5 w-5" />;
-    if (name.includes('CO2') || name.includes('Air')) return <Wind className="h-5 w-5" />;
-    if (name.includes('pH')) return <FlaskConical className="h-5 w-5" />;
-    if (name.includes('Energy') || name.includes('Power')) return <Zap className="h-5 w-5" />;
-    return <Activity className="h-5 w-5" />;
+  // Handle sensor selection
+  const handleSensorSelect = (sensor: SensorData) => {
+    setSelectedSensor(sensor);
   };
-
+  
+  // Get proper icon for sensor
+  const getSensorIcon = (name: string) => {
+    switch (name.toLowerCase()) {
+      case "temperature":
+        return <Thermometer className="h-5 w-5" />;
+      case "humidity":
+      case "water ph":
+      case "water temperature":
+      case "nutrient level":
+      case "dissolved oxygen":
+        return <Droplet className="h-5 w-5" />;
+      case "co2 level":
+      case "airflow":
+        return <Wind className="h-5 w-5" />;
+      default:
+        return <Activity className="h-5 w-5" />;
+    }
+  };
+  
   return (
-    <div className="container mx-auto p-6">
-      <Helmet>
-        <title>Sensor Monitoring | AKAR Farm</title>
-      </Helmet>
-      
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <h1 className="text-3xl font-bold">Sensor Monitoring</h1>
+    <div className="space-y-6">
+      <AppHeader setShowWalletModal={setShowWalletModal} />
+      <div className="pt-16">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Sensor Dashboard</h1>
+            <p className="text-sm text-muted-foreground">
+              Real-time monitoring of all environmental sensors
+            </p>
+          </div>
           
-          <div className="flex gap-2">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search sensors..."
-                className="pl-8 w-[200px] md:w-[260px]"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <Select value={timeRange} onValueChange={setTimeRange}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Time Range" />
+          <div className="mt-4 md:mt-0">
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="24h">Last 24h</SelectItem>
-                <SelectItem value="7d">Last 7d</SelectItem>
-                <SelectItem value="30d">Last 30d</SelectItem>
+                <SelectItem value="all">All Sensors</SelectItem>
+                <SelectItem value="environmental">Environmental</SelectItem>
+                <SelectItem value="water">Water System</SelectItem>
+                <SelectItem value="climate">Climate Control</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="outline" size="icon">
-              <Settings className="h-4 w-4" />
-            </Button>
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium">Total Sensors</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold">{sensorData.length}</div>
-              <p className="text-sm text-muted-foreground">
-                Active monitoring across all containers
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium">Sensors Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="bg-green-50 text-green-600">
-                  <Check className="mr-1 h-3 w-3" />
-                  {normalCount} Normal
-                </Badge>
-                <Badge variant="outline" className="bg-yellow-50 text-yellow-600">
-                  <AlertTriangle className="mr-1 h-3 w-3" size={12} />
-                  {warningCount} Warning
-                </Badge>
-                <Badge variant="outline" className="bg-red-50 text-red-600">
-                  <AlertTriangle className="mr-1 h-3 w-3" size={12} />
-                  {errorCount} Critical
-                </Badge>
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                {Math.round((normalCount / sensorData.length) * 100)}% sensors operating normally
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium">Last Data Update</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-lg font-medium">2 minutes ago</div>
-              <p className="text-sm text-muted-foreground">
-                Data refreshes automatically every 5 minutes
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+        {isDeveloperMode && (
+          <Alert className="mb-6 bg-amber-50 border-amber-200 text-amber-800 dark:bg-amber-900/20 dark:border-amber-900 dark:text-amber-300">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle className="text-sm font-medium">Developer Mode Active</AlertTitle>
+            <AlertDescription className="text-xs">
+              You are viewing all sensors across all containers. In normal mode, only sensors for your container would be visible.
+            </AlertDescription>
+          </Alert>
+        )}
         
-        <Tabs defaultValue={category} onValueChange={setCategory} className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="all">All Sensors</TabsTrigger>
-            <TabsTrigger value="climate">Climate</TabsTrigger>
-            <TabsTrigger value="water">Water</TabsTrigger>
-            <TabsTrigger value="energy">Energy</TabsTrigger>
-            <TabsTrigger value="environment">Environment</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="all" className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle>Sensor Overview</CardTitle>
-                <CardDescription>All active sensor readings</CardDescription>
+                <CardTitle>Sensor Readings</CardTitle>
+                <CardDescription>
+                  Current readings from all monitoring sensors
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {filteredSensors.map((sensor) => (
-                    <SensorCard
-                      key={sensor.id}
-                      name={sensor.name}
-                      value={sensor.value}
-                      unit={sensor.unit}
-                      icon={getSensorIcon(sensor.name)}
-                      status={sensor.status as SensorStatus}
-                      lastUpdated={sensor.lastUpdated}
-                    />
-                  ))}
-                </div>
+                <Tabs defaultValue="grid" className="space-y-4">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="grid">Grid View</TabsTrigger>
+                    <TabsTrigger value="list">List View</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="grid" className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+                      {filteredSensors.map(sensor => (
+                        <div 
+                          key={sensor.id} 
+                          className={`cursor-pointer transition-transform duration-150 ${
+                            selectedSensor?.id === sensor.id ? 'ring-2 ring-primary scale-[1.02]' : ''
+                          }`}
+                          onClick={() => handleSensorSelect(sensor)}
+                        >
+                          <SensorCard 
+                            name={sensor.name}
+                            value={sensor.value}
+                            unit={sensor.unit}
+                            icon={getSensorIcon(sensor.name)}
+                            status={sensor.status}
+                            timestamp={sensor.lastUpdated}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="list">
+                    <div className="divide-y">
+                      {filteredSensors.map(sensor => (
+                        <div 
+                          key={sensor.id}
+                          className={`py-3 px-2 cursor-pointer hover:bg-muted/50 rounded-md ${
+                            selectedSensor?.id === sensor.id ? 'bg-muted' : ''
+                          }`}
+                          onClick={() => handleSensorSelect(sensor)}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                                {getSensorIcon(sensor.name)}
+                              </div>
+                              <div>
+                                <div className="font-medium">{sensor.name}</div>
+                                <div className="text-sm text-muted-foreground capitalize">
+                                  {sensor.category}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              <div className="font-semibold">
+                                {sensor.value} {sensor.unit}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {sensor.lastUpdated}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
           
-          <TabsContent value="climate" className="space-y-4">
-            <Card>
+          <div>
+            <Card className="h-full">
               <CardHeader>
-                <CardTitle>Climate Sensors</CardTitle>
-                <CardDescription>Temperature, humidity, and air quality</CardDescription>
+                <CardTitle>Sensor Details</CardTitle>
+                <CardDescription>
+                  {selectedSensor 
+                    ? `Historical data for ${selectedSensor.name}`
+                    : "Select a sensor to view details"
+                  }
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {filteredSensors
-                    .filter(sensor => sensor.category === 'climate')
-                    .map((sensor) => (
-                      <SensorCard
-                        key={sensor.id}
-                        name={sensor.name}
-                        value={sensor.value}
-                        unit={sensor.unit}
-                        icon={getSensorIcon(sensor.name)}
-                        status={sensor.status as SensorStatus}
-                        lastUpdated={sensor.lastUpdated}
-                      />
-                    ))
-                  }
-                </div>
-                
-                <div className="mt-6">
-                  <h3 className="text-lg font-medium mb-4">Temperature Trend</h3>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={tempChartData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="time" />
-                        <YAxis domain={[20, 30]} />
-                        <Tooltip formatter={(value) => [`${value}°C`, "Temperature"]} />
-                        <Legend />
-                        <Line 
-                          type="monotone" 
-                          dataKey="temperature" 
-                          stroke="#f97316" 
-                          strokeWidth={2} 
-                          dot={false} 
-                          name="Temperature" 
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
+                {selectedSensor ? (
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-lg font-semibold">{selectedSensor.name}</h3>
+                        <p className="text-sm text-muted-foreground capitalize">
+                          {selectedSensor.category} Sensor
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold">
+                          {selectedSensor.value} {selectedSensor.unit}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Last updated: {selectedSensor.lastUpdated}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-sm font-medium mb-3">7-Day History</h4>
+                      <ResponsiveContainer width="100%" height={200}>
+                        <AreaChart data={sensorHistory} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+                          <defs>
+                            <linearGradient id="sensorGradient" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                            </linearGradient>
+                          </defs>
+                          <XAxis 
+                            dataKey="timestamp" 
+                            tick={{ fontSize: 10 }}
+                            interval="preserveStartEnd"
+                          />
+                          <YAxis 
+                            domain={[
+                              (dataMin: number) => Math.floor(dataMin * 0.9),
+                              (dataMax: number) => Math.ceil(dataMax * 1.1)
+                            ]}
+                            tick={{ fontSize: 10 }}
+                          />
+                          <Tooltip 
+                            contentStyle={{ fontSize: '12px', borderRadius: '4px' }}
+                            itemStyle={{ padding: '2px 0' }}
+                          />
+                          <Area 
+                            type="monotone" 
+                            dataKey="value" 
+                            stroke="#3b82f6" 
+                            fillOpacity={1} 
+                            fill="url(#sensorGradient)" 
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">Sensor Information</h4>
+                      <div className="text-sm">
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-muted-foreground">ID:</div>
+                          <div>{selectedSensor.id}</div>
+                          <div className="text-muted-foreground">Status:</div>
+                          <div className="capitalize">{selectedSensor.status}</div>
+                          <div className="text-muted-foreground">Category:</div>
+                          <div className="capitalize">{selectedSensor.category}</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="water" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Water Sensors</CardTitle>
-                <CardDescription>pH, nutrients, and water quality</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {filteredSensors
-                    .filter(sensor => sensor.category === 'water')
-                    .map((sensor) => (
-                      <SensorCard
-                        key={sensor.id}
-                        name={sensor.name}
-                        value={sensor.value}
-                        unit={sensor.unit}
-                        icon={getSensorIcon(sensor.name)}
-                        status={sensor.status as SensorStatus}
-                        lastUpdated={sensor.lastUpdated}
-                      />
-                    ))
-                  }
-                </div>
-                
-                <div className="mt-6">
-                  <h3 className="text-lg font-medium mb-4">pH Level Trend</h3>
-                  <div className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart
-                        data={waterData.map(data => ({
-                          time: new Date(data.timestamp).toLocaleTimeString(),
-                          ph: data.ph
-                        })).slice(0, 24)}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="time" />
-                        <YAxis domain={[5, 8]} />
-                        <Tooltip formatter={(value) => [`${value}`, "pH"]} />
-                        <Legend />
-                        <Line 
-                          type="monotone" 
-                          dataKey="ph" 
-                          stroke="#8884d8" 
-                          strokeWidth={2} 
-                          dot={false} 
-                          name="pH Level" 
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center flex-col">
+                    <Activity className="h-16 w-16 text-muted-foreground/30 mb-4" />
+                    <p className="text-muted-foreground text-center">
+                      Select a sensor from the list to view detailed information and historical data
+                    </p>
                   </div>
-                </div>
+                )}
               </CardContent>
             </Card>
-          </TabsContent>
-          
-          <TabsContent value="energy" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Energy Sensors</CardTitle>
-                <CardDescription>Power usage and system efficiency</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {filteredSensors
-                    .filter(sensor => sensor.category === 'energy')
-                    .map((sensor) => (
-                      <SensorCard
-                        key={sensor.id}
-                        name={sensor.name}
-                        value={sensor.value}
-                        unit={sensor.unit}
-                        icon={getSensorIcon(sensor.name)}
-                        status={sensor.status as SensorStatus}
-                        lastUpdated={sensor.lastUpdated}
-                      />
-                    ))
-                  }
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="environment" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Environment Sensors</CardTitle>
-                <CardDescription>External conditions and soil metrics</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {filteredSensors
-                    .filter(sensor => sensor.category === 'environment')
-                    .map((sensor) => (
-                      <SensorCard
-                        key={sensor.id}
-                        name={sensor.name}
-                        value={sensor.value}
-                        unit={sensor.unit}
-                        icon={getSensorIcon(sensor.name)}
-                        status={sensor.status as SensorStatus}
-                        lastUpdated={sensor.lastUpdated}
-                      />
-                    ))
-                  }
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+          </div>
+        </div>
       </div>
     </div>
   );

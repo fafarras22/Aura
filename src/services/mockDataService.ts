@@ -1,63 +1,38 @@
 import { format } from 'date-fns';
+import { 
+  getMockHarvests, 
+  getMockDashboardStats, 
+  getMockTokenizationData, 
+  getMockContainerStatus, 
+  getMockContainerProjects, 
+  getMockClimateData, 
+  getMockSensorData as getSensorData, 
+  getMockWaterData as getWaterData, 
+  getMockFarmLocations, 
+  getMockContainerSalesData,
+  getMockAlerts
+} from './mock-data';
 
-// Farm location type
-export interface FarmLocation {
-  id: string;
-  name: string;
-  status: 'active' | 'maintenance' | 'offline';
-  location: { lat: number; lng: number };
-  containers: number;
-  address: string;
-}
+import { 
+  FarmLocation, 
+  ContainerSalesData, 
+  TokenizationData, 
+  Alert, 
+  SensorStatus,
+  SensorData,
+  ClimateReading,
+  WaterReading
+} from './mock-data/types';
 
-// Container sales data type
-export interface ContainerSalesData {
-  id: string;
-  containerName: string;
-  totalSales: number;
-  totalRevenue: number;
-  supermarketClient: {
-    name: string;
-    imageUrl: string;
-    location: string;
-    contractValue: number;
-  };
-  monthlySales: { month: string; sales: number }[];
-  recurringCustomers: {
-    id: string;
-    name: string;
-    imageUrl: string;
-  }[];
-  month: string;
-  amount: number;
-}
-
-// Tokenization data type
-export interface TokenizationData {
-  totalValue: number;
-  totalTokens: number;
-  activeContracts: number;
-  totalInvestors: number;
-  averageReturn: number;
-  recentActivities: {
-    id: string;
-    type: 'invested' | 'harvested' | 'transferred';
-    description: string;
-    tokenAmount: number;
-    date: string;
-    transactionHash: string;
-  }[];
-  tokenBalance: number;
-  tokenPrice: number;
-  tokenChange: number;
-  tokenChangeType: 'increase' | 'decrease';
-  tokenHolders: any[];
-  investments: any[];
-  recentTransactions: any[];
-  tokenAllocation: any[];
-  investmentPerformance: any[];
-  contractDuration: number;
-}
+// Re-export types
+export type { 
+  FarmLocation, 
+  ContainerSalesData, 
+  TokenizationData, 
+  Alert,
+  SensorStatus,
+  SensorData
+};
 
 // Water data type
 export interface WaterData {
@@ -102,142 +77,60 @@ export interface ClimateData {
 
 // Get mock water data
 export function getMockWaterData(days: number = 7) {
-  const data = [];
-  const now = new Date();
-  
-  for (let i = 0; i < days * 24; i++) {
-    const date = new Date(now);
-    date.setHours(now.getHours() - i);
-    
-    // Generate data with some variation
-    const baseTemp = 23 + Math.sin(i / 12) * 2;
-    const basePh = 6.2 + Math.sin(i / 8) * 0.3;
-    
-    data.push({
-      timestamp: date.toISOString(),
-      ph: parseFloat(basePh.toFixed(1)),
-      ec: parseFloat((1.8 + Math.sin(i / 10) * 0.2).toFixed(1)),
-      tds: Math.round(680 + Math.sin(i / 10) * 50),
-      do: parseFloat((6.5 + Math.sin(i / 12) * 0.5).toFixed(1)),
-      temperature: parseFloat(baseTemp.toFixed(1)),
-      level: Math.round(85 + Math.sin(i / 14) * 10),
-    });
-  }
-  
-  return data.reverse();
+  return getWaterData(days);
 }
 
 // Get mock sensor data
-export interface SensorData {
-  id: string;
-  name: string;
-  value: number;
-  unit: string;
-  category: 'environmental' | 'water' | 'climate';
-  status: string;
-  lastUpdated: string;
-}
-
 export function getMockSensorData(): SensorData[] {
-  return [
-    {
-      id: 'sensor-1',
-      name: 'Temperature',
-      value: 25.3,
-      unit: '°C',
-      category: 'environmental',
-      status: 'normal',
-      lastUpdated: format(new Date(), 'MMM dd, yyyy HH:mm')
-    },
-    {
-      id: 'sensor-2',
-      name: 'Humidity',
-      value: 64,
-      unit: '%',
-      category: 'environmental',
-      status: 'normal',
-      lastUpdated: format(new Date(), 'MMM dd, yyyy HH:mm')
-    },
-    {
-      id: 'sensor-3',
-      name: 'CO2 Level',
-      value: 415,
-      unit: 'ppm',
-      category: 'environmental',
-      status: 'normal',
-      lastUpdated: format(new Date(), 'MMM dd, yyyy HH:mm')
-    },
-    {
-      id: 'sensor-4',
-      name: 'Water pH',
-      value: 6.2,
-      unit: 'pH',
-      category: 'water',
-      status: 'warning',
-      lastUpdated: format(new Date(), 'MMM dd, yyyy HH:mm')
-    },
-    {
-      id: 'sensor-5',
-      name: 'Nutrient Level',
-      value: 78,
-      unit: '%',
-      category: 'water',
-      status: 'normal',
-      lastUpdated: format(new Date(), 'MMM dd, yyyy HH:mm')
-    },
-    {
-      id: 'sensor-6',
-      name: 'Water Temperature',
-      value: 23.5,
-      unit: '°C',
-      category: 'water',
-      status: 'normal',
-      lastUpdated: format(new Date(), 'MMM dd, yyyy HH:mm')
-    },
-    {
-      id: 'sensor-7',
-      name: 'Dissolved Oxygen',
-      value: 6.5,
-      unit: 'mg/L',
-      category: 'water',
-      status: 'normal',
-      lastUpdated: format(new Date(), 'MMM dd, yyyy HH:mm')
-    },
-    {
-      id: 'sensor-8',
-      name: 'Light Intensity',
-      value: 12500,
-      unit: 'lux',
-      category: 'climate',
-      status: 'normal',
-      lastUpdated: format(new Date(), 'MMM dd, yyyy HH:mm')
-    }
-  ];
+  return getSensorData();
 }
 
+// Re-export all mock data functions
+export { 
+  getMockHarvests, 
+  getMockDashboardStats, 
+  getMockTokenizationData, 
+  getMockContainerStatus, 
+  getMockContainerProjects, 
+  getMockClimateData, 
+  getMockFarmLocations, 
+  getMockContainerSalesData,
+  getMockAlerts
+};
+
+// Wrapper to get dashboard data with proper types
 export const useDashboardData = () => {
-  return {
-    criticalAlertsCount: 3,
-    upcomingHarvestsCount: 8,
-    containerCount: 3,
+  const { isDeveloperMode, getContainerData } = useDeveloperMode();
+  
+  // Get container data from the developer mode context
+  const containers = getContainerData();
+  const containerCount = containers.length || 3;
+
+  // Mock data for the dashboard components
+  const mockData = {
+    criticalAlertsCount: isDeveloperMode ? 3 : 1,
+    upcomingHarvestsCount: isDeveloperMode ? 8 : 3,
+    containerCount,
+    
+    // Sales data
     salesData: {
       id: "sales-1",
       containerName: "Jakarta Farm Container",
-      totalSales: 3250,
-      totalRevenue: 220000000,
+      totalSales: isDeveloperMode ? 3250 : 1250,
+      totalRevenue: isDeveloperMode ? 220000000 : 85000000,
       supermarketClient: {
         name: "Superindo Market",
         imageUrl: "",
         location: "Jakarta",
-        contractValue: 180000000
+        contractValue: isDeveloperMode ? 180000000 : 75000000
       },
       monthlySales: [
-        { month: "Jan", sales: 320 },
-        { month: "Feb", sales: 350 },
-        { month: "Mar", sales: 380 },
-        { month: "Apr", sales: 410 },
-        { month: "May", sales: 450 },
-        { month: "Jun", sales: 540 }
+        { month: "Jan", sales: isDeveloperMode ? 320 : 120 },
+        { month: "Feb", sales: isDeveloperMode ? 350 : 150 },
+        { month: "Mar", sales: isDeveloperMode ? 380 : 180 },
+        { month: "Apr", sales: isDeveloperMode ? 410 : 210 },
+        { month: "May", sales: isDeveloperMode ? 450 : 250 },
+        { month: "Jun", sales: isDeveloperMode ? 540 : 340 }
       ],
       recurringCustomers: [
         { id: "cust-1", name: "Customer 1", imageUrl: "" },
@@ -245,20 +138,22 @@ export const useDashboardData = () => {
         { id: "cust-3", name: "Customer 3", imageUrl: "" }
       ],
       month: "Current",
-      amount: 220000000
-    },
+      amount: isDeveloperMode ? 220000000 : 85000000
+    } as ContainerSalesData,
+    
+    // Tokenization data
     tokenData: {
-      totalValue: 325000000,
-      totalTokens: 32500,
-      activeContracts: 7,
-      totalInvestors: 42,
-      averageReturn: 14.5,
+      totalValue: isDeveloperMode ? 325000000 : 125000000,
+      totalTokens: isDeveloperMode ? 32500 : 12500,
+      activeContracts: isDeveloperMode ? 7 : 3,
+      totalInvestors: isDeveloperMode ? 42 : 18,
+      averageReturn: isDeveloperMode ? 14.5 : 12.5,
       recentActivities: [
         {
           id: "token-act-1",
           type: "invested",
           description: "New investment",
-          tokenAmount: 1200,
+          tokenAmount: isDeveloperMode ? 1200 : 500,
           date: format(new Date(), "dd MMM yyyy"),
           transactionHash: "0x1234567890abcdef"
         },
@@ -266,22 +161,24 @@ export const useDashboardData = () => {
           id: "token-act-2",
           type: "harvested",
           description: "Harvest yield distributed",
-          tokenAmount: 600,
+          tokenAmount: isDeveloperMode ? 600 : 250,
           date: format(new Date(), "dd MMM yyyy"),
           transactionHash: "0x0987654321fedcba"
         }
       ],
-      tokenBalance: 12000,
-      tokenPrice: 10000,
-      tokenChange: 3.5,
-      tokenChangeType: "increase",
+      tokenBalance: isDeveloperMode ? 12000 : 5000,
+      tokenPrice: isDeveloperMode ? 10000 : 10000,
+      tokenChange: isDeveloperMode ? 3.5 : 2.5,
+      tokenChangeType: "increase" as const,
       tokenHolders: [],
       investments: [],
       recentTransactions: [],
       tokenAllocation: [],
       investmentPerformance: [],
       contractDuration: 12
-    },
+    } as TokenizationData,
+    
+    // Water data
     waterData: {
       ph: 6.2,
       ec: 1.8,
@@ -299,7 +196,9 @@ export const useDashboardData = () => {
         { time: "16:00", ph: 6.2, ec: 1.8, tds: 680, do: 6.2, level: 85, temperature: 24.0 },
       ],
       status: "normal"
-    },
+    } as WaterData,
+    
+    // Climate data
     climateData: {
       temperature: 25.3,
       humidity: 64,
@@ -315,32 +214,36 @@ export const useDashboardData = () => {
         { time: "16:00", temperature: 25.8, humidity: 63, co2Level: 417, light: 12000, airflow: 2.3 },
       ],
       status: "normal"
-    },
+    } as ClimateData,
+    
+    // Farm locations
     farmLocations: [
-      {
-        id: "loc-1",
-        name: "Jakarta Farm",
-        status: "active",
+      { 
+        id: "loc-1", 
+        name: "Jakarta Farm", 
+        status: "active" as const, 
         location: { lat: 106.8456, lng: -6.2088 },
-        containers: 5,
+        containers: isDeveloperMode ? 5 : 1,
         address: "Jl. Sudirman 123, Jakarta"
       },
-      {
-        id: "loc-2",
-        name: "Bandung Farm",
-        status: "maintenance",
+      { 
+        id: "loc-2", 
+        name: "Bandung Farm", 
+        status: "maintenance" as const, 
         location: { lat: 107.6191, lng: -6.9175 },
-        containers: 3,
+        containers: isDeveloperMode ? 3 : 1,
         address: "Jl. Asia Afrika 45, Bandung"
       },
-      {
-        id: "loc-3",
-        name: "Surabaya Farm",
-        status: "active",
+      { 
+        id: "loc-3", 
+        name: "Surabaya Farm", 
+        status: "active" as const, 
         location: { lat: 112.7378, lng: -7.2575 },
-        containers: 4,
+        containers: isDeveloperMode ? 4 : 1, 
         address: "Jl. Pemuda 88, Surabaya"
       }
-    ]
+    ] as FarmLocation[]
   };
+
+  return mockData;
 };

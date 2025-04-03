@@ -9,13 +9,14 @@ import { TokenTransactions } from '@/components/tokenization/TokenTransactions';
 import { TokenPurchase } from '@/components/tokenization/TokenPurchase';
 import { TokenPurchaseModal } from '@/components/tokenization/TokenPurchaseModal';
 import { SalesDetailsCard } from '@/components/dashboard/SalesDetailsCard';
-import { getMockTokenizationData } from '@/services/mockDataService';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { useDeveloperMode } from '@/context/DeveloperModeContext';
 import { Lock, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AppHeader } from '@/components/layout/AppHeader';
+import { TokenizationData } from "@/services/mockDataService";
+import { getMockTokenizationData } from "@/services/mock-data";
 
 const Tokenization = () => {
   const { toast } = useToast();
