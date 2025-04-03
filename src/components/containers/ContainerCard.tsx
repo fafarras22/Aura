@@ -27,10 +27,11 @@ interface ContainerCardProps {
 
 export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onAction }) => {
   const percentFilled = (container.filledTokens / container.totalTokens) * 100;
+  const availableTokens = container.totalTokens - container.filledTokens;
 
   const getActionLabel = () => {
     switch (container.status) {
-      case 'live': return 'Invest Now';
+      case 'live': return 'Stake Now';
       case 'ico': return 'Join ICO';
       case 'upcoming': return 'Set Reminder';
       case 'completed': return 'View Details';
@@ -118,15 +119,27 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onActio
         </div>
 
         <div className="space-y-1">
-          <div className="flex justify-between text-sm">
-            <span>Funding Progress</span>
-            <span className="font-medium">{percentFilled.toFixed(1)}%</span>
-          </div>
-          <Progress value={percentFilled} className="h-2" />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>{container.filledTokens.toLocaleString()} AKR</span>
-            <span>{container.totalTokens.toLocaleString()} AKR</span>
-          </div>
+          {/* Show progress bar only for ICO and upcoming projects */}
+          {(container.status === 'ico' || container.status === 'upcoming') ? (
+            <>
+              <div className="flex justify-between text-sm">
+                <span>Funding Progress</span>
+                <span className="font-medium">{percentFilled.toFixed(1)}%</span>
+              </div>
+              <Progress value={percentFilled} className="h-2" />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>{container.filledTokens.toLocaleString()} AKR</span>
+                <span>{container.totalTokens.toLocaleString()} AKR</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex justify-between text-sm">
+                <span>Available Slots</span>
+                <span className="font-medium">{availableTokens.toLocaleString()} / {container.totalTokens.toLocaleString()} AKR</span>
+              </div>
+            </>
+          )}
         </div>
       </CardContent>
 

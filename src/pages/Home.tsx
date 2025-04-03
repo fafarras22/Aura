@@ -20,6 +20,7 @@ import { TabsSection } from "@/components/home/TabsSection";
 import { HeroSection } from "@/components/home/HeroSection";
 import { AboutSection } from "@/components/home/AboutSection";
 import { FeaturedFarmers } from "@/components/home/FeaturedFarmers";
+import { AkrTokenAcquisition } from "@/components/home/AkrTokenAcquisition";
 import { 
   Wallet, 
   Languages, 
@@ -94,7 +95,7 @@ const Home = () => {
         .from('containers')
         .select('*')
         .order('filled_tokens', { ascending: false })
-        .limit(9); // Increased from 3 to 9
+        .limit(9);
         
       if (error) throw error;
       
@@ -141,15 +142,9 @@ const Home = () => {
     setShowStakeModal(true);
   };
 
-  // Agricultural project categories
-  const projectCategories = [
-    { id: 'all', name: 'All Projects' },
-    { id: 'container', name: 'Container Farming', icon: <Leaf className="h-4 w-4" /> },
-    { id: 'fishery', name: 'Fishery', icon: <Fish className="h-4 w-4" /> },
-    { id: 'cattle', name: 'Cattle', icon: <Tractor className="h-4 w-4" /> },
-    { id: 'palm-oil', name: 'Palm Oil', icon: <Sun className="h-4 w-4" /> },
-    { id: 'rice', name: 'Rice Fields', icon: <Droplets className="h-4 w-4" /> },
-  ];
+  // Filter featured containers for separate display
+  const liveFeaturedProjects = featuredContainers.filter(c => c.status === 'live').slice(0, 3);
+  const icoFeaturedProjects = featuredContainers.filter(c => c.status === 'ico' || c.status === 'upcoming').slice(0, 3);
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
@@ -259,7 +254,7 @@ const Home = () => {
         onLearnMoreClick={handleConnectWallet}
       />
       
-      {/* Republic-inspired "Why Invest in Agriculture" Section */}
+      {/* "Why Invest in Agriculture" Section */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -315,13 +310,14 @@ const Home = () => {
       {/* Featured Farmers Section */}
       <FeaturedFarmers />
       
-      {/* Featured Projects Section */}
+      {/* Available Projects Section */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-3xl font-bold">Trending Projects</h2>
-              <p className="text-muted-foreground">Discover high-impact agricultural investments across ASEAN</p>
+              <Badge variant="default" className="mb-2">LIVE</Badge>
+              <h2 className="text-3xl font-bold">Available Projects</h2>
+              <p className="text-muted-foreground">Ready-to-stake agricultural projects with immediate returns</p>
             </div>
             
             <Button 
@@ -334,44 +330,83 @@ const Home = () => {
             </Button>
           </div>
           
-          <div className="flex overflow-x-auto pb-4 mb-8 scrollbar-none">
-            <div className="flex gap-2">
-              {projectCategories.map((category) => (
-                <Button 
-                  key={category.id}
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-2 whitespace-nowrap"
-                >
-                  {category.icon}
-                  {category.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-          
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
+              {[1, 2, 3].map((i) => (
                 <div key={i} className="h-[400px] rounded-md bg-muted animate-pulse" />
               ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuredContainers.slice(0, 6).map((container) => (
-                <ContainerCard
-                  key={container.id}
-                  container={container}
-                  onAction={handleContainerSelect}
-                />
-              ))}
+              {liveFeaturedProjects.length > 0 ? (
+                liveFeaturedProjects.map((container) => (
+                  <ContainerCard
+                    key={container.id}
+                    container={container}
+                    onAction={handleContainerSelect}
+                  />
+                ))
+              ) : (
+                <div className="col-span-3 text-center py-12 bg-muted/30 rounded-lg">
+                  <p className="text-muted-foreground">No available projects found. Check back soon for new opportunities.</p>
+                </div>
+              )}
             </div>
           )}
         </div>
       </section>
       
-      {/* How AKAR Works - Inspired by Republic's "How It Works" */}
+      {/* ICO Projects Section */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <Badge variant="secondary" className="mb-2">ICO</Badge>
+              <h2 className="text-3xl font-bold">Upcoming Projects</h2>
+              <p className="text-muted-foreground">Initial coin offerings and upcoming agricultural investment opportunities</p>
+            </div>
+            
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/farm-projects')}
+              className="gap-2"
+            >
+              View All ICOs
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-[400px] rounded-md bg-muted animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {icoFeaturedProjects.length > 0 ? (
+                icoFeaturedProjects.map((container) => (
+                  <ContainerCard
+                    key={container.id}
+                    container={container}
+                    onAction={handleContainerSelect}
+                  />
+                ))
+              ) : (
+                <div className="col-span-3 text-center py-12 bg-muted/30 rounded-lg">
+                  <p className="text-muted-foreground">No ICO projects found. Check back soon for new opportunities.</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+      
+      {/* How to Get AKR Tokens Section */}
+      <AkrTokenAcquisition />
+      
+      {/* How AKAR Works Section */}
+      <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">How AKAR Works</h2>
