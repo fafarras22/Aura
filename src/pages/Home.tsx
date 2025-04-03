@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -45,6 +44,8 @@ import {
 } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
+import { QuickInvestment } from "@/components/home/QuickInvestment";
+import { InvestmentDisclaimer } from "@/components/home/InvestmentDisclaimer";
 
 const Home = () => {
   const [language, setLanguage] = useState<'en' | 'id' | 'ko' | 'th' | 'vi' | 'ms'>('en');
@@ -148,12 +149,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
-      <Helmet>
-        <title>AKAR Farm - Fund ASEAN Agriculture with Blockchain</title>
-        <meta name="description" content="Invest in sustainable agriculture across ASEAN with AKAR. Stake AKR tokens and earn rewards from farming, fisheries, cattle, and palm oil projects." />
-        <html lang={language} />
-      </Helmet>
-
       {/* Header/Navigation */}
       <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30 backdrop-blur-md bg-white/90 dark:bg-gray-950/90">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -253,6 +248,9 @@ const Home = () => {
         onExploreClick={handleExploreClick}
         onLearnMoreClick={handleConnectWallet}
       />
+
+      {/* Quick Investment Options */}
+      <QuickInvestment />
       
       {/* "Why Invest in Agriculture" Section */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
@@ -313,99 +311,66 @@ const Home = () => {
       {/* Available Projects Section */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <Badge variant="default" className="mb-2">LIVE</Badge>
-              <h2 className="text-3xl font-bold">Available Projects</h2>
-              <p className="text-muted-foreground">Ready-to-stake agricultural projects with immediate returns</p>
+          {/* Live Projects */}
+          <div className="mb-16">
+            <div className="flex justify-between items-center mb-8">
+              <div>
+                <Badge variant="default" className="mb-2">LIVE</Badge>
+                <h2 className="text-3xl font-bold">Available Projects</h2>
+                <p className="text-muted-foreground">Ready-to-stake agricultural projects</p>
+              </div>
+              
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/farm-projects')}
+                className="gap-2"
+              >
+                View All
+                <ArrowRight className="h-4 w-4" />
+              </Button>
             </div>
             
-            <Button 
-              variant="outline" 
-              onClick={handleExploreClick}
-              className="gap-2"
-            >
-              View All Projects
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-[400px] rounded-md bg-muted animate-pulse" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {liveFeaturedProjects.length > 0 ? (
-                liveFeaturedProjects.map((container) => (
+              {featuredContainers
+                .filter(c => c.status === 'live')
+                .slice(0, 3)
+                .map((container) => (
                   <ContainerCard
                     key={container.id}
                     container={container}
                     onAction={handleContainerSelect}
                   />
-                ))
-              ) : (
-                <div className="col-span-3 text-center py-12 bg-muted/30 rounded-lg">
-                  <p className="text-muted-foreground">No available projects found. Check back soon for new opportunities.</p>
-                </div>
-              )}
+                ))}
             </div>
-          )}
-        </div>
-      </section>
-      
-      {/* ICO Projects Section */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <Badge variant="secondary" className="mb-2">ICO</Badge>
-              <h2 className="text-3xl font-bold">Upcoming Projects</h2>
-              <p className="text-muted-foreground">Initial coin offerings and upcoming agricultural investment opportunities</p>
+          </div>
+
+          {/* ICO Projects */}
+          <div>
+            <div className="flex justify-between items-center mb-8">
+              <div>
+                <Badge variant="secondary" className="mb-2">UPCOMING</Badge>
+                <h2 className="text-3xl font-bold">ICO Projects</h2>
+                <p className="text-muted-foreground">Pre-launch investment opportunities</p>
+              </div>
             </div>
             
-            <Button 
-              variant="outline" 
-              onClick={() => navigate('/farm-projects')}
-              className="gap-2"
-            >
-              View All ICOs
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-          
-          {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-[400px] rounded-md bg-muted animate-pulse" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {icoFeaturedProjects.length > 0 ? (
-                icoFeaturedProjects.map((container) => (
+              {featuredContainers
+                .filter(c => c.status === 'ico' || c.status === 'upcoming')
+                .slice(0, 3)
+                .map((container) => (
                   <ContainerCard
                     key={container.id}
                     container={container}
                     onAction={handleContainerSelect}
                   />
-                ))
-              ) : (
-                <div className="col-span-3 text-center py-12 bg-muted/30 rounded-lg">
-                  <p className="text-muted-foreground">No ICO projects found. Check back soon for new opportunities.</p>
-                </div>
-              )}
+                ))}
             </div>
-          )}
+          </div>
         </div>
       </section>
-      
-      {/* How to Get AKR Tokens Section */}
-      <AkrTokenAcquisition />
-      
-      {/* How AKAR Works Section */}
+
+      {/* How AKAR Works */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -693,6 +658,9 @@ const Home = () => {
         </div>
       </section>
       
+      {/* Investment Disclaimer */}
+      <InvestmentDisclaimer />
+
       {/* Call to action */}
       <section className="py-20 bg-primary/10 dark:bg-primary/5">
         <div className="container mx-auto px-4 text-center">
