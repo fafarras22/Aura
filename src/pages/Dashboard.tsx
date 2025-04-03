@@ -8,11 +8,14 @@ import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { useDashboardData } from "@/components/dashboard/useDashboardData";
 import { Button } from "@/components/ui/button";
 import { Wallet } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { WalletSummary } from "@/components/farm-projects/WalletSummary";
 
 const Dashboard = () => {
   const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
-  const { wallet } = useWallet();
+  const { wallet, disconnect } = useWallet();
   const { isDeveloperMode, currentUser } = useDeveloperMode();
+  const { toast } = useToast();
   
   // Section card states
   const [expandedSections, setExpandedSections] = useState({
@@ -31,6 +34,15 @@ const Dashboard = () => {
       ...prev,
       [section]: !prev[section]
     }));
+  };
+  
+  // Handle wallet disconnection
+  const handleDisconnectWallet = () => {
+    disconnect();
+    toast({
+      title: "Wallet Disconnected",
+      description: "You have been disconnected from your wallet.",
+    });
   };
   
   // Check if wallet is connected when component mounts
@@ -79,6 +91,17 @@ const Dashboard = () => {
     <div className="space-y-6">
       <DashboardHeader currentUser={currentUser} />
       
+      <WalletSummary
+        isConnected={wallet.connected}
+        walletAddress={wallet.address}
+        walletBalance={wallet.balance}
+        akrBalance={55}
+        stakedAkr={25}
+        claimedRewards={5}
+        onConnectWallet={() => setShowWalletModal(true)}
+        onDisconnectWallet={handleDisconnectWallet}
+      />
+      
       <DashboardContent 
         isDeveloperMode={isDeveloperMode}
         criticalAlertsCount={mockData.criticalAlertsCount}
@@ -89,6 +112,11 @@ const Dashboard = () => {
         salesData={mockData.salesData}
         tokenData={mockData.tokenData}
         farmLocations={filteredFarmLocations}
+      />
+      
+      <WalletConnectModal
+        open={showWalletModal}
+        onOpenChange={setShowWalletModal}
       />
     </div>
   );

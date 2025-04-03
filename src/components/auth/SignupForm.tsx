@@ -5,17 +5,27 @@ import { useNavigate } from "react-router-dom";
 import { useWallet } from "@/context/WalletContext";
 import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Wallet } from "lucide-react";
+import { Wallet, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { DisconnectWalletButton } from "@/components/wallet/DisconnectWalletButton";
 
 export const SignupForm: React.FC = () => {
   const navigate = useNavigate();
-  const { wallet, connect } = useWallet();
+  const { wallet, connect, disconnect } = useWallet();
   const { toast } = useToast();
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   
   const handleConnectWallet = () => {
     setIsWalletModalOpen(true);
+  };
+  
+  // Handle wallet disconnection
+  const handleDisconnectWallet = () => {
+    disconnect();
+    toast({
+      title: "Wallet Disconnected",
+      description: "Your wallet has been disconnected.",
+    });
   };
   
   // Handle successful wallet connection
@@ -48,22 +58,41 @@ export const SignupForm: React.FC = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            <div className="bg-muted/50 rounded-lg p-4 text-center">
-              <p className="text-sm text-muted-foreground mb-4">
-                Connect your Web3 wallet to create an account and access AKAR FarmWatch.
-                No email or password required!
-              </p>
-              
-              <Button 
-                variant="default" 
-                size="lg"
-                className="w-full gap-2" 
-                onClick={handleConnectWallet}
-              >
-                <Wallet className="h-5 w-5" />
-                Connect Wallet
-              </Button>
-            </div>
+            {wallet.connected ? (
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 text-center">
+                <p className="text-sm text-green-700 dark:text-green-300 mb-4">
+                  Your wallet is connected! Address: {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}
+                </p>
+                
+                <div className="flex gap-2 justify-center">
+                  <Button 
+                    variant="default" 
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    Go to Dashboard
+                  </Button>
+                  
+                  <DisconnectWalletButton />
+                </div>
+              </div>
+            ) : (
+              <div className="bg-muted/50 rounded-lg p-4 text-center">
+                <p className="text-sm text-muted-foreground mb-4">
+                  Connect your Web3 wallet to create an account and access AKAR FarmWatch.
+                  No email or password required!
+                </p>
+                
+                <Button 
+                  variant="default" 
+                  size="lg"
+                  className="w-full gap-2" 
+                  onClick={handleConnectWallet}
+                >
+                  <Wallet className="h-5 w-5" />
+                  Connect Wallet
+                </Button>
+              </div>
+            )}
             
             <div className="text-center text-sm text-muted-foreground">
               <p>By connecting your wallet, you agree to our</p>

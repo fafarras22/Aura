@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { shortenAddress } from "@/lib/utils";
-import { Wallet, CopyIcon, ExternalLink } from "lucide-react";
+import { Wallet, CopyIcon, ExternalLink, LogOut } from "lucide-react";
 
 interface WalletSummaryProps {
   isConnected: boolean;
@@ -14,6 +14,7 @@ interface WalletSummaryProps {
   stakedAkr: number;
   claimedRewards: number;
   onConnectWallet: () => void;
+  onDisconnectWallet?: () => void;
 }
 
 export const WalletSummary: React.FC<WalletSummaryProps> = ({
@@ -23,7 +24,8 @@ export const WalletSummary: React.FC<WalletSummaryProps> = ({
   akrBalance,
   stakedAkr,
   claimedRewards,
-  onConnectWallet
+  onConnectWallet,
+  onDisconnectWallet
 }) => {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -64,6 +66,17 @@ export const WalletSummary: React.FC<WalletSummaryProps> = ({
               <Badge variant="outline" className="ml-auto">
                 {parseFloat(walletBalance).toFixed(4)} ETH
               </Badge>
+              {onDisconnectWallet && (
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="ml-auto gap-1 text-red-500 hover:bg-red-50 hover:text-red-600 border-red-200"
+                  onClick={onDisconnectWallet}
+                >
+                  <LogOut size={14} />
+                  Disconnect
+                </Button>
+              )}
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
