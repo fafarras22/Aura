@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { useWallet } from "@/context/WalletContext";
 import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
 import { ContainerProjectsList } from "@/components/farm-projects/ContainerProjectsList";
@@ -58,12 +57,6 @@ const FarmProjects = () => {
                 Stake your $AKR tokens in farm containers to earn rewards
               </p>
             </div>
-            
-            {!wallet.connected && (
-              <Button onClick={handleConnectWallet}>
-                Connect Wallet
-              </Button>
-            )}
           </div>
           
           <WalletSummary 
@@ -99,7 +92,6 @@ const FarmProjects = () => {
                 <Card>
                   <CardContent className="py-10 text-center">
                     <p className="text-muted-foreground mb-4">Connect your wallet to view your active stakes</p>
-                    <Button onClick={handleConnectWallet}>Connect Wallet</Button>
                   </CardContent>
                 </Card>
               )}
@@ -116,7 +108,6 @@ const FarmProjects = () => {
                 <Card>
                   <CardContent className="py-10 text-center">
                     <p className="text-muted-foreground mb-4">Connect your wallet to view your rewards</p>
-                    <Button onClick={handleConnectWallet}>Connect Wallet</Button>
                   </CardContent>
                 </Card>
               )}
@@ -129,7 +120,6 @@ const FarmProjects = () => {
                 <Card>
                   <CardContent className="py-10 text-center">
                     <p className="text-muted-foreground mb-4">Connect your wallet to view your investment history</p>
-                    <Button onClick={handleConnectWallet}>Connect Wallet</Button>
                   </CardContent>
                 </Card>
               )}

@@ -22,8 +22,8 @@ export const ConnectModalWithCallback: React.FC<ConnectModalWithCallbackProps> =
 
   const handleConnect = async () => {
     try {
-      // Pass an empty object as parameter to the connect function
-      await connect({});
+      // Call connect without parameters
+      await connect();
       toast({
         title: 'Wallet Connected',
         description: 'Your wallet has been successfully connected.',

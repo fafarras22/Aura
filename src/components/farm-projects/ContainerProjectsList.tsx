@@ -94,13 +94,6 @@ export const ContainerProjectsList: React.FC<ContainerProjectsListProps> = ({
             </Button>
           </div>
         </div>
-        
-        {!isWalletConnected && (
-          <Button variant="outline" onClick={onConnectWallet} className="flex items-center gap-2">
-            <Wallet className="h-4 w-4" />
-            Connect Wallet
-          </Button>
-        )}
       </div>
       
       {!isWalletConnected && viewMode === "grid" && (
