@@ -10,7 +10,7 @@ interface SidebarLogoProps {
 export const SidebarLogo: React.FC<SidebarLogoProps> = ({ isDeveloperMode }) => {
   return (
     <div className="flex flex-col items-center space-y-2">
-      <Logo size="lg" />
+      <Logo size="lg" showText={false} />
       {isDeveloperMode && (
         <Badge variant="secondary" className="px-2 py-1 text-xs rounded-full">
           Developer Mode

@@ -8,7 +8,7 @@ export const AuthHeader: React.FC = () => {
     <header className="w-full bg-white border-b border-gray-200">
       <div className="container mx-auto px-4 py-4">
         <Link to="/">
-          <Logo size="lg" />
+          <Logo size="lg" showText={false} />
         </Link>
       </div>
     </header>

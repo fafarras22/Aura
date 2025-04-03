@@ -22,7 +22,7 @@ export const BackendHeader: React.FC = () => {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <Logo size="md" />
+            <Logo size="md" showText={false} />
             <h1 className="text-3xl font-bold tracking-tight">Backend Dashboard</h1>
           </div>
           <p className="text-muted-foreground mt-1">
