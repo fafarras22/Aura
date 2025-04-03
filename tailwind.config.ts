@@ -77,9 +77,9 @@ const config = {
           to: { height: "0" },
         },
         pulse: {
-          '0%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.1)' },
-          '100%': { transform: 'scale(1)' },
+          '0%': { transform: 'scale(1)', opacity: '0.7' },
+          '50%': { transform: 'scale(1.05)', opacity: '0.9' },
+          '100%': { transform: 'scale(1)', opacity: '0.7' },
         },
         "pulse-warning": {
           '0%': { opacity: '1' },
@@ -91,6 +91,11 @@ const config = {
           '50%': { opacity: '0.8', transform: 'scale(1.05)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
+        "logo-glow": {
+          '0%': { boxShadow: '0 0 5px rgba(139, 92, 246, 0.5)' },
+          '50%': { boxShadow: '0 0 15px rgba(139, 92, 246, 0.8)' },
+          '100%': { boxShadow: '0 0 5px rgba(139, 92, 246, 0.5)' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -98,6 +103,7 @@ const config = {
         "pulse": "pulse 1.5s infinite ease-in-out",
         "pulse-warning": "pulse-warning 1.5s infinite ease-in-out",
         "pulse-error": "pulse-error 1s infinite ease-in-out",
+        "logo-glow": "logo-glow 3s infinite ease-in-out",
       },
     },
   },
