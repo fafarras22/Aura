@@ -27,8 +27,8 @@ export const HeroImage: React.FC = () => {
           key={index}
           src={src} 
           alt={`Agricultural project ${index + 1}`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            index === currentImageIndex ? "opacity-100" : "opacity-0"
+          className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ${
+            index === currentImageIndex ? "opacity-100 scale-100" : "opacity-0 scale-105"
           }`}
         />
       ))}
@@ -42,6 +42,7 @@ export const HeroImage: React.FC = () => {
                 index === currentImageIndex ? "bg-white w-4" : "bg-white/50"
               }`}
               onClick={() => setCurrentImageIndex(index)}
+              aria-label={`View image ${index + 1}`}
             />
           ))}
         </div>

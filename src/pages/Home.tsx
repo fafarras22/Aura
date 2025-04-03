@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -763,4 +764,10 @@ const Home = () => {
       <ContainerStakeModal
         open={showStakeModal}
         onOpenChange={setShowStakeModal}
-        containerId={selected
+        containerId={selectedContainerId}
+      />
+    </div>
+  );
+};
+
+export default Home;

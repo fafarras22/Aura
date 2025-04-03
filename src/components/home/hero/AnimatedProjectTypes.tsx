@@ -33,7 +33,7 @@ export const AnimatedProjectTypes: React.FC<AnimatedProjectTypesProps> = ({
     <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight ${className}`}>
       <span className="text-gray-900 dark:text-gray-100">{baseText} </span>
       <span 
-        className={`bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 inline-block min-w-40 transition-all duration-500 transform ${isTransitioning ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'}`}
+        className={`bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 inline-block min-w-40 transition-opacity duration-500 ease-in-out transform ${isTransitioning ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'}`}
       >
         {projectTypes[currentIndex]}
       </span>
