@@ -1,12 +1,14 @@
 
-export const getMockSensorData = () => {
+import { SensorData, SensorStatus } from './types';
+
+export const getMockSensorData = (): SensorData[] => {
   return [
     {
       id: "sensor-1",
       name: "Temperature",
       value: 24.5,
       unit: "°C",
-      status: "normal",
+      status: "normal" as SensorStatus,
       category: "climate",
       lastUpdated: new Date().toISOString()
     },
@@ -15,7 +17,7 @@ export const getMockSensorData = () => {
       name: "Humidity",
       value: 65,
       unit: "%",
-      status: "normal",
+      status: "normal" as SensorStatus,
       category: "climate",
       lastUpdated: new Date().toISOString()
     },
@@ -24,7 +26,7 @@ export const getMockSensorData = () => {
       name: "CO2 Level",
       value: 420,
       unit: "ppm",
-      status: "normal",
+      status: "normal" as SensorStatus,
       category: "climate",
       lastUpdated: new Date().toISOString()
     },
@@ -33,7 +35,7 @@ export const getMockSensorData = () => {
       name: "Light Intensity",
       value: 850,
       unit: "lux",
-      status: "normal",
+      status: "normal" as SensorStatus,
       category: "climate",
       lastUpdated: new Date().toISOString()
     },
@@ -42,7 +44,7 @@ export const getMockSensorData = () => {
       name: "Water pH",
       value: 6.2,
       unit: "pH",
-      status: "warning",
+      status: "warning" as SensorStatus,
       category: "water",
       lastUpdated: new Date().toISOString()
     },
@@ -51,7 +53,7 @@ export const getMockSensorData = () => {
       name: "Nutrient Level",
       value: 520,
       unit: "ppm",
-      status: "normal",
+      status: "normal" as SensorStatus,
       category: "water",
       lastUpdated: new Date().toISOString()
     },
@@ -60,7 +62,7 @@ export const getMockSensorData = () => {
       name: "Water Temperature",
       value: 22.8,
       unit: "°C",
-      status: "normal",
+      status: "normal" as SensorStatus,
       category: "water",
       lastUpdated: new Date().toISOString()
     },
@@ -69,7 +71,7 @@ export const getMockSensorData = () => {
       name: "Dissolved Oxygen",
       value: 6.5,
       unit: "mg/L",
-      status: "error",
+      status: "error" as SensorStatus,
       category: "water",
       lastUpdated: new Date().toISOString()
     },
@@ -78,7 +80,7 @@ export const getMockSensorData = () => {
       name: "Power Consumption",
       value: 2.4,
       unit: "kWh",
-      status: "normal",
+      status: "normal" as SensorStatus,
       category: "energy",
       lastUpdated: new Date().toISOString()
     },
@@ -87,7 +89,7 @@ export const getMockSensorData = () => {
       name: "Solar Generation",
       value: 1.8,
       unit: "kWh",
-      status: "normal",
+      status: "normal" as SensorStatus,
       category: "energy",
       lastUpdated: new Date().toISOString()
     },
@@ -96,7 +98,7 @@ export const getMockSensorData = () => {
       name: "Soil Moisture",
       value: 35,
       unit: "%",
-      status: "warning",
+      status: "warning" as SensorStatus,
       category: "environment",
       lastUpdated: new Date().toISOString()
     },
@@ -105,7 +107,7 @@ export const getMockSensorData = () => {
       name: "Air Quality",
       value: 82,
       unit: "AQI",
-      status: "normal",
+      status: "normal" as SensorStatus,
       category: "environment",
       lastUpdated: new Date().toISOString()
     }

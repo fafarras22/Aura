@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { AppHeader } from "@/components/layout/AppHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,13 +9,32 @@ import { ClimateMonitoringCard } from "@/components/dashboard/ClimateMonitoringC
 import { AlertCircle } from "lucide-react";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { getMockClimateData } from "@/services/mock-data";
+import { ClimateData } from "@/services/mockDataService";
 
 const Climate = () => {
   const { isDeveloperMode } = useDeveloperMode();
   const [showWalletModal, setShowWalletModal] = useState(false);
   
-  // Get climate data
-  const climateData = getMockClimateData();
+  // Create climate data from the raw readings
+  const climateReadings = getMockClimateData();
+  // Create a proper ClimateData object that has the expected structure
+  const climateData: ClimateData = {
+    temperature: 25.3,
+    humidity: 64,
+    co2Level: 415,
+    light: 12500,
+    airflow: 2.3,
+    lastUpdated: new Date().toISOString(),
+    history: climateReadings.map(reading => ({
+      time: new Date(reading.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      temperature: reading.temperature,
+      humidity: reading.humidity,
+      co2Level: reading.co2,
+      light: reading.light,
+      airflow: 2.3 // Adding a constant value for airflow as it's not in the raw readings
+    })),
+    status: 'normal'
+  };
   
   return (
     <div className="space-y-6">

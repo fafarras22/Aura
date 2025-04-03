@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -158,7 +157,7 @@ const Sensors = () => {
                             unit={sensor.unit}
                             icon={getSensorIcon(sensor.name)}
                             status={sensor.status}
-                            timestamp={sensor.lastUpdated}
+                            lastUpdated={sensor.lastUpdated} // Changed from timestamp to lastUpdated to match the prop
                           />
                         </div>
                       ))}

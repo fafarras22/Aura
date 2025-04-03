@@ -11,7 +11,7 @@ interface SensorCardProps {
   unit: string;
   icon: ReactNode;
   status: SensorStatus;
-  lastUpdated?: string;
+  lastUpdated?: string; // Used to be timestamp, now matches the property name used in Sensors.tsx
   progress?: number;
   minValue?: number;
   maxValue?: number;

@@ -136,15 +136,16 @@ export interface WaterReading {
   temperature: number;
 }
 
+// Explicitly define the allowed sensor statuses
+export type SensorStatus = 'normal' | 'warning' | 'error';
+
 export interface SensorData {
   id: string;
   name: string;
   value: number;
   unit: string;
-  status: 'normal' | 'warning' | 'error';
+  status: SensorStatus; // Use the SensorStatus type here
   category: 'climate' | 'water' | 'energy' | 'environment';
   lastUpdated: string;
 }
 
-// SensorStatus used in SensorCard component
-export type SensorStatus = 'normal' | 'warning' | 'error';

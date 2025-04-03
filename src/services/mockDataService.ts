@@ -2,10 +2,10 @@ import { format } from 'date-fns';
 import { 
   getMockHarvests, 
   getMockDashboardStats, 
-  getMockTokenizationData, 
+  getMockTokenizationData as getMockTokenData, 
   getMockContainerStatus, 
   getMockContainerProjects, 
-  getMockClimateData, 
+  getMockClimateData as getMockClimateReadings, 
   getMockSensorData as getSensorData, 
   getMockWaterData as getWaterData, 
   getMockFarmLocations, 
@@ -23,6 +23,8 @@ import {
   ClimateReading,
   WaterReading
 } from './mock-data/types';
+
+import { useDeveloperMode } from '@/context/DeveloperModeContext';
 
 // Re-export types
 export type { 
@@ -76,23 +78,76 @@ export interface ClimateData {
 }
 
 // Get mock water data
-export function getMockWaterData(days: number = 7) {
-  return getWaterData(days);
+export function getMockWaterData(days: number = 7): WaterData {
+  const rawData = getWaterData(days);
+  
+  // Transform raw data into the WaterData structure
+  return {
+    ph: 6.2,
+    ec: 1.8,
+    tds: 680,
+    do: 6.5,
+    temperature: 23.5,
+    level: 85,
+    flowRate: 12.3,
+    lastUpdated: format(new Date(), "dd MMM yyyy HH:mm"),
+    history: rawData.map(reading => ({
+      time: new Date(reading.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      ph: reading.ph,
+      ec: reading.ec,
+      tds: reading.tds,
+      do: reading.do,
+      level: reading.level,
+      temperature: reading.temperature
+    })),
+    status: 'normal'
+  };
 }
 
-// Get mock sensor data
+// Get mocked climate data in the proper format
+export function getMockClimateData(): ClimateData {
+  const rawData = getMockClimateReadings();
+  
+  // Transform raw data into ClimateData structure
+  return {
+    temperature: 25.3,
+    humidity: 64,
+    co2Level: 415,
+    light: 12500,
+    airflow: 2.3,
+    lastUpdated: format(new Date(), "dd MMM yyyy HH:mm"),
+    history: rawData.map(reading => ({
+      time: new Date(reading.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      temperature: reading.temperature,
+      humidity: reading.humidity,
+      co2Level: reading.co2,
+      light: reading.light,
+      airflow: 2.3 // Adding a constant value as it's not in the raw data
+    })),
+    status: 'normal'
+  };
+}
+
+// Get properly typed sensor data
 export function getMockSensorData(): SensorData[] {
-  return getSensorData();
+  const rawData = getSensorData();
+  
+  // Ensure status is one of the allowed values
+  return rawData.map(sensor => ({
+    ...sensor,
+    status: sensor.status as SensorStatus // Force type casting to satisfy TS
+  }));
 }
 
-// Re-export all mock data functions
+// Re-export the tokenization data function with the right name
+export { getMockTokenData as getMockTokenizationData };
+
+// Re-export all other mock data functions
 export { 
   getMockHarvests, 
   getMockDashboardStats, 
-  getMockTokenizationData, 
   getMockContainerStatus, 
   getMockContainerProjects, 
-  getMockClimateData, 
   getMockFarmLocations, 
   getMockContainerSalesData,
   getMockAlerts
