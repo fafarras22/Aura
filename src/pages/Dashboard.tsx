@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { WalletSummary } from "@/components/farm-projects/WalletSummary";
+import { AppHeader } from "@/components/layout/AppHeader";
 
 const Dashboard = () => {
   const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
@@ -55,7 +56,8 @@ const Dashboard = () => {
   if (!wallet.connected) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[80vh] p-8">
-        <h2 className="text-2xl font-bold mb-4">Connect Wallet to Access Dashboard</h2>
+        <AppHeader setShowWalletModal={setShowWalletModal} />
+        <h2 className="text-2xl font-bold mb-4 mt-16">Connect Wallet to Access Dashboard</h2>
         <p className="text-muted-foreground mb-8 text-center max-w-md">
           Please connect your wallet to access the AKAR FarmWatch dashboard.
         </p>
@@ -89,30 +91,33 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <DashboardHeader currentUser={currentUser} />
-      
-      <WalletSummary
-        isConnected={wallet.connected}
-        walletAddress={wallet.address}
-        walletBalance={wallet.balance}
-        akrBalance={55}
-        stakedAkr={25}
-        claimedRewards={5}
-        onConnectWallet={() => setShowWalletModal(true)}
-        onDisconnectWallet={handleDisconnectWallet}
-      />
-      
-      <DashboardContent 
-        isDeveloperMode={isDeveloperMode}
-        criticalAlertsCount={mockData.criticalAlertsCount}
-        upcomingHarvestsCount={mockData.upcomingHarvestsCount}
-        containerCount={mockData.containerCount}
-        expandedSections={expandedSections}
-        toggleSection={toggleSection}
-        salesData={mockData.salesData}
-        tokenData={mockData.tokenData}
-        farmLocations={filteredFarmLocations}
-      />
+      <AppHeader setShowWalletModal={setShowWalletModal} />
+      <div className="pt-16"> {/* Added padding top to account for fixed header */}
+        <DashboardHeader currentUser={currentUser} />
+        
+        <WalletSummary
+          isConnected={wallet.connected}
+          walletAddress={wallet.address}
+          walletBalance={wallet.balance}
+          akrBalance={55}
+          stakedAkr={25}
+          claimedRewards={5}
+          onConnectWallet={() => setShowWalletModal(true)}
+          onDisconnectWallet={handleDisconnectWallet}
+        />
+        
+        <DashboardContent 
+          isDeveloperMode={isDeveloperMode}
+          criticalAlertsCount={mockData.criticalAlertsCount}
+          upcomingHarvestsCount={mockData.upcomingHarvestsCount}
+          containerCount={mockData.containerCount}
+          expandedSections={expandedSections}
+          toggleSection={toggleSection}
+          salesData={mockData.salesData}
+          tokenData={mockData.tokenData}
+          farmLocations={filteredFarmLocations}
+        />
+      </div>
       
       <WalletConnectModal
         open={showWalletModal}

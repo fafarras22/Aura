@@ -30,7 +30,8 @@ import {
   BarChart,
   DollarSign,
   Clock,
-  Gift
+  Gift,
+  Lock
 } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
@@ -562,6 +563,15 @@ const Home = () => {
               <ThemeToggle />
               <Button variant="ghost" size="sm">Terms</Button>
               <Button variant="ghost" size="sm">Privacy</Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="gap-2"
+                onClick={() => navigate('/admin-signup')}
+              >
+                <Lock className="h-4 w-4" />
+                Admin Access
+              </Button>
             </div>
           </div>
         </div>
