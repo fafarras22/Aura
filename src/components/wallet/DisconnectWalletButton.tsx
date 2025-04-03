@@ -3,10 +3,13 @@ import React from "react";
 import { Button, ButtonProps } from "@/components/ui/button";
 import { useWallet } from "@/context/WalletContext";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, Unlink, X } from "lucide-react";
+import { LogOut } from "lucide-react";
 
-interface DisconnectWalletButtonProps extends Omit<ButtonProps, 'onClick'> {
-  variant?: "icon" | "text" | "full";
+type ButtonVariant = ButtonProps["variant"];
+
+interface DisconnectWalletButtonProps extends Omit<ButtonProps, "onClick"> {
+  // Using a more specific type that extends the existing button variants
+  variant?: ButtonVariant | "text" | "icon" | "full";
   onSuccess?: () => void;
 }
 
@@ -36,14 +39,19 @@ export const DisconnectWalletButton: React.FC<DisconnectWalletButtonProps> = ({
     }
   };
 
+  // Map custom variants to actual button variants
+  let buttonVariant: ButtonVariant = "outline";
+  let buttonClassName = className || "";
+  
   // Icon-only button
   if (variant === "icon") {
+    buttonVariant = "ghost";
     return (
       <Button
-        variant="ghost"
+        variant={buttonVariant}
         size="icon"
         onClick={handleDisconnect}
-        className={className}
+        className={buttonClassName}
         aria-label="Disconnect wallet"
         title="Disconnect wallet"
         {...props}
@@ -55,11 +63,13 @@ export const DisconnectWalletButton: React.FC<DisconnectWalletButtonProps> = ({
 
   // Text-only button
   if (variant === "text") {
+    buttonVariant = "ghost";
+    buttonClassName = `text-red-500 hover:text-red-600 hover:bg-red-50 px-2 ${buttonClassName}`;
     return (
       <Button
-        variant="ghost"
+        variant={buttonVariant}
         onClick={handleDisconnect}
-        className={`text-red-500 hover:text-red-600 hover:bg-red-50 px-2 ${className}`}
+        className={buttonClassName}
         {...props}
       >
         Disconnect
@@ -68,15 +78,32 @@ export const DisconnectWalletButton: React.FC<DisconnectWalletButtonProps> = ({
   }
 
   // Full button with icon and text
+  if (variant === "full") {
+    buttonVariant = "outline";
+    buttonClassName = `gap-2 text-red-500 hover:bg-red-50 hover:text-red-600 border-red-200 ${buttonClassName}`;
+    return (
+      <Button
+        variant={buttonVariant}
+        onClick={handleDisconnect}
+        className={buttonClassName}
+        {...props}
+      >
+        <LogOut className="h-4 w-4" />
+        Disconnect Wallet
+      </Button>
+    );
+  }
+
+  // Default case: use the provided variant
   return (
     <Button
-      variant="outline"
+      variant={variant}
       onClick={handleDisconnect}
-      className={`gap-2 text-red-500 hover:bg-red-50 hover:text-red-600 border-red-200 ${className}`}
+      className={buttonClassName}
       {...props}
     >
-      <LogOut className="h-4 w-4" />
-      Disconnect Wallet
+      <LogOut className="h-4 w-4 mr-2" />
+      Disconnect
     </Button>
   );
 };
