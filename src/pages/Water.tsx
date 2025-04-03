@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,17 +6,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { SensorCard } from "@/components/sensors/SensorCard";
-import { getMockWaterData, getMockSensorData } from "@/services/mockDataService";
+import { getMockWaterData } from "@/services/mock-data/water";
+import { getMockSensorData } from "@/services/mockDataService";
 import { Droplet, FlaskConical, Waves, Thermometer } from "lucide-react";
 import { SensorStatus } from "@/services/mock-data/types";
 
 const Water = () => {
   const [timeRange, setTimeRange] = useState("24h");
-  const waterData = getMockWaterData(7);
+  const waterReadings = getMockWaterData(7); // This returns an array of water readings
   const sensorData = getMockSensorData().filter(sensor => sensor.category === 'water');
   
   // Format data for charts
-  const chartData = waterData.map(reading => ({
+  const chartData = waterReadings.map(reading => ({
     time: new Date(reading.timestamp).toLocaleTimeString(),
     ph: reading.ph,
     ec: reading.ec,
