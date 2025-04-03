@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useWallet } from "@/context/WalletContext";
 import { useToast } from "@/hooks/use-toast";
-import { getMockContainerProject } from "@/services/mock-data/containerProjects";
+import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ConnectModalWithCallback } from '@/components/wallet/ConnectModalWithCallback';
 
@@ -39,10 +39,12 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
   const fetchContainerDetails = async (containerId: string) => {
     setIsLoading(true);
     try {
-      // Mock implementation - replace with actual data fetching
-      const mockContainer = getMockContainerProject(containerId);
-      if (mockContainer) {
-        setContainer(mockContainer);
+      // Get all containers and find the one with matching ID
+      const mockContainers = getMockContainerProjects();
+      const foundContainer = mockContainers.find(container => container.id === containerId);
+      
+      if (foundContainer) {
+        setContainer(foundContainer);
       } else {
         toast({
           title: "Error",
