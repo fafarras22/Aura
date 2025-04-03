@@ -108,7 +108,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onActio
             <div className="text-sm text-muted-foreground">APY</div>
             <div className="flex items-center">
               <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
-              <span className="font-bold text-green-600">{container.apy}%</span>
+              <span className="font-bold text-green-600">{container.apy.toFixed(1)}%</span>
             </div>
           </div>
           <div>

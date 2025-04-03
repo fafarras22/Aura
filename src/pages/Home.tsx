@@ -18,6 +18,7 @@ import { Logo } from "@/components/logo/Logo";
 import { TabsSection } from "@/components/home/TabsSection";
 import { HeroSection } from "@/components/home/HeroSection";
 import { AboutSection } from "@/components/home/AboutSection";
+import { FeaturedFarmers } from "@/components/home/FeaturedFarmers";
 import { 
   Wallet, 
   Languages, 
@@ -35,11 +36,13 @@ import {
   Tractor,
   Fish,
   Droplets,
-  Sun
+  Sun,
+  Users,
+  Sprout,
+  Award
 } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
-import { Users } from "lucide-react";
 
 const Home = () => {
   const [language, setLanguage] = useState<'en' | 'id' | 'ko' | 'th' | 'vi' | 'ms'>('en');
@@ -65,14 +68,14 @@ const Home = () => {
 
   const heroContent = {
     title: "Invest in",
-    subtitle: "Stake $AKR tokens in agricultural projects across ASEAN. Fund sustainable farming, fisheries, cattle ranches, and more while earning consistent returns.",
+    subtitle: "Fund sustainable agriculture across ASEAN with $AKR tokens. Back real-world farms, fisheries, and agricultural projects while earning transparent yield from harvests.",
     explore: "Explore Projects",
     learnMore: "Connect Wallet",
   };
   
   const aboutContent = {
     title: "Sustainable ASEAN Agriculture",
-    description: "Our platform enables you to invest in carefully vetted agricultural projects across Indonesia and ASEAN using blockchain technology for transparency, security, and liquidity."
+    description: "Our platform connects investors with vetted agricultural projects across Southeast Asia. Using blockchain for transparency and security, we're powering the next generation of farming."
   };
 
   useEffect(() => {
@@ -255,16 +258,69 @@ const Home = () => {
         onLearnMoreClick={handleConnectWallet}
       />
       
+      {/* Republic-inspired "Why Invest in Agriculture" Section */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Why Invest in ASEAN Agriculture?</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Agricultural investments provide unique advantages that combine financial returns with real-world impact
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="border-t-4 border-t-primary">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Sprout className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Real Asset Backing</h3>
+                <p className="text-muted-foreground">
+                  Each project is backed by tangible agricultural assets including land, equipment, and produce, providing stability to your investment.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-t-4 border-t-primary">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <TrendingUp className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Consistent Returns</h3>
+                <p className="text-muted-foreground">
+                  Agricultural projects deliver predictable yields from 12-20% annually, with income directly tied to ongoing harvests and produce sales.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-t-4 border-t-primary">
+              <CardContent className="p-6">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Community Impact</h3>
+                <p className="text-muted-foreground">
+                  Your investments create jobs, support rural economies, and promote sustainable farming practices across Southeast Asia.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+      
       {/* About Section */}
       <AboutSection content={aboutContent} />
+      
+      {/* Featured Farmers Section */}
+      <FeaturedFarmers />
       
       {/* Featured Projects Section */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-3xl font-bold">Featured Projects</h2>
-              <p className="text-muted-foreground">Invest in high-yield agricultural projects across ASEAN</p>
+              <h2 className="text-3xl font-bold">Trending Projects</h2>
+              <p className="text-muted-foreground">Discover high-impact agricultural investments across ASEAN</p>
             </div>
             
             <Button 
@@ -295,13 +351,13 @@ const Home = () => {
           
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+              {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="h-[400px] rounded-md bg-muted animate-pulse" />
               ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuredContainers.map((container) => (
+              {featuredContainers.slice(0, 6).map((container) => (
                 <ContainerCard
                   key={container.id}
                   container={container}
@@ -313,8 +369,76 @@ const Home = () => {
         </div>
       </section>
       
-      {/* AKR Token metrics */}
+      {/* How AKAR Works - Inspired by Republic's "How It Works" */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">How AKAR Works</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Our platform makes investing in agriculture simple, transparent, and accessible
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-y-12 md:gap-x-6">
+            <div className="flex flex-col items-center text-center md:items-start md:text-left relative">
+              <div className="absolute top-16 left-[calc(50%+1.5rem)] right-0 h-0.5 bg-primary/30 hidden md:block"></div>
+              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold mb-4 z-10">
+                1
+              </div>
+              <h3 className="text-xl font-bold mb-2">Browse Projects</h3>
+              <p className="text-muted-foreground max-w-xs">
+                Explore our vetted selection of agricultural projects across ASEAN. Each project includes details about yield expectations, timelines, and sustainability practices.
+              </p>
+            </div>
+            
+            <div className="flex flex-col items-center text-center md:items-start md:text-left relative">
+              <div className="absolute top-16 left-[calc(50%+1.5rem)] right-0 h-0.5 bg-primary/30 hidden md:block"></div>
+              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold mb-4 z-10">
+                2
+              </div>
+              <h3 className="text-xl font-bold mb-2">Connect Wallet</h3>
+              <p className="text-muted-foreground max-w-xs">
+                Link your Web3 wallet to AKAR. We support MetaMask, WalletConnect, and other popular options for a seamless investing experience.
+              </p>
+            </div>
+            
+            <div className="flex flex-col items-center text-center md:items-start md:text-left relative">
+              <div className="absolute top-16 left-[calc(50%+1.5rem)] right-0 h-0.5 bg-primary/30 hidden md:block"></div>
+              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold mb-4 z-10">
+                3
+              </div>
+              <h3 className="text-xl font-bold mb-2">Fund with $AKR</h3>
+              <p className="text-muted-foreground max-w-xs">
+                Invest any amount in projects that align with your goals. Your $AKR tokens represent ownership in real agricultural assets with defined return profiles.
+              </p>
+            </div>
+            
+            <div className="flex flex-col items-center text-center md:items-start md:text-left">
+              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold mb-4">
+                4
+              </div>
+              <h3 className="text-xl font-bold mb-2">Earn Returns</h3>
+              <p className="text-muted-foreground max-w-xs">
+                Receive regular yield distributions from your investments. All returns come from real agricultural production, transparently tracked on the blockchain.
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-16 text-center">
+            <Button 
+              size="lg" 
+              onClick={handleExploreClick}
+              className="gap-2"
+            >
+              Start Investing Now
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </section>
+      
+      {/* AKR Token metrics */}
+      <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">$AKR Token</h2>
@@ -446,71 +570,6 @@ const Home = () => {
         </div>
       </section>
       
-      {/* How it works */}
-      <section className="py-16 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">How It Works</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Investing in agricultural projects across ASEAN is simple, transparent, and secure
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <Wallet className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Connect Wallet</h3>
-              <p className="text-muted-foreground">
-                Connect your Web3 wallet to get started. We support MetaMask, WalletConnect, and more.
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <Leaf className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Choose Projects</h3>
-              <p className="text-muted-foreground">
-                Browse agricultural investments across Indonesia and ASEAN with various APY options.
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <Terminal className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Stake AKR</h3>
-              <p className="text-muted-foreground">
-                Stake your AKR tokens in your chosen projects to fund real agricultural businesses.
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <BarChart className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Earn Rewards</h3>
-              <p className="text-muted-foreground">
-                Receive regular returns from real farming operations, with full transparency.
-              </p>
-            </div>
-          </div>
-          
-          <div className="mt-12 text-center">
-            <Button 
-              size="lg" 
-              onClick={handleExploreClick}
-              className="gap-2"
-            >
-              Explore Projects Now
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </section>
-      
       {/* Security and Sustainability */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
@@ -601,9 +660,12 @@ const Home = () => {
       {/* Call to action */}
       <section className="py-20 bg-primary/10 dark:bg-primary/5">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Invest in ASEAN Agriculture?</h2>
+          <Badge variant="outline" className="px-3 py-1 text-sm bg-primary/20 text-primary border-primary/30 mb-4">
+            Join 15,000+ Investors
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Fund the Future of ASEAN Agriculture?</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-            Join thousands of investors already funding sustainable agricultural projects and earning returns
+            Be part of the agricultural revolution while earning sustainable returns
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -701,10 +763,4 @@ const Home = () => {
       <ContainerStakeModal
         open={showStakeModal}
         onOpenChange={setShowStakeModal}
-        containerId={selectedContainerId}
-      />
-    </div>
-  );
-};
-
-export default Home;
+        containerId={selected
