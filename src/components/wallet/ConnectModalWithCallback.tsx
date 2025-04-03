@@ -22,8 +22,8 @@ export const ConnectModalWithCallback: React.FC<ConnectModalWithCallbackProps> =
 
   const handleConnect = async () => {
     try {
-      // Call connect without parameters
-      await connect();
+      // Call connect with 'metamask' as the wallet type
+      await connect('metamask');
       toast({
         title: 'Wallet Connected',
         description: 'Your wallet has been successfully connected.',
