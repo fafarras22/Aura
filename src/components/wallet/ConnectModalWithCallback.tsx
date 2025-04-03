@@ -1,9 +1,10 @@
 
-import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { useWallet } from "@/context/WalletContext";
-import { Wallet } from "lucide-react";
+import React from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Wallet } from 'lucide-react';
+import { useWallet } from '@/context/WalletContext';
+import { useToast } from '@/hooks/use-toast';
 
 interface ConnectModalWithCallbackProps {
   open: boolean;
@@ -14,58 +15,56 @@ interface ConnectModalWithCallbackProps {
 export const ConnectModalWithCallback: React.FC<ConnectModalWithCallbackProps> = ({
   open,
   onOpenChange,
-  onComplete,
+  onComplete
 }) => {
-  const { connect, isConnecting } = useWallet();
+  const { connect, wallet } = useWallet();
+  const { toast } = useToast();
 
-  const handleConnectWallet = async (type: 'metamask' | 'walletconnect' | 'coinbase') => {
-    const success = await connect(type);
-    if (success && onComplete) {
-      onComplete();
+  const handleConnect = async () => {
+    try {
+      await connect();
+      toast({
+        title: 'Wallet Connected',
+        description: 'Your wallet has been successfully connected.',
+      });
+      
+      onOpenChange(false);
+      
+      if (onComplete && wallet.connected) {
+        onComplete();
+      }
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+      toast({
+        title: 'Connection Failed',
+        description: 'Failed to connect your wallet. Please try again.',
+        variant: 'destructive',
+      });
     }
-    onOpenChange(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Connect Wallet</DialogTitle>
+          <DialogTitle>Connect Your Wallet</DialogTitle>
           <DialogDescription>
-            Connect your wallet to continue with staking.
+            Connect your wallet to start staking in farm projects.
           </DialogDescription>
         </DialogHeader>
         
         <div className="grid gap-4 py-4">
-          <Button
-            variant="outline"
-            className="flex items-center justify-between py-6"
-            onClick={() => handleConnectWallet('metamask')}
-            disabled={isConnecting}
+          <Button 
+            onClick={handleConnect} 
+            className="w-full flex items-center justify-center gap-2"
           >
-            <span>MetaMask</span>
             <Wallet className="h-5 w-5" />
+            Connect Wallet
           </Button>
           
-          <Button
-            variant="outline"
-            className="flex items-center justify-between py-6"
-            onClick={() => handleConnectWallet('walletconnect')}
-            disabled={isConnecting}
-          >
-            <span>WalletConnect</span>
-            <Wallet className="h-5 w-5" />
-          </Button>
-          
-          <Button
-            variant="outline"
-            className="flex items-center justify-between py-6"
-            onClick={() => handleConnectWallet('coinbase')}
-            disabled={isConnecting}
-          >
-            <span>Coinbase Wallet</span>
-            <Wallet className="h-5 w-5" />
-          </Button>
+          <p className="text-sm text-muted-foreground text-center">
+            By connecting your wallet, you agree to our Terms of Service and Privacy Policy.
+          </p>
         </div>
       </DialogContent>
     </Dialog>

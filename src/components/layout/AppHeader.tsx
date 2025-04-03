@@ -38,11 +38,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         
         <div className="flex items-center gap-4">
           <nav className="hidden md:flex items-center gap-6">
-            <Link to="/farm-projects" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
-              Farm Projects
-            </Link>
             <Link to="/dashboard" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
               Dashboard
+            </Link>
+            <Link to="/farm-projects" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
+              Farm Projects
             </Link>
             <Link to="/tokenization" className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">
               Token

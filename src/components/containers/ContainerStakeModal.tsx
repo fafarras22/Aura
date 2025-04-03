@@ -1,12 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -14,8 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useWallet } from "@/context/WalletContext";
 import { useToast } from "@/hooks/use-toast";
-import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
-import { ContainerProject } from "@/components/containers/ContainerCard";
+import { getMockContainerProject } from "@/services/mock-data/containerProjects";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ConnectModalWithCallback } from '@/components/wallet/ConnectModalWithCallback';
 
@@ -25,16 +18,16 @@ interface ContainerStakeModalProps {
   containerId: string | null;
 }
 
-export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
-  open,
-  onOpenChange,
-  containerId,
+export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({ 
+  open, 
+  onOpenChange, 
+  containerId 
 }) => {
   const { wallet } = useWallet();
   const { toast } = useToast();
   const [stakeAmount, setStakeAmount] = useState("");
   const [showWalletModal, setShowWalletModal] = useState(false);
-  const [container, setContainer] = useState<ContainerProject | null>(null);
+  const [container, setContainer] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -47,16 +40,14 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
     setIsLoading(true);
     try {
       // Mock implementation - replace with actual data fetching
-      const allContainers = getMockContainerProjects();
-      const mockContainer = allContainers.find(c => c.id === containerId);
-      
+      const mockContainer = getMockContainerProject(containerId);
       if (mockContainer) {
         setContainer(mockContainer);
       } else {
         toast({
           title: "Error",
           description: "Container details not found.",
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     } catch (error) {
@@ -64,7 +55,7 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
       toast({
         title: "Error",
         description: "Failed to load container details.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -81,7 +72,7 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
       toast({
         title: "Error",
         description: "Please enter a valid stake amount.",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -91,7 +82,7 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
       toast({
         title: "Error",
         description: "Stake amount must be greater than zero.",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -100,19 +91,17 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
     try {
       // Simulate staking transaction
       await new Promise((resolve) => setTimeout(resolve, 1500));
-
       toast({
         title: "Success",
-        description: `Successfully staked ${amount} tokens!`,
+        description: `Successfully staked ${amount} tokens!`
       });
-
       onOpenChange(false); // Close the modal after successful staking
     } catch (error) {
       console.error("Staking failed:", error);
       toast({
         title: "Error",
         description: "Failed to stake tokens. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
@@ -143,9 +132,7 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
               <p className="text-sm text-muted-foreground">
                 {container.description || "No description provided."}
               </p>
-              <Progress
-                value={(container.filledTokens / container.totalTokens) * 100}
-              />
+              <Progress value={container.filledTokens / container.totalTokens * 100} />
               <p className="text-sm">
                 {container.filledTokens} / {container.totalTokens} Tokens Filled
               </p>
@@ -170,7 +157,9 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
           </div>
         </div>
 
-        <Button onClick={handleStake}>Stake Tokens</Button>
+        <Button onClick={handleStake}>
+          Stake Tokens
+        </Button>
 
         <ConnectModalWithCallback
           open={showWalletModal}
