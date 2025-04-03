@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -14,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useWallet } from "@/context/WalletContext";
 import { useToast } from "@/hooks/use-toast";
-import { getMockContainerProject } from "@/services/mock-data/containerProjects";
+import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
 import { ContainerProject } from "@/components/containers/ContainerCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ConnectModalWithCallback } from '@/components/wallet/ConnectModalWithCallback';
@@ -47,7 +48,9 @@ export const ContainerStakeModal: React.FC<ContainerStakeModalProps> = ({
     setIsLoading(true);
     try {
       // Mock implementation - replace with actual data fetching
-      const mockContainer = getMockContainerProject(containerId);
+      const allContainers = getMockContainerProjects();
+      const mockContainer = allContainers.find(c => c.id === containerId);
+      
       if (mockContainer) {
         setContainer(mockContainer);
       } else {
