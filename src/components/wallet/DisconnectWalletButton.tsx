@@ -7,8 +7,8 @@ import { LogOut } from "lucide-react";
 
 type ButtonVariant = ButtonProps["variant"];
 
-interface DisconnectWalletButtonProps extends Omit<ButtonProps, "onClick"> {
-  // Using a more specific type that extends the existing button variants
+interface DisconnectWalletButtonProps extends Omit<ButtonProps, "onClick" | "variant"> {
+  // Using a custom variant prop that includes our additional variants
   variant?: ButtonVariant | "text" | "icon" | "full";
   onSuccess?: () => void;
 }
@@ -97,7 +97,7 @@ export const DisconnectWalletButton: React.FC<DisconnectWalletButtonProps> = ({
   // Default case: use the provided variant
   return (
     <Button
-      variant={variant}
+      variant={variant as ButtonVariant}
       onClick={handleDisconnect}
       className={buttonClassName}
       {...props}
