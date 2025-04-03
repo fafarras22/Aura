@@ -11,19 +11,24 @@ import { Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { WalletSummary } from "@/components/farm-projects/WalletSummary";
 import { AppHeader } from "@/components/layout/AppHeader";
+import { useAuth } from "@/context/auth";
 
 const Dashboard = () => {
   const [showWalletModal, setShowWalletModal] = useState<boolean>(false);
   const { wallet, disconnect } = useWallet();
   const { isDeveloperMode, currentUser } = useDeveloperMode();
+  const { user } = useAuth();
   const { toast } = useToast();
+  const isAdmin = isDeveloperMode || (currentUser?.role === 'admin');
   
   // Section card states
   const [expandedSections, setExpandedSections] = useState({
     sensors: true,
     sales: true,
     tokenization: true,
-    locations: true
+    locations: true,
+    climate: true,
+    water: true
   });
   
   // Get dashboard data
@@ -48,12 +53,13 @@ const Dashboard = () => {
   
   // Check if wallet is connected when component mounts
   useEffect(() => {
-    if (!wallet.connected) {
+    if (!wallet.connected && !isAdmin) {
       setShowWalletModal(true);
     }
-  }, [wallet.connected]);
+  }, [wallet.connected, isAdmin]);
   
-  if (!wallet.connected) {
+  // If not admin and wallet not connected, show connect wallet screen
+  if (!wallet.connected && !isAdmin) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[80vh] p-8">
         <AppHeader setShowWalletModal={setShowWalletModal} />
@@ -95,16 +101,18 @@ const Dashboard = () => {
       <div className="pt-16"> {/* Added padding top to account for fixed header */}
         <DashboardHeader currentUser={currentUser} />
         
-        <WalletSummary
-          isConnected={wallet.connected}
-          walletAddress={wallet.address}
-          walletBalance={wallet.balance}
-          akrBalance={55}
-          stakedAkr={25}
-          claimedRewards={5}
-          onConnectWallet={() => setShowWalletModal(true)}
-          onDisconnectWallet={handleDisconnectWallet}
-        />
+        {wallet.connected && (
+          <WalletSummary
+            isConnected={wallet.connected}
+            walletAddress={wallet.address}
+            walletBalance={wallet.balance}
+            akrBalance={55}
+            stakedAkr={25}
+            claimedRewards={5}
+            onConnectWallet={() => setShowWalletModal(true)}
+            onDisconnectWallet={handleDisconnectWallet}
+          />
+        )}
         
         <DashboardContent 
           isDeveloperMode={isDeveloperMode}
@@ -116,6 +124,8 @@ const Dashboard = () => {
           salesData={mockData.salesData}
           tokenData={mockData.tokenData}
           farmLocations={filteredFarmLocations}
+          waterData={mockData.waterData}
+          climateData={mockData.climateData}
         />
       </div>
       

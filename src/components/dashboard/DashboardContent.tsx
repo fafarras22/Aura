@@ -6,7 +6,9 @@ import { DashboardGrid } from "@/components/dashboard/DashboardGrid";
 import { 
   FarmLocation, 
   ContainerSalesData, 
-  TokenizationData 
+  TokenizationData,
+  WaterData,
+  ClimateData
 } from "@/services/mockDataService";
 
 interface DashboardContentProps {
@@ -19,11 +21,15 @@ interface DashboardContentProps {
     sales: boolean;
     tokenization: boolean;
     locations: boolean;
+    climate?: boolean;
+    water?: boolean;
   };
   toggleSection: (section: string) => void;
   salesData: ContainerSalesData;
   tokenData: TokenizationData;
   farmLocations: FarmLocation[];
+  waterData?: WaterData;
+  climateData?: ClimateData;
 }
 
 export const DashboardContent: React.FC<DashboardContentProps> = ({
@@ -36,6 +42,8 @@ export const DashboardContent: React.FC<DashboardContentProps> = ({
   salesData,
   tokenData,
   farmLocations,
+  waterData,
+  climateData
 }) => {
   return (
     <div className="space-y-6">
@@ -53,6 +61,9 @@ export const DashboardContent: React.FC<DashboardContentProps> = ({
         toggleSection={toggleSection}
         salesData={salesData}
         farmLocations={farmLocations}
+        waterData={waterData}
+        climateData={climateData}
+        tokenData={tokenData}
       />
     </div>
   );

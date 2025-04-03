@@ -4,7 +4,9 @@ import { format } from "date-fns";
 import { 
   FarmLocation, 
   ContainerSalesData, 
-  TokenizationData 
+  TokenizationData,
+  WaterData,
+  ClimateData
 } from "@/services/mockDataService";
 
 export const useDashboardData = () => {
@@ -85,6 +87,44 @@ export const useDashboardData = () => {
       investmentPerformance: [],
       contractDuration: 12
     } as TokenizationData,
+    
+    // Water data
+    waterData: {
+      ph: 6.2,
+      ec: 1.8,
+      tds: 680,
+      do: 6.5,
+      temperature: 23.5,
+      level: 85,
+      flowRate: 12.3,
+      lastUpdated: format(new Date(), "dd MMM yyyy HH:mm"),
+      history: [
+        { time: "08:00", ph: 6.1, ec: 1.7, tds: 670, do: 6.3, level: 82, temperature: 22.8 },
+        { time: "10:00", ph: 6.2, ec: 1.8, tds: 680, do: 6.5, level: 85, temperature: 23.5 },
+        { time: "12:00", ph: 6.2, ec: 1.8, tds: 685, do: 6.6, level: 87, temperature: 24.1 },
+        { time: "14:00", ph: 6.3, ec: 1.9, tds: 690, do: 6.4, level: 88, temperature: 24.5 },
+        { time: "16:00", ph: 6.2, ec: 1.8, tds: 680, do: 6.2, level: 85, temperature: 24.0 },
+      ],
+      status: "normal"
+    } as WaterData,
+    
+    // Climate data
+    climateData: {
+      temperature: 25.3,
+      humidity: 64,
+      co2Level: 415,
+      light: 12500,
+      airflow: 2.3,
+      lastUpdated: format(new Date(), "dd MMM yyyy HH:mm"),
+      history: [
+        { time: "08:00", temperature: 24.5, humidity: 62, co2Level: 410, light: 11000, airflow: 2.1 },
+        { time: "10:00", temperature: 25.3, humidity: 64, co2Level: 415, light: 12500, airflow: 2.3 },
+        { time: "12:00", temperature: 26.1, humidity: 66, co2Level: 420, light: 14000, airflow: 2.4 },
+        { time: "14:00", temperature: 26.5, humidity: 65, co2Level: 425, light: 13500, airflow: 2.5 },
+        { time: "16:00", temperature: 25.8, humidity: 63, co2Level: 417, light: 12000, airflow: 2.3 },
+      ],
+      status: "normal"
+    } as ClimateData,
     
     // Farm locations
     farmLocations: [

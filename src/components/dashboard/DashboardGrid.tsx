@@ -6,10 +6,15 @@ import { FarmLocationsOverview } from "@/components/dashboard/FarmLocationsOverv
 import { SalesStatusCard } from "@/components/dashboard/SalesStatusCard";
 import { ContainerManagement } from "@/components/dashboard/ContainerManagement";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
-import { Thermometer, Droplet, Wind, Activity } from "lucide-react";
+import { WaterMonitoringCard } from "@/components/dashboard/WaterMonitoringCard";
+import { ClimateMonitoringCard } from "@/components/dashboard/ClimateMonitoringCard";
+import { Thermometer, Droplet, Wind, Activity, Leaf, Cloud } from "lucide-react";
 import { 
   FarmLocation, 
-  ContainerSalesData 
+  ContainerSalesData,
+  WaterData,
+  ClimateData,
+  TokenizationData
 } from "@/services/mockDataService";
 
 interface DashboardGridProps {
@@ -19,10 +24,15 @@ interface DashboardGridProps {
     sales: boolean;
     tokenization: boolean;
     locations: boolean;
+    climate?: boolean;
+    water?: boolean;
   };
   toggleSection: (section: string) => void;
   salesData: ContainerSalesData;
   farmLocations: FarmLocation[];
+  waterData?: WaterData;
+  climateData?: ClimateData;
+  tokenData?: TokenizationData;
 }
 
 export const DashboardGrid: React.FC<DashboardGridProps> = ({
@@ -31,6 +41,9 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
   toggleSection,
   salesData,
   farmLocations,
+  waterData,
+  climateData,
+  tokenData
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -44,7 +57,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <SensorCard 
               name="Temperature" 
-              value={25.3} 
+              value={climateData?.temperature || 25.3} 
               unit="°C" 
               icon={<Thermometer className="w-5 h-5" />}
               status="normal"
@@ -54,7 +67,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
             />
             <SensorCard 
               name="Humidity" 
-              value={64} 
+              value={climateData?.humidity || 64} 
               unit="%" 
               icon={<Droplet className="w-5 h-5" />}
               status="normal"
@@ -64,7 +77,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
             />
             <SensorCard 
               name="CO2 Level" 
-              value={415} 
+              value={climateData?.co2Level || 415} 
               unit="ppm" 
               icon={<Wind className="w-5 h-5" />}
               status="normal"
@@ -74,7 +87,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
             />
             <SensorCard 
               name="Water pH" 
-              value={6.2} 
+              value={waterData?.ph || 6.2} 
               unit="pH" 
               icon={<Activity className="w-5 h-5" />}
               status="warning"
@@ -87,6 +100,30 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
         
         {/* Container Management Component (Admin-only) */}
         {isDeveloperMode && <ContainerManagement />}
+        
+        {/* Water Monitoring Section */}
+        {waterData && (
+          <SectionCard 
+            title="Water System Monitoring"
+            onToggle={() => toggleSection('water')}
+            isExpanded={expandedSections.water}
+            summary={<div className="text-sm text-muted-foreground">Water quality and system parameters</div>}
+          >
+            <WaterMonitoringCard waterData={waterData} />
+          </SectionCard>
+        )}
+        
+        {/* Climate Monitoring Section */}
+        {climateData && (
+          <SectionCard 
+            title="Climate Control"
+            onToggle={() => toggleSection('climate')}
+            isExpanded={expandedSections.climate}
+            summary={<div className="text-sm text-muted-foreground">Climate and environment conditions</div>}
+          >
+            <ClimateMonitoringCard climateData={climateData} />
+          </SectionCard>
+        )}
         
         <SectionCard 
           title="Sales Status"
@@ -105,6 +142,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
         expandedSections={expandedSections}
         toggleSection={toggleSection}
         farmLocations={farmLocations}
+        tokenData={tokenData}
       />
     </div>
   );

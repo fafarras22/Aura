@@ -5,12 +5,18 @@ import App from './App.tsx'
 import './index.css'
 import { AuthProvider } from './context/auth/AuthProvider'
 import { ThemeProvider } from './components/ui/theme-provider'
+import { DeveloperModeProvider } from './context/developer-mode'
+import { WalletProvider } from './context/WalletContext'
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <AuthProvider>
       <ThemeProvider defaultTheme="system" storageKey="akar-theme">
-        <App />
+        <DeveloperModeProvider>
+          <WalletProvider>
+            <App />
+          </WalletProvider>
+        </DeveloperModeProvider>
       </ThemeProvider>
     </AuthProvider>
   </BrowserRouter>

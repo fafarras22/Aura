@@ -13,9 +13,12 @@ interface DashboardSidebarProps {
     sales: boolean;
     tokenization: boolean;
     locations: boolean;
+    climate?: boolean;
+    water?: boolean;
   };
   toggleSection: (section: string) => void;
   farmLocations: FarmLocation[];
+  tokenData?: TokenizationData;
 }
 
 export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
@@ -23,9 +26,10 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   expandedSections,
   toggleSection,
   farmLocations,
+  tokenData
 }) => {
   const { getContainerData } = useDeveloperMode();
-  const tokenData: TokenizationData = {
+  const defaultTokenData: TokenizationData = {
     totalValue: 125000000,
     totalTokens: 12500,
     activeContracts: 3,
@@ -61,9 +65,11 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     contractDuration: 12
   };
 
+  const displayTokenData = tokenData || defaultTokenData;
+
   return (
     <div className="space-y-6">
-      <TokenizationOverview tokenData={tokenData} />
+      <TokenizationOverview tokenData={displayTokenData} />
       
       <SectionCard 
         title="Container Locations"
