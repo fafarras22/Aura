@@ -140,7 +140,7 @@ const Home = () => {
       {/* Header/Navigation */}
       <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-30 backdrop-blur-md bg-white/90 dark:bg-gray-950/90">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Logo size="lg" showText={true} />
+          <Logo size="lg" showText={false} />
           
           <div className="flex items-center gap-4">
             <nav className="hidden md:flex items-center gap-6">
@@ -517,7 +517,7 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="mb-4">
-                <Logo size="md" showText={true} />
+                <Logo size="md" showText={false} />
               </div>
               
               <p className="text-muted-foreground">
