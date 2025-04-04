@@ -15,7 +15,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ content }) => {
     {
       icon: <Leaf className="text-primary w-6 h-6" />,
       title: "Diverse Agricultural Investments",
-      description: "Access a variety of agricultural projects across ASEAN, from container farms to traditional farming, fisheries, and palm oil plantations."
+      description: "Access a variety of agricultural projects across ASEAN, from traditional farming to innovative fisheries, palm oil plantations, and vertical farms."
     },
     {
       icon: <SproutIcon className="text-primary w-6 h-6" />,

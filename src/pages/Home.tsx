@@ -779,4 +779,10 @@ const Home = () => {
       <ContainerStakeModal
         open={showStakeModal}
         onOpenChange={setShowStakeModal}
-        containerId={selectedContainerId
+        containerId={selectedContainerId}
+      />
+    </div>
+  );
+};
+
+export default Home;
