@@ -47,8 +47,10 @@ import { getMockContainerProjects } from "@/services/mock-data/containerProjects
 import { QuickInvestment } from "@/components/home/QuickInvestment";
 import { InvestmentDisclaimer } from "@/components/home/InvestmentDisclaimer";
 
+type SupportedLanguage = 'en' | 'id' | 'ko';
+
 const Home = () => {
-  const [language, setLanguage] = useState<'en' | 'id' | 'ko' | 'th' | 'vi' | 'ms'>('en');
+  const [language, setLanguage] = useState<SupportedLanguage>('en');
   const navigate = useNavigate();
   const { wallet } = useWallet();
   const { toast } = useToast();
@@ -78,7 +80,7 @@ const Home = () => {
   
   const aboutContent = {
     title: "Sustainable ASEAN Agriculture",
-    description: "Our platform connects investors with vetted agricultural projects across Southeast Asia. Using blockchain for transparency and security, we're powering the next generation of farming."
+    description: "Our platform connects investors with vetted agricultural projects across Southeast Asia. Using blockchain for transparency and security, we're powering the next generation of farming and food production."
   };
 
   useEffect(() => {
@@ -146,6 +148,16 @@ const Home = () => {
   // Filter featured containers for separate display
   const liveFeaturedProjects = featuredContainers.filter(c => c.status === 'live').slice(0, 3);
   const icoFeaturedProjects = featuredContainers.filter(c => c.status === 'ico' || c.status === 'upcoming').slice(0, 3);
+
+  // Function to handle language selection that ensures we only use supported languages
+  const handleLanguageSelect = (lang: string) => {
+    if (lang === 'en' || lang === 'id' || lang === 'ko') {
+      setLanguage(lang);
+    } else {
+      // Default to English if unsupported language
+      setLanguage('en');
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950">
@@ -767,10 +779,4 @@ const Home = () => {
       <ContainerStakeModal
         open={showStakeModal}
         onOpenChange={setShowStakeModal}
-        containerId={selectedContainerId}
-      />
-    </div>
-  );
-};
-
-export default Home;
+        containerId={selectedContainerId

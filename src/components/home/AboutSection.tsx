@@ -14,18 +14,18 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ content }) => {
   const features = [
     {
       icon: <Leaf className="text-primary w-6 h-6" />,
-      title: "Sustainable Farming",
-      description: "Our container farms use 95% less water than traditional farming methods while maximizing crop yield."
+      title: "Diverse Agricultural Investments",
+      description: "Access a variety of agricultural projects across ASEAN, from container farms to traditional farming, fisheries, and palm oil plantations."
     },
     {
       icon: <SproutIcon className="text-primary w-6 h-6" />,
-      title: "Smart Technology",
-      description: "Advanced sensors monitor every aspect of the growing environment for optimal plant health."
+      title: "Blockchain Transparency",
+      description: "Every investment is recorded on the blockchain, providing complete transparency from funding to harvest distribution."
     },
     {
       icon: <DropletIcon className="text-primary w-6 h-6" />,
-      title: "Water Efficiency",
-      description: "Precision irrigation and water recycling systems conserve this precious resource."
+      title: "Sustainable Practices",
+      description: "All our agricultural partners implement sustainable practices that preserve natural resources while improving yield."
     }
   ];
 

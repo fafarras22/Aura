@@ -12,7 +12,7 @@ export const TabsSection: React.FC<TabsSectionProps> = ({ language }) => {
     en: {
       security: {
         title: "Secure by Design",
-        description: "AKAR's blockchain technology ensures immutable records, transparent transactions, and secure ownership of your farm investments. Every token is backed by real agricultural assets.",
+        description: "AKAR's blockchain technology ensures immutable records, transparent transactions, and secure ownership of your agricultural investments. Every token is backed by real agricultural assets across ASEAN.",
         features: [
           {
             title: "Audited Smart Contracts",
@@ -20,35 +20,35 @@ export const TabsSection: React.FC<TabsSectionProps> = ({ language }) => {
           },
           {
             title: "Asset-Backed Tokens",
-            description: "Each token represents real farm assets"
+            description: "Each token represents real agricultural assets"
           }
         ]
       },
       sustainability: {
         title: "Sustainable Agriculture",
-        description: "Our container farms use 95% less water than traditional farming while producing up to 300% more yield per square meter, creating truly sustainable food production.",
+        description: "Our agricultural projects implement sustainable farming practices that conserve water, reduce chemical use, and promote biodiversity while maintaining high yields across various crop types in ASEAN countries.",
         features: [
           {
-            title: "Zero Pesticides",
-            description: "Clean growing environment eliminates need for chemicals"
+            title: "Resource Conservation",
+            description: "Projects that minimize water usage and prevent soil degradation"
           },
           {
-            title: "Carbon Negative",
-            description: "Our operations remove more carbon than they emit"
+            title: "Climate-Smart Agriculture",
+            description: "Techniques that adapt to and mitigate climate change impacts"
           }
         ]
       },
       technology: {
         title: "Cutting-Edge Technology",
-        description: "Advanced IoT sensors, machine learning algorithms, and blockchain integration create a truly next-generation farming platform.",
+        description: "Advanced IoT sensors, machine learning algorithms, and blockchain integration create a truly next-generation agricultural ecosystem across all our supported farming types.",
         features: [
           {
-            title: "AI-Powered Growth",
-            description: "Machine learning optimizes growth conditions"
+            title: "Blockchain Traceability",
+            description: "Complete supply chain transparency from farm to market"
           },
           {
-            title: "Real-Time Monitoring",
-            description: "24/7 remote monitoring and control"
+            title: "Tokenized Real Assets",
+            description: "Converting physical agricultural assets into digital investments"
           }
         ]
       }
@@ -56,7 +56,7 @@ export const TabsSection: React.FC<TabsSectionProps> = ({ language }) => {
     id: {
       security: {
         title: "Aman secara Desain",
-        description: "Teknologi blockchain AKAR memastikan catatan yang tidak dapat diubah, transaksi transparan, dan kepemilikan yang aman atas investasi pertanian Anda. Setiap token didukung oleh aset pertanian nyata.",
+        description: "Teknologi blockchain AKAR memastikan catatan yang tidak dapat diubah, transaksi transparan, dan kepemilikan yang aman atas investasi pertanian Anda. Setiap token didukung oleh aset pertanian nyata di seluruh ASEAN.",
         features: [
           {
             title: "Kontrak Pintar Teraudit",
@@ -70,29 +70,29 @@ export const TabsSection: React.FC<TabsSectionProps> = ({ language }) => {
       },
       sustainability: {
         title: "Pertanian Berkelanjutan",
-        description: "Pertanian kontainer kami menggunakan 95% lebih sedikit air daripada pertanian tradisional sambil menghasilkan hingga 300% lebih banyak hasil per meter persegi, menciptakan produksi makanan yang benar-benar berkelanjutan.",
+        description: "Proyek pertanian kami menerapkan praktik pertanian berkelanjutan yang menghemat air, mengurangi penggunaan bahan kimia, dan mendorong keanekaragaman hayati sambil mempertahankan hasil tinggi di berbagai jenis tanaman di negara-negara ASEAN.",
         features: [
           {
-            title: "Nol Pestisida",
-            description: "Lingkungan pertumbuhan bersih menghilangkan kebutuhan akan bahan kimia"
+            title: "Konservasi Sumber Daya",
+            description: "Proyek yang meminimalkan penggunaan air dan mencegah degradasi tanah"
           },
           {
-            title: "Karbon Negatif",
-            description: "Operasi kami menghilangkan lebih banyak karbon daripada yang dikeluarkannya"
+            title: "Pertanian Cerdas Iklim",
+            description: "Teknik yang beradaptasi dan mengurangi dampak perubahan iklim"
           }
         ]
       },
       technology: {
         title: "Teknologi Mutakhir",
-        description: "Sensor IoT canggih, algoritma pembelajaran mesin, dan integrasi blockchain menciptakan platform pertanian generasi berikutnya yang sesungguhnya.",
+        description: "Sensor IoT canggih, algoritma pembelajaran mesin, dan integrasi blockchain menciptakan ekosistem pertanian generasi berikutnya di semua jenis pertanian yang kami dukung.",
         features: [
           {
-            title: "Pertumbuhan Berbasis AI",
-            description: "Pembelajaran mesin mengoptimalkan kondisi pertumbuhan"
+            title: "Pelacakan Blockchain",
+            description: "Transparansi rantai pasok lengkap dari pertanian ke pasar"
           },
           {
-            title: "Pemantauan Waktu Nyata",
-            description: "Pemantauan dan kontrol jarak jauh 24/7"
+            title: "Aset Nyata Tokenisasi",
+            description: "Mengkonversi aset pertanian fisik menjadi investasi digital"
           }
         ]
       }
@@ -100,7 +100,7 @@ export const TabsSection: React.FC<TabsSectionProps> = ({ language }) => {
     ko: {
       security: {
         title: "설계부터 안전",
-        description: "AKAR의 블록체인 기술은 변경 불가능한 기록, 투명한 거래 및 농장 투자의 안전한 소유권을 보장합니다. 모든 토큰은 실제 농업 자산으로 뒷받침됩니다.",
+        description: "AKAR의 블록체인 기술은 변경 불가능한 기록, 투명한 거래 및 농업 투자의 안전한 소유권을 보장합니다. 모든 토큰은 동남아시아 전역의 실제 농업 자산으로 뒷받침됩니다.",
         features: [
           {
             title: "감사된 스마트 계약",
@@ -114,29 +114,29 @@ export const TabsSection: React.FC<TabsSectionProps> = ({ language }) => {
       },
       sustainability: {
         title: "지속 가능한 농업",
-        description: "우리의 컨테이너 농장은 전통적인 농업보다 95% 적은 물을 사용하면서 제곱미터당 최대 300% 더 많은 수확량을 생산하여 진정으로 지속 가능한 식품 생산을 만듭니다.",
+        description: "우리의 농업 프로젝트는 동남아시아 국가들의 다양한 작물 유형에서 높은 수확량을 유지하면서 물을 절약하고, 화학물질 사용을 줄이며, 생물 다양성을 촉진하는 지속 가능한 농업 관행을 구현합니다.",
         features: [
           {
-            title: "농약 제로",
-            description: "깨끗한 성장 환경으로 화학 물질 필요성 제거"
+            title: "자원 보존",
+            description: "물 사용을 최소화하고 토양 퇴화를 방지하는 프로젝트"
           },
           {
-            title: "탄소 네거티브",
-            description: "우리의 운영은 배출하는 것보다 더 많은 탄소를 제거함"
+            title: "기후 스마트 농업",
+            description: "기후 변화 영향에 적응하고 완화하는 기술"
           }
         ]
       },
       technology: {
         title: "최첨단 기술",
-        description: "고급 IoT 센서, 머신 러닝 알고리즘 및 블록체인 통합으로 진정한 차세대 농업 플랫폼을 만듭니다.",
+        description: "고급 IoT 센서, 머신 러닝 알고리즘 및 블록체인 통합은 우리가 지원하는 모든 농업 유형에서 진정한 차세대 농업 생태계를 만듭니다.",
         features: [
           {
-            title: "AI 기반 성장",
-            description: "머신 러닝이 성장 조건을 최적화함"
+            title: "블록체인 추적성",
+            description: "농장에서 시장까지 완전한 공급망 투명성"
           },
           {
-            title: "실시간 모니터링",
-            description: "24/7 원격 모니터링 및 제어"
+            title: "토큰화된 실물 자산",
+            description: "물리적 농업 자산을 디지털 투자로 전환"
           }
         ]
       }
