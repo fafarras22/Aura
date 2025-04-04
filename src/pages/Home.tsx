@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { CallToAction } from "@/components/home/CallToAction";
 import { WhyInvestSection } from "@/components/home/WhyInvestSection";
@@ -10,8 +11,8 @@ import { getMockContainerProjects } from "@/services/mock-data/containerProjects
 import { ContainerProject } from "@/components/containers/ContainerCard";
 import { Helmet } from "react-helmet";
 
-// Update the SupportedLanguage type to include all possible languages
-type SupportedLanguage = 'en' | 'id' | 'ko' | 'th' | 'vi' | 'ms';
+// Update the type definition to match what's accepted by AppHeader
+type SupportedLanguage = 'en' | 'id' | 'ko';
 
 const Home = () => {
   const [language, setLanguage] = useState<SupportedLanguage>('en');
@@ -27,8 +28,7 @@ const Home = () => {
   
   // Handle language selection
   const handleLanguageSelect = (lang: string) => {
-    if (lang === 'en' || lang === 'id' || lang === 'ko' || 
-        lang === 'th' || lang === 'vi' || lang === 'ms') {
+    if (lang === 'en' || lang === 'id' || lang === 'ko') {
       setLanguage(lang as SupportedLanguage);
     } else {
       // Default to English if unsupported language
