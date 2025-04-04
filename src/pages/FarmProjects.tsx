@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useWallet } from "@/context/wallet";
 import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
-import { ContainerProjectsList } from "@/components/farm-projects/ContainerProjectsList";
+import ContainerProjectsList from "@/components/farm-projects/ContainerProjectsList";
 import { ActiveProjects } from "@/components/farm-projects/ActiveProjects";
 import { RewardsTracker } from "@/components/farm-projects/RewardsTracker";
 import { InvestmentHistory } from "@/components/farm-projects/InvestmentHistory";

@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Filter, Sprout, Fish, GrainIcon, PalmTree, ChevronsUpDown, ArrowUpDown, Check } from 'lucide-react';
+import { Filter, Sprout, Fish, Wheat, Palmtree, ChevronsUpDown, ArrowUpDown, Check } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
@@ -15,11 +14,18 @@ import { ContainerProject } from '@/components/containers/ContainerCard';
 import { getMockContainerProjects } from '@/services/mock-data/containerProjects';
 
 interface ContainerProjectsListProps {
+  containerProjects?: ContainerProject[];
+  isWalletConnected?: boolean;
+  onConnectWallet?: () => void;
   isLoading?: boolean;
   showFilters?: boolean;
 }
 
+// The main component
 const ContainerProjectsList: React.FC<ContainerProjectsListProps> = ({ 
+  containerProjects,
+  isWalletConnected,
+  onConnectWallet,
   isLoading = false,
   showFilters = true
 }) => {
@@ -32,10 +38,10 @@ const ContainerProjectsList: React.FC<ContainerProjectsListProps> = ({
   
   useEffect(() => {
     // In a real app, this would fetch data from an API
-    const fetchedProjects = getMockContainerProjects();
+    const fetchedProjects = containerProjects || getMockContainerProjects();
     setProjects(fetchedProjects);
     setFilteredProjects(fetchedProjects);
-  }, []);
+  }, [containerProjects]);
   
   // Filter and sort projects when any filter/sort changes
   useEffect(() => {
@@ -79,9 +85,9 @@ const ContainerProjectsList: React.FC<ContainerProjectsListProps> = ({
       case 'fishery':
         return <Fish className="h-4 w-4" />;
       case 'rice':
-        return <GrainIcon className="h-4 w-4" />;
+        return <Wheat className="h-4 w-4" />;
       case 'palm-oil':
-        return <PalmTree className="h-4 w-4" />;
+        return <Palmtree className="h-4 w-4" />;
       default:
         return <Sprout className="h-4 w-4" />;
     }
@@ -205,8 +211,8 @@ const ContainerProjectsList: React.FC<ContainerProjectsListProps> = ({
                       <CardTitle>{project.name}</CardTitle>
                     </div>
                     <Badge variant="outline" className="flex items-center gap-1">
-                      {getTypeIcon(project.type)}
-                      {project.type.charAt(0).toUpperCase() + project.type.slice(1)}
+                      {getTypeIcon(project.type || 'container')}
+                      {project.type ? project.type.charAt(0).toUpperCase() + project.type.slice(1) : 'Container'}
                     </Badge>
                   </div>
                   <CardDescription>{project.location}</CardDescription>
@@ -257,4 +263,5 @@ const ContainerProjectsList: React.FC<ContainerProjectsListProps> = ({
   );
 };
 
+// Export the component
 export default ContainerProjectsList;
