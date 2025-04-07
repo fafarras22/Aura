@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
 import { ContainerProject } from "@/components/containers/ContainerCard";
 import { Helmet } from "react-helmet";
+import { InvestmentDisclaimer } from "@/components/home/InvestmentDisclaimer";
 
 // Update the type definition to match what's accepted by HomeHeader
 type SupportedLanguage = 'en' | 'id' | 'ko';
@@ -123,6 +124,9 @@ const Home = () => {
         
         {/* Testimonials Section */}
         <Testimonials />
+        
+        {/* Investment Disclaimer Section */}
+        <InvestmentDisclaimer />
       </main>
       
       {/* Footer Section */}

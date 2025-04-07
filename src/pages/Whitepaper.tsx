@@ -1,779 +1,546 @@
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
+import { Helmet } from "react-helmet";
+import { AppHeader } from "@/components/layout/AppHeader";
+import { Footer } from "@/components/layout/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Download, FileText, BarChart3, Leaf, SproutIcon, UserCircle, Globe, Lock, Wallet, Blocks, PieChart } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from "@/components/ui/progress";
-import { ScrollArea } from "@/components/ui/scroll-area"; 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { FileText, Download, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Whitepaper = () => {
-  const [activeSection, setActiveSection] = useState('introduction');
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  const handleSectionClick = (section: string) => {
-    setActiveSection(section);
-    const element = document.getElementById(section);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-  
-  const sections = [
-    { id: 'introduction', name: 'Introduction' },
-    { id: 'problem', name: 'Problem Statement' },
-    { id: 'solution', name: 'AKAR Solution' },
-    { id: 'technology', name: 'Technology' },
-    { id: 'tokenomics', name: 'Tokenomics' },
-    { id: 'roadmap', name: 'Roadmap' },
-    { id: 'team', name: 'Team & Advisors' },
-    { id: 'legal', name: 'Legal & Compliance' }
-  ];
-  
+  const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+  const navigate = useNavigate();
+
   return (
-    <div className="container mx-auto py-12 px-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="sticky top-20">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-xl flex items-center gap-2">
-                    <FileText className="w-5 h-5" />
-                    AKAR Whitepaper
-                  </CardTitle>
-                  <CardDescription>v1.0.4 - Updated April 2024</CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="relative">
-                    <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input 
-                      placeholder="Search whitepaper..." 
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-8"
-                    />
-                  </div>
-                </CardContent>
-                <CardContent className="space-y-2">
-                  <div className="text-sm font-medium">Table of Contents</div>
-                  <ScrollArea className="h-[280px] pr-4">
-                    <div className="space-y-1">
-                      {sections.map((section) => (
-                        <Button
-                          key={section.id}
-                          variant={activeSection === section.id ? "default" : "ghost"}
-                          className="w-full justify-start text-sm"
-                          onClick={() => handleSectionClick(section.id)}
-                        >
-                          {section.name}
-                        </Button>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full gap-2">
-                    <Download className="w-4 h-4" />
-                    Download PDF
-                  </Button>
-                </CardFooter>
-              </Card>
-              
-              <Card className="mt-6">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Reading Progress</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Progress value={68} className="h-2" />
-                  <p className="text-sm text-muted-foreground">
-                    You've read 68% of the whitepaper
-                  </p>
-                </CardContent>
-              </Card>
+    <>
+      <Helmet>
+        <title>AKAR Farm Whitepaper | Container Farming Tokenization</title>
+        <meta 
+          name="description" 
+          content="AKAR Farm whitepaper - Learn about our tokenized container farming ecosystem, $AKR token economics, and sustainable agriculture investment model." 
+        />
+      </Helmet>
+      
+      <AppHeader 
+        setShowWalletModal={setIsWalletModalOpen}
+        language={language}
+        setLanguage={setLanguage}
+      />
+      
+      <div className="pt-16 pb-16">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+              <h1 className="text-4xl font-bold mb-2">AKAR Farm Whitepaper</h1>
+              <p className="text-muted-foreground">
+                Technical documentation and conceptual framework for AKAR Farm's tokenized container farming ecosystem
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" className="gap-2">
+                <Download className="h-4 w-4" /> 
+                Download PDF
+              </Button>
             </div>
           </div>
           
-          {/* Main Content */}
-          <div className="lg:col-span-3 space-y-12">
-            <div className="flex items-center justify-between">
-              <h1 className="text-4xl font-bold">AKAR Whitepaper</h1>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="text-xs">v1.0.4</Badge>
-                <Button size="sm" variant="outline" className="gap-1">
-                  <Download className="w-4 h-4" />
-                  <span className="hidden sm:inline">Download</span>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Sidebar Navigation */}
+            <div className="md:col-span-1">
+              <Card className="sticky top-24">
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-4">Contents</h3>
+                  <nav className="space-y-2">
+                    <a href="#introduction" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Introduction</a>
+                    <a href="#market-analysis" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Market Analysis</a>
+                    <a href="#container-farming" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Container Farming Technology</a>
+                    <a href="#tokenomics" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Tokenomics</a>
+                    <a href="#staking" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">stAKR Staking Model</a>
+                    <a href="#iot" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">IoT & Monitoring</a>
+                    <a href="#roadmap" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Roadmap</a>
+                    <a href="#governance" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Governance</a>
+                    <a href="#team" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Team & Advisors</a>
+                    <a href="#legal" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Legal & Compliance</a>
+                  </nav>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* Main Content */}
+            <div className="md:col-span-3">
+              <Card className="mb-8" id="introduction">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">1</span>
+                    </div>
+                    <CardTitle>Introduction to AKAR Farm</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <h3 className="text-lg font-medium">Vision & Mission</h3>
+                  <p>
+                    AKAR Farm aims to revolutionize urban agriculture in Jakarta and across Southeast Asia through advanced container farming technology. Our mission is to increase food security, reduce carbon footprint, and provide sustainable investment opportunities through the tokenization of productive agricultural assets.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">The Problem</h3>
+                  <p>
+                    Indonesia faces significant challenges in food security, with limited arable land, increasing urbanization, and vulnerability to climate change. Traditional agricultural investments are capital-intensive, illiquid, and often inaccessible to average investors. Meanwhile, conventional farming methods consume excessive water and land resources while contributing to environmental degradation.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">AKAR's Solution</h3>
+                  <p>
+                    AKAR Farm introduces a novel approach by combining three innovative elements:
+                  </p>
+                  <ol className="list-decimal list-inside space-y-2 pl-4">
+                    <li><strong>High-tech container farms:</strong> Optimized for growing high-value crops in urban environments using 95% less water than traditional farming</li>
+                    <li><strong>IoT sensor network:</strong> Providing real-time monitoring and automated management of growing conditions</li>
+                    <li><strong>Blockchain-based tokenization:</strong> Enabling fractional ownership and liquidity through $AKR tokens and stAKR staking</li>
+                  </ol>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-8" id="market-analysis">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">2</span>
+                    </div>
+                    <CardTitle>Market Analysis</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <h3 className="text-lg font-medium">Indonesian Agricultural Market</h3>
+                  <p>
+                    Indonesia's agricultural sector contributed approximately 13.7% to the country's GDP in 2022, employing around 29% of the workforce. However, the sector faces significant challenges including limited arable land, inefficient supply chains, and vulnerability to climate change. Jakarta, with its population of over 10 million, imports the majority of its fresh produce from distant regions, resulting in high costs, food waste, and carbon emissions.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Container Farming Market Growth</h3>
+                  <p>
+                    The global vertical farming market size was valued at USD 4.34 billion in 2021 and is projected to grow at a CAGR of 25.5% from 2022 to 2030. Container farming, as a subset of this market, is gaining significant traction due to its modularity, scalability, and lower initial investment compared to large-scale vertical farms. In Southeast Asia, the market is expected to grow at an even faster rate due to increasing urbanization, limited agricultural land, and government initiatives supporting agritech innovation.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Target Market</h3>
+                  <p>
+                    AKAR Farm targets two primary market segments:
+                  </p>
+                  <ol className="list-decimal list-inside space-y-2 pl-4">
+                    <li><strong>B2B customers:</strong> Hotels, restaurants, supermarkets, and food processing companies seeking consistent supply of high-quality, locally grown produce</li>
+                    <li><strong>Retail investors:</strong> Individuals looking for alternative investment opportunities in sustainable agriculture with competitive returns and liquid assets through tokenization</li>
+                  </ol>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-8" id="container-farming">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">3</span>
+                    </div>
+                    <CardTitle>Container Farming Technology</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <h3 className="text-lg font-medium">Infrastructure Overview</h3>
+                  <p>
+                    AKAR Farm utilizes repurposed shipping containers converted into highly efficient hydroponic growing environments. Each 40-foot container can produce the equivalent of 2-3 acres of traditional farmland. The containers are modular, stackable, and can be placed in urban locations close to points of consumption.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Growing Systems</h3>
+                  <p>
+                    Our containers employ advanced nutrient film technique (NFT) and deep water culture (DWC) hydroponic systems, optimized for different crop types. LED lighting systems are calibrated to provide specific light spectrums for each crop variety, maximizing growth rates and nutritional content while minimizing energy usage.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Crop Selection & Rotation</h3>
+                  <p>
+                    AKAR Farm focuses on high-value crops with short growing cycles, including:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 pl-4">
+                    <li>Lettuce varieties (15-21 day cycle)</li>
+                    <li>Kale and microgreens (10-14 day cycle)</li>
+                    <li>Herbs such as basil, mint, and cilantro (21-28 day cycle)</li>
+                    <li>Strawberries (recurring harvest cycles)</li>
+                    <li>Specialty greens for the premium restaurant market</li>
+                  </ul>
+                  
+                  <p className="mt-4">
+                    These crops are selected based on market demand, profitability, and suitability for hydroponic container cultivation. Our crop rotation strategy ensures continuous production and optimization of container resources throughout the year.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-8" id="tokenomics">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">4</span>
+                    </div>
+                    <CardTitle>$AKR Tokenomics</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <h3 className="text-lg font-medium">Token Overview</h3>
+                  <p>
+                    $AKR is the native utility token of the AKAR Farm ecosystem. It is used for governance, investment in container farming projects, and as a medium of exchange within the platform. The total supply of $AKR tokens is capped at 100,000,000.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Token Allocation</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-medium text-sm mb-1">Initial Distribution</h4>
+                      <ul className="text-sm space-y-1">
+                        <li>• Public Sale: 40%</li>
+                        <li>• Team & Advisors: 15% (3-year vesting)</li>
+                        <li>• Ecosystem Growth: 20%</li>
+                        <li>• Liquidity Provision: 10%</li>
+                        <li>• Treasury: 10%</li>
+                        <li>• Farming Rewards: 5%</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-sm mb-1">Token Economics</h4>
+                      <ul className="text-sm space-y-1">
+                        <li>• Initial Price: $1.00 USD</li>
+                        <li>• Listing Price: $1.20 USD</li>
+                        <li>• Emission Schedule: 4-year gradual release</li>
+                        <li>• Burn Mechanism: 2% of profits used for token burns</li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-medium">Token Utility</h3>
+                  <ul className="list-disc list-inside space-y-1 pl-4">
+                    <li>Purchase of container farm shares</li>
+                    <li>Staking for stAKR to earn yields from farm operations</li>
+                    <li>Governance voting on platform decisions</li>
+                    <li>Access to premium features (advanced analytics, priority access to new farms)</li>
+                    <li>Discounts on produce purchases</li>
+                  </ul>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-8" id="staking">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">5</span>
+                    </div>
+                    <CardTitle>stAKR Staking Model</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <h3 className="text-lg font-medium">Staking Mechanism</h3>
+                  <p>
+                    Holders of $AKR tokens can stake their tokens in specific container farming projects to receive stAKR tokens. Each container has its own stAKR token variant (e.g., stAKR-C001 for Container #001), representing fractional ownership in that specific container's operations and profits.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Revenue Distribution</h3>
+                  <p>
+                    The container farm generates revenue through the sale of produce. This revenue is distributed as follows:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 pl-4">
+                    <li>70% to stAKR holders proportional to their stake</li>
+                    <li>20% for operational expenses (energy, nutrients, maintenance)</li>
+                    <li>8% for platform development and expansion</li>
+                    <li>2% for $AKR token burns</li>
+                  </ul>
+                  
+                  <h3 className="text-lg font-medium">Yield Generation</h3>
+                  <p>
+                    The projected annual yield for stAKR holders ranges from 12-18%, depending on crop selection, market conditions, and operational efficiency. Yields are distributed monthly based on actual container performance, providing a stable passive income stream for investors.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Staking Periods</h3>
+                  <p>
+                    Investors can choose from different staking periods:
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                    <div className="border p-4 rounded-lg">
+                      <h4 className="font-medium">Flexible</h4>
+                      <p className="text-sm text-muted-foreground">No lock-up period</p>
+                      <p className="text-sm">Base yield rate</p>
+                    </div>
+                    <div className="border p-4 rounded-lg">
+                      <h4 className="font-medium">3-Month Lock</h4>
+                      <p className="text-sm text-muted-foreground">90-day commitment</p>
+                      <p className="text-sm">Base yield + 2%</p>
+                    </div>
+                    <div className="border p-4 rounded-lg">
+                      <h4 className="font-medium">12-Month Lock</h4>
+                      <p className="text-sm text-muted-foreground">365-day commitment</p>
+                      <p className="text-sm">Base yield + 5%</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-8" id="iot">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">6</span>
+                    </div>
+                    <CardTitle>IoT & Monitoring System</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <h3 className="text-lg font-medium">Sensor Network</h3>
+                  <p>
+                    Each AKAR container farm is equipped with an extensive network of IoT sensors monitoring critical growing parameters:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 pl-4">
+                    <li>Temperature and humidity sensors</li>
+                    <li>CO2 and O2 level monitors</li>
+                    <li>Water level, flow rate, and temperature sensors</li>
+                    <li>pH and electrical conductivity (EC) sensors</li>
+                    <li>Total dissolved solids (TDS) meters</li>
+                    <li>Light intensity and spectrum analyzers</li>
+                    <li>Energy consumption monitors</li>
+                  </ul>
+                  
+                  <h3 className="text-lg font-medium">Data Collection & Analysis</h3>
+                  <p>
+                    Sensor data is collected in real-time and stored on a secure cloud platform. Advanced analytics algorithms process this data to:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 pl-4">
+                    <li>Optimize growing conditions for each crop variety</li>
+                    <li>Identify potential issues before they affect crop health</li>
+                    <li>Calculate exact nutrient requirements based on plant growth stage</li>
+                    <li>Reduce energy consumption through intelligent lighting and climate control</li>
+                    <li>Predict harvest dates and yields with increasing accuracy</li>
+                  </ul>
+                  
+                  <h3 className="text-lg font-medium">Investor Dashboard</h3>
+                  <p>
+                    stAKR holders gain access to a comprehensive dashboard displaying:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 pl-4">
+                    <li>Live sensor data from their staked containers</li>
+                    <li>Crop growth progress and projected harvest dates</li>
+                    <li>Historical performance metrics and yield data</li>
+                    <li>Financial performance including revenue, expenses, and projected returns</li>
+                    <li>Marketplace data for buying/selling stAKR positions</li>
+                  </ul>
+                  
+                  <p className="mt-4">
+                    This unprecedented level of transparency ensures investors can monitor their investment in real-time, building trust in the AKAR farming operations.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-8" id="roadmap">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">7</span>
+                    </div>
+                    <CardTitle>Project Roadmap</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="text-lg font-medium mb-2">Phase 1: Foundation (Q2-Q3 2023)</h3>
+                      <ul className="list-disc list-inside space-y-1 pl-4">
+                        <li>Complete pilot container farm in Jakarta</li>
+                        <li>Develop and test IoT monitoring system</li>
+                        <li>Establish initial B2B partnerships</li>
+                        <li>$AKR token development and audit</li>
+                        <li>Private investment round</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-medium mb-2">Phase 2: Launch (Q4 2023)</h3>
+                      <ul className="list-disc list-inside space-y-1 pl-4">
+                        <li>$AKR token public sale</li>
+                        <li>Platform beta launch</li>
+                        <li>First 5 container farms operational</li>
+                        <li>Initial stAKR staking program</li>
+                        <li>Exchange listings</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-medium mb-2">Phase 3: Growth (2024)</h3>
+                      <ul className="list-disc list-inside space-y-1 pl-4">
+                        <li>Expand to 25 container farms in Jakarta</li>
+                        <li>Launch secondary marketplace for stAKR tokens</li>
+                        <li>Develop governance protocol</li>
+                        <li>Implement AI-driven crop optimization</li>
+                        <li>Expand crop varieties</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-medium mb-2">Phase 4: Expansion (2025-2026)</h3>
+                      <ul className="list-disc list-inside space-y-1 pl-4">
+                        <li>Regional expansion to Singapore and Malaysia</li>
+                        <li>100+ container farm network</li>
+                        <li>Integrated wholesale marketplace</li>
+                        <li>Carbon credit generation program</li>
+                        <li>Research partnerships with universities</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-8" id="governance">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">8</span>
+                    </div>
+                    <CardTitle>Governance Model</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <h3 className="text-lg font-medium">Decentralized Decision Making</h3>
+                  <p>
+                    The AKAR ecosystem employs a hybrid governance model that balances operational efficiency with stakeholder input. $AKR holders can participate in governance through:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 pl-4">
+                    <li>Voting on new container farm locations</li>
+                    <li>Approving major platform upgrades</li>
+                    <li>Selecting crop varieties for new containers</li>
+                    <li>Adjusting yield distribution parameters</li>
+                    <li>Proposing and voting on improvement proposals</li>
+                  </ul>
+                  
+                  <h3 className="text-lg font-medium">Voting Mechanism</h3>
+                  <p>
+                    Voting power is determined by $AKR holdings using a quadratic voting system that prevents excessive influence by large token holders. Both $AKR and stAKR tokens grant voting rights, with stAKR providing additional weight for votes directly related to their specific container.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Operational Management</h3>
+                  <p>
+                    Daily operations are managed by the AKAR team of agricultural and technical experts. The team's performance is evaluated quarterly through transparent metrics visible to all token holders, ensuring accountability and alignment with investor interests.
+                  </p>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-8" id="team">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">9</span>
+                    </div>
+                    <CardTitle>Team & Advisors</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <h3 className="text-lg font-medium">Core Team</h3>
+                  <p>
+                    The AKAR Farm team combines expertise in agriculture, technology, and finance:
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div className="flex flex-col">
+                      <h4 className="font-medium">Dr. Adi Suryanto</h4>
+                      <span className="text-sm text-muted-foreground">CEO & Co-Founder</span>
+                      <p className="text-sm mt-1">
+                        Former agricultural research director with 15+ years of experience in hydroponic systems and crop science. PhD in Agricultural Engineering.
+                      </p>
+                    </div>
+                    <div className="flex flex-col">
+                      <h4 className="font-medium">Indra Wijaya</h4>
+                      <span className="text-sm text-muted-foreground">CTO & Co-Founder</span>
+                      <p className="text-sm mt-1">
+                        Software architect specializing in IoT systems. Previously led engineering teams at multiple successful tech startups in Southeast Asia.
+                      </p>
+                    </div>
+                    <div className="flex flex-col">
+                      <h4 className="font-medium">Maria Chen</h4>
+                      <span className="text-sm text-muted-foreground">CFO</span>
+                      <p className="text-sm mt-1">
+                        Financial strategist with experience in agricultural commodities trading and blockchain-based financial products. MBA from INSEAD.
+                      </p>
+                    </div>
+                    <div className="flex flex-col">
+                      <h4 className="font-medium">Alex Thomson</h4>
+                      <span className="text-sm text-muted-foreground">Head of Agriculture</span>
+                      <p className="text-sm mt-1">
+                        Vertical farming specialist with experience managing large-scale hydroponic operations across Asia Pacific. Expert in crop optimization.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-medium mt-6">Advisors</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div className="flex flex-col">
+                      <h4 className="font-medium">Prof. Eko Prasetyo</h4>
+                      <span className="text-sm text-muted-foreground">Agricultural Science Advisor</span>
+                      <p className="text-sm mt-1">
+                        Leading researcher in hydroponic crop optimization at Institut Pertanian Bogor. Author of numerous papers on controlled environment agriculture.
+                      </p>
+                    </div>
+                    <div className="flex flex-col">
+                      <h4 className="font-medium">Sarah Johnson</h4>
+                      <span className="text-sm text-muted-foreground">Blockchain & Tokenization Advisor</span>
+                      <p className="text-sm mt-1">
+                        Blockchain architect specializing in asset tokenization. Previously led projects tokenizing real estate and commodities.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-8" id="legal">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <span className="text-primary font-medium">10</span>
+                    </div>
+                    <CardTitle>Legal & Compliance</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <h3 className="text-lg font-medium">Regulatory Framework</h3>
+                  <p>
+                    AKAR Farm operates within the regulatory frameworks of Indonesia and Singapore. The project has obtained all necessary permits for agricultural operations in Jakarta and complies with relevant securities regulations for the issuance of tokenized assets.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Risk Disclosure</h3>
+                  <p>
+                    Investment in $AKR tokens and stAKR staking involves various risks, including but not limited to:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 pl-4">
+                    <li>Agricultural operational risks (crop failure, disease, etc.)</li>
+                    <li>Market risks (produce price fluctuations)</li>
+                    <li>Regulatory risks (changes in securities or agricultural regulations)</li>
+                    <li>Technology risks (sensor failures, smart contract vulnerabilities)</li>
+                    <li>Token value volatility</li>
+                  </ul>
+                  <p className="mt-2">
+                    Detailed risk factors are provided in the investment documentation. Investors are advised to carefully consider these risks before investing.
+                  </p>
+                  
+                  <h3 className="text-lg font-medium">Privacy & Data Protection</h3>
+                  <p>
+                    AKAR Farm is committed to protecting user data and privacy. The platform complies with GDPR and relevant Indonesian data protection regulations. All sensor data is anonymized when shared publicly, and personal information is handled according to our Privacy Policy.
+                  </p>
+                  
+                  <div className="bg-muted p-4 rounded-lg mt-6">
+                    <p className="text-sm">
+                      This whitepaper is provided for informational purposes only and does not constitute an offer to sell or solicitation of an offer to buy any securities or tokens. Potential investors should consult their financial, legal, and tax advisors before making any investment decisions.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <div className="flex justify-center mt-12">
+                <Button onClick={() => navigate('/connect-wallet')} size="lg" className="gap-2">
+                  Connect Wallet and Start Investing <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
             </div>
-                    
-            <section id="introduction" className="space-y-6">
-              <h2 className="text-3xl font-bold border-b pb-2">Introduction</h2>
-              <div className="prose dark:prose-invert max-w-none">
-                <p>
-                  AKAR is revolutionizing sustainable agriculture in Indonesia and Southeast Asia through the fusion of advanced container farming technology and blockchain innovation. Our mission is to ensure food security, promote sustainable farming practices, and create accessible investment opportunities in agriculture.
-                </p>
-                
-                <p>
-                  This whitepaper outlines AKAR's vision, technology, token economy, and roadmap. It serves as the definitive resource for understanding how AKAR is transforming the agricultural sector through technology-driven solutions while creating a transparent, efficient marketplace for agricultural assets through blockchain tokenization.
-                </p>
-                
-                <div className="py-4">
-                  <img 
-                    src="/lovable-uploads/ff02fd5a-28c4-466b-99d9-ea6213beb2c5.png" 
-                    alt="AKAR Container Farm" 
-                    className="rounded-xl w-full object-cover h-64"
-                  />
-                </div>
-                
-                <h3 className="text-xl font-semibold">Vision & Mission</h3>
-                <p>
-                  Our vision is to create a sustainable agricultural ecosystem that leverages cutting-edge technology to address food security challenges while providing equitable access to agricultural investments through blockchain technology.
-                </p>
-                
-                <p>
-                  AKAR's mission is to:
-                </p>
-                
-                <ul>
-                  <li>Deploy smart container farms across Indonesia to increase food production in urban and remote areas</li>
-                  <li>Reduce water usage and environmental impact through precision agriculture technology</li>
-                  <li>Create a transparent investment platform for agricultural assets through tokenization</li>
-                  <li>Empower local communities through knowledge transfer and economic opportunity</li>
-                </ul>
-              </div>
-            </section>
-            
-            <section id="problem" className="space-y-6">
-              <h2 className="text-3xl font-bold border-b pb-2">Problem Statement</h2>
-              <div className="prose dark:prose-invert max-w-none">
-                <h3 className="text-xl font-semibold">Food Security Challenges</h3>
-                <p>
-                  Indonesia and many Southeast Asian countries face significant food security challenges due to:
-                </p>
-                
-                <ul>
-                  <li>Limited arable land and increasing urbanization</li>
-                  <li>Vulnerability to climate change and extreme weather events</li>
-                  <li>Complex archipelagic geography that complicates distribution</li>
-                  <li>Growing population and increasing food demand</li>
-                </ul>
-                
-                <h3 className="text-xl font-semibold">Agricultural Investment Barriers</h3>
-                <p>
-                  Traditional agricultural investments are hindered by:
-                </p>
-                
-                <ul>
-                  <li>High capital requirements creating barriers to entry</li>
-                  <li>Lack of transparency in farm operations and performance</li>
-                  <li>Illiquidity of agricultural assets</li>
-                  <li>Limited access to farming expertise and technology</li>
-                </ul>
-                
-                <div className="py-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-muted rounded-lg p-6 text-center">
-                      <h4 className="text-2xl font-bold text-primary mb-2">60%</h4>
-                      <p className="text-sm">Of Indonesia's population will live in urban areas by 2025</p>
-                    </div>
-                    <div className="bg-muted rounded-lg p-6 text-center">
-                      <h4 className="text-2xl font-bold text-primary mb-2">40%</h4>
-                      <p className="text-sm">Of agricultural production is lost due to inefficient supply chains</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-            
-            <section id="solution" className="space-y-6">
-              <h2 className="text-3xl font-bold border-b pb-2">AKAR Solution</h2>
-              <div className="prose dark:prose-invert max-w-none">
-                <p>
-                  AKAR provides a comprehensive solution that combines advanced container farming technology with blockchain-powered tokenization to address both food security challenges and investment barriers.
-                </p>
-                
-                <h3 className="text-xl font-semibold">Container Farming Platform</h3>
-                <div className="grid md:grid-cols-2 gap-6 my-4">
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <Leaf className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-medium">Resource Efficiency</h4>
-                        <p className="text-sm">Uses 95% less water than traditional farming with higher crop yields</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <Globe className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-medium">Location Flexibility</h4>
-                        <p className="text-sm">Deployable in urban centers and remote islands, addressing Indonesia's geographical challenges</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <SproutIcon className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-medium">Year-Round Production</h4>
-                        <p className="text-sm">Climate-controlled environment enables consistent harvests regardless of external conditions</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <BarChart3 className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-medium">Data-Driven Farming</h4>
-                        <p className="text-sm">IoT sensors and AI optimize growing conditions and predict maintenance needs</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <h3 className="text-xl font-semibold">Blockchain Tokenization</h3>
-                <p>
-                  AKAR's tokenization platform transforms how agricultural assets are owned and traded:
-                </p>
-                
-                <ul>
-                  <li>Fractional ownership lowers barriers to entry for agricultural investments</li>
-                  <li>Transparent performance metrics and operations data</li>
-                  <li>Liquidity through secondary market trading</li>
-                  <li>Automated distribution of farming revenues through smart contracts</li>
-                </ul>
-                
-                <div className="py-4">
-                  <img 
-                    src="/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png" 
-                    alt="AKAR Tokenization Platform" 
-                    className="rounded-xl w-full object-cover h-64"
-                  />
-                </div>
-              </div>
-            </section>
-            
-            <section id="technology" className="space-y-6">
-              <h2 className="text-3xl font-bold border-b pb-2">Technology</h2>
-              <div className="prose dark:prose-invert max-w-none">
-                <h3 className="text-xl font-semibold">Smart Container Farm Technology</h3>
-                <p>
-                  AKAR's container farms integrate multiple technologies to create optimal growing environments:
-                </p>
-                
-                <div className="grid md:grid-cols-3 gap-4 my-6">
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base">Hydroponic Systems</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm">Nutrient film technique and deep water culture systems maximize space utilization and nutrient efficiency.</p>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base">LED Lighting</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm">Customized light spectrums for different crops optimize photosynthesis while minimizing energy usage.</p>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base">Climate Control</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm">Precise temperature, humidity, and CO₂ management systems create ideal growing conditions year-round.</p>
-                    </CardContent>
-                  </Card>
-                </div>
-                
-                <h3 className="text-xl font-semibold">IoT & Data Analytics</h3>
-                <p>
-                  Our proprietary sensor network and data platform enable:
-                </p>
-                
-                <ul>
-                  <li>Real-time monitoring of all environmental parameters</li>
-                  <li>Predictive maintenance to minimize downtime</li>
-                  <li>Machine learning algorithms that continuously improve growing recipes</li>
-                  <li>Remote management capabilities via mobile and web applications</li>
-                </ul>
-                
-                <h3 className="text-xl font-semibold">Blockchain Infrastructure</h3>
-                <p>
-                  AKAR's blockchain technology is built on Polygon, a layer-2 scaling solution for Ethereum, providing:
-                </p>
-                
-                <ul>
-                  <li>Low transaction costs and high throughput for efficient operations</li>
-                  <li>ERC-20 standard compatibility for broad market integration</li>
-                  <li>Smart contracts for automated revenue distribution and governance</li>
-                  <li>Immutable record-keeping for transparent farm performance tracking</li>
-                </ul>
-                
-                <div className="bg-muted p-6 rounded-lg my-4">
-                  <h4 className="text-lg font-medium mb-2">Technical Architecture</h4>
-                  <p className="text-sm mb-4">
-                    AKAR's technology stack integrates farm operations with blockchain infrastructure seamlessly:
-                  </p>
-                  <img 
-                    src="/lovable-uploads/ae9d74be-8813-4c4b-b946-cf1190243702.png" 
-                    alt="AKAR Technical Architecture" 
-                    className="rounded-lg w-full object-cover h-48 mb-4"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    AKAR's platform connects sensor data from container farms to the user-facing applications and blockchain layer, creating a fully integrated system.
-                  </p>
-                </div>
-              </div>
-            </section>
-            
-            <section id="tokenomics" className="space-y-6">
-              <h2 className="text-3xl font-bold border-b pb-2">Tokenomics</h2>
-              <div className="prose dark:prose-invert max-w-none">
-                <h3 className="text-xl font-semibold">Token Utility</h3>
-                <p>
-                  The $AKR token serves multiple functions within the AKAR ecosystem:
-                </p>
-                
-                <div className="grid md:grid-cols-2 gap-6 my-6">
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <PieChart className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-medium">Ownership Representation</h4>
-                        <p className="text-sm">Tokens represent fractional ownership of farm assets and entitle holders to proportional revenue</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <Wallet className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-medium">Governance Rights</h4>
-                        <p className="text-sm">Token holders can participate in decisions regarding farm operations and ecosystem development</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <Blocks className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-medium">Liquidity Provision</h4>
-                        <p className="text-sm">Staking tokens in liquidity pools earns additional rewards while supporting token liquidity</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <Lock className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-medium">Priority Access</h4>
-                        <p className="text-sm">Token holders get privileged access to new farm launches and investment opportunities</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <h3 className="text-xl font-semibold">Token Distribution</h3>
-                <p>
-                  The total supply of $AKR tokens is fixed at 100,000,000, with the following allocation:
-                </p>
-                
-                <div className="overflow-x-auto my-4">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Allocation</TableHead>
-                        <TableHead>Percentage</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Vesting Period</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>Public Sale</TableCell>
-                        <TableCell>30%</TableCell>
-                        <TableCell>30,000,000 $AKR</TableCell>
-                        <TableCell>None</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Farm Development</TableCell>
-                        <TableCell>25%</TableCell>
-                        <TableCell>25,000,000 $AKR</TableCell>
-                        <TableCell>25% at TGE, 25% every 6 months</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Team & Advisors</TableCell>
-                        <TableCell>15%</TableCell>
-                        <TableCell>15,000,000 $AKR</TableCell>
-                        <TableCell>1-year cliff, then 25% every 6 months</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Ecosystem Growth</TableCell>
-                        <TableCell>15%</TableCell>
-                        <TableCell>15,000,000 $AKR</TableCell>
-                        <TableCell>10% at TGE, then 15% quarterly</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Community Rewards</TableCell>
-                        <TableCell>10%</TableCell>
-                        <TableCell>10,000,000 $AKR</TableCell>
-                        <TableCell>Released gradually over 3 years</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Liquidity Pool</TableCell>
-                        <TableCell>5%</TableCell>
-                        <TableCell>5,000,000 $AKR</TableCell>
-                        <TableCell>Locked for 2 years</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-                
-                <div className="py-4">
-                  <h4 className="text-lg font-medium mb-4">Token Utility Flow</h4>
-                  <img 
-                    src="/lovable-uploads/e60ccc9b-594d-461b-9ef9-2b157e19b0a1.png" 
-                    alt="AKAR Token Flow" 
-                    className="rounded-xl w-full max-h-80 object-contain bg-muted p-4"
-                  />
-                </div>
-              </div>
-            </section>
-            
-            <section id="roadmap" className="space-y-6">
-              <h2 className="text-3xl font-bold border-b pb-2">Roadmap</h2>
-              <div className="prose dark:prose-invert max-w-none">
-                <p>
-                  AKAR's development is planned across multiple phases to ensure steady growth and technological advancement:
-                </p>
-                
-                <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-1/2 before:h-full before:w-0.5 before:bg-border py-6 pl-8">
-                  <div className="relative">
-                    <div className="absolute left-0 top-0 -translate-x-full -mt-0.5 mr-4 bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center">Q1</div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-bold">Phase 1: Foundation (2023 Q1-Q2)</h3>
-                      <ul className="space-y-2">
-                        <li className="flex items-center gap-2">
-                          <Badge variant="success">Completed</Badge>
-                          <span>Initial container farm prototypes and testing</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge variant="success">Completed</Badge>
-                          <span>Core team formation and advisory board establishment</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge variant="success">Completed</Badge>
-                          <span>Proof of concept for blockchain integration</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge variant="success">Completed</Badge>
-                          <span>Seed funding secured</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  
-                  <div className="relative">
-                    <div className="absolute left-0 top-0 -translate-x-full -mt-0.5 mr-4 bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center">Q3</div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-bold">Phase 2: Development (2023 Q3-Q4)</h3>
-                      <ul className="space-y-2">
-                        <li className="flex items-center gap-2">
-                          <Badge variant="success">Completed</Badge>
-                          <span>Jakarta pilot container farm deployment</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge variant="success">Completed</Badge>
-                          <span>Farm management system beta release</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge variant="success">Completed</Badge>
-                          <span>Smart contract development and auditing</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge>In Progress</Badge>
-                          <span>Tokenization platform MVP development</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  
-                  <div className="relative">
-                    <div className="absolute left-0 top-0 -translate-x-full -mt-0.5 mr-4 bg-muted text-primary rounded-full w-10 h-10 flex items-center justify-center">Q1</div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-bold">Phase 3: Expansion (2024 Q1-Q2)</h3>
-                      <ul className="space-y-2">
-                        <li className="flex items-center gap-2">
-                          <Badge>Planned</Badge>
-                          <span>Private token sale for early investors</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge>Planned</Badge>
-                          <span>Expansion to 5 major Indonesian cities</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge>Planned</Badge>
-                          <span>Full tokenization platform launch</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge>Planned</Badge>
-                          <span>Mobile application release</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  
-                  <div className="relative">
-                    <div className="absolute left-0 top-0 -translate-x-full -mt-0.5 mr-4 bg-muted text-primary rounded-full w-10 h-10 flex items-center justify-center">Q3</div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-bold">Phase 4: Growth & Sustainability (2024 Q3-2025)</h3>
-                      <ul className="space-y-2">
-                        <li className="flex items-center gap-2">
-                          <Badge>Planned</Badge>
-                          <span>Public token offering</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge>Planned</Badge>
-                          <span>Regional expansion to Singapore, Malaysia and Vietnam</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge>Planned</Badge>
-                          <span>Advanced AI farming algorithms deployment</span>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Badge>Planned</Badge>
-                          <span>Decentralized governance implementation</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-            
-            <section id="team" className="space-y-6">
-              <h2 className="text-3xl font-bold border-b pb-2">Team & Advisors</h2>
-              <div className="prose dark:prose-invert max-w-none">
-                <p>
-                  AKAR brings together experts in agriculture, technology, and blockchain to create a truly innovative platform:
-                </p>
-                
-                <h3 className="text-xl font-semibold">Core Team</h3>
-                <div className="grid md:grid-cols-3 gap-6 my-6">
-                  <Card>
-                    <CardHeader className="text-center">
-                      <div className="flex justify-center mb-2">
-                        <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
-                          <UserCircle className="w-12 h-12 text-muted-foreground" />
-                        </div>
-                      </div>
-                      <CardTitle>Farras Rahman</CardTitle>
-                      <CardDescription>Founder & CEO</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-center text-sm">
-                      <p>Former AgTech consultant with 10+ years experience in sustainable agriculture projects across Southeast Asia.</p>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="text-center">
-                      <div className="flex justify-center mb-2">
-                        <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
-                          <UserCircle className="w-12 h-12 text-muted-foreground" />
-                        </div>
-                      </div>
-                      <CardTitle>Rani Wijaya</CardTitle>
-                      <CardDescription>CTO</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-center text-sm">
-                      <p>Blockchain developer and IoT specialist with previous experience at major Indonesian tech companies.</p>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="text-center">
-                      <div className="flex justify-center mb-2">
-                        <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
-                          <UserCircle className="w-12 h-12 text-muted-foreground" />
-                        </div>
-                      </div>
-                      <CardTitle>Dr. Bambang Suryanto</CardTitle>
-                      <CardDescription>Chief Agricultural Officer</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-center text-sm">
-                      <p>PhD in Horticultural Science with expertise in hydroponic systems and crop optimization.</p>
-                    </CardContent>
-                  </Card>
-                </div>
-                
-                <h3 className="text-xl font-semibold">Advisors</h3>
-                <div className="grid md:grid-cols-3 gap-6 my-6">
-                  <Card>
-                    <CardHeader className="text-center">
-                      <CardTitle>Prof. Sarah Chen</CardTitle>
-                      <CardDescription>Blockchain Economics Advisor</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-center text-sm">
-                      <p>Professor of Tokenomics at National University of Singapore and consultant to multiple successful blockchain projects.</p>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="text-center">
-                      <CardTitle>Robert Tanaka</CardTitle>
-                      <CardDescription>Agricultural Innovation Advisor</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-center text-sm">
-                      <p>Former executive at leading vertical farming companies with expertise in scaling agricultural operations.</p>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="text-center">
-                      <CardTitle>Indra Gunawan</CardTitle>
-                      <CardDescription>Investment & Strategy Advisor</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-center text-sm">
-                      <p>Partner at Antler VC with deep expertise in Southeast Asian markets and agrifood investments.</p>
-                    </CardContent>
-                  </Card>
-                </div>
-                
-                <h3 className="text-xl font-semibold">Partners & Supporters</h3>
-                <div className="py-6">
-                  <div className="grid grid-cols-3 gap-8 items-center">
-                    <div className="text-center">
-                      <img 
-                        src="/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png" 
-                        alt="Antler VC" 
-                        className="h-12 mx-auto object-contain"
-                      />
-                      <p className="mt-2 text-sm font-medium">Antler VC</p>
-                    </div>
-                    <div className="text-center">
-                      <img 
-                        src="/lovable-uploads/4a63c228-4631-46e8-98d2-a534c09c4b8b.png" 
-                        alt="Indodax" 
-                        className="h-12 mx-auto object-contain"
-                      />
-                      <p className="mt-2 text-sm font-medium">Indodax</p>
-                    </div>
-                    <div className="text-center">
-                      <img 
-                        src="/lovable-uploads/e60ccc9b-594d-461b-9ef9-2b157e19b0a1.png" 
-                        alt="Astra Digital" 
-                        className="h-12 mx-auto object-contain"
-                      />
-                      <p className="mt-2 text-sm font-medium">Astra Digital</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-            
-            <section id="legal" className="space-y-6">
-              <h2 className="text-3xl font-bold border-b pb-2">Legal & Compliance</h2>
-              <div className="prose dark:prose-invert max-w-none">
-                <p>
-                  AKAR is committed to operating within all applicable regulatory frameworks while advocating for progressive regulation that supports innovation in agricultural technology and digital assets.
-                </p>
-                
-                <h3 className="text-xl font-semibold">Regulatory Approach</h3>
-                <p>
-                  Our approach to compliance includes:
-                </p>
-                
-                <ul>
-                  <li>Consultation with Indonesian and regional regulatory authorities</li>
-                  <li>Implementing comprehensive KYC/AML procedures for all token purchasers</li>
-                  <li>Regular security audits of smart contracts and platform infrastructure</li>
-                  <li>Transparent reporting of farm operations and token performance</li>
-                </ul>
-                
-                <div className="bg-muted p-6 rounded-lg my-6">
-                  <h4 className="text-lg font-medium mb-2">Disclaimer</h4>
-                  <p className="text-sm">
-                    This whitepaper is for informational purposes only and does not constitute an offer to sell or solicitation of an offer to buy any securities, tokens or other financial instruments. AKAR tokens may not be purchased by residents of jurisdictions where such purchase would be prohibited. Prospective token purchasers should conduct their own due diligence and consult with legal and financial advisors before making any investment decisions.
-                  </p>
-                </div>
-                
-                <h3 className="text-xl font-semibold">Risk Factors</h3>
-                <p>
-                  Potential investors should be aware of various risks associated with agricultural projects and digital assets, including but not limited to:
-                </p>
-                
-                <ul>
-                  <li>Regulatory uncertainty in the blockchain and digital asset space</li>
-                  <li>Agricultural risks including crop failure, disease, and natural disasters</li>
-                  <li>Market volatility affecting token prices</li>
-                  <li>Technology risks related to smart contracts and blockchain infrastructure</li>
-                </ul>
-                
-                <p>
-                  For a complete analysis of all risk factors, please refer to our comprehensive Risk Disclosure document available on our website.
-                </p>
-              </div>
-            </section>
-            
-            <div className="my-8 p-6 bg-muted rounded-xl">
-              <h2 className="text-2xl font-bold mb-4">Contact Information</h2>
-              <p className="mb-6">
-                For more information about AKAR, our technology, or investment opportunities, please contact:
-              </p>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-medium mb-2">General Inquiries</h3>
-                  <p className="text-sm mb-1">Email: info@akar.cloud</p>
-                  <p className="text-sm">Phone: (+62)85 156142193</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium mb-2">Visit Us</h3>
-                  <p className="text-sm mb-1">AKAR Technologies</p>
-                  <p className="text-sm">Jakarta Innovation Center</p>
-                  <p className="text-sm">Jalan Sudirman 123, Jakarta, Indonesia</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-between items-center border-t pt-6">
-              <Button variant="outline" size="sm">
-                {`← Previous Section`}
-              </Button>
-              <Button variant="outline" size="sm">
-                {`Next Section →`}
-              </Button>
-            </div>
-            
           </div>
         </div>
       </div>
-    </div>
+      
+      <Footer language={language} />
+    </>
   );
 };
 

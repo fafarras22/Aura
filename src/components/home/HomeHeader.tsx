@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 import { LanguageSelector } from "@/components/layout/LanguageSelector";
-import { Wallet } from "lucide-react";
+import { Wallet, ChevronDown } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface HomeHeaderProps {
   language: 'en' | 'id' | 'ko';
@@ -25,9 +26,38 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
         
         <nav className="hidden md:flex items-center gap-6">
           <Button variant="link" onClick={() => navigate('/')}>Home</Button>
-          <Button variant="link" onClick={() => navigate('/farm-projects')}>Container Projects</Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="link" className="gap-1">
+                Products <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center">
+              <DropdownMenuItem onClick={() => navigate('/farm-projects')}>
+                Container Projects
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/tokenization')}>
+                $AKR Tokenization
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button variant="link" onClick={() => navigate('/how-it-works')}>How It Works</Button>
           <Button variant="link" onClick={() => navigate('/sensors')}>Farm Monitoring</Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="link" className="gap-1">
+                About <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center">
+              <DropdownMenuItem onClick={() => navigate('/about')}>
+                About Us
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/whitepaper')}>
+                Whitepaper
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
         
         <div className="flex items-center gap-2">

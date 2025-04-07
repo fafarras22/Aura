@@ -14,6 +14,8 @@ import ProjectDetails from '@/pages/ProjectDetails';
 import HowItWorks from '@/pages/HowItWorks';
 import Sensors from '@/pages/Sensors';
 import Water from '@/pages/Water';
+import About from '@/pages/About';
+import Whitepaper from '@/pages/Whitepaper';
 
 const App = () => {
   return (
@@ -31,6 +33,8 @@ const App = () => {
       <Route path="/how-it-works" element={<HowItWorks />} />
       <Route path="/sensors" element={<Sensors />} />
       <Route path="/water" element={<Water />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/whitepaper" element={<Whitepaper />} />
     </Routes>
   );
 };
