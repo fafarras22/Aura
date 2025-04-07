@@ -56,6 +56,30 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
               <DropdownMenuItem onClick={() => navigate('/whitepaper')}>
                 Whitepaper
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/careers')}>
+                Careers
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/partners')}>
+                Partners
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="link" className="gap-1">
+                Legal <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center">
+              <DropdownMenuItem onClick={() => navigate('/privacy-policy')}>
+                Privacy Policy
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/terms-of-service')}>
+                Terms of Service
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/legal')}>
+                Legal Information
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>

@@ -16,6 +16,11 @@ import Sensors from '@/pages/Sensors';
 import Water from '@/pages/Water';
 import About from '@/pages/About';
 import Whitepaper from '@/pages/Whitepaper';
+import Careers from '@/pages/Careers';
+import Partners from '@/pages/Partners';
+import PrivacyPolicy from '@/pages/PrivacyPolicy';
+import TermsOfService from '@/pages/TermsOfService';
+import Legal from '@/pages/Legal';
 
 const App = () => {
   return (
@@ -35,6 +40,11 @@ const App = () => {
       <Route path="/water" element={<Water />} />
       <Route path="/about" element={<About />} />
       <Route path="/whitepaper" element={<Whitepaper />} />
+      <Route path="/careers" element={<Careers />} />
+      <Route path="/partners" element={<Partners />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-of-service" element={<TermsOfService />} />
+      <Route path="/legal" element={<Legal />} />
     </Routes>
   );
 };
