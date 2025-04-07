@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { AppHeader } from "@/components/layout/AppHeader";
@@ -6,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Leaf, Droplet, CircleDollarSign, CircleCheckIcon, Plant, LineChart, Wallet } from "lucide-react";
+import { Leaf, Droplet, CircleDollarSign, CircleCheckIcon, Sprout, LineChart, Wallet } from "lucide-react";
 
 const HowItWorks = () => {
   const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
@@ -24,7 +23,7 @@ const HowItWorks = () => {
     {
       title: "Browse Container Farms",
       description: "Explore our inventory of high-tech indoor container farms growing various crops.",
-      icon: <Plant className="h-8 w-8 text-primary" />,
+      icon: <Sprout className="h-8 w-8 text-primary" />,
       buttonText: "Browse Projects",
       action: () => navigate('/farm-projects')
     },

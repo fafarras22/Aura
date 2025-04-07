@@ -28,7 +28,8 @@ const ConnectWallet = () => {
     setConnectError(null);
     
     try {
-      await connect();
+      // Pass 'metamask' as the wallet type parameter
+      await connect('metamask');
       // If successful, the useEffect above will handle navigation
     } catch (error) {
       setConnectError("Failed to connect wallet. Please try again.");
