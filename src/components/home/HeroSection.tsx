@@ -2,6 +2,7 @@
 import React from "react";
 import { HeroContent } from "@/components/home/hero/HeroContent";
 import { HeroImage } from "@/components/home/hero/HeroImage";
+import { AnimatedProjectTypes } from "@/components/home/hero/AnimatedProjectTypes";
 import { useMobile } from "@/hooks/use-mobile";
 
 interface HeroSectionProps {
@@ -11,12 +12,14 @@ interface HeroSectionProps {
     explore: string;
     learnMore: string;
   };
+  farmTypes: string[];
   onExploreClick?: () => void;
   onLearnMoreClick?: () => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ 
   content, 
+  farmTypes,
   onExploreClick,
   onLearnMoreClick
 }) => {
@@ -39,6 +42,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <HeroContent 
                 title={content.title}
                 subtitle={content.subtitle}
+                farmTypes={farmTypes}
                 explore={content.explore}
                 learnMore={content.learnMore}
                 onExploreClick={onExploreClick}
@@ -50,6 +54,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <HeroContent 
                 title={content.title}
                 subtitle={content.subtitle}
+                farmTypes={farmTypes}
                 explore={content.explore}
                 learnMore={content.learnMore}
                 onExploreClick={onExploreClick}

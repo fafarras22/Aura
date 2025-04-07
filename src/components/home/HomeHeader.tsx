@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 import { LanguageSelector } from "@/components/layout/LanguageSelector";
+import { Wallet } from "lucide-react";
 
 interface HomeHeaderProps {
   language: 'en' | 'id' | 'ko';
@@ -24,15 +25,18 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
         
         <nav className="hidden md:flex items-center gap-6">
           <Button variant="link" onClick={() => navigate('/')}>Home</Button>
-          <Button variant="link" onClick={() => navigate('/farm-projects')}>Projects</Button>
-          <Button variant="link" onClick={() => navigate('/learn-more')}>Learn More</Button>
-          <Button variant="link" onClick={() => navigate('/explore-solutions')}>Solutions</Button>
+          <Button variant="link" onClick={() => navigate('/farm-projects')}>Container Projects</Button>
+          <Button variant="link" onClick={() => navigate('/how-it-works')}>How It Works</Button>
+          <Button variant="link" onClick={() => navigate('/sensors')}>Farm Monitoring</Button>
         </nav>
         
         <div className="flex items-center gap-2">
           <LanguageSelector language={language} setLanguage={setLanguage} />
           <ModeToggle />
-          <Button size="sm" onClick={() => navigate('/login')}>Login</Button>
+          <Button size="sm" onClick={() => navigate('/connect-wallet')} className="gap-1">
+            <Wallet className="h-4 w-4" />
+            Connect
+          </Button>
         </div>
       </div>
     </header>

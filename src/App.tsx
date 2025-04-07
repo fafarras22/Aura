@@ -4,13 +4,16 @@ import { Routes, Route } from 'react-router-dom';
 import Home from '@/pages/Home';
 import Projects from '@/pages/Projects';
 import FarmProjects from '@/pages/FarmProjects';
-import Login from '@/pages/Login';
-import Signup from '@/pages/Signup';
 import Dashboard from '@/pages/Dashboard';
 import Analytics from '@/pages/Analytics';
 import Profile from '@/pages/Profile';
 import Tokenization from '@/pages/Tokenization';
 import TokenPurchase from '@/pages/TokenPurchase';
+import ConnectWallet from '@/pages/ConnectWallet';
+import ProjectDetails from '@/pages/ProjectDetails';
+import HowItWorks from '@/pages/HowItWorks';
+import Sensors from '@/pages/Sensors';
+import Water from '@/pages/Water';
 
 const App = () => {
   return (
@@ -18,13 +21,16 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/projects" element={<Projects />} />
       <Route path="/farm-projects" element={<FarmProjects />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/connect-wallet" element={<ConnectWallet />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/analytics" element={<Analytics />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/tokenization" element={<Tokenization />} />
       <Route path="/token-purchase" element={<TokenPurchase />} />
+      <Route path="/project/:id" element={<ProjectDetails />} />
+      <Route path="/how-it-works" element={<HowItWorks />} />
+      <Route path="/sensors" element={<Sensors />} />
+      <Route path="/water" element={<Water />} />
     </Routes>
   );
 };

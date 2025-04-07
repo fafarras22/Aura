@@ -34,21 +34,24 @@ const Home = () => {
     change24h: 3.2,
     totalSupply: 100000000,
     circulatingSupply: 45000000,
-    marketCap: 83250000
+    marketCap: 83250000,
+    stakedAmount: 32000000,
+    stakingAPY: 15.5
   };
   
   // Translation content
   const content = {
     hero: {
-      title: "Invest in Sustainable Agriculture",
-      subtitle: "Connect with innovative farming projects across Southeast Asia. Earn transparent yields while supporting sustainable agriculture and rural economies.",
-      explore: "Explore Projects",
-      learnMore: "Learn More"
+      title: "Invest in Container Farming of",
+      subtitle: "Connect with innovative indoor farming containers across Jakarta. Earn transparent yields while supporting sustainable agriculture through $AKR tokens.",
+      explore: "Explore Containers",
+      learnMore: "How It Works"
     },
     tokenization: {
-      title: "Real-World Asset Tokenization",
-      description: "Our platform tokenizes agricultural assets, providing transparency, fractional ownership, and liquidity to investors worldwide."
-    }
+      title: "Container Farm Tokenization",
+      description: "Our platform tokenizes individual container farms, providing transparency, fractional ownership, and liquidity through $AKR tokens."
+    },
+    farmTypes: ["Lettuce", "Strawberry", "Kale", "Herbs", "Microgreens"]
   };
   
   // Handle navigation to project details page
@@ -59,10 +62,10 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>AKAR Farm - Invest in Sustainable Agriculture</title>
+        <title>AKAR Farm - Invest in Container Farming</title>
         <meta 
           name="description" 
-          content="Invest in sustainable agriculture with AKAR Farm. Explore container projects, earn sustainable returns, and support rural economies in ASEAN." 
+          content="Invest in container farming with AKAR Farm. Explore container projects, stake $AKR tokens, and earn sustainable returns through stAKR." 
         />
       </Helmet>
       
@@ -73,14 +76,15 @@ const Home = () => {
         {/* Hero Section with animated images */}
         <HeroSection 
           content={content.hero}
+          farmTypes={content.farmTypes}
           onExploreClick={() => navigate('/farm-projects')}
-          onLearnMoreClick={() => navigate('/learn-more')}
+          onLearnMoreClick={() => navigate('/how-it-works')}
         />
         
         {/* Call to Action Section */}
         <CallToAction 
           onExploreClick={() => navigate('/farm-projects')}
-          onConnectWallet={() => alert('Connect Wallet clicked!')}
+          onConnectWallet={() => navigate('/connect-wallet')}
         />
         
         {/* How AKAR Works Section */}

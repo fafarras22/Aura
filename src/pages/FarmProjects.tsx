@@ -12,12 +12,15 @@ import { InvestmentHistory } from "@/components/farm-projects/InvestmentHistory"
 import { WalletSummary } from "@/components/farm-projects/WalletSummary";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
 import { AppHeader } from "@/components/layout/AppHeader";
+import { Leaf, Wheat, Palmtree } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const FarmProjects = () => {
   const { wallet } = useWallet();
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
+  const navigate = useNavigate();
   
   // Mock data for the page
   const containerProjects = getMockContainerProjects();
@@ -35,10 +38,18 @@ const FarmProjects = () => {
     setIsWalletModalOpen(true);
   };
 
+  // Featured categories with icons
+  const farmCategories = [
+    { name: "All Containers", icon: <Leaf className="h-4 w-4" /> },
+    { name: "Leafy Greens", icon: <Leaf className="h-4 w-4" /> },
+    { name: "Microgreens", icon: <Wheat className="h-4 w-4" /> },
+    { name: "Strawberries", icon: <Palmtree className="h-4 w-4" /> }
+  ];
+
   return (
     <>
       <Helmet>
-        <title>Farm Projects | AKAR Farm</title>
+        <title>Container Projects | AKAR Farm</title>
       </Helmet>
       
       {/* Fixed header */}
@@ -52,10 +63,23 @@ const FarmProjects = () => {
         <div className="flex flex-col gap-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold">Farm Projects</h1>
+              <h1 className="text-3xl font-bold">Container Farm Projects</h1>
               <p className="text-muted-foreground">
-                Stake your $AKR tokens in farm containers to earn rewards
+                Stake your $AKR tokens in container farms to earn stAKR rewards
               </p>
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {farmCategories.map((category, index) => (
+                <button 
+                  key={index}
+                  className={`flex items-center gap-1 px-4 py-1.5 rounded-full text-sm whitespace-nowrap border 
+                    ${index === 0 ? 'bg-primary text-white' : 'bg-muted/30 hover:bg-muted'}`}
+                  onClick={() => {/* Filter logic */}}
+                >
+                  {category.icon}
+                  {category.name}
+                </button>
+              ))}
             </div>
           </div>
           
@@ -92,6 +116,12 @@ const FarmProjects = () => {
                 <Card>
                   <CardContent className="py-10 text-center">
                     <p className="text-muted-foreground mb-4">Connect your wallet to view your active stakes</p>
+                    <button 
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-primary text-primary-foreground shadow hover:bg-primary/90 px-4 py-2"
+                      onClick={() => navigate('/connect-wallet')}
+                    >
+                      Connect Wallet
+                    </button>
                   </CardContent>
                 </Card>
               )}
@@ -108,6 +138,12 @@ const FarmProjects = () => {
                 <Card>
                   <CardContent className="py-10 text-center">
                     <p className="text-muted-foreground mb-4">Connect your wallet to view your rewards</p>
+                    <button 
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-primary text-primary-foreground shadow hover:bg-primary/90 px-4 py-2"
+                      onClick={() => navigate('/connect-wallet')}
+                    >
+                      Connect Wallet
+                    </button>
                   </CardContent>
                 </Card>
               )}
@@ -120,6 +156,12 @@ const FarmProjects = () => {
                 <Card>
                   <CardContent className="py-10 text-center">
                     <p className="text-muted-foreground mb-4">Connect your wallet to view your investment history</p>
+                    <button 
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-primary text-primary-foreground shadow hover:bg-primary/90 px-4 py-2"
+                      onClick={() => navigate('/connect-wallet')}
+                    >
+                      Connect Wallet
+                    </button>
                   </CardContent>
                 </Card>
               )}
