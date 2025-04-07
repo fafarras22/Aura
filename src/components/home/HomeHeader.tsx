@@ -6,6 +6,7 @@ import { ModeToggle } from "@/components/theme/mode-toggle";
 import { LanguageSelector } from "@/components/layout/LanguageSelector";
 import { Wallet, ChevronDown } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Logo } from "@/components/logo/Logo";
 
 interface HomeHeaderProps {
   language: 'en' | 'id' | 'ko';
@@ -20,7 +21,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <Button variant="link" className="p-0" onClick={() => navigate('/')}>
-            <span className="text-xl font-bold">AKAR Farm</span>
+            <Logo size="lg" />
           </Button>
         </div>
         

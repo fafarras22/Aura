@@ -17,10 +17,10 @@ export const Logo: React.FC<LogoProps> = ({
   const { theme } = useTheme();
   const isDarkMode = theme === "dark";
   
-  // Logo path based on theme and error state
+  // Updated logo path
   const logoPath = logoError 
     ? "/placeholder.svg" 
-    : "/lovable-uploads/b795ce5f-6c21-4dec-8060-90844a893974.png";
+    : "/lovable-uploads/04090cbb-3921-4e15-9bcc-7bc8946b8642.png";
   
   // Size mapping
   const sizeClasses = {
