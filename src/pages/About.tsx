@@ -1,6 +1,5 @@
 
 import React, { useState } from "react";
-import { Helmet } from "react-helmet";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Check, Clock, LineChart, Users, Sprout } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Container } from "lucide-react";
+import { SEOMetadata } from "@/components/shared/SEOMetadata";
 
 const About = () => {
   const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
@@ -16,13 +16,12 @@ const About = () => {
 
   return (
     <>
-      <Helmet>
-        <title>About AKAR Farm | Container Farming Investment Platform</title>
-        <meta 
-          name="description" 
-          content="AKAR Farm is revolutionizing agriculture through container farming technology and blockchain tokenization. Learn about our mission, team, and vision." 
-        />
-      </Helmet>
+      <SEOMetadata
+        title="About AKAR Farm | Container Farming Investment Platform"
+        description="AKAR Farm is revolutionizing agriculture through container farming technology and blockchain tokenization. Learn about our mission, team, and vision."
+        keywords="container farming, urban agriculture, AKAR Farm mission, sustainable farming, agricultural technology, hydroponic systems"
+        canonicalUrl="https://akarfarm.com/about"
+      />
       
       <AppHeader 
         setShowWalletModal={setIsWalletModalOpen}

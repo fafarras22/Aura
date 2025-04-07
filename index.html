@@ -26,6 +26,19 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://akarfarm.com/" />
     
+    <!-- Mobile app capable -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="AKAR Farm" />
+    
+    <!-- Theme color -->
+    <meta name="theme-color" content="#10b981" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/lovable-uploads/04090cbb-3921-4e15-9bcc-7bc8946b8642.png" />
+    <link rel="apple-touch-icon" href="/lovable-uploads/04090cbb-3921-4e15-9bcc-7bc8946b8642.png" />
+    
     <!-- Structured Data for Organization -->
     <script type="application/ld+json">
       {
@@ -33,13 +46,42 @@
         "@type": "Organization",
         "name": "AKAR Farm",
         "url": "https://akarfarm.com",
-        "logo": "https://lovable.dev/opengraph-image-p98pqg.png",
+        "logo": "https://lovable-uploads/04090cbb-3921-4e15-9bcc-7bc8946b8642.png",
         "sameAs": [
           "https://twitter.com/akar_farm",
           "https://www.facebook.com/akarfarm",
           "https://www.linkedin.com/company/akar-farm"
         ],
-        "description": "Smart container farming solutions with blockchain integration for sustainable agriculture in Indonesia and beyond."
+        "description": "Smart container farming solutions with blockchain integration for sustainable agriculture in Indonesia and beyond.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+62-21-1234-5678",
+          "contactType": "customer service",
+          "availableLanguage": ["English", "Indonesian"]
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Jl. Sudirman No. 123",
+          "addressLocality": "Jakarta",
+          "addressRegion": "DKI Jakarta",
+          "postalCode": "10220",
+          "addressCountry": "ID"
+        }
+      }
+    </script>
+    
+    <!-- Structured Data for Website -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "AKAR Farm",
+        "url": "https://akarfarm.com",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://akarfarm.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
       }
     </script>
   </head>
@@ -49,5 +91,11 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <div style="padding: 20px; text-align: center;">
+        <h1>JavaScript is Required</h1>
+        <p>Please enable JavaScript to use AKAR Farm's investment platform.</p>
+      </div>
+    </noscript>
   </body>
 </html>

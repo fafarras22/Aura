@@ -10,6 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { SEOMetadata } from "@/components/shared/SEOMetadata";
 import { AppHeader } from "@/components/layout/AppHeader";
+import { Footer } from "@/components/layout/Footer";
 
 const Projects = () => {
   const [selectedContainerId, setSelectedContainerId] = useState<string | null>(null);
@@ -84,8 +85,9 @@ const Projects = () => {
     <>
       <SEOMetadata 
         title="Farm Projects | AKAR Farm Investment Platform"
-        description="Explore and invest in our curated collection of sustainable farming projects. Each container project offers unique investment opportunities."
-        keywords="farm projects, agriculture investment, container farming, AKR token, sustainable agriculture"
+        description="Explore and invest in our curated collection of sustainable farming projects. Each container project offers unique investment opportunities with real-time monitoring."
+        keywords="farm projects, agriculture investment, container farming, AKR token, sustainable agriculture, urban farming, Indonesia farming"
+        canonicalUrl="https://akarfarm.com/projects"
       />
       
       {/* Fixed header */}
@@ -131,7 +133,15 @@ const Projects = () => {
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
             </div>
           ) : (
-            <ContainerGrid onSelectContainer={handleContainerSelect} />
+            <div 
+              className="projects-grid"
+              itemScope
+              itemType="https://schema.org/ItemList"
+            >
+              <meta itemProp="name" content="AKAR Farm Container Projects" />
+              <meta itemProp="description" content="Collection of sustainable container farming projects available for investment" />
+              <ContainerGrid onSelectContainer={handleContainerSelect} />
+            </div>
           )}
 
           <ContainerStakeModal
@@ -141,6 +151,8 @@ const Projects = () => {
           />
         </div>
       </div>
+      
+      <Footer language={language} />
     </>
   );
 };

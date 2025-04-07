@@ -4,7 +4,7 @@ User-agent: *
 Allow: /
 
 # Main sitemap location
-Sitemap: https://akarfarmwatch.com/sitemap.xml
+Sitemap: https://akarfarm.com/sitemap.xml
 
 # Specific crawler instructions
 User-agent: Googlebot
@@ -21,10 +21,22 @@ Allow: /
 
 # Allow all bots to index important content
 Allow: /about
-Allow: /explore-solutions
-Allow: /learn-more
+Allow: /how-it-works
+Allow: /farm-projects
+Allow: /projects
 Allow: /tokenization
+Allow: /whitepaper
+Allow: /careers
+Allow: /partners
+
+# Important content paths
+Allow: /img/
+Allow: /assets/
 
 # Disallow access to development/test areas if any
-# Disallow: /dev/
-# Disallow: /test/
+Disallow: /dev/
+Disallow: /test/
+Disallow: /admin*
+
+# Crawl delay suggestion (in seconds)
+Crawl-delay: 10

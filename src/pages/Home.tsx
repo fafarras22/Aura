@@ -16,8 +16,9 @@ import HomeHeader from "@/components/home/HomeHeader";
 import { useNavigate } from "react-router-dom";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
 import { ContainerProject } from "@/components/containers/ContainerCard";
-import { Helmet } from "react-helmet";
+import { SEOMetadata } from "@/components/shared/SEOMetadata";
 import { InvestmentDisclaimer } from "@/components/home/InvestmentDisclaimer";
+import { AboutSection } from "@/components/home/AboutSection";
 
 // Update the type definition to match what's accepted by HomeHeader
 type SupportedLanguage = 'en' | 'id' | 'ko';
@@ -52,6 +53,10 @@ const Home = () => {
       title: "Container Farm Tokenization",
       description: "Our platform tokenizes individual container farms, providing transparency, fractional ownership, and liquidity through $AKR tokens."
     },
+    about: {
+      title: "Sustainable Urban Agriculture",
+      description: "AKAR Farm combines container farming technology with blockchain to create accessible, transparent agricultural investments."
+    },
     farmTypes: ["Lettuce", "Strawberry", "Kale", "Herbs", "Microgreens"]
   };
   
@@ -62,13 +67,13 @@ const Home = () => {
   
   return (
     <>
-      <Helmet>
-        <title>AKAR Farm - Invest in Container Farming</title>
-        <meta 
-          name="description" 
-          content="Invest in container farming with AKAR Farm. Explore container projects, stake $AKR tokens, and earn sustainable returns through stAKR." 
-        />
-      </Helmet>
+      <SEOMetadata
+        title="AKAR Farm - Invest in Container Farming"
+        description="Invest in sustainable container farming with AKAR. Explore container projects, stake $AKR tokens, and earn yields while supporting urban agriculture."
+        keywords="container farming, urban agriculture, agricultural investment, $AKR tokens, sustainable farming, Jakarta farming, Indonesia agriculture"
+        ogImage="/lovable-uploads/532be948-74b8-4d14-a726-8fa51d204cf7.png"
+        canonicalUrl="https://akarfarm.com/"
+      />
       
       {/* Fixed header */}
       <HomeHeader language={language} setLanguage={setLanguage} />
@@ -90,6 +95,9 @@ const Home = () => {
         
         {/* How AKAR Works Section */}
         <HowAkarWorks onExploreClick={() => navigate('/farm-projects')} />
+        
+        {/* About Section - New component for better SEO context */}
+        <AboutSection content={content.about} />
         
         {/* Why Invest Section */}
         <WhyInvestSection />

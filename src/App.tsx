@@ -1,51 +1,88 @@
 
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
+
+// Eager load critical pages
 import Home from '@/pages/Home';
-import Projects from '@/pages/Projects';
-import FarmProjects from '@/pages/FarmProjects';
-import Dashboard from '@/pages/Dashboard';
-import Analytics from '@/pages/Analytics';
-import Profile from '@/pages/Profile';
-import Tokenization from '@/pages/Tokenization';
-import TokenPurchase from '@/pages/TokenPurchase';
 import ConnectWallet from '@/pages/ConnectWallet';
-import ProjectDetails from '@/pages/ProjectDetails';
-import HowItWorks from '@/pages/HowItWorks';
-import Sensors from '@/pages/Sensors';
-import Water from '@/pages/Water';
-import About from '@/pages/About';
-import Whitepaper from '@/pages/Whitepaper';
-import Careers from '@/pages/Careers';
-import Partners from '@/pages/Partners';
-import PrivacyPolicy from '@/pages/PrivacyPolicy';
-import TermsOfService from '@/pages/TermsOfService';
-import Legal from '@/pages/Legal';
+
+// Lazy load other pages for better performance
+const Projects = lazy(() => import('@/pages/Projects'));
+const FarmProjects = lazy(() => import('@/pages/FarmProjects'));
+const Dashboard = lazy(() => import('@/pages/Dashboard'));
+const Analytics = lazy(() => import('@/pages/Analytics'));
+const Profile = lazy(() => import('@/pages/Profile'));
+const Tokenization = lazy(() => import('@/pages/Tokenization'));
+const TokenPurchase = lazy(() => import('@/pages/TokenPurchase'));
+const ProjectDetails = lazy(() => import('@/pages/ProjectDetails'));
+const HowItWorks = lazy(() => import('@/pages/HowItWorks'));
+const Sensors = lazy(() => import('@/pages/Sensors'));
+const Water = lazy(() => import('@/pages/Water'));
+const About = lazy(() => import('@/pages/About'));
+const Whitepaper = lazy(() => import('@/pages/Whitepaper'));
+const Careers = lazy(() => import('@/pages/Careers'));
+const Partners = lazy(() => import('@/pages/Partners'));
+const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('@/pages/TermsOfService'));
+const Legal = lazy(() => import('@/pages/Legal'));
+const AdminSignup = lazy(() => import('@/pages/AdminSignup'));
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+  </div>
+);
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/projects" element={<Projects />} />
-      <Route path="/farm-projects" element={<FarmProjects />} />
-      <Route path="/connect-wallet" element={<ConnectWallet />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/analytics" element={<Analytics />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/tokenization" element={<Tokenization />} />
-      <Route path="/token-purchase" element={<TokenPurchase />} />
-      <Route path="/project/:id" element={<ProjectDetails />} />
-      <Route path="/how-it-works" element={<HowItWorks />} />
-      <Route path="/sensors" element={<Sensors />} />
-      <Route path="/water" element={<Water />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/whitepaper" element={<Whitepaper />} />
-      <Route path="/careers" element={<Careers />} />
-      <Route path="/partners" element={<Partners />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/terms-of-service" element={<TermsOfService />} />
-      <Route path="/legal" element={<Legal />} />
-    </Routes>
+    <>
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/farm-projects" element={<FarmProjects />} />
+          <Route path="/connect-wallet" element={<ConnectWallet />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/tokenization" element={<Tokenization />} />
+          <Route path="/token-purchase" element={<TokenPurchase />} />
+          <Route path="/project/:id" element={<ProjectDetails />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/sensors" element={<Sensors />} />
+          <Route path="/water" element={<Water />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/whitepaper" element={<Whitepaper />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/partners" element={<Partners />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/legal" element={<Legal />} />
+          <Route path="/admin/signup" element={<AdminSignup />} />
+          
+          {/* Redirect old routes to new ones if needed */}
+          <Route path="/learn-more" element={<Navigate to="/how-it-works" replace />} />
+          <Route path="/explore-solutions" element={<Navigate to="/farm-projects" replace />} />
+          
+          {/* 404 fallback */}
+          <Route path="*" element={
+            <div className="flex flex-col items-center justify-center h-screen">
+              <h1 className="text-4xl font-bold mb-4">Page Not Found</h1>
+              <p className="text-muted-foreground mb-6">The page you're looking for doesn't exist.</p>
+              <button 
+                onClick={() => window.location.href = '/'}
+                className="px-4 py-2 bg-primary text-white rounded-md"
+              >
+                Return to Home
+              </button>
+            </div>
+          } />
+        </Routes>
+      </Suspense>
+      <Toaster />
+    </>
   );
 };
 

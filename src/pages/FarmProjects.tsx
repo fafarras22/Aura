@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { Helmet } from "react-helmet";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useWallet } from "@/context/wallet";
@@ -14,6 +13,7 @@ import { getMockContainerProjects } from "@/services/mock-data/containerProjects
 import { AppHeader } from "@/components/layout/AppHeader";
 import { Leaf, Wheat, Palmtree } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { SEOMetadata } from "@/components/shared/SEOMetadata";
 
 const FarmProjects = () => {
   const { wallet } = useWallet();
@@ -48,9 +48,12 @@ const FarmProjects = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Container Projects | AKAR Farm</title>
-      </Helmet>
+      <SEOMetadata 
+        title="Container Farm Projects | AKAR Farm Investment Platform"
+        description="Explore and invest in our curated collection of container farming projects. Stake your $AKR tokens and earn rewards through sustainable agriculture."
+        keywords="container farming projects, agricultural investment, $AKR tokens, stake farming, urban agriculture, sustainable investment"
+        canonicalUrl="https://akarfarm.com/farm-projects"
+      />
       
       {/* Fixed header */}
       <AppHeader 
