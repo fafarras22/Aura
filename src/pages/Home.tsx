@@ -19,6 +19,9 @@ import { ContainerProject } from "@/components/containers/ContainerCard";
 import { SEOMetadata } from "@/components/shared/SEOMetadata";
 import { InvestmentDisclaimer } from "@/components/home/InvestmentDisclaimer";
 import { AboutSection } from "@/components/home/AboutSection";
+import { SolutionsSection } from "@/components/home/SolutionsSection";
+import { TechnologySection } from "@/components/home/TechnologySection";
+import { TabsSection } from "@/components/home/TabsSection";
 
 // Update the type definition to match what's accepted by HomeHeader
 type SupportedLanguage = 'en' | 'id' | 'ko';
@@ -99,6 +102,12 @@ const Home = () => {
         {/* About Section - New component for better SEO context */}
         <AboutSection content={content.about} />
         
+        {/* Solutions Section */}
+        <SolutionsSection language={language} />
+        
+        {/* Technology Section */}
+        <TechnologySection language={language} />
+        
         {/* Why Invest Section */}
         <WhyInvestSection />
         
@@ -114,6 +123,11 @@ const Home = () => {
           tokenMetrics={tokenMetrics}
           onNavigate={navigate}
         />
+        
+        {/* Tabs Section with more detailed information */}
+        <div className="container mx-auto px-4 py-12">
+          <TabsSection language={language} />
+        </div>
         
         {/* Quick Investment Section */}
         <QuickInvestment />

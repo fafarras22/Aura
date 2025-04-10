@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ContainerGrid } from "@/components/containers/ContainerGrid";
 import { ContainerStakeModal } from "@/components/containers/ContainerStakeModal";
 import { useDBSetup } from "@/lib/db-setup";
@@ -11,6 +12,8 @@ import { useDeveloperMode } from "@/context/DeveloperModeContext";
 import { SEOMetadata } from "@/components/shared/SEOMetadata";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { Footer } from "@/components/layout/Footer";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Projects = () => {
   const [selectedContainerId, setSelectedContainerId] = useState<string | null>(null);
@@ -22,6 +25,51 @@ const Projects = () => {
   const { isDeveloperMode } = useDeveloperMode();
   const [language, setLanguage] = useState<'en' | 'id' | 'ko'>('en');
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const navigate = useNavigate();
+
+  // Translations
+  const content = {
+    en: {
+      title: "Farm Projects",
+      subtitle: "Invest in container farming projects with $AKR tokens",
+      demoMode: "Demonstration Mode",
+      demoModeDescription: "Currently showing demonstration data.",
+      developerMode: "You are in developer mode with access to all container data.",
+      dbConnected: "Database Connected",
+      dbConnectedDescription: "Successfully connected to the Supabase database.",
+      viewDetails: "View Details",
+      viewDashboard: "View Dashboard",
+      gridView: "Grid View",
+      listView: "List View"
+    },
+    id: {
+      title: "Proyek Pertanian",
+      subtitle: "Investasi dalam proyek pertanian kontainer dengan token $AKR",
+      demoMode: "Mode Demonstrasi",
+      demoModeDescription: "Saat ini menampilkan data demonstrasi.",
+      developerMode: "Anda berada dalam mode pengembang dengan akses ke semua data kontainer.",
+      dbConnected: "Database Terhubung",
+      dbConnectedDescription: "Berhasil terhubung ke database Supabase.",
+      viewDetails: "Lihat Detail",
+      viewDashboard: "Lihat Dasbor",
+      gridView: "Tampilan Grid",
+      listView: "Tampilan Daftar"
+    },
+    ko: {
+      title: "농장 프로젝트",
+      subtitle: "$AKR 토큰으로 컨테이너 농업 프로젝트에 투자하세요",
+      demoMode: "데모 모드",
+      demoModeDescription: "현재 데모 데이터를 보여주고 있습니다.",
+      developerMode: "모든 컨테이너 데이터에 접근할 수 있는 개발자 모드입니다.",
+      dbConnected: "데이터베이스 연결됨",
+      dbConnectedDescription: "Supabase 데이터베이스에 성공적으로 연결되었습니다.",
+      viewDetails: "세부 정보 보기",
+      viewDashboard: "대시보드 보기",
+      gridView: "그리드 보기",
+      listView: "목록 보기"
+    }
+  };
 
   // Initialize database on component mount
   useEffect(() => {
@@ -81,6 +129,10 @@ const Projects = () => {
     setIsModalOpen(true);
   };
 
+  const handleViewDashboard = (containerId: string) => {
+    navigate(`/project/${containerId}/dashboard`);
+  };
+
   return (
     <>
       <SEOMetadata 
@@ -99,21 +151,30 @@ const Projects = () => {
       
       <div className="container mx-auto p-6 mt-16">
         <div className="space-y-6">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Farm Projects</h1>
-            <p className="text-muted-foreground">
-              Invest in container farming projects with $AKR tokens
-            </p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">{content[language].title}</h1>
+              <p className="text-muted-foreground">
+                {content[language].subtitle}
+              </p>
+            </div>
+            
+            <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as 'grid' | 'list')}>
+              <TabsList>
+                <TabsTrigger value="grid">{content[language].gridView}</TabsTrigger>
+                <TabsTrigger value="list">{content[language].listView}</TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
 
           {databaseState === 'fallback' && (
             <Alert variant="default" className="border-blue-300 bg-blue-50 dark:bg-blue-900/20">
               <Database className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-              <AlertTitle>Demonstration Mode</AlertTitle>
+              <AlertTitle>{content[language].demoMode}</AlertTitle>
               <AlertDescription>
-                Currently showing demonstration data. {isDeveloperMode ? 
-                  "You are in developer mode with access to all container data." : 
-                  "Connect to Supabase to access live data."}
+                {content[language].demoModeDescription} {isDeveloperMode ? 
+                  content[language].developerMode : 
+                  ""}
               </AlertDescription>
             </Alert>
           )}
@@ -121,9 +182,9 @@ const Projects = () => {
           {databaseState === 'connected' && (
             <Alert variant="default" className="border-green-300 bg-green-50 dark:bg-green-900/20">
               <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
-              <AlertTitle>Database Connected</AlertTitle>
+              <AlertTitle>{content[language].dbConnected}</AlertTitle>
               <AlertDescription>
-                Successfully connected to the Supabase database.
+                {content[language].dbConnectedDescription}
               </AlertDescription>
             </Alert>
           )}
@@ -133,16 +194,56 @@ const Projects = () => {
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
             </div>
           ) : (
-            <div 
-              className="projects-grid"
-              itemScope
-              itemType="https://schema.org/ItemList"
-            >
-              <meta itemProp="name" content="AKAR Farm Container Projects" />
-              <meta itemProp="description" content="Collection of sustainable container farming projects available for investment" />
-              <ContainerGrid onSelectContainer={handleContainerSelect} />
-            </div>
+            <TabsContent value={viewMode} forceMount={true} className={viewMode === 'grid' ? 'block' : 'hidden'}>
+              <div 
+                className="projects-grid"
+                itemScope
+                itemType="https://schema.org/ItemList"
+              >
+                <meta itemProp="name" content="AKAR Farm Container Projects" />
+                <meta itemProp="description" content="Collection of sustainable container farming projects available for investment" />
+                <ContainerGrid 
+                  onSelectContainer={handleContainerSelect} 
+                  onViewDashboard={handleViewDashboard}
+                  language={language}
+                />
+              </div>
+            </TabsContent>
           )}
+          
+          {/* List view content */}
+          <TabsContent value={viewMode} forceMount={true} className={viewMode === 'list' ? 'block' : 'hidden'}>
+            <div className="divide-y divide-gray-200 dark:divide-gray-800">
+              {!isLoading && Array.from({ length: 8 }).map((_, index) => (
+                <div key={index} className="py-4 flex justify-between items-center">
+                  <div>
+                    <h3 className="font-medium">Container Farm #{index + 1}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {['Lettuce', 'Kale', 'Spinach', 'Microgreens', 'Strawberry', 'Herbs'][index % 6]} | 
+                      {['Jakarta', 'Bandung', 'Surabaya'][index % 3]} | 
+                      {['Active', 'Active', 'Maintenance'][index % 3]}
+                    </p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleContainerSelect(`container-${index + 1}`)}
+                    >
+                      {content[language].viewDetails}
+                    </Button>
+                    <Button 
+                      variant="default" 
+                      size="sm"
+                      onClick={() => handleViewDashboard(`container-${index + 1}`)}
+                    >
+                      {content[language].viewDashboard}
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
 
           <ContainerStakeModal
             open={isModalOpen}

@@ -27,6 +27,9 @@ const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('@/pages/TermsOfService'));
 const Legal = lazy(() => import('@/pages/Legal'));
 const AdminSignup = lazy(() => import('@/pages/AdminSignup'));
+const News = lazy(() => import('@/pages/News'));
+const Climate = lazy(() => import('@/pages/Climate'));
+const ProjectDashboard = lazy(() => import('@/pages/ProjectDashboard'));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -53,6 +56,7 @@ const App = () => {
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/sensors" element={<Sensors />} />
           <Route path="/water" element={<Water />} />
+          <Route path="/climate" element={<Climate />} />
           <Route path="/about" element={<About />} />
           <Route path="/whitepaper" element={<Whitepaper />} />
           <Route path="/careers" element={<Careers />} />
@@ -61,6 +65,8 @@ const App = () => {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/legal" element={<Legal />} />
           <Route path="/admin/signup" element={<AdminSignup />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/project/:id/dashboard" element={<ProjectDashboard />} />
           
           {/* Redirect old routes to new ones if needed */}
           <Route path="/learn-more" element={<Navigate to="/how-it-works" replace />} />

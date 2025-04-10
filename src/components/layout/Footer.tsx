@@ -65,7 +65,7 @@ export const Footer: React.FC<FooterProps> = ({ language = 'en' }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           <div className="col-span-2">
             <img 
-              src="/lovable-uploads/3672cca4-6d18-4e47-a64d-554cbda0558b.png" 
+              src="/lovable-uploads/532be948-74b8-4d14-a726-8fa51d204cf7.png" 
               alt="AKAR Logo" 
               className="h-8 mb-4"
             />
@@ -83,29 +83,29 @@ export const Footer: React.FC<FooterProps> = ({ language = 'en' }) => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="#about" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
+                <Link to="/#about" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
                   {content[language].about}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#solutions" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
+                <Link to="/#solutions" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
                   {content[language].solutions}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#technology" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
+                <Link to="/#technology" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
                   {content[language].technology}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#tokenization" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
+                <Link to="/#tokenization" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
                   {content[language].tokenization}
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#indonesia" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
+                <Link to="/#indonesia" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
                   {content[language].impact}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -155,19 +155,19 @@ export const Footer: React.FC<FooterProps> = ({ language = 'en' }) => {
               </li>
             </ul>
             <div className="mt-6 flex space-x-4">
-              <a href="https://instagram.com/akar_farmwatch" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
+              <a href="https://www.instagram.com/akar.farm" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
                 <span className="sr-only">Instagram</span>
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="https://linkedin.com/company/akar-farmwatch" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
+              <a href="https://www.linkedin.com/company/akarfarm" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
                 <span className="sr-only">LinkedIn</span>
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a href="https://twitter.com/akar_farmwatch" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
+              <a href="https://www.x.com/akar_farm" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
                 <span className="sr-only">Twitter</span>
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="https://akarfarmwatch.id" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
+              <a href="https://www.akar.cloud" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-400 hover:text-primary hover:dark:text-primary transition-colors">
                 <span className="sr-only">Website</span>
                 <Globe className="h-5 w-5" />
               </a>
