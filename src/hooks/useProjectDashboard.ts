@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 import { useDBSetup } from "@/lib/db-setup";
 import { getMockContainerProjects } from "@/services/mock-data/containerProjects";
 import { getMockClimateData } from "@/services/mock-data";
@@ -61,8 +62,14 @@ export const useProjectDashboard = (projectId?: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { initializeDB } = useDBSetup();
+  
+  // Reference to store the initial data to prevent changes
+  const dataInitializedRef = useRef(false);
 
   useEffect(() => {
+    // Only load data once to prevent values from changing on re-renders
+    if (dataInitializedRef.current) return;
+    
     const loadProjectData = async () => {
       setLoading(true);
       try {
@@ -72,13 +79,20 @@ export const useProjectDashboard = (projectId?: string) => {
         const mockClimateData = getMockClimateData();
         const mockWaterData = getMockWaterData(7);
         
+        // Generate random values but make them stable by setting fixed seeds or formats
+        const stableRandom = (min: number, max: number, seed: number) => {
+          // Simple pseudo-random function with seed
+          const value = ((Math.sin(seed) + 1) / 2) * (max - min) + min;
+          return parseFloat(value.toFixed(1)); // Fixed precision to prevent fluctuation
+        };
+        
         // Create dashboard data for each project
         const dashboardData: ProjectDashboardData[] = mockContainers.map((container, index) => {
           // Use different climate and water data for each project
           const climateIndex = index % mockClimateData.length;
           const waterIndex = index % mockWaterData.length;
           
-          // Generate random dates for harvests
+          // Generate stable dates for harvests
           const now = new Date();
           const lastHarvestDate = new Date(now);
           lastHarvestDate.setDate(lastHarvestDate.getDate() - (15 + index * 2));
@@ -86,7 +100,7 @@ export const useProjectDashboard = (projectId?: string) => {
           const nextHarvestDate = new Date(now);
           nextHarvestDate.setDate(nextHarvestDate.getDate() + (12 + index));
           
-          // Generate random alerts
+          // Generate stable alerts - same ones each time
           const alertTypes = ['info', 'warning', 'error'] as const;
           const alertMessages = [
             'Nutrient level slightly low',
@@ -97,58 +111,61 @@ export const useProjectDashboard = (projectId?: string) => {
             'Light intensity warning'
           ];
           
-          const alerts = Array(Math.floor(Math.random() * 3) + 1).fill(null).map((_, i) => {
+          const alerts = Array(Math.min(index + 1, 3)).fill(null).map((_, i) => {
             const alertDate = new Date(now);
             alertDate.setHours(alertDate.getHours() - (i * 4 + index));
             
             return {
               id: `alert-${container.id}-${i}`,
-              type: alertTypes[Math.floor(Math.random() * alertTypes.length)],
-              message: alertMessages[Math.floor(Math.random() * alertMessages.length)],
+              type: alertTypes[i % alertTypes.length],
+              message: alertMessages[(i + index) % alertMessages.length],
               timestamp: alertDate.toISOString()
             };
           });
           
-          // Create the project dashboard data object
+          // Use stable values based on container ID
+          const containerSeed = parseInt(container.id.replace(/\D/g, '') || '1', 10);
+          
+          // Create the project dashboard data object with stable values
           return {
             id: container.id,
             name: container.name,
             sensors: {
-              temperature: mockClimateData[climateIndex].temperature,
-              humidity: mockClimateData[climateIndex].humidity,
-              co2Level: mockClimateData[climateIndex].co2,
-              ph: mockWaterData[waterIndex].ph,
-              ec: mockWaterData[waterIndex].ec,
-              tds: mockWaterData[waterIndex].tds,
-              waterLevel: mockWaterData[waterIndex].level,
-              lightLevel: mockClimateData[climateIndex].light
+              temperature: parseFloat(mockClimateData[climateIndex].temperature.toFixed(1)),
+              humidity: Math.round(mockClimateData[climateIndex].humidity),
+              co2Level: Math.round(mockClimateData[climateIndex].co2),
+              ph: parseFloat(mockWaterData[waterIndex].ph.toFixed(1)),
+              ec: parseFloat(mockWaterData[waterIndex].ec.toFixed(1)),
+              tds: Math.round(mockWaterData[waterIndex].tds),
+              waterLevel: Math.round(mockWaterData[waterIndex].level),
+              lightLevel: Math.round(mockClimateData[climateIndex].light)
             },
             climate: {
-              temperature: mockClimateData[climateIndex].temperature,
-              humidity: mockClimateData[climateIndex].humidity,
-              co2Level: mockClimateData[climateIndex].co2,
-              light: mockClimateData[climateIndex].light,
-              airflow: 2.3 + (index * 0.1),
+              temperature: parseFloat(mockClimateData[climateIndex].temperature.toFixed(1)),
+              humidity: Math.round(mockClimateData[climateIndex].humidity),
+              co2Level: Math.round(mockClimateData[climateIndex].co2),
+              light: Math.round(mockClimateData[climateIndex].light),
+              airflow: parseFloat(stableRandom(2.0, 3.0, containerSeed + 5).toFixed(1)),
               lastUpdated: new Date().toISOString(),
-              status: ['normal', 'normal', 'warning'][Math.floor(Math.random() * 3)] as 'normal' | 'warning' | 'error'
+              status: ['normal', 'normal', 'warning'][index % 3] as 'normal' | 'warning' | 'error'
             },
             water: {
-              ph: mockWaterData[waterIndex].ph,
-              ec: mockWaterData[waterIndex].ec,
-              tds: mockWaterData[waterIndex].tds,
-              do: mockWaterData[waterIndex].do,
-              temperature: mockWaterData[waterIndex].temperature,
-              level: mockWaterData[waterIndex].level,
-              flowRate: 12.3 + (index * 0.2),
+              ph: parseFloat(mockWaterData[waterIndex].ph.toFixed(1)),
+              ec: parseFloat(mockWaterData[waterIndex].ec.toFixed(1)),
+              tds: Math.round(mockWaterData[waterIndex].tds),
+              do: parseFloat(mockWaterData[waterIndex].do.toFixed(1)),
+              temperature: parseFloat(mockWaterData[waterIndex].temperature.toFixed(1)),
+              level: Math.round(mockWaterData[waterIndex].level),
+              flowRate: parseFloat(stableRandom(10.0, 15.0, containerSeed + 10).toFixed(1)),
               lastUpdated: new Date().toISOString(),
-              status: ['normal', 'normal', 'warning'][Math.floor(Math.random() * 3)] as 'normal' | 'warning' | 'error'
+              status: ['normal', 'normal', 'warning'][index % 3] as 'normal' | 'warning' | 'error'
             },
             location: {
               name: ['Jakarta Farm', 'Bandung Farm', 'Surabaya Farm'][index % 3],
               address: ['Jl. Sudirman 123, Jakarta', 'Jl. Asia Afrika 45, Bandung', 'Jl. Pemuda 88, Surabaya'][index % 3],
               lat: 106.8456 + (index * 0.01),
               lng: -6.2088 + (index * 0.01),
-              status: ['active', 'active', 'maintenance'][Math.floor(Math.random() * 3)] as 'active' | 'maintenance' | 'offline'
+              status: ['active', 'active', 'maintenance'][index % 3] as 'active' | 'maintenance' | 'offline'
             },
             lastHarvest: lastHarvestDate.toISOString(),
             nextHarvest: nextHarvestDate.toISOString(),
@@ -156,6 +173,9 @@ export const useProjectDashboard = (projectId?: string) => {
             alerts
           };
         });
+        
+        // Mark data as initialized to prevent regeneration
+        dataInitializedRef.current = true;
         
         setAllProjects(dashboardData);
         

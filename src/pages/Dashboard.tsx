@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
@@ -41,8 +41,29 @@ const Dashboard = () => {
   // Get dashboard data
   const mockData = useDashboardData();
   
-  // Get project data for navigation
+  // Get project data for navigation and ensure it's stable
   const { allProjects } = useProjectDashboard();
+  
+  // Create a stable version of projects that won't change on re-renders
+  const stableProjects = useMemo(() => {
+    if (allProjects.length > 0) {
+      return allProjects.slice(0, 3).map(project => ({
+        ...project,
+        // Stabilize any fluctuating values
+        climate: {
+          ...project.climate,
+          temperature: parseFloat(project.climate.temperature.toFixed(1)),
+          humidity: Math.round(project.climate.humidity),
+        },
+        water: {
+          ...project.water,
+          ph: parseFloat(project.water.ph.toFixed(1)),
+          level: Math.round(project.water.level),
+        }
+      }));
+    }
+    return [];
+  }, [allProjects]);
   
   // Toggle section expanded state
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -175,7 +196,7 @@ const Dashboard = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {allProjects.slice(0, 3).map(project => (
+              {stableProjects.map(project => (
                 <Card key={project.id} className="overflow-hidden">
                   <CardHeader className="p-4 pb-0">
                     <div className="flex justify-between items-start">

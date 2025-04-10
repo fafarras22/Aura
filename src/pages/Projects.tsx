@@ -159,7 +159,10 @@ const Projects = () => {
               </p>
             </div>
             
-            <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as 'grid' | 'list')}>
+            <Tabs 
+              value={viewMode} 
+              onValueChange={(value) => setViewMode(value as 'grid' | 'list')}
+            >
               <TabsList>
                 <TabsTrigger value="grid">{content[language].gridView}</TabsTrigger>
                 <TabsTrigger value="list">{content[language].listView}</TabsTrigger>
