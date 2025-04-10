@@ -16,6 +16,12 @@ interface Partner {
 }
 
 const Partners = () => {
+  // Function to handle logo errors by providing a fallback
+  const handleLogoError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/placeholder.svg'; 
+    e.currentTarget.classList.add('opacity-50');
+  };
+
   return (
     <div className="container mx-auto py-12 px-4">
       <div className="max-w-5xl mx-auto space-y-12">
@@ -30,7 +36,7 @@ const Partners = () => {
         {/* Key Partners */}
         <section className="space-y-8">
           <h2 className="text-3xl font-bold">Key Strategic Partners</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <a href="https://www.antler.co" target="_blank" rel="noopener noreferrer" className="block">
               <Card className="h-full hover:shadow-md transition-all">
                 <CardHeader className="pb-2 text-center">
@@ -39,6 +45,7 @@ const Partners = () => {
                       src="https://assets-global.website-files.com/5d121ce15cf420419d2d0a13/6539c22d6ea8e0a8bbca8ab4_Antler-black.svg" 
                       alt="Antler Logo" 
                       className="max-h-10 dark:invert"
+                      onError={handleLogoError}
                     />
                   </div>
                 </CardHeader>
@@ -62,6 +69,7 @@ const Partners = () => {
                       src="https://indodax.com/v2/images/logo-indodax.svg" 
                       alt="Indodax Logo" 
                       className="max-h-10 dark:invert"
+                      onError={handleLogoError}
                     />
                   </div>
                 </CardHeader>
@@ -85,6 +93,7 @@ const Partners = () => {
                       src="https://astradigital.co.id/wp-content/uploads/2023/02/logo-new-ad.png" 
                       alt="Astra Digital Logo" 
                       className="max-h-10 dark:invert"
+                      onError={handleLogoError}
                     />
                   </div>
                 </CardHeader>
@@ -96,6 +105,30 @@ const Partners = () => {
                 </CardContent>
                 <CardFooter className="flex justify-center">
                   <Badge icon={<Globe className="w-4 h-4" />} label="Technology Partner" />
+                </CardFooter>
+              </Card>
+            </a>
+            
+            <a href="https://www.angoventures.id" target="_blank" rel="noopener noreferrer" className="block">
+              <Card className="h-full hover:shadow-md transition-all">
+                <CardHeader className="pb-2 text-center">
+                  <div className="h-16 flex items-center justify-center">
+                    <img 
+                      src="https://www.angoventures.id/assets/img/logo.png" 
+                      alt="ANGO VC Logo" 
+                      className="max-h-10 dark:invert"
+                      onError={handleLogoError}
+                    />
+                  </div>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <CardTitle className="text-xl mb-2">ANGO VC</CardTitle>
+                  <CardDescription>
+                    Leading Indonesian venture capital firm specializing in early-stage agritech and sustainability investments.
+                  </CardDescription>
+                </CardContent>
+                <CardFooter className="flex justify-center">
+                  <Badge icon={<Building className="w-4 h-4" />} label="Strategic Investor" />
                 </CardFooter>
               </Card>
             </a>
@@ -114,7 +147,7 @@ const Partners = () => {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {partners.filter(partner => partner.category === 'Investor').map(partner => (
-                  <PartnerLogo key={partner.id} partner={partner} />
+                  <PartnerLogo key={partner.id} partner={partner} onError={handleLogoError} />
                 ))}
               </div>
             </div>
@@ -126,7 +159,7 @@ const Partners = () => {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {partners.filter(partner => partner.category === 'Technology').map(partner => (
-                  <PartnerLogo key={partner.id} partner={partner} />
+                  <PartnerLogo key={partner.id} partner={partner} onError={handleLogoError} />
                 ))}
               </div>
             </div>
@@ -138,7 +171,7 @@ const Partners = () => {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {partners.filter(partner => partner.category === 'Distribution').map(partner => (
-                  <PartnerLogo key={partner.id} partner={partner} />
+                  <PartnerLogo key={partner.id} partner={partner} onError={handleLogoError} />
                 ))}
               </div>
             </div>
@@ -150,7 +183,7 @@ const Partners = () => {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {partners.filter(partner => partner.category === 'Research').map(partner => (
-                  <PartnerLogo key={partner.id} partner={partner} />
+                  <PartnerLogo key={partner.id} partner={partner} onError={handleLogoError} />
                 ))}
               </div>
             </div>
@@ -298,7 +331,7 @@ const Badge = ({ icon, label }: { icon: React.ReactNode, label: string }) => {
 };
 
 // Partner Logo Component
-const PartnerLogo = ({ partner }: { partner: Partner }) => {
+const PartnerLogo = ({ partner, onError }: { partner: Partner, onError: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void }) => {
   return (
     <a href={partner.website} target="_blank" rel="noopener noreferrer" className="block">
       <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm flex items-center justify-center h-[100px] hover:shadow-md transition-all">
@@ -306,6 +339,7 @@ const PartnerLogo = ({ partner }: { partner: Partner }) => {
           src={partner.logo} 
           alt={`${partner.name} Logo`} 
           className="max-h-12 max-w-full dark:invert"
+          onError={onError}
         />
       </div>
     </a>
@@ -409,6 +443,22 @@ const partners: Partner[] = [
     category: 'Research',
     description: 'Top Indonesian university collaborating on blockchain technology research and development.',
     website: '#'
+  },
+  {
+    id: '13',
+    name: 'ANGO VC',
+    logo: 'https://www.angoventures.id/assets/img/logo.png',
+    category: 'Investor',
+    description: 'Leading Indonesian venture capital firm specializing in early-stage agritech and sustainability investments.',
+    website: 'https://www.angoventures.id'
+  },
+  {
+    id: '14',
+    name: 'Telkom University',
+    logo: 'https://telkomuniversity.ac.id/wp-content/uploads/2019/03/Logo-Telkom-University-768x209.png',
+    category: 'Research',
+    description: 'Leading private technology-focused university in Indonesia contributing to agricultural innovation research.',
+    website: 'https://telkomuniversity.ac.id'
   }
 ];
 
