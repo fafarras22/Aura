@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CallToAction } from "@/components/home/CallToAction";
 import { WhyInvestSection } from "@/components/home/WhyInvestSection";
 import { HomeProjects } from "@/components/home/HomeProjects";
@@ -30,6 +30,19 @@ const Home = () => {
   const [language, setLanguage] = useState<SupportedLanguage>('en');
   const navigate = useNavigate();
   
+  // Load custom font
+  useEffect(() => {
+    // Add Playfair Display font
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap';
+    document.head.appendChild(link);
+    
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+  
   // Mock data for featured container projects
   const featuredContainers: ContainerProject[] = getMockContainerProjects();
   
@@ -49,7 +62,7 @@ const Home = () => {
     hero: {
       title: "Invest in Container Farming of",
       subtitle: "Connect with innovative indoor farming containers across Jakarta. Earn transparent yields while supporting sustainable agriculture through $AKR tokens.",
-      explore: "Explore Containers",
+      explore: "Explore Investment Projects",
       learnMore: "How It Works"
     },
     tokenization: {
@@ -90,26 +103,17 @@ const Home = () => {
           onLearnMoreClick={() => navigate('/how-it-works')}
         />
         
+        {/* Quick Investment Section - Moved up for easier access */}
+        <QuickInvestment />
+        
+        {/* Why Invest Section */}
+        <WhyInvestSection />
+        
         {/* Call to Action Section */}
         <CallToAction 
           onExploreClick={() => navigate('/farm-projects')}
           onConnectWallet={() => navigate('/connect-wallet')}
         />
-        
-        {/* How AKAR Works Section */}
-        <HowAkarWorks onExploreClick={() => navigate('/farm-projects')} />
-        
-        {/* About Section - New component for better SEO context */}
-        <AboutSection content={content.about} />
-        
-        {/* Solutions Section */}
-        <SolutionsSection language={language} />
-        
-        {/* Technology Section */}
-        <TechnologySection language={language} />
-        
-        {/* Why Invest Section */}
-        <WhyInvestSection />
         
         {/* Home Projects Section */}
         <HomeProjects 
@@ -124,13 +128,22 @@ const Home = () => {
           onNavigate={navigate}
         />
         
+        {/* How AKAR Works Section */}
+        <HowAkarWorks onExploreClick={() => navigate('/farm-projects')} />
+        
+        {/* About Section - New component for better SEO context */}
+        <AboutSection content={content.about} />
+        
+        {/* Solutions Section */}
+        <SolutionsSection language={language} />
+        
+        {/* Technology Section */}
+        <TechnologySection language={language} />
+        
         {/* Tabs Section with more detailed information */}
         <div className="container mx-auto px-4 py-12">
           <TabsSection language={language} />
         </div>
-        
-        {/* Quick Investment Section */}
-        <QuickInvestment />
         
         {/* ASEAN Impact Section */}
         <AseanImpact />

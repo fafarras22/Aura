@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 import { LanguageSelector } from "@/components/layout/LanguageSelector";
-import { Wallet, ChevronDown } from "lucide-react";
+import { Wallet, ChevronDown, LineChart, Leaf, BarChart2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Logo } from "@/components/logo/Logo";
 
@@ -25,28 +25,38 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
           </Button>
         </div>
         
-        <nav className="hidden md:flex items-center gap-6">
-          <Button variant="link" onClick={() => navigate('/')}>Home</Button>
+        <nav className="hidden md:flex items-center gap-5">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="link" className="gap-1">
-                Products <ChevronDown className="h-4 w-4" />
+              <Button variant="link" className="gap-1 font-medium">
+                <Leaf className="h-4 w-4 mr-1 text-primary" />
+                Invest <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center">
-              <DropdownMenuItem onClick={() => navigate('/farm-projects')}>
+              <DropdownMenuItem onClick={() => navigate('/farm-projects')} className="gap-2">
+                <Leaf className="h-4 w-4 text-primary" />
                 Container Projects
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/tokenization')}>
+              <DropdownMenuItem onClick={() => navigate('/tokenization')} className="gap-2">
+                <BarChart2 className="h-4 w-4 text-primary" />
                 $AKR Tokenization
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="link" onClick={() => navigate('/how-it-works')}>How It Works</Button>
-          <Button variant="link" onClick={() => navigate('/sensors')}>Farm Monitoring</Button>
+          
+          <Button variant="link" className="font-medium" onClick={() => navigate('/how-it-works')}>
+            <LineChart className="h-4 w-4 mr-1 text-primary" />
+            How It Works
+          </Button>
+          
+          <Button variant="link" className="font-medium" onClick={() => navigate('/sensors')}>
+            Farm Monitoring
+          </Button>
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="link" className="gap-1">
+              <Button variant="link" className="gap-1 font-medium">
                 About <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -65,9 +75,10 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="link" className="gap-1">
+              <Button variant="link" className="gap-1 font-medium">
                 Legal <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -88,7 +99,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
         <div className="flex items-center gap-2">
           <LanguageSelector language={language} setLanguage={setLanguage} />
           <ModeToggle />
-          <Button size="sm" onClick={() => navigate('/connect-wallet')} className="gap-1">
+          <Button size="sm" onClick={() => navigate('/connect-wallet')} className="gap-1 bg-primary hover:bg-primary/90 font-medium">
             <Wallet className="h-4 w-4" />
             Connect
           </Button>
