@@ -185,8 +185,8 @@ const Dashboard = () => {
                       </div>
                       <Badge 
                         variant={
-                          project.location.status === 'active' ? 'success' :
-                          project.location.status === 'maintenance' ? 'warning' : 'outline'
+                          project.location.status === 'active' ? 'default' :
+                          project.location.status === 'maintenance' ? 'secondary' : 'outline'
                         }
                       >
                         {content[language][project.location.status]}

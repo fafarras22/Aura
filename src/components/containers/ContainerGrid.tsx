@@ -54,7 +54,7 @@ export const ContainerGrid: React.FC<ContainerGridProps> = ({
           <div key={container.id} className="relative">
             <ContainerCard
               container={container}
-              onSelect={() => onSelectContainer(container.id)}
+              onAction={() => onSelectContainer(container.id)}
             />
             {onViewDashboard && (
               <div className="mt-2 flex justify-between">

@@ -63,7 +63,10 @@ const ProjectDashboard = () => {
       normal: "Normal",
       warning: "Warning",
       error: "Error",
-      viewAll: "View All"
+      viewAll: "View All",
+      active: "Active",
+      maintenance: "Maintenance",
+      offline: "Offline"
     },
     id: {
       loading: "Memuat data proyek...",
@@ -87,7 +90,10 @@ const ProjectDashboard = () => {
       normal: "Normal",
       warning: "Peringatan",
       error: "Kesalahan",
-      viewAll: "Lihat Semua"
+      viewAll: "Lihat Semua",
+      active: "Aktif",
+      maintenance: "Pemeliharaan",
+      offline: "Offline"
     },
     ko: {
       loading: "프로젝트 데이터 로딩 중...",
@@ -111,7 +117,10 @@ const ProjectDashboard = () => {
       normal: "정상",
       warning: "경고",
       error: "오류",
-      viewAll: "모두 보기"
+      viewAll: "모두 보기",
+      active: "활성",
+      maintenance: "유지보수",
+      offline: "오프라인"
     }
   };
   
@@ -374,7 +383,7 @@ const ProjectDashboard = () => {
               {projectData.alerts.length > 0 ? (
                 <div className="space-y-3">
                   {projectData.alerts.map((alert: any) => (
-                    <Alert key={alert.id} variant={alert.type === 'error' ? "destructive" : (alert.type === 'warning' ? "warning" : "default")}>
+                    <Alert key={alert.id} variant={alert.type === 'error' ? "destructive" : (alert.type === 'warning' ? "default" : "default")}>
                       <AlertTriangle className="h-4 w-4" />
                       <AlertTitle>{alert.type}</AlertTitle>
                       <AlertDescription className="flex justify-between">
@@ -460,7 +469,7 @@ const ProjectDashboard = () => {
                     <CardTitle>{content[language].climate}</CardTitle>
                     <CardDescription>
                       {content[language].systemStatus}: 
-                      <Badge variant={projectData.climate.status === 'normal' ? 'outline' : 'warning'} className="ml-2">
+                      <Badge variant={projectData.climate.status === 'normal' ? 'outline' : 'secondary'} className="ml-2">
                         {content[language][projectData.climate.status]}
                       </Badge>
                     </CardDescription>
@@ -491,7 +500,7 @@ const ProjectDashboard = () => {
                     <CardTitle>{content[language].water}</CardTitle>
                     <CardDescription>
                       {content[language].systemStatus}:
-                      <Badge variant={projectData.water.status === 'normal' ? 'outline' : 'warning'} className="ml-2">
+                      <Badge variant={projectData.water.status === 'normal' ? 'outline' : 'secondary'} className="ml-2">
                         {content[language][projectData.water.status]}
                       </Badge>
                     </CardDescription>
@@ -615,7 +624,7 @@ const ProjectDashboard = () => {
                     <CardTitle>{projectData.location.name}</CardTitle>
                     <CardDescription>{projectData.location.address}</CardDescription>
                   </div>
-                  <Badge variant={projectData.location.status === 'active' ? 'success' : 'warning'} className="capitalize">
+                  <Badge variant={projectData.location.status === 'active' ? 'default' : 'secondary'} className="capitalize">
                     {projectData.location.status}
                   </Badge>
                 </div>
