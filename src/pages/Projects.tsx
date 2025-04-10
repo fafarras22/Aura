@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContainerGrid } from "@/components/containers/ContainerGrid";
 import { ContainerStakeModal } from "@/components/containers/ContainerStakeModal";
@@ -27,6 +27,9 @@ const Projects = () => {
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const navigate = useNavigate();
+  
+  // Use ref to prevent multiple database setup attempts
+  const dbSetupAttemptedRef = useRef(false);
 
   // Translations
   const content = {
@@ -74,10 +77,14 @@ const Projects = () => {
   // Initialize database on component mount
   useEffect(() => {
     const setupDatabase = async () => {
+      // Prevent multiple setup attempts
+      if (dbSetupAttemptedRef.current) return;
+      dbSetupAttemptedRef.current = true;
+      
       setIsLoading(true);
       try {
         // Try to connect to the database and check if tables exist
-        const { data, error } = await supabase.from('dummy_check').select('*').limit(1);
+        const { error } = await supabase.from('dummy_check').select('*').limit(1);
         
         if (error) {
           console.log("Database connection error, using fallback data:", error.message);
@@ -197,7 +204,7 @@ const Projects = () => {
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
             </div>
           ) : (
-            <Tabs value={viewMode}>
+            <Tabs defaultValue={viewMode} value={viewMode}>
               <TabsContent value="grid">
                 <div 
                   className="projects-grid"

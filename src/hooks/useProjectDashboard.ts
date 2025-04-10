@@ -63,12 +63,24 @@ export const useProjectDashboard = (projectId?: string) => {
   const [error, setError] = useState<string | null>(null);
   const { initializeDB } = useDBSetup();
   
-  // Reference to store the initial data to prevent changes
+  // References to store the initial data to prevent changes on re-renders
   const dataInitializedRef = useRef(false);
+  const stableProjectsRef = useRef<ProjectDashboardData[]>([]);
 
   useEffect(() => {
     // Only load data once to prevent values from changing on re-renders
-    if (dataInitializedRef.current) return;
+    if (dataInitializedRef.current) {
+      // If we already have data and are requesting a specific project, find that project
+      if (projectId && stableProjectsRef.current.length > 0) {
+        const project = stableProjectsRef.current.find(p => p.id === projectId);
+        if (project) {
+          setProjectData(project);
+        } else {
+          setError(`Project with ID ${projectId} not found`);
+        }
+      }
+      return;
+    }
     
     const loadProjectData = async () => {
       setLoading(true);
@@ -79,21 +91,24 @@ export const useProjectDashboard = (projectId?: string) => {
         const mockClimateData = getMockClimateData();
         const mockWaterData = getMockWaterData(7);
         
-        // Generate random values but make them stable by setting fixed seeds or formats
+        // Generate deterministic values by using container ID as seed
         const stableRandom = (min: number, max: number, seed: number) => {
-          // Simple pseudo-random function with seed
+          // Simple deterministic pseudo-random function with seed
           const value = ((Math.sin(seed) + 1) / 2) * (max - min) + min;
           return parseFloat(value.toFixed(1)); // Fixed precision to prevent fluctuation
         };
         
-        // Create dashboard data for each project
+        // Create dashboard data for each project with stable values
         const dashboardData: ProjectDashboardData[] = mockContainers.map((container, index) => {
-          // Use different climate and water data for each project
+          // Use container ID as a numeric seed for random values
+          const containerSeed = parseInt(container.id.replace(/\D/g, '') || '1', 10);
+          
+          // Use different climate and water data for each project but ensure values are stable
           const climateIndex = index % mockClimateData.length;
           const waterIndex = index % mockWaterData.length;
           
           // Generate stable dates for harvests
-          const now = new Date();
+          const now = new Date("2023-01-15T12:00:00Z"); // Fixed date for stability
           const lastHarvestDate = new Date(now);
           lastHarvestDate.setDate(lastHarvestDate.getDate() - (15 + index * 2));
           
@@ -123,9 +138,6 @@ export const useProjectDashboard = (projectId?: string) => {
             };
           });
           
-          // Use stable values based on container ID
-          const containerSeed = parseInt(container.id.replace(/\D/g, '') || '1', 10);
-          
           // Create the project dashboard data object with stable values
           return {
             id: container.id,
@@ -146,7 +158,7 @@ export const useProjectDashboard = (projectId?: string) => {
               co2Level: Math.round(mockClimateData[climateIndex].co2),
               light: Math.round(mockClimateData[climateIndex].light),
               airflow: parseFloat(stableRandom(2.0, 3.0, containerSeed + 5).toFixed(1)),
-              lastUpdated: new Date().toISOString(),
+              lastUpdated: new Date(now).toISOString(),
               status: ['normal', 'normal', 'warning'][index % 3] as 'normal' | 'warning' | 'error'
             },
             water: {
@@ -157,7 +169,7 @@ export const useProjectDashboard = (projectId?: string) => {
               temperature: parseFloat(mockWaterData[waterIndex].temperature.toFixed(1)),
               level: Math.round(mockWaterData[waterIndex].level),
               flowRate: parseFloat(stableRandom(10.0, 15.0, containerSeed + 10).toFixed(1)),
-              lastUpdated: new Date().toISOString(),
+              lastUpdated: new Date(now).toISOString(),
               status: ['normal', 'normal', 'warning'][index % 3] as 'normal' | 'warning' | 'error'
             },
             location: {
@@ -174,7 +186,8 @@ export const useProjectDashboard = (projectId?: string) => {
           };
         });
         
-        // Mark data as initialized to prevent regeneration
+        // Store the generated data in refs to ensure stability
+        stableProjectsRef.current = dashboardData;
         dataInitializedRef.current = true;
         
         setAllProjects(dashboardData);
@@ -203,5 +216,5 @@ export const useProjectDashboard = (projectId?: string) => {
     loadProjectData();
   }, [projectId, initializeDB]);
   
-  return { projectData, allProjects, loading, error };
+  return { projectData, allProjects: stableProjectsRef.current.length > 0 ? stableProjectsRef.current : allProjects, loading, error };
 };
