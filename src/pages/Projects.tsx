@@ -194,56 +194,58 @@ const Projects = () => {
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
             </div>
           ) : (
-            <TabsContent value={viewMode} forceMount={true} className={viewMode === 'grid' ? 'block' : 'hidden'}>
-              <div 
-                className="projects-grid"
-                itemScope
-                itemType="https://schema.org/ItemList"
-              >
-                <meta itemProp="name" content="AKAR Farm Container Projects" />
-                <meta itemProp="description" content="Collection of sustainable container farming projects available for investment" />
-                <ContainerGrid 
-                  onSelectContainer={handleContainerSelect} 
-                  onViewDashboard={handleViewDashboard}
-                  language={language}
-                />
-              </div>
-            </TabsContent>
-          )}
-          
-          {/* List view content */}
-          <TabsContent value={viewMode} forceMount={true} className={viewMode === 'list' ? 'block' : 'hidden'}>
-            <div className="divide-y divide-gray-200 dark:divide-gray-800">
-              {!isLoading && Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className="py-4 flex justify-between items-center">
-                  <div>
-                    <h3 className="font-medium">Container Farm #{index + 1}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {['Lettuce', 'Kale', 'Spinach', 'Microgreens', 'Strawberry', 'Herbs'][index % 6]} | 
-                      {['Jakarta', 'Bandung', 'Surabaya'][index % 3]} | 
-                      {['Active', 'Active', 'Maintenance'][index % 3]}
-                    </p>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleContainerSelect(`container-${index + 1}`)}
-                    >
-                      {content[language].viewDetails}
-                    </Button>
-                    <Button 
-                      variant="default" 
-                      size="sm"
-                      onClick={() => handleViewDashboard(`container-${index + 1}`)}
-                    >
-                      {content[language].viewDashboard}
-                    </Button>
-                  </div>
+            <Tabs value={viewMode}>
+              <TabsContent value="grid">
+                <div 
+                  className="projects-grid"
+                  itemScope
+                  itemType="https://schema.org/ItemList"
+                >
+                  <meta itemProp="name" content="AKAR Farm Container Projects" />
+                  <meta itemProp="description" content="Collection of sustainable container farming projects available for investment" />
+                  <ContainerGrid 
+                    onSelectContainer={handleContainerSelect} 
+                    onViewDashboard={handleViewDashboard}
+                    language={language}
+                  />
                 </div>
-              ))}
-            </div>
-          </TabsContent>
+              </TabsContent>
+              
+              {/* List view content */}
+              <TabsContent value="list">
+                <div className="divide-y divide-gray-200 dark:divide-gray-800">
+                  {Array.from({ length: 8 }).map((_, index) => (
+                    <div key={index} className="py-4 flex justify-between items-center">
+                      <div>
+                        <h3 className="font-medium">Container Farm #{index + 1}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {['Lettuce', 'Kale', 'Spinach', 'Microgreens', 'Strawberry', 'Herbs'][index % 6]} | 
+                          {['Jakarta', 'Bandung', 'Surabaya'][index % 3]} | 
+                          {['Active', 'Active', 'Maintenance'][index % 3]}
+                        </p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleContainerSelect(`container-${index + 1}`)}
+                        >
+                          {content[language].viewDetails}
+                        </Button>
+                        <Button 
+                          variant="default" 
+                          size="sm"
+                          onClick={() => handleViewDashboard(`container-${index + 1}`)}
+                        >
+                          {content[language].viewDashboard}
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          )}
 
           <ContainerStakeModal
             open={isModalOpen}
