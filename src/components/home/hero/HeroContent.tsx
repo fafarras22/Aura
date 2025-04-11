@@ -26,10 +26,6 @@ export const HeroContent: React.FC<HeroContentProps> = ({
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight font-display">
-          AKAR Farm
-        </h1>
-        
         <div className="flex items-center gap-2 my-3">
           <AnimatedProjectTypes 
             baseText={title}

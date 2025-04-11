@@ -84,11 +84,15 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
             <DropdownMenuContent align="center">
               <DropdownMenuItem onClick={() => navigate('/farm-projects')} className="gap-2">
                 <Leaf className="h-4 w-4 text-primary" />
-                Container Projects
+                {language === 'en' ? 'Container Projects' : 
+                 language === 'id' ? 'Proyek Kontainer' : 
+                 '컨테이너 프로젝트'}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/tokenization')} className="gap-2">
                 <BarChart2 className="h-4 w-4 text-primary" />
-                $AKR Tokenization
+                {language === 'en' ? '$AKR Tokenization' : 
+                 language === 'id' ? 'Tokenisasi $AKR' : 
+                 '$AKR 토큰화'}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

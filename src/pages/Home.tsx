@@ -60,18 +60,40 @@ const Home = () => {
   // Translation content
   const content = {
     hero: {
-      title: "Invest in Container Farming of",
-      subtitle: "Connect with innovative indoor farming containers across Jakarta. Earn transparent yields while supporting sustainable agriculture through $AKR tokens.",
-      explore: "Explore Investment Projects",
-      learnMore: "How It Works"
+      title: language === 'en' ? "Invest in Container Farming of" : 
+             language === 'id' ? "Investasi dalam Pertanian Kontainer" : 
+             "컨테이너 농업에 투자하세요",
+      subtitle: language === 'en' ? 
+        "Connect with innovative indoor farming containers across Jakarta. Earn transparent yields while supporting sustainable agriculture through $AKR tokens." : 
+        language === 'id' ? 
+        "Terhubung dengan kontainer pertanian dalam ruangan yang inovatif di seluruh Jakarta. Dapatkan hasil yang transparan sambil mendukung pertanian berkelanjutan melalui token $AKR." : 
+        "자카르타 전역의 혁신적인 실내 농업 컨테이너와 연결하세요. $AKR 토큰을 통해 지속 가능한 농업을 지원하면서 투명한 수익을 얻으세요.",
+      explore: language === 'en' ? "Explore Investment Projects" : 
+               language === 'id' ? "Jelajahi Proyek Investasi" : 
+               "투자 프로젝트 탐색",
+      learnMore: language === 'en' ? "How It Works" : 
+                 language === 'id' ? "Bagaimana Cara Kerjanya" : 
+                 "작동 방식"
     },
     tokenization: {
-      title: "Container Farm Tokenization",
-      description: "Our platform tokenizes individual container farms, providing transparency, fractional ownership, and liquidity through $AKR tokens."
+      title: language === 'en' ? "Container Farm Tokenization" : 
+             language === 'id' ? "Tokenisasi Pertanian Kontainer" : 
+             "컨테이너 농장 토큰화",
+      description: language === 'en' ? 
+        "Our platform tokenizes individual container farms, providing transparency, fractional ownership, and liquidity through $AKR tokens." : 
+        language === 'id' ? 
+        "Platform kami mentokenisasi pertanian kontainer individu, memberikan transparansi, kepemilikan fraksional, dan likuiditas melalui token $AKR." : 
+        "당사 플랫폼은 개별 컨테이너 농장을 토큰화하여 $AKR 토큰을 통해 투명성, 부분 소유권 및 유동성을 제공합니다."
     },
     about: {
-      title: "Sustainable Urban Agriculture",
-      description: "AKAR Farm combines container farming technology with blockchain to create accessible, transparent agricultural investments."
+      title: language === 'en' ? "Sustainable Urban Agriculture" : 
+             language === 'id' ? "Pertanian Perkotaan Berkelanjutan" : 
+             "지속 가능한 도시 농업",
+      description: language === 'en' ? 
+        "AKAR Farm combines container farming technology with blockchain to create accessible, transparent agricultural investments." : 
+        language === 'id' ? 
+        "AKAR Farm menggabungkan teknologi pertanian kontainer dengan blockchain untuk menciptakan investasi pertanian yang mudah diakses dan transparan." : 
+        "AKAR 팜은 컨테이너 농업 기술과 블록체인을 결합하여 접근 가능하고 투명한 농업 투자를 창출합니다."
     },
     farmTypes: ["Lettuce", "Strawberry", "Kale", "Herbs", "Microgreens"]
   };
