@@ -16,6 +16,54 @@ interface HomeHeaderProps {
 const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
   const navigate = useNavigate();
 
+  const content = {
+    en: {
+      invest: "Invest",
+      howItWorks: "How It Works",
+      farmMonitoring: "Farm Monitoring",
+      about: "About",
+      aboutUs: "About Us",
+      whitepaper: "Whitepaper",
+      careers: "Careers",
+      partners: "Partners",
+      legal: "Legal",
+      privacyPolicy: "Privacy Policy",
+      termsOfService: "Terms of Service",
+      legalInfo: "Legal Information",
+      connect: "Connect"
+    },
+    id: {
+      invest: "Investasi",
+      howItWorks: "Cara Kerja",
+      farmMonitoring: "Pemantauan Pertanian",
+      about: "Tentang",
+      aboutUs: "Tentang Kami",
+      whitepaper: "Whitepaper",
+      careers: "Karir",
+      partners: "Mitra",
+      legal: "Hukum",
+      privacyPolicy: "Kebijakan Privasi",
+      termsOfService: "Ketentuan Layanan",
+      legalInfo: "Informasi Hukum",
+      connect: "Hubungkan"
+    },
+    ko: {
+      invest: "투자",
+      howItWorks: "작동 방식",
+      farmMonitoring: "농장 모니터링",
+      about: "소개",
+      aboutUs: "회사 소개",
+      whitepaper: "백서",
+      careers: "채용",
+      partners: "파트너",
+      legal: "법률",
+      privacyPolicy: "개인정보 보호정책",
+      termsOfService: "서비스 약관",
+      legalInfo: "법률 정보",
+      connect: "연결"
+    }
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -30,7 +78,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
             <DropdownMenuTrigger asChild>
               <Button variant="link" className="gap-1 font-medium">
                 <Leaf className="h-4 w-4 mr-1 text-primary" />
-                Invest <ChevronDown className="h-4 w-4" />
+                {content[language].invest} <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center">
@@ -47,31 +95,31 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
           
           <Button variant="link" className="font-medium" onClick={() => navigate('/how-it-works')}>
             <LineChart className="h-4 w-4 mr-1 text-primary" />
-            How It Works
+            {content[language].howItWorks}
           </Button>
           
           <Button variant="link" className="font-medium" onClick={() => navigate('/sensors')}>
-            Farm Monitoring
+            {content[language].farmMonitoring}
           </Button>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="link" className="gap-1 font-medium">
-                About <ChevronDown className="h-4 w-4" />
+                {content[language].about} <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center">
               <DropdownMenuItem onClick={() => navigate('/about')}>
-                About Us
+                {content[language].aboutUs}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/whitepaper')}>
-                Whitepaper
+                {content[language].whitepaper}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/careers')}>
-                Careers
+                {content[language].careers}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/partners')}>
-                Partners
+                {content[language].partners}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -79,18 +127,18 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="link" className="gap-1 font-medium">
-                Legal <ChevronDown className="h-4 w-4" />
+                {content[language].legal} <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center">
               <DropdownMenuItem onClick={() => navigate('/privacy-policy')}>
-                Privacy Policy
+                {content[language].privacyPolicy}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/terms-of-service')}>
-                Terms of Service
+                {content[language].termsOfService}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/legal')}>
-                Legal Information
+                {content[language].legalInfo}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -101,7 +149,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
           <ModeToggle />
           <Button size="sm" onClick={() => navigate('/connect-wallet')} className="gap-1 bg-primary hover:bg-primary/90 font-medium">
             <Wallet className="h-4 w-4" />
-            Connect
+            {content[language].connect}
           </Button>
         </div>
       </div>

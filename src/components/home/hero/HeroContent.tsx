@@ -27,10 +27,7 @@ export const HeroContent: React.FC<HeroContentProps> = ({
     <div className="space-y-6">
       <div className="space-y-4">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight font-display">
-          Sustainable Agriculture
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/80 mt-1">
-            Investment Platform
-          </span>
+          AKAR Farm
         </h1>
         
         <div className="flex items-center gap-2 my-3">

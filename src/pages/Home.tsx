@@ -104,10 +104,10 @@ const Home = () => {
         />
         
         {/* Quick Investment Section - Moved up for easier access */}
-        <QuickInvestment />
+        <QuickInvestment language={language} />
         
         {/* Why Invest Section */}
-        <WhyInvestSection />
+        <WhyInvestSection language={language} />
         
         {/* Call to Action Section */}
         <CallToAction 

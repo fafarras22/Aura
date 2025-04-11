@@ -56,7 +56,7 @@ export const HomeFooter: React.FC<HomeFooterProps> = ({ onNavigate }) => {
         
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © 2023 AKAR Farm. All rights reserved.
+            © 2025 AKAR Farm by PT Tumbuh Dimana Sadja, Jakarta, Indonesia. All rights reserved.
           </p>
           
           <div className="flex items-center gap-4">

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Instagram, Linkedin, Twitter, Globe } from "lucide-react";
@@ -22,7 +21,7 @@ export const Footer: React.FC<FooterProps> = ({ language = 'en' }) => {
       terms: "Terms of Service",
       whitepaper: "Whitepaper",
       news: "News",
-      rights: "© 2023 AKAR FarmWatch by PT Tumbuh Dimana Sadja. All rights reserved.",
+      rights: "© 2025 AKAR Farm by PT Tumbuh Dimana Sadja, Jakarta, Indonesia. All rights reserved.",
       address: "Jakarta Innovation Center, Indonesia"
     },
     id: {
@@ -38,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({ language = 'en' }) => {
       terms: "Ketentuan Layanan",
       whitepaper: "Whitepaper",
       news: "Berita",
-      rights: "© 2023 AKAR FarmWatch oleh PT Tumbuh Dimana Sadja. Seluruh hak cipta dilindungi.",
+      rights: "© 2025 AKAR Farm oleh PT Tumbuh Dimana Sadja, Jakarta, Indonesia. Seluruh hak cipta dilindungi.",
       address: "Pusat Inovasi Jakarta, Indonesia"
     },
     ko: {
@@ -54,7 +53,7 @@ export const Footer: React.FC<FooterProps> = ({ language = 'en' }) => {
       terms: "서비스 약관",
       whitepaper: "백서",
       news: "뉴스",
-      rights: "© 2023 AKAR FarmWatch by PT Tumbuh Dimana Sadja. 모든 권리 보유.",
+      rights: "© 2025 AKAR Farm by PT Tumbuh Dimana Sadja, 자카르타, 인도네시아. 모든 권리 보유.",
       address: "자카르타 혁신 센터, 인도네시아"
     }
   };
