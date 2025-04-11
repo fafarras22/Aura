@@ -42,9 +42,9 @@ const Partners = () => {
                 <CardHeader className="pb-2 text-center">
                   <div className="h-16 flex items-center justify-center">
                     <img 
-                      src="https://assets-global.website-files.com/5d121ce15cf420419d2d0a13/6539c22d6ea8e0a8bbca8ab4_Antler-black.svg" 
+                      src="https://assets.website-files.com/5d121ce15cf420419d2d0a13/5d268f7f1e8b180e22e1d23f_Antler-black.svg" 
                       alt="Antler Logo" 
-                      className="max-h-10 dark:invert"
+                      className="max-h-10" 
                       onError={handleLogoError}
                     />
                   </div>
@@ -66,9 +66,9 @@ const Partners = () => {
                 <CardHeader className="pb-2 text-center">
                   <div className="h-16 flex items-center justify-center">
                     <img 
-                      src="https://indodax.com/v2/images/logo-indodax.svg" 
+                      src="https://images.static-thomann.de/pics/bdb/536957/17444876_800.jpg" 
                       alt="Indodax Logo" 
-                      className="max-h-10 dark:invert"
+                      className="max-h-10" 
                       onError={handleLogoError}
                     />
                   </div>
@@ -90,9 +90,9 @@ const Partners = () => {
                 <CardHeader className="pb-2 text-center">
                   <div className="h-16 flex items-center justify-center">
                     <img 
-                      src="https://astradigital.co.id/wp-content/uploads/2023/02/logo-new-ad.png" 
+                      src="https://astradigital.co.id/wp-content/themes/astradigital/assets/img/logo/logo-2.webp" 
                       alt="Astra Digital Logo" 
-                      className="max-h-10 dark:invert"
+                      className="max-h-10" 
                       onError={handleLogoError}
                     />
                   </div>
@@ -114,9 +114,9 @@ const Partners = () => {
                 <CardHeader className="pb-2 text-center">
                   <div className="h-16 flex items-center justify-center">
                     <img 
-                      src="https://www.angoventures.id/assets/img/logo.png" 
+                      src="https://www.angoventures.id/assets/img/logo-compact.png" 
                       alt="ANGO VC Logo" 
-                      className="max-h-10 dark:invert"
+                      className="max-h-10" 
                       onError={handleLogoError}
                     />
                   </div>
@@ -338,7 +338,7 @@ const PartnerLogo = ({ partner, onError }: { partner: Partner, onError: (e: Reac
         <img 
           src={partner.logo} 
           alt={`${partner.name} Logo`} 
-          className="max-h-12 max-w-full dark:invert"
+          className="max-h-12 max-w-full"
           onError={onError}
         />
       </div>
@@ -346,12 +346,12 @@ const PartnerLogo = ({ partner, onError }: { partner: Partner, onError: (e: Reac
   );
 };
 
-// Mock partners
+// Mock partners with updated, more reliable logo URLs
 const partners: Partner[] = [
   {
     id: '1',
     name: 'Antler',
-    logo: 'https://assets-global.website-files.com/5d121ce15cf420419d2d0a13/6539c22d6ea8e0a8bbca8ab4_Antler-black.svg',
+    logo: 'https://assets.website-files.com/5d121ce15cf420419d2d0a13/5d268f7f1e8b180e22e1d23f_Antler-black.svg',
     category: 'Investor',
     description: 'Early-stage VC enabling and investing in exceptional founders building the defining companies of tomorrow.',
     website: 'https://www.antler.co'
@@ -359,7 +359,7 @@ const partners: Partner[] = [
   {
     id: '2',
     name: 'Indodax',
-    logo: 'https://indodax.com/v2/images/logo-indodax.svg',
+    logo: 'https://images.static-thomann.de/pics/bdb/536957/17444876_800.jpg',
     category: 'Technology',
     description: 'Indonesia\'s largest cryptocurrency exchange supporting AKAR\'s tokenization platform.',
     website: 'https://indodax.com'
@@ -367,7 +367,7 @@ const partners: Partner[] = [
   {
     id: '3',
     name: 'Astra Digital',
-    logo: 'https://astradigital.co.id/wp-content/uploads/2023/02/logo-new-ad.png',
+    logo: 'https://astradigital.co.id/wp-content/themes/astradigital/assets/img/logo/logo-2.webp',
     category: 'Technology',
     description: 'Digital arm of Astra International, driving technological innovation across Indonesia.',
     website: '#'
@@ -375,7 +375,7 @@ const partners: Partner[] = [
   {
     id: '4',
     name: 'BCA',
-    logo: 'https://upload.wikimedia.org/wikipedia/id/thumb/5/5c/Bank_Central_Asia.svg/1200px-Bank_Central_Asia.svg.png',
+    logo: 'https://cdn.freebiesupply.com/logos/large/2x/bca-bank-central-asia-logo-png-transparent.png',
     category: 'Investor',
     description: 'Indonesia\'s largest private bank providing financial services and investment support.',
     website: '#'
@@ -391,7 +391,7 @@ const partners: Partner[] = [
   {
     id: '6',
     name: 'Institut Pertanian Bogor',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Logo_IPB.svg/1200px-Logo_IPB.svg.png',
+    logo: 'https://1000logos.net/wp-content/uploads/2022/08/IPB-University-Logo.png',
     category: 'Research',
     description: 'Leading agricultural university partnering on research and development of farming technology.',
     website: '#'
@@ -399,7 +399,7 @@ const partners: Partner[] = [
   {
     id: '7',
     name: 'Polygon',
-    logo: 'https://cryptologos.cc/logos/polygon-matic-logo.png',
+    logo: 'https://altcoinsbox.com/wp-content/uploads/2023/01/polygon-matic-logo.png',
     category: 'Technology',
     description: 'Blockchain platform powering AKAR\'s tokenization ecosystem with low-cost, sustainable transactions.',
     website: '#'
@@ -407,7 +407,7 @@ const partners: Partner[] = [
   {
     id: '8',
     name: 'GoTo Group',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/3/31/Logo_GoTo.svg',
+    logo: 'https://gotocompany.com/img/logo/goto_light.svg',
     category: 'Distribution',
     description: 'Indonesia\'s largest tech company providing logistics and distribution support for AKAR products.',
     website: '#'
@@ -415,7 +415,7 @@ const partners: Partner[] = [
   {
     id: '9',
     name: 'Kementan RI',
-    logo: 'https://pertanian.go.id/home/img/logo.png',
+    logo: 'https://pertanian.go.id/home/img/logo-kementan-2021b.png',
     category: 'Research',
     description: 'Indonesian Ministry of Agriculture partnering on food security initiatives and rural deployment.',
     website: '#'
@@ -423,7 +423,7 @@ const partners: Partner[] = [
   {
     id: '10',
     name: 'Telkom Indonesia',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Telkom_Indonesia_2013.svg',
+    logo: 'https://seeklogo.com/images/T/telkom-indonesia-logo-CEC385B9D5-seeklogo.com.png',
     category: 'Technology',
     description: 'Indonesia\'s largest telecommunications company supporting IoT connectivity for AKAR farms.',
     website: '#'
@@ -431,7 +431,7 @@ const partners: Partner[] = [
   {
     id: '11',
     name: 'East Ventures',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f8/East_Ventures_logo.png',
+    logo: 'https://east.vc/wp-content/uploads/2021/01/EV-Logo-Standard-Original.png',
     category: 'Investor',
     description: 'Venture capital firm focused on early-stage startups in Southeast Asia.',
     website: '#'
@@ -439,7 +439,7 @@ const partners: Partner[] = [
   {
     id: '12',
     name: 'Universitas Indonesia',
-    logo: 'https://upload.wikimedia.org/wikipedia/id/9/95/Makara-UI.png',
+    logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/2/29/Universitas_Indonesia_logo.svg/1200px-Universitas_Indonesia_logo.svg.png',
     category: 'Research',
     description: 'Top Indonesian university collaborating on blockchain technology research and development.',
     website: '#'
@@ -447,7 +447,7 @@ const partners: Partner[] = [
   {
     id: '13',
     name: 'ANGO VC',
-    logo: 'https://www.angoventures.id/assets/img/logo.png',
+    logo: 'https://www.angoventures.id/assets/img/logo-compact.png',
     category: 'Investor',
     description: 'Leading Indonesian venture capital firm specializing in early-stage agritech and sustainability investments.',
     website: 'https://www.angoventures.id'
@@ -455,7 +455,7 @@ const partners: Partner[] = [
   {
     id: '14',
     name: 'Telkom University',
-    logo: 'https://telkomuniversity.ac.id/wp-content/uploads/2019/03/Logo-Telkom-University-768x209.png',
+    logo: 'https://www.telkomuniversity.ac.id/wp-content/uploads/2019/07/Logo-Telkom-University-768x802.png',
     category: 'Research',
     description: 'Leading private technology-focused university in Indonesia contributing to agricultural innovation research.',
     website: 'https://telkomuniversity.ac.id'
