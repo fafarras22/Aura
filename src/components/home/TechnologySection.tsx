@@ -29,8 +29,8 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
         },
         {
           icon: <ShieldCheck className="h-5 w-5 text-green-600" />,
-          title: "Blockchain Security",
-          description: "Immutable record-keeping ensures data integrity and transparent supply chain tracking."
+          title: "Arbitrum-Powered Security",
+          description: "Built on Arbitrum's Layer 2 network for fast, secure, and cost-effective transactions with Ethereum-level security."
         }
       ]
     },
@@ -55,8 +55,8 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
         },
         {
           icon: <ShieldCheck className="h-5 w-5 text-green-600" />,
-          title: "Keamanan Blockchain",
-          description: "Pencatatan yang tidak dapat diubah memastikan integritas data dan pelacakan rantai pasok yang transparan."
+          title: "Keamanan Bertenaga Arbitrum",
+          description: "Dibangun di jaringan Layer 2 Arbitrum untuk transaksi yang cepat, aman, dan hemat biaya dengan keamanan tingkat Ethereum."
         }
       ]
     },
@@ -81,8 +81,8 @@ export const TechnologySection: React.FC<TechnologySectionProps> = ({ language }
         },
         {
           icon: <ShieldCheck className="h-5 w-5 text-green-600" />,
-          title: "블록체인 보안",
-          description: "변경 불가능한 기록 보관으로 데이터 무결성과 투명한 공급망 추적을 보장합니다."
+          title: "Arbitrum 기반 보안",
+          description: "이더리움 수준의 보안과 함께 빠르고 안전하며 비용 효율적인 거래를 위해 Arbitrum Layer 2 네트워크에 구축되었습니다."
         }
       ]
     }

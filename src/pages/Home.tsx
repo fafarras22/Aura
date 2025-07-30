@@ -21,6 +21,7 @@ import { InvestmentDisclaimer } from "@/components/home/InvestmentDisclaimer";
 import { AboutSection } from "@/components/home/AboutSection";
 import { SolutionsSection } from "@/components/home/SolutionsSection";
 import { TechnologySection } from "@/components/home/TechnologySection";
+import { ArbitrumEcosystemSection } from "@/components/home/ArbitrumEcosystemSection";
 import { TabsSection } from "@/components/home/TabsSection";
 
 // Update the type definition to match what's accepted by HomeHeader

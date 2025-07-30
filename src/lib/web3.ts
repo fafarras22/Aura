@@ -11,7 +11,7 @@ export interface WalletInfo {
   type: WalletType;
 }
 
-const SUPPORTED_CHAINS = [1, 56, 137]; // Ethereum, BSC, Polygon
+const SUPPORTED_CHAINS = [1, 42161, 421614]; // Ethereum Mainnet, Arbitrum One, Arbitrum Sepolia
 
 // Default initial state
 export const initialWalletState: WalletInfo = {
@@ -75,7 +75,7 @@ export const connectWallet = async (walletType: WalletType): Promise<WalletInfo 
     if (!SUPPORTED_CHAINS.includes(decimalChainId)) {
       toast({
         title: "Unsupported network",
-        description: "Please connect to Ethereum, BSC, or Polygon network.",
+        description: "Please connect to Ethereum Mainnet or Arbitrum network for optimal experience.",
         variant: "destructive",
       });
     }
@@ -160,7 +160,7 @@ export const shortenAddress = (address: string): string => {
 
 // Check if the wallet is connected to the right network
 export const ensureCorrectNetwork = async (
-  requiredChainId: number = 1 // Default to Ethereum Mainnet
+  requiredChainId: number = 42161 // Default to Arbitrum One
 ): Promise<boolean> => {
   try {
     const ethereum = getEthereumObject();

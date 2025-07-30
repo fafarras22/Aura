@@ -16,7 +16,7 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
   const translatedContent = {
     en: {
       sectionTitle: 'Tokenization',
-      subtitle: 'Blockchain technology brings transparency, security, and liquidity to agricultural investments. Each token represents real ownership in productive farm assets.',
+      subtitle: 'Arbitrum blockchain technology brings unparalleled transparency, security, and liquidity to agricultural investments. Each token represents real ownership in productive farm assets, secured by Arbitrum\'s Layer 2 infrastructure.',
       item1: {
         title: 'Transparent Investment',
         description: 'Full visibility into farm operations and performance'
@@ -33,8 +33,8 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
         },
         {
           icon: <FileText className="h-5 w-5 text-green-600" />,
-          title: 'Smart Contracts',
-          description: 'Automated smart contracts distribute returns based on pre-defined conditions.'
+          title: 'Arbitrum Smart Contracts',
+          description: 'Automated smart contracts on Arbitrum distribute returns with lower gas costs and faster execution.'
         },
         {
           icon: <Wallet className="h-5 w-5 text-green-600" />,
@@ -43,14 +43,14 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
         },
         {
           icon: <Lock className="h-5 w-5 text-green-600" />,
-          title: 'Secure Digital Assets',
-          description: 'Assets secured through blockchain with institutional-grade security measures.'
+          title: 'Arbitrum-Secured Assets',
+          description: 'Assets secured through Arbitrum\'s optimistic rollup technology with institutional-grade security measures.'
         }
       ]
     },
     id: {
       sectionTitle: 'Tokenisasi',
-      subtitle: 'Teknologi blockchain membawa transparansi, keamanan, dan likuiditas yang belum pernah ada sebelumnya ke investasi pertanian. Setiap token mewakili kepemilikan nyata dalam aset pertanian produktif.',
+      subtitle: 'Teknologi blockchain Arbitrum membawa transparansi, keamanan, dan likuiditas yang belum pernah ada sebelumnya ke investasi pertanian. Setiap token mewakili kepemilikan nyata dalam aset pertanian produktif, diamankan oleh infrastruktur Layer 2 Arbitrum.',
       item1: {
         title: 'Investasi Transparan',
         description: 'Visibilitas penuh ke operasi dan kinerja pertanian'
@@ -67,8 +67,8 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
         },
         {
           icon: <FileText className="h-5 w-5 text-green-600" />,
-          title: 'Kontrak Pintar',
-          description: 'Kontrak pintar otomatis mendistribusikan pengembalian berdasarkan kondisi yang telah ditentukan.'
+          title: 'Kontrak Pintar Arbitrum',
+          description: 'Kontrak pintar otomatis di Arbitrum mendistribusikan pengembalian dengan biaya gas yang lebih rendah dan eksekusi yang lebih cepat.'
         },
         {
           icon: <Wallet className="h-5 w-5 text-green-600" />,
@@ -77,14 +77,14 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
         },
         {
           icon: <Lock className="h-5 w-5 text-green-600" />,
-          title: 'Aset Digital Aman',
-          description: 'Aset diamankan melalui blockchain dengan langkah-langkah keamanan tingkat institusional.'
+          title: 'Aset Aman Arbitrum',
+          description: 'Aset diamankan melalui teknologi optimistic rollup Arbitrum dengan langkah-langkah keamanan tingkat institusional.'
         }
       ]
     },
     ko: {
       sectionTitle: '토큰화',
-      subtitle: '블록체인 기술은 농업 투자에 전례 없는 투명성, 보안 및 유동성을 제공합니다. 각 토큰은 생산적인 농장 자산의 실제 소유권을 나타냅니다.',
+      subtitle: 'Arbitrum 블록체인 기술은 농업 투자에 전례 없는 투명성, 보안 및 유동성을 제공합니다. 각 토큰은 Arbitrum Layer 2 인프라로 보안이 유지되는 생산적인 농장 자산의 실제 소유권을 나타냅니다.',
       item1: {
         title: '투명한 투자',
         description: '농장 운영 및 성과에 대한 완전한 가시성'
@@ -101,8 +101,8 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
         },
         {
           icon: <FileText className="h-5 w-5 text-green-600" />,
-          title: '스마트 계약',
-          description: '자동화된 스마트 계약은 미리 정의된 조건에 따라 수익을 분배합니다.'
+          title: 'Arbitrum 스마트 계약',
+          description: 'Arbitrum의 자동화된 스마트 계약은 낮은 가스비와 빠른 실행으로 수익을 분배합니다.'
         },
         {
           icon: <Wallet className="h-5 w-5 text-green-600" />,
@@ -111,8 +111,8 @@ export const TokenizationSection: React.FC<TokenizationSectionProps> = ({ langua
         },
         {
           icon: <Lock className="h-5 w-5 text-green-600" />,
-          title: '안전한 디지털 자산',
-          description: '모든 자산은 기관급 보안 조치를 통해 블록체인 기술로 보호됩니다.'
+          title: 'Arbitrum 보안 자산',
+          description: '모든 자산은 기관급 보안 조치를 통해 Arbitrum의 옵티미스틱 롤업 기술로 보호됩니다.'
         }
       ]
     }

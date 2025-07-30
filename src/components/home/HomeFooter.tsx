@@ -22,7 +22,7 @@ export const HomeFooter: React.FC<HomeFooterProps> = ({ onNavigate }) => {
             </div>
             
             <p className="text-muted-foreground">
-              Revolutionizing agriculture across ASEAN through blockchain technology and sustainable farming investments.
+              Revolutionizing agriculture across ASEAN through Arbitrum blockchain technology and sustainable farming investments.
             </p>
           </div>
           

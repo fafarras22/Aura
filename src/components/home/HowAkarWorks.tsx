@@ -35,9 +35,9 @@ export const HowAkarWorks: React.FC<HowAkarWorksProps> = ({ onExploreClick }) =>
             <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold mb-4 z-10">
               2
             </div>
-            <h3 className="text-xl font-bold mb-2">Connect Wallet</h3>
+            <h3 className="text-xl font-bold mb-2">Connect Arbitrum Wallet</h3>
             <p className="text-muted-foreground max-w-xs">
-              Link your Web3 wallet to AKAR. We support MetaMask, WalletConnect, and other popular options for a seamless investing experience.
+              Link your Web3 wallet to AKAR on Arbitrum network. We support MetaMask, WalletConnect, and other popular options for a seamless, cost-effective investing experience.
             </p>
           </div>
           
@@ -58,7 +58,7 @@ export const HowAkarWorks: React.FC<HowAkarWorksProps> = ({ onExploreClick }) =>
             </div>
             <h3 className="text-xl font-bold mb-2">Earn Returns</h3>
             <p className="text-muted-foreground max-w-xs">
-              Receive regular yield distributions from your investments. All returns come from real agricultural production, transparently tracked on the blockchain.
+              Receive regular yield distributions from your investments. All returns come from real agricultural production, transparently tracked on the Arbitrum blockchain.
             </p>
           </div>
         </div>

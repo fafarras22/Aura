@@ -20,7 +20,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ content }) => {
     {
       icon: <SproutIcon className="text-primary w-6 h-6" />,
       title: "Blockchain Transparency",
-      description: "Every investment is recorded on the blockchain, providing complete transparency from funding to harvest distribution."
+      description: "Every investment is recorded on Arbitrum's Layer 2 blockchain, providing complete transparency from funding to harvest distribution with minimal gas fees."
     },
     {
       icon: <DropletIcon className="text-primary w-6 h-6" />,

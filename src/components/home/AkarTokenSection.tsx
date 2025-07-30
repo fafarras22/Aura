@@ -26,7 +26,7 @@ export const AkarTokenSection: React.FC<AkarTokenSectionProps> = ({ tokenMetrics
           <Badge className="mb-2">TOKENOMICS</Badge>
           <h2 className="text-3xl font-bold">$AKR Token & stAKR Staking</h2>
           <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            The $AKR token powers the AKAR Farm ecosystem, enabling container farm investments. 
+            The $AKR token powers the AKAR Farm ecosystem on Arbitrum's Layer 2 network, enabling efficient container farm investments with low gas fees. 
             Stake your $AKR tokens to receive stAKR and earn passive income from our container farm operations.
           </p>
         </div>

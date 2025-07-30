@@ -94,12 +94,12 @@ const Whitepaper = () => {
                   
                   <h3 className="text-lg font-medium">AKAR's Solution</h3>
                   <p>
-                    AKAR Farm introduces a novel approach by combining three innovative elements:
+                    AKAR Farm introduces a novel approach by combining three innovative elements on the Arbitrum ecosystem:
                   </p>
                   <ol className="list-decimal list-inside space-y-2 pl-4">
                     <li><strong>High-tech container farms:</strong> Optimized for growing high-value crops in urban environments using 95% less water than traditional farming</li>
                     <li><strong>IoT sensor network:</strong> Providing real-time monitoring and automated management of growing conditions</li>
-                    <li><strong>Blockchain-based tokenization:</strong> Enabling fractional ownership and liquidity through $AKR tokens and stAKR staking</li>
+                    <li><strong>Arbitrum-powered tokenization:</strong> Enabling fractional ownership and liquidity through $AKR tokens on Arbitrum's secure Layer 2 infrastructure</li>
                   </ol>
                 </CardContent>
               </Card>
@@ -185,7 +185,7 @@ const Whitepaper = () => {
                 <CardContent className="space-y-4">
                   <h3 className="text-lg font-medium">Token Overview</h3>
                   <p>
-                    $AKR is the native utility token of the AKAR Farm ecosystem. It is used for governance, investment in container farming projects, and as a medium of exchange within the platform. The total supply of $AKR tokens is capped at 100,000,000.
+                    $AKR is the native utility token of the AKAR Farm ecosystem, deployed on Arbitrum's Layer 2 network. Built on Arbitrum's secure and scalable infrastructure, $AKR enables governance, investment in container farming projects, and serves as a medium of exchange within the platform. The total supply of $AKR tokens is capped at 100,000,000.
                   </p>
                   
                   <h3 className="text-lg font-medium">Token Allocation</h3>
@@ -235,7 +235,7 @@ const Whitepaper = () => {
                 <CardContent className="space-y-4">
                   <h3 className="text-lg font-medium">Staking Mechanism</h3>
                   <p>
-                    Holders of $AKR tokens can stake their tokens in specific container farming projects to receive stAKR tokens. Each container has its own stAKR token variant (e.g., stAKR-C001 for Container #001), representing fractional ownership in that specific container's operations and profits.
+                    Holders of $AKR tokens can stake their tokens in specific container farming projects to receive stAKR tokens through Arbitrum's smart contract infrastructure. Each container has its own stAKR token variant (e.g., stAKR-C001 for Container #001), representing fractional ownership in that specific container's operations and profits, all secured by Arbitrum's optimistic rollup technology.
                   </p>
                   
                   <h3 className="text-lg font-medium">Revenue Distribution</h3>
@@ -349,17 +349,17 @@ const Whitepaper = () => {
                         <li>Complete pilot container farm in Jakarta</li>
                         <li>Develop and test IoT monitoring system</li>
                         <li>Establish initial B2B partnerships</li>
-                        <li>$AKR token development and audit</li>
+                        <li>$AKR token development and audit on Arbitrum</li>
                         <li>Private investment round</li>
                       </ul>
                     </div>
                     <div>
                       <h3 className="text-lg font-medium mb-2">Phase 2: Launch (Q4 2023)</h3>
                       <ul className="list-disc list-inside space-y-1 pl-4">
-                        <li>$AKR token public sale</li>
+                        <li>$AKR token public sale on Arbitrum</li>
                         <li>Platform beta launch</li>
                         <li>First 5 container farms operational</li>
-                        <li>Initial stAKR staking program</li>
+                        <li>Initial stAKR staking program on Arbitrum</li>
                         <li>Exchange listings</li>
                       </ul>
                     </div>
@@ -367,7 +367,7 @@ const Whitepaper = () => {
                       <h3 className="text-lg font-medium mb-2">Phase 3: Growth (2024)</h3>
                       <ul className="list-disc list-inside space-y-1 pl-4">
                         <li>Expand to 25 container farms in Jakarta</li>
-                        <li>Launch secondary marketplace for stAKR tokens</li>
+                        <li>Launch secondary marketplace for stAKR tokens on Arbitrum</li>
                         <li>Develop governance protocol</li>
                         <li>Implement AI-driven crop optimization</li>
                         <li>Expand crop varieties</li>
