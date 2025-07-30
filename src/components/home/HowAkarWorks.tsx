@@ -46,9 +46,9 @@ export const HowAkarWorks: React.FC<HowAkarWorksProps> = ({ onExploreClick }) =>
             <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold mb-4 z-10">
               3
             </div>
-            <h3 className="text-xl font-bold mb-2">Fund with $AKR</h3>
+            <h3 className="text-xl font-bold mb-2">Fund with $AGRI</h3>
             <p className="text-muted-foreground max-w-xs">
-              Invest any amount in projects that align with your goals. Your $AKR tokens represent ownership in real agricultural assets with defined return profiles.
+              Invest any amount in projects that align with your goals. Your $AGRI tokens represent ownership in real agricultural assets with defined return profiles.
             </p>
           </div>
           
