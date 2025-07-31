@@ -90,9 +90,9 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ language, setLanguage }) => {
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate('/tokenization')} className="gap-2">
                 <BarChart2 className="h-4 w-4 text-primary" />
-                {language === 'en' ? '$AKR Tokenization' : 
-                 language === 'id' ? 'Tokenisasi $AKR' : 
-                 '$AKR 토큰화'}
+                {language === 'en' ? '$AGRI Tokenization' : 
+                 language === 'id' ? 'Tokenisasi $AGRI' : 
+                 '$AGRI 토큰화'}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

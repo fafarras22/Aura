@@ -81,12 +81,12 @@ export const WalletSummary: React.FC<WalletSummaryProps> = ({
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
               <div className="bg-muted p-4 rounded-md">
-                <div className="text-muted-foreground text-sm mb-1">$AKR Balance</div>
+                <div className="text-muted-foreground text-sm mb-1">$AGRI Balance</div>
                 <div className="text-2xl font-bold">{akrBalance}</div>
               </div>
               
               <div className="bg-muted p-4 rounded-md">
-                <div className="text-muted-foreground text-sm mb-1">stAKR (Staked)</div>
+                <div className="text-muted-foreground text-sm mb-1">stAGRI (Staked)</div>
                 <div className="text-2xl font-bold">{stakedAkr}</div>
               </div>
               

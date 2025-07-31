@@ -59,7 +59,7 @@ const FarmProjectDetails = () => {
     
     toast({
       title: "Staking Initiated",
-      description: `Staking ${amount} AKR in ${project?.name}. Please confirm the transaction in your wallet.`,
+      description: `Staking ${amount} AGRI in ${project?.name}. Please confirm the transaction in your wallet.`,
     });
   };
   
@@ -175,7 +175,7 @@ const FarmProjectDetails = () => {
                   <Progress value={progressPercentage} className="h-2" />
                   
                   <div className="flex justify-between text-sm">
-                    <span className="font-medium">{availableTokens} / {project.totalTokens} AKR</span>
+                    <span className="font-medium">{availableTokens} / {project.totalTokens} AGRI</span>
                     <span className="text-muted-foreground">Remaining</span>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ const FarmProjectDetails = () => {
                     
                     <div>
                       <p className="text-sm text-muted-foreground mb-1">Minimum Stake</p>
-                      <p className="font-medium">50 AKR</p>
+                      <p className="font-medium">50 AGRI</p>
                     </div>
                   </div>
                 </div>
@@ -215,7 +215,7 @@ const FarmProjectDetails = () => {
           <div>
             <Card>
               <CardHeader>
-                <CardTitle>Stake $AKR</CardTitle>
+                <CardTitle>Stake $AGRI</CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleStake} className="space-y-4">
@@ -234,18 +234,18 @@ const FarmProjectDetails = () => {
                         className="pr-12"
                       />
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <span className="text-muted-foreground">AKR</span>
+                        <span className="text-muted-foreground">AGRI</span>
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Minimum stake: 50 AKR
+                      Minimum stake: 50 AGRI
                     </p>
                   </div>
                   
                   <div className="pt-2">
                     <div className="flex justify-between text-sm mb-1">
                       <span>You will receive</span>
-                      <span>{stakeAmount ? parseFloat(stakeAmount) : 0} stAKR</span>
+                      <span>{stakeAmount ? parseFloat(stakeAmount) : 0} stAGRI</span>
                     </div>
                     
                     <div className="flex justify-between text-sm mb-1">
@@ -300,22 +300,22 @@ const FarmProjectDetails = () => {
                   </div>
                   
                   <div className="pt-2">
-                    <p className="text-sm text-muted-foreground mb-3">Projected Earnings (100 AKR stake)</p>
+                    <p className="text-sm text-muted-foreground mb-3">Projected Earnings (100 AGRI stake)</p>
                     
                     <table className="w-full text-sm">
                       <tbody>
-                        <tr>
-                          <td className="py-1">Monthly</td>
-                          <td className="py-1 text-right font-medium">{(project.apy / 12).toFixed(2)} AKR</td>
-                        </tr>
-                        <tr>
-                          <td className="py-1">Quarterly</td>
-                          <td className="py-1 text-right font-medium">{(project.apy / 4).toFixed(2)} AKR</td>
-                        </tr>
-                        <tr>
-                          <td className="py-1">Yearly</td>
-                          <td className="py-1 text-right font-medium">{project.apy.toFixed(2)} AKR</td>
-                        </tr>
+                         <tr>
+                           <td className="py-1">Monthly</td>
+                           <td className="py-1 text-right font-medium">{(project.apy / 12).toFixed(2)} AGRI</td>
+                         </tr>
+                         <tr>
+                           <td className="py-1">Quarterly</td>
+                           <td className="py-1 text-right font-medium">{(project.apy / 4).toFixed(2)} AGRI</td>
+                         </tr>
+                         <tr>
+                           <td className="py-1">Yearly</td>
+                           <td className="py-1 text-right font-medium">{project.apy.toFixed(2)} AGRI</td>
+                         </tr>
                       </tbody>
                     </table>
                   </div>

@@ -82,7 +82,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Remaining</span>
-            <span className="font-medium">{remainingTokens} / {project.totalTokens} AKR</span>
+            <span className="font-medium">{remainingTokens} / {project.totalTokens} AGRI</span>
           </div>
         </div>
         

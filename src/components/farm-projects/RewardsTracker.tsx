@@ -39,7 +39,7 @@ export const RewardsTracker: React.FC<RewardsTrackerProps> = ({
       id: "base-rewards", 
       name: "Base Staking Rewards", 
       rate: "12% APY", 
-      description: "Standard rewards for staking AKR tokens",
+      description: "Standard rewards for staking AGRI tokens",
       icon: <Leaf className="h-5 w-5 text-green-600" />
     },
     { 
@@ -68,7 +68,7 @@ export const RewardsTracker: React.FC<RewardsTrackerProps> = ({
   const handleClaimAll = () => {
     toast({
       title: "Claiming all rewards",
-      description: `Claiming ${pendingRewards} AKR. Please confirm the transaction in your wallet.`,
+      description: `Claiming ${pendingRewards} AGRI. Please confirm the transaction in your wallet.`,
     });
   };
   
@@ -92,29 +92,29 @@ export const RewardsTracker: React.FC<RewardsTrackerProps> = ({
                   <div>
                     <div className="flex justify-between items-center mb-2 text-sm">
                       <span className="text-muted-foreground">Rewards Accumulated</span>
-                      <span>{pendingRewards} AKR</span>
+                      <span>{pendingRewards} AGRI</span>
                     </div>
                     <Progress value={rewardsProgress} className="h-3" />
                     <div className="flex justify-between mt-1 text-xs">
                       <span className="text-muted-foreground">Current Rewards</span>
-                      <span className="text-muted-foreground">Max Potential: {totalPotentialRewards} AKR</span>
+                      <span className="text-muted-foreground">Max Potential: {totalPotentialRewards} AGRI</span>
                     </div>
                   </div>
                   
                   <div className="bg-muted/50 rounded-lg p-4">
                     <div className="flex justify-between items-center mb-2">
-                      <h4 className="font-medium">stAKR to AKR Flow</h4>
+                      <h4 className="font-medium">stAGRI to AGRI Flow</h4>
                       <span className="text-sm text-green-600 font-medium">+15% APY</span>
                     </div>
                     <div className="flex items-center gap-3 my-4">
                       <div className="bg-blue-100 text-blue-700 p-3 rounded-lg text-center flex-1">
-                        <p className="text-sm text-blue-800">stAKR</p>
+                        <p className="text-sm text-blue-800">stAGRI</p>
                         <p className="text-xl font-bold">{stakedAkr}</p>
                       </div>
                       <ChevronsRight className="text-muted-foreground" />
                       <div className="bg-green-100 text-green-700 p-3 rounded-lg text-center flex-1">
                         <p className="text-sm text-green-800">Rewards</p>
-                        <p className="text-xl font-bold">{pendingRewards} AKR</p>
+                        <p className="text-xl font-bold">{pendingRewards} AGRI</p>
                       </div>
                     </div>
                     <Button 
@@ -141,7 +141,7 @@ export const RewardsTracker: React.FC<RewardsTrackerProps> = ({
                       <p className="text-muted-foreground text-sm">All time rewards claimed</p>
                     </div>
                     <div className="text-2xl font-bold text-green-600">
-                      {claimedRewards} AKR
+                      {claimedRewards} AGRI
                     </div>
                   </div>
                   
@@ -153,7 +153,7 @@ export const RewardsTracker: React.FC<RewardsTrackerProps> = ({
                             <Gift className="h-4 w-4" />
                           </div>
                           <div>
-                            <p className="font-medium">{reward.amount} AKR</p>
+                            <p className="font-medium">{reward.amount} AGRI</p>
                             <p className="text-xs text-muted-foreground">{reward.date}</p>
                           </div>
                         </div>
@@ -172,33 +172,33 @@ export const RewardsTracker: React.FC<RewardsTrackerProps> = ({
             <CardHeader>
               <CardTitle>Rewards Structure</CardTitle>
               <CardDescription>
-                How stAKR generates rewards from container farming operations
+                How stAGRI generates rewards from container farming operations
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
                 <div className="bg-muted/30 p-4 rounded-lg">
-                  <h3 className="text-lg font-medium mb-2">How stAKR Works</h3>
+                  <h3 className="text-lg font-medium mb-2">How stAGRI Works</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    When you stake your AKR tokens into farm containers, you receive stAKR tokens. These tokens represent your stake in the container's operations and entitle you to a portion of the farming profits.
+                    When you stake your AGRI tokens into farm containers, you receive stAGRI tokens. These tokens represent your stake in the container's operations and entitle you to a portion of the farming profits.
                   </p>
                   
                   <div className="flex flex-col sm:flex-row gap-4 items-center p-4 bg-primary/5 rounded-lg">
                     <div className="flex-1 text-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
                       <p className="text-sm font-medium">You Stake</p>
-                      <p className="text-xl font-bold">AKR Tokens</p>
+                      <p className="text-xl font-bold">AGRI Tokens</p>
                       <p className="text-xs text-muted-foreground mt-1">Into farm containers</p>
                     </div>
                     <ArrowRight className="rotate-90 sm:rotate-0" />
                     <div className="flex-1 text-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
                       <p className="text-sm font-medium">You Receive</p>
-                      <p className="text-xl font-bold">stAKR Tokens</p>
+                      <p className="text-xl font-bold">stAGRI Tokens</p>
                       <p className="text-xs text-muted-foreground mt-1">Staked position</p>
                     </div>
                     <ArrowRight className="rotate-90 sm:rotate-0" />
                     <div className="flex-1 text-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
                       <p className="text-sm font-medium">You Earn</p>
-                      <p className="text-xl font-bold">AKR Rewards</p>
+                      <p className="text-xl font-bold">AGRI Rewards</p>
                       <p className="text-xs text-muted-foreground mt-1">From farm produce</p>
                     </div>
                   </div>
@@ -261,16 +261,16 @@ export const RewardsTracker: React.FC<RewardsTrackerProps> = ({
                   
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Current stAKR Balance</span>
-                      <span className="font-medium">{formatTokenAmount(stakedAkr)} stAKR</span>
+                      <span className="text-muted-foreground">Current stAGRI Balance</span>
+                      <span className="font-medium">{formatTokenAmount(stakedAkr)} stAGRI</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Monthly Yield (est.)</span>
-                      <span className="font-medium">{formatTokenAmount(stakedAkr * 0.0125)} AKR</span>
+                      <span className="font-medium">{formatTokenAmount(stakedAkr * 0.0125)} AGRI</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Annual Yield (est.)</span>
-                      <span className="font-medium">{formatTokenAmount(stakedAkr * 0.15)} AKR</span>
+                      <span className="font-medium">{formatTokenAmount(stakedAkr * 0.15)} AGRI</span>
                     </div>
                   </div>
                 </div>
@@ -284,7 +284,7 @@ export const RewardsTracker: React.FC<RewardsTrackerProps> = ({
                           <p className="font-medium">{reward.description}</p>
                           <p className="text-sm text-muted-foreground">{reward.date}</p>
                         </div>
-                        <div className="text-xl font-semibold text-green-600">{reward.amount} AKR</div>
+                        <div className="text-xl font-semibold text-green-600">{reward.amount} AGRI</div>
                       </div>
                     ))}
                   </div>
@@ -293,14 +293,14 @@ export const RewardsTracker: React.FC<RewardsTrackerProps> = ({
                 <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                   <h3 className="font-medium text-green-800 dark:text-green-400 mb-2">Maximize Your Rewards</h3>
                   <p className="text-sm text-green-700 dark:text-green-300">
-                    Increase your staked AKR to earn more rewards. Long-term stakers (6+ months) receive bonus rewards automatically.
+                    Increase your staked AGRI to earn more rewards. Long-term stakers (6+ months) receive bonus rewards automatically.
                   </p>
                   <Button 
                     variant="outline" 
                     className="mt-3 border-green-300 text-green-700 hover:bg-green-100 hover:text-green-800"
                     onClick={() => window.location.href = "/farm-projects"}
                   >
-                    Stake More AKR
+                    Stake More AGRI
                   </Button>
                 </div>
               </div>

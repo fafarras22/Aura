@@ -128,15 +128,15 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onActio
               </div>
               <Progress value={percentFilled} className="h-2" />
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>{container.filledTokens.toLocaleString()} AKR</span>
-                <span>{container.totalTokens.toLocaleString()} AKR</span>
+                <span>{container.filledTokens.toLocaleString()} AGRI</span>
+                <span>{container.totalTokens.toLocaleString()} AGRI</span>
               </div>
             </>
           ) : (
             <>
               <div className="flex justify-between text-sm">
                 <span>Available Slots</span>
-                <span className="font-medium">{availableTokens.toLocaleString()} / {container.totalTokens.toLocaleString()} AKR</span>
+                <span className="font-medium">{availableTokens.toLocaleString()} / {container.totalTokens.toLocaleString()} AGRI</span>
               </div>
             </>
           )}

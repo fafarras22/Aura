@@ -129,7 +129,7 @@ const ContainerProjectsList: React.FC<ContainerProjectsListProps> = ({
         <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 text-center">
           <h3 className="text-lg font-semibold mb-2">Connect your wallet to invest</h3>
           <p className="text-sm text-muted-foreground mb-4">
-            To invest in container projects and start earning stAKR rewards, connect your wallet.
+            To invest in container projects and start earning stAGRI rewards, connect your wallet.
           </p>
           <Button onClick={onConnectWallet}>Connect Wallet</Button>
         </div>

@@ -174,7 +174,7 @@ export const InvestmentHistory: React.FC = () => {
                         <p className="text-xs text-muted-foreground">#{inv.containerNumber}</p>
                       </div>
                     </TableCell>
-                    <TableCell className="font-medium">{inv.amount} AKR</TableCell>
+                    <TableCell className="font-medium">{inv.amount} AGRI</TableCell>
                     <TableCell>{inv.date}</TableCell>
                     <TableCell className="text-green-600 font-medium">{inv.apy}%</TableCell>
                     <TableCell>

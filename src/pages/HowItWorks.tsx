@@ -28,15 +28,15 @@ const HowItWorks = () => {
       action: () => navigate('/farm-projects')
     },
     {
-      title: "Purchase $AKR Tokens",
-      description: "Buy $AKR tokens to gain fractional ownership in our container farms.",
+      title: "Purchase $AGRI Tokens",
+      description: "Buy $AGRI tokens to gain fractional ownership in our container farms.",
       icon: <CircleDollarSign className="h-8 w-8 text-primary" />,
       buttonText: "Buy Tokens",
       action: () => navigate('/token-purchase')
     },
     {
-      title: "Stake for stAKR",
-      description: "Stake your $AKR tokens in specific containers to receive stAKR and earn yields.",
+      title: "Stake for stAGRI",
+      description: "Stake your $AGRI tokens in specific containers to receive stAGRI and earn yields.",
       icon: <Droplet className="h-8 w-8 text-primary" />,
       buttonText: "Learn About Staking",
       action: () => navigate('/tokenization')
@@ -50,7 +50,7 @@ const HowItWorks = () => {
     },
     {
       title: "Earn Sustainable Returns",
-      description: "Receive regular yields from the container farm operations through your stAKR.",
+      description: "Receive regular yields from the container farm operations through your stAGRI.",
       icon: <Leaf className="h-8 w-8 text-primary" />,
       buttonText: "View Returns",
       action: () => navigate('/dashboard')
@@ -127,7 +127,7 @@ const HowItWorks = () => {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold">The AKAR Token Ecosystem</h2>
               <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-                Understanding how $AKR tokens and stAKR work together to provide a transparent investment platform for container farming
+                Understanding how $AGRI tokens and stAGRI work together to provide a transparent investment platform for container farming
               </p>
             </div>
             
@@ -136,10 +136,10 @@ const HowItWorks = () => {
                 <CardContent className="pt-6">
                   <div className="flex flex-col items-center text-center">
                     <CircleDollarSign className="h-12 w-12 text-primary mb-4" />
-                    <h3 className="text-xl font-bold mb-2">$AKR Token</h3>
+                    <h3 className="text-xl font-bold mb-2">$AGRI Token</h3>
                     <p className="text-muted-foreground">
                       The base token that represents fractional ownership in AKAR's container farm network. 
-                      Purchase and trade $AKR tokens to invest in our farming operations.
+                      Purchase and trade $AGRI tokens to invest in our farming operations.
                     </p>
                   </div>
                 </CardContent>
@@ -149,10 +149,10 @@ const HowItWorks = () => {
                 <CardContent className="pt-6">
                   <div className="flex flex-col items-center text-center">
                     <Droplet className="h-12 w-12 text-primary mb-4" />
-                    <h3 className="text-xl font-bold mb-2">stAKR Staking</h3>
+                    <h3 className="text-xl font-bold mb-2">stAGRI Staking</h3>
                     <p className="text-muted-foreground">
-                      Stake your $AKR tokens in specific container projects to receive stAKR tokens. 
-                      stAKR represents your active investment in a specific container.
+                      Stake your $AGRI tokens in specific container projects to receive stAGRI tokens. 
+                      stAGRI represents your active investment in a specific container.
                     </p>
                   </div>
                 </CardContent>
@@ -164,7 +164,7 @@ const HowItWorks = () => {
                     <Leaf className="h-12 w-12 text-primary mb-4" />
                     <h3 className="text-xl font-bold mb-2">Yield Generation</h3>
                     <p className="text-muted-foreground">
-                      stAKR holders receive regular yields from container farm operations, 
+                      stAGRI holders receive regular yields from container farm operations, 
                       based on actual crop production and sales performance.
                     </p>
                   </div>

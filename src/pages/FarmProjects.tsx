@@ -50,8 +50,8 @@ const FarmProjects = () => {
     <>
       <SEOMetadata 
         title="Container Farm Projects | AKAR Farm Investment Platform"
-        description="Explore and invest in our curated collection of container farming projects. Stake your $AKR tokens and earn rewards through sustainable agriculture."
-        keywords="container farming projects, agricultural investment, $AKR tokens, stake farming, urban agriculture, sustainable investment"
+        description="Explore and invest in our curated collection of container farming projects. Stake your $AGRI tokens and earn rewards through sustainable agriculture."
+        keywords="container farming projects, agricultural investment, $AGRI tokens, stake farming, urban agriculture, sustainable investment"
         canonicalUrl="https://akarfarm.com/farm-projects"
       />
       
@@ -68,7 +68,7 @@ const FarmProjects = () => {
             <div>
               <h1 className="text-3xl font-bold">Container Farm Projects</h1>
               <p className="text-muted-foreground">
-                Stake your $AKR tokens in container farms to earn stAKR rewards
+                Stake your $AGRI tokens in container farms to earn stAGRI rewards
               </p>
             </div>
             <div className="flex gap-2 overflow-x-auto pb-2">

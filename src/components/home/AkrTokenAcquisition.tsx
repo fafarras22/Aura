@@ -14,11 +14,11 @@ export const AkrTokenAcquisition: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <Badge variant="outline" className="mb-2 px-3 py-1 bg-primary/10 text-primary border-primary/30">
-            $AKR Token
+            $AGRI Token
           </Badge>
-          <h2 className="text-3xl font-bold mb-4">How to Get AKR Tokens</h2>
+          <h2 className="text-3xl font-bold mb-4">How to Get AGRI Tokens</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            There are multiple ways to acquire $AKR tokens and start investing in ASEAN agricultural projects
+            There are multiple ways to acquire $AGRI tokens and start investing in ASEAN agricultural projects
           </p>
         </div>
         
@@ -46,7 +46,7 @@ export const AkrTokenAcquisition: React.FC = () => {
                   <Badge className="h-5 w-5 flex items-center justify-center rounded-full p-0 shrink-0 mt-0.5">2</Badge>
                   <div>
                     <p className="font-medium">Purchase project tokens</p>
-                    <p className="text-sm text-muted-foreground">Fund the project with stablecoins and receive $AKR tokens at project launch</p>
+                    <p className="text-sm text-muted-foreground">Fund the project with stablecoins and receive $AGRI tokens at project launch</p>
                   </div>
                 </li>
                 <li className="flex gap-2">
@@ -76,7 +76,7 @@ export const AkrTokenAcquisition: React.FC = () => {
               </div>
               <CardTitle>Buy on Exchanges</CardTitle>
               <CardDescription>
-                Purchase $AKR tokens on decentralized or centralized exchanges
+                Purchase $AGRI tokens on decentralized or centralized exchanges
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -85,21 +85,21 @@ export const AkrTokenAcquisition: React.FC = () => {
                   <Badge className="h-5 w-5 flex items-center justify-center rounded-full p-0 shrink-0 mt-0.5">1</Badge>
                   <div>
                     <p className="font-medium">DEX (Decentralized Exchanges)</p>
-                    <p className="text-sm text-muted-foreground">Trade $AKR on Uniswap, PancakeSwap and other popular DEXs</p>
+                    <p className="text-sm text-muted-foreground">Trade $AGRI on Uniswap, PancakeSwap and other popular DEXs</p>
                   </div>
                 </li>
                 <li className="flex gap-2">
                   <Badge className="h-5 w-5 flex items-center justify-center rounded-full p-0 shrink-0 mt-0.5">2</Badge>
                   <div>
                     <p className="font-medium">CEX (Centralized Exchanges)</p>
-                    <p className="text-sm text-muted-foreground">Buy $AKR on major exchanges with fiat currency options</p>
+                    <p className="text-sm text-muted-foreground">Buy $AGRI on major exchanges with fiat currency options</p>
                   </div>
                 </li>
                 <li className="flex gap-2">
                   <Badge className="h-5 w-5 flex items-center justify-center rounded-full p-0 shrink-0 mt-0.5">3</Badge>
                   <div>
                     <p className="font-medium">Transfer to your wallet</p>
-                    <p className="text-sm text-muted-foreground">Move your $AKR tokens to a supported Web3 wallet for staking</p>
+                    <p className="text-sm text-muted-foreground">Move your $AGRI tokens to a supported Web3 wallet for staking</p>
                   </div>
                 </li>
               </ul>

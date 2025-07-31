@@ -58,7 +58,7 @@ export const ContainerDetailsCard = ({ container }: { container: ContainerProjec
             <p className="text-sm text-muted-foreground">Min. Investment</p>
             <div className="flex items-center gap-1">
               <DollarSign className="h-4 w-4 text-primary" />
-              <span className="font-medium">10 AKR</span>
+              <span className="font-medium">10 AGRI</span>
             </div>
           </div>
           
