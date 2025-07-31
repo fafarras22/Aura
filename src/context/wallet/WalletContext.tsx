@@ -18,7 +18,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     disconnect, 
     refreshWalletInfo,
     switchToSupportedChain,
-    getAKRBalance,
+    getAGRIBalance,
     updateUserWallet
   } = useWalletState();
 
@@ -40,7 +40,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       isConnecting,
       updateUserWallet,
       switchToSupportedChain,
-      getAKRBalance,
+      getAGRIBalance,
       refreshWalletInfo
     }}>
       {children}

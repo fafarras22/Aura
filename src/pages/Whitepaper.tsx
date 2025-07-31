@@ -215,7 +215,7 @@ const Whitepaper = () => {
                   <h3 className="text-lg font-medium">Token Utility</h3>
                   <ul className="list-disc list-inside space-y-1 pl-4">
                     <li>Purchase of container farm shares</li>
-                    <li>Staking for stAKR to earn yields from farm operations</li>
+                    <li>Staking for stAGRI to earn yields from farm operations</li>
                     <li>Governance voting on platform decisions</li>
                     <li>Access to premium features (advanced analytics, priority access to new farms)</li>
                     <li>Discounts on produce purchases</li>
@@ -316,14 +316,14 @@ const Whitepaper = () => {
                   
                   <h3 className="text-lg font-medium">Investor Dashboard</h3>
                   <p>
-                    stAKR holders gain access to a comprehensive dashboard displaying:
+                    stAGRI holders gain access to a comprehensive dashboard displaying:
                   </p>
                   <ul className="list-disc list-inside space-y-1 pl-4">
                     <li>Live sensor data from their staked containers</li>
                     <li>Crop growth progress and projected harvest dates</li>
                     <li>Historical performance metrics and yield data</li>
                     <li>Financial performance including revenue, expenses, and projected returns</li>
-                    <li>Marketplace data for buying/selling stAKR positions</li>
+                    <li>Marketplace data for buying/selling stAGRI positions</li>
                   </ul>
                   
                   <p className="mt-4">
@@ -349,17 +349,17 @@ const Whitepaper = () => {
                         <li>Complete pilot container farm in Jakarta</li>
                         <li>Develop and test IoT monitoring system</li>
                         <li>Establish initial B2B partnerships</li>
-                        <li>$AKR token development and audit on Arbitrum</li>
+                        <li>$AGRI token development and audit on Arbitrum</li>
                         <li>Private investment round</li>
                       </ul>
                     </div>
                     <div>
                       <h3 className="text-lg font-medium mb-2">Phase 2: Launch (Q4 2023)</h3>
                       <ul className="list-disc list-inside space-y-1 pl-4">
-                        <li>$AKR token public sale on Arbitrum</li>
+                        <li>$AGRI token public sale on Arbitrum</li>
                         <li>Platform beta launch</li>
                         <li>First 5 container farms operational</li>
-                        <li>Initial stAKR staking program on Arbitrum</li>
+                        <li>Initial stAGRI staking program on Arbitrum</li>
                         <li>Exchange listings</li>
                       </ul>
                     </div>
@@ -367,7 +367,7 @@ const Whitepaper = () => {
                       <h3 className="text-lg font-medium mb-2">Phase 3: Growth (2024)</h3>
                       <ul className="list-disc list-inside space-y-1 pl-4">
                         <li>Expand to 25 container farms in Jakarta</li>
-                        <li>Launch secondary marketplace for stAKR tokens on Arbitrum</li>
+                        <li>Launch secondary marketplace for stAGRI tokens on Arbitrum</li>
                         <li>Develop governance protocol</li>
                         <li>Implement AI-driven crop optimization</li>
                         <li>Expand crop varieties</li>
@@ -399,7 +399,7 @@ const Whitepaper = () => {
                 <CardContent className="space-y-4">
                   <h3 className="text-lg font-medium">Decentralized Decision Making</h3>
                   <p>
-                    The AKAR ecosystem employs a hybrid governance model that balances operational efficiency with stakeholder input. $AKR holders can participate in governance through:
+                    The AKAR ecosystem employs a hybrid governance model that balances operational efficiency with stakeholder input. $AGRI holders can participate in governance through:
                   </p>
                   <ul className="list-disc list-inside space-y-1 pl-4">
                     <li>Voting on new container farm locations</li>
@@ -411,7 +411,7 @@ const Whitepaper = () => {
                   
                   <h3 className="text-lg font-medium">Voting Mechanism</h3>
                   <p>
-                    Voting power is determined by $AKR holdings using a quadratic voting system that prevents excessive influence by large token holders. Both $AKR and stAKR tokens grant voting rights, with stAKR providing additional weight for votes directly related to their specific container.
+                    Voting power is determined by $AGRI holdings using a quadratic voting system that prevents excessive influence by large token holders. Both $AGRI and stAGRI tokens grant voting rights, with stAGRI providing additional weight for votes directly related to their specific container.
                   </p>
                   
                   <h3 className="text-lg font-medium">Operational Management</h3>
@@ -503,7 +503,7 @@ const Whitepaper = () => {
                   
                   <h3 className="text-lg font-medium">Risk Disclosure</h3>
                   <p>
-                    Investment in $AKR tokens and stAKR staking involves various risks, including but not limited to:
+                    Investment in $AGRI tokens and stAGRI staking involves various risks, including but not limited to:
                   </p>
                   <ul className="list-disc list-inside space-y-1 pl-4">
                     <li>Agricultural operational risks (crop failure, disease, etc.)</li>

@@ -39,8 +39,8 @@ export const updateUserWallet = async (walletAddress: string): Promise<void> => 
   }
 };
 
-// Get AKR token balance
-export const getAKRBalance = async (address: string): Promise<string> => {
+// Get AGRI token balance
+export const getAGRIBalance = async (address: string): Promise<string> => {
   if (!address) return "0";
   
   try {

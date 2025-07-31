@@ -51,12 +51,12 @@ const Legal = () => {
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">Tokenization Legal Framework</h2>
           <p>
-            AKAR ($AKR) tokens operate under the following legal structure:
+            AKAR ($AGRI) tokens operate under the following legal structure:
           </p>
           <ul className="list-disc list-inside space-y-2 pl-4">
-            <li>$AKR tokens are utility tokens that represent rights to agricultural assets and services</li>
+            <li>$AGRI tokens are utility tokens that represent rights to agricultural assets and services</li>
             <li>These tokens are not classified as securities under current Indonesian regulations</li>
-            <li>AKAR tokens operate on the Polygon PoS (Proof of Stake) blockchain</li>
+            <li>AKAR tokens operate on the Arbitrum blockchain</li>
             <li>Token holders do not receive ownership in PT Tumbuh Dimana Sadja</li>
             <li>Revenue sharing from agricultural production is governed by smart contracts</li>
           </ul>

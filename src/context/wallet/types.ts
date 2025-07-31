@@ -8,6 +8,6 @@ export interface WalletContextProps {
   isConnecting: boolean;
   updateUserWallet: (walletAddress: string) => Promise<void>;
   switchToSupportedChain: (targetChainId?: number) => Promise<boolean>;
-  getAKRBalance: () => Promise<string>;
+  getAGRIBalance: () => Promise<string>;
   refreshWalletInfo: () => Promise<void>;
 }

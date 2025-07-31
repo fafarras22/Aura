@@ -70,7 +70,7 @@ const TermsOfService = () => {
             <li>You will comply with all applicable laws regarding cryptocurrency and digital asset investments</li>
           </ul>
           <p>
-            AKAR tokens ($AKR) are utility tokens that represent ownership or rights to agricultural assets but are not securities or investments under Indonesian law.
+            AKAR tokens ($AGRI) are utility tokens that represent ownership or rights to agricultural assets but are not securities or investments under Indonesian law.
           </p>
         </section>
         

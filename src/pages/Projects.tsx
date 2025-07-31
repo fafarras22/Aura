@@ -35,7 +35,7 @@ const Projects = () => {
   const content = {
     en: {
       title: "Farm Projects",
-      subtitle: "Invest in container farming projects with $AKR tokens",
+      subtitle: "Invest in container farming projects with $AGRI tokens",
       demoMode: "Demonstration Mode",
       demoModeDescription: "Currently showing demonstration data.",
       developerMode: "You are in developer mode with access to all container data.",
@@ -48,7 +48,7 @@ const Projects = () => {
     },
     id: {
       title: "Proyek Pertanian",
-      subtitle: "Investasi dalam proyek pertanian kontainer dengan token $AKR",
+      subtitle: "Investasi dalam proyek pertanian kontainer dengan token $AGRI",
       demoMode: "Mode Demonstrasi",
       demoModeDescription: "Saat ini menampilkan data demonstrasi.",
       developerMode: "Anda berada dalam mode pengembang dengan akses ke semua data kontainer.",
@@ -61,7 +61,7 @@ const Projects = () => {
     },
     ko: {
       title: "농장 프로젝트",
-      subtitle: "$AKR 토큰으로 컨테이너 농업 프로젝트에 투자하세요",
+      subtitle: "$AGRI 토큰으로 컨테이너 농업 프로젝트에 투자하세요",
       demoMode: "데모 모드",
       demoModeDescription: "현재 데모 데이터를 보여주고 있습니다.",
       developerMode: "모든 컨테이너 데이터에 접근할 수 있는 개발자 모드입니다.",
@@ -145,7 +145,7 @@ const Projects = () => {
       <SEOMetadata 
         title="Farm Projects | AKAR Farm Investment Platform"
         description="Explore and invest in our curated collection of sustainable farming projects. Each container project offers unique investment opportunities with real-time monitoring."
-        keywords="farm projects, agriculture investment, container farming, AKR token, sustainable agriculture, urban farming, Indonesia farming"
+        keywords="farm projects, agriculture investment, container farming, AGRI token, sustainable agriculture, urban farming, Indonesia farming"
         canonicalUrl="https://akarfarm.com/projects"
       />
       

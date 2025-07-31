@@ -241,7 +241,7 @@ const About = () => {
                     <CardContent className="p-6">
                       <h3 className="font-bold mb-1">2023 Q4</h3>
                       <p className="text-muted-foreground">
-                        $AKR token developed and initial container farm tokenization platform launched
+                        $AGRI token developed and initial container farm tokenization platform launched
                       </p>
                     </CardContent>
                   </Card>

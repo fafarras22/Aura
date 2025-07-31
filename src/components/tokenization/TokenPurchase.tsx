@@ -73,7 +73,7 @@ export const TokenPurchase: React.FC<TokenPurchaseProps> = ({ onPurchase }) => {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <Card className="lg:col-span-2">
         <CardHeader>
-          <CardTitle>Purchase AKR Tokens</CardTitle>
+          <CardTitle>Purchase AGRI Tokens</CardTitle>
           <CardDescription>Invest in tokenized farm assets with flexible options</CardDescription>
         </CardHeader>
         

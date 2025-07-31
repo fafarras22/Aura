@@ -53,7 +53,7 @@ const Index = () => {
       <SEOMetadata 
         title="AKAR Farm - Tokenized Agriculture Investment Platform"
         description="Invest in sustainable farming projects with blockchain technology. AKAR Farm connects investors with agricultural opportunities through tokenization."
-        keywords="agriculture investment, farm tokens, blockchain agriculture, sustainable farming, AKR token, container farming, urban agriculture"
+        keywords="agriculture investment, farm tokens, blockchain agriculture, sustainable farming, AGRI token, container farming, urban agriculture"
         canonicalUrl="https://akarfarm.com/"
         ogImage="/lovable-uploads/532be948-74b8-4d14-a726-8fa51d204cf7.png"
       />

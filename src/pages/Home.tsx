@@ -145,7 +145,7 @@ const Home = () => {
           onContainerSelect={handleContainerSelect}
         />
         
-        {/* AKR Token Section */}
+        {/* AGRI Token Section */}
         <AkarTokenSection 
           tokenMetrics={tokenMetrics}
           onNavigate={navigate}

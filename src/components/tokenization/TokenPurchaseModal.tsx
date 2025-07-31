@@ -50,7 +50,7 @@ export const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Purchase AKR Tokens</DialogTitle>
+          <DialogTitle>Purchase AGRI Tokens</DialogTitle>
           <DialogDescription>
             Invest in agricultural assets through tokenization
           </DialogDescription>

@@ -203,7 +203,7 @@ export const addNetwork = async (chainId: number): Promise<boolean> => {
   }
 };
 
-// Get AKR token balance
+// Get AGRI token balance
 export const getTokenBalance = async (address: string): Promise<string> => {
   try {
     const provider = await getProvider();

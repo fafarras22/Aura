@@ -14,8 +14,8 @@ const TokenPurchase = () => {
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-2">Get AKR Tokens</h1>
-          <p className="text-xl text-muted-foreground mb-8">Choose your preferred method to acquire $AKR tokens</p>
+          <h1 className="text-4xl font-bold mb-2">Get AGRI Tokens</h1>
+          <p className="text-xl text-muted-foreground mb-8">Choose your preferred method to acquire $AGRI tokens</p>
 
           <Tabs defaultValue="direct" className="space-y-8">
             <TabsList className="grid w-full grid-cols-2">
@@ -51,7 +51,7 @@ const TokenPurchase = () => {
                 <CardHeader>
                   <CardTitle>Exchange Purchase</CardTitle>
                   <CardDescription>
-                    Buy $AKR tokens from supported exchanges
+                    Buy $AGRI tokens from supported exchanges
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">

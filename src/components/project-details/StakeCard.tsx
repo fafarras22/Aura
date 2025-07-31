@@ -16,7 +16,7 @@ const StakeCard = ({ container, handleStakeClick }: StakeCardProps) => {
     <Card>
       <CardHeader>
         <CardTitle>Stake in this Project</CardTitle>
-        <CardDescription>Secure your AKR tokens allocation</CardDescription>
+        <CardDescription>Secure your AGRI tokens allocation</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">

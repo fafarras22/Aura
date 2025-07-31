@@ -150,8 +150,8 @@ export function useWalletState() {
     }
   };
   
-  // Get AKR token balance
-  const getAKRBalance = async (): Promise<string> => {
+  // Get AGRI token balance
+  const getAGRIBalance = async (): Promise<string> => {
     if (!wallet.connected || !wallet.address) return "0";
     
     try {
@@ -171,7 +171,7 @@ export function useWalletState() {
     disconnect,
     refreshWalletInfo,
     switchToSupportedChain,
-    getAKRBalance,
+    getAGRIBalance,
     updateUserWallet: updateWalletInDB
   };
 }

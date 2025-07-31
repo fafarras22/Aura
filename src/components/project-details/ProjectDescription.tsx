@@ -25,7 +25,7 @@ const ProjectDescription = ({
         <p className="text-muted-foreground">
           {description || `This container farm project uses advanced hydroponic systems to grow premium produce with minimal water usage and no pesticides. Located strategically for optimal distribution, this project aims to deliver fresh produce to local markets while generating stable returns for token holders.
           
-          The container is equipped with IoT sensors for real-time monitoring and uses AI to optimize growing conditions. Each AKR token represents fractional ownership in this farm, entitling holders to proportional returns from produce sales.`}
+          The container is equipped with IoT sensors for real-time monitoring and uses AI to optimize growing conditions. Each AGRI token represents fractional ownership in this farm, entitling holders to proportional returns from produce sales.`}
         </p>
         
         <div className="mt-6 space-y-4">
