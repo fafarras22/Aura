@@ -40,7 +40,7 @@ export const ActiveProjects: React.FC = () => {
   const handleClaim = (projectId: string, amount: number) => {
     toast({
       title: "Claiming rewards",
-      description: `Claiming ${amount} AGRI from project ${projectId}`,
+      description: `Claiming ${amount} UMBI from project ${projectId}`,
     });
   };
   
@@ -95,7 +95,7 @@ export const ActiveProjects: React.FC = () => {
                             onClick={() => handleClaim(project.id, project.pendingRewards)}
                           >
                             <TrendingUp className="h-4 w-4" />
-                            Claim {project.pendingRewards} AGRI
+                            Claim {project.pendingRewards} UMBI
                           </Button>
                         </div>
                       </div>
@@ -103,7 +103,7 @@ export const ActiveProjects: React.FC = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
                         <div>
                           <p className="text-sm text-muted-foreground mb-1">Staked Amount</p>
-                          <p className="text-xl font-bold">{project.stakedAmount} AGRI</p>
+                          <p className="text-xl font-bold">{project.stakedAmount} UMBI</p>
                           <p className="text-xs text-muted-foreground">Since {project.stakedDate}</p>
                         </div>
                         
@@ -115,7 +115,7 @@ export const ActiveProjects: React.FC = () => {
                         
                         <div>
                           <p className="text-sm text-muted-foreground mb-1">Pending Rewards</p>
-                          <p className="text-xl font-bold">{project.pendingRewards} AGRI</p>
+                          <p className="text-xl font-bold">{project.pendingRewards} UMBI</p>
                           <p className="text-xs text-muted-foreground">Claimable anytime</p>
                         </div>
                       </div>

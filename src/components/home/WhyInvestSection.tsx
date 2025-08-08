@@ -25,7 +25,7 @@ export const WhyInvestSection: React.FC<WhyInvestSectionProps> = ({ language = '
         description: "Your investments create jobs, support rural economies, and promote sustainable farming practices across Southeast Asia."
       },
       tokenBenefits: {
-        title: "$AGRI Token Benefits",
+        title: "$UMBI Token Benefits",
         points: [
           "Direct ownership in agricultural assets",
           "Staking rewards from farm production",
@@ -57,7 +57,7 @@ export const WhyInvestSection: React.FC<WhyInvestSectionProps> = ({ language = '
         description: "Investasi Anda menciptakan lapangan kerja, mendukung ekonomi pedesaan, dan mempromosikan praktik pertanian berkelanjutan di seluruh Asia Tenggara."
       },
       tokenBenefits: {
-        title: "Manfaat Token $AGRI",
+        title: "Manfaat Token $UMBI",
         points: [
           "Kepemilikan langsung dalam aset pertanian",
           "Hadiah staking dari produksi pertanian",
@@ -89,7 +89,7 @@ export const WhyInvestSection: React.FC<WhyInvestSectionProps> = ({ language = '
         description: "귀하의 투자는 일자리를 창출하고, 농촌 경제를 지원하며, 동남아시아 전역에서 지속 가능한 농업 관행을 촉진합니다."
       },
       tokenBenefits: {
-        title: "$AGRI 토큰 혜택",
+        title: "$UMBI 토큰 혜택",
         points: [
           "농업 자산에 대한 직접 소유권",
           "농장 생산에서 스테이킹 보상",

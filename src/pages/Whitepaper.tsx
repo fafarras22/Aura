@@ -21,7 +21,7 @@ const Whitepaper = () => {
         <title>AKAR Farm Whitepaper | Container Farming Tokenization</title>
         <meta 
           name="description" 
-          content="AKAR Farm whitepaper - Learn about our tokenized container farming ecosystem, $AGRI token economics, and sustainable agriculture investment model." 
+          content="AKAR Farm whitepaper - Learn about our tokenized container farming ecosystem, $UMBI token economics, and sustainable agriculture investment model." 
         />
       </Helmet>
       
@@ -59,7 +59,7 @@ const Whitepaper = () => {
                     <a href="#market-analysis" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Market Analysis</a>
                     <a href="#container-farming" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Container Farming Technology</a>
                     <a href="#tokenomics" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Tokenomics</a>
-                    <a href="#staking" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">stAGRI Staking Model</a>
+                    <a href="#staking" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">stUMBI Staking Model</a>
                     <a href="#iot" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">IoT & Monitoring</a>
                     <a href="#roadmap" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Roadmap</a>
                     <a href="#governance" className="flex px-3 py-2 hover:bg-muted rounded-md text-sm">Governance</a>
@@ -99,7 +99,7 @@ const Whitepaper = () => {
                   <ol className="list-decimal list-inside space-y-2 pl-4">
                     <li><strong>High-tech container farms:</strong> Optimized for growing high-value crops in urban environments using 95% less water than traditional farming</li>
                     <li><strong>IoT sensor network:</strong> Providing real-time monitoring and automated management of growing conditions</li>
-                    <li><strong>Arbitrum-powered tokenization:</strong> Enabling fractional ownership and liquidity through $AGRI tokens on Arbitrum's secure Layer 2 infrastructure</li>
+                    <li><strong>Arbitrum-powered tokenization:</strong> Enabling fractional ownership and liquidity through $UMBI tokens on Arbitrum's secure Layer 2 infrastructure</li>
                   </ol>
                 </CardContent>
               </Card>
@@ -179,13 +179,13 @@ const Whitepaper = () => {
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                       <span className="text-primary font-medium">4</span>
                     </div>
-                    <CardTitle>$AGRI Tokenomics</CardTitle>
+                    <CardTitle>$UMBI Tokenomics</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <h3 className="text-lg font-medium">Token Overview</h3>
                   <p>
-                    $AGRI is the native utility token of the AKAR Farm ecosystem, deployed on Arbitrum's Layer 2 network. Built on Arbitrum's secure and scalable infrastructure, $AGRI enables governance, investment in container farming projects, and serves as a medium of exchange within the platform. The total supply of $AGRI tokens is capped at 100,000,000.
+                    $UMBI is the native utility token of the AKAR Farm ecosystem, deployed on Arbitrum's Layer 2 network. Built on Arbitrum's secure and scalable infrastructure, $UMBI enables governance, investment in container farming projects, and serves as a medium of exchange within the platform. The total supply of $UMBI tokens is capped at 100,000,000.
                   </p>
                   
                   <h3 className="text-lg font-medium">Token Allocation</h3>
@@ -215,7 +215,7 @@ const Whitepaper = () => {
                   <h3 className="text-lg font-medium">Token Utility</h3>
                   <ul className="list-disc list-inside space-y-1 pl-4">
                     <li>Purchase of container farm shares</li>
-                    <li>Staking for stAGRI to earn yields from farm operations</li>
+                    <li>Staking for stUMBI to earn yields from farm operations</li>
                     <li>Governance voting on platform decisions</li>
                     <li>Access to premium features (advanced analytics, priority access to new farms)</li>
                     <li>Discounts on produce purchases</li>
@@ -229,13 +229,13 @@ const Whitepaper = () => {
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                       <span className="text-primary font-medium">5</span>
                     </div>
-                    <CardTitle>stAGRI Staking Model</CardTitle>
+                    <CardTitle>stUMBI Staking Model</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <h3 className="text-lg font-medium">Staking Mechanism</h3>
                   <p>
-                    Holders of $AGRI tokens can stake their tokens in specific container farming projects to receive stAGRI tokens through Arbitrum's smart contract infrastructure. Each container has its own stAGRI token variant (e.g., stAGRI-C001 for Container #001), representing fractional ownership in that specific container's operations and profits, all secured by Arbitrum's optimistic rollup technology.
+                    Holders of $UMBI tokens can stake their tokens in specific container farming projects to receive stUMBI tokens through Arbitrum's smart contract infrastructure. Each container has its own stUMBI token variant (e.g., stUMBI-C001 for Container #001), representing fractional ownership in that specific container's operations and profits, all secured by Arbitrum's optimistic rollup technology.
                   </p>
                   
                   <h3 className="text-lg font-medium">Revenue Distribution</h3>
@@ -243,15 +243,15 @@ const Whitepaper = () => {
                     The container farm generates revenue through the sale of produce. This revenue is distributed as follows:
                   </p>
                   <ul className="list-disc list-inside space-y-1 pl-4">
-                    <li>70% to stAGRI holders proportional to their stake</li>
+                    <li>70% to stUMBI holders proportional to their stake</li>
                     <li>20% for operational expenses (energy, nutrients, maintenance)</li>
                     <li>8% for platform development and expansion</li>
-                    <li>2% for $AGRI token burns</li>
+                    <li>2% for $UMBI token burns</li>
                   </ul>
                   
                   <h3 className="text-lg font-medium">Yield Generation</h3>
                   <p>
-                    The projected annual yield for stAGRI holders ranges from 12-18%, depending on crop selection, market conditions, and operational efficiency. Yields are distributed monthly based on actual container performance, providing a stable passive income stream for investors.
+                    The projected annual yield for stUMBI holders ranges from 12-18%, depending on crop selection, market conditions, and operational efficiency. Yields are distributed monthly based on actual container performance, providing a stable passive income stream for investors.
                   </p>
                   
                   <h3 className="text-lg font-medium">Staking Periods</h3>

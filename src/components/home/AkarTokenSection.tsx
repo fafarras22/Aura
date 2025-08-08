@@ -24,10 +24,10 @@ export const AkarTokenSection: React.FC<AkarTokenSectionProps> = ({ tokenMetrics
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <Badge className="mb-2">TOKENOMICS</Badge>
-          <h2 className="text-3xl font-bold">$AGRI Token & stAGRI Staking</h2>
+          <h2 className="text-3xl font-bold">$UMBI Token & stUMBI Staking</h2>
           <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            The $AGRI token powers the AKAR Farm ecosystem on Arbitrum's Layer 2 network, enabling efficient container farm investments with low gas fees. 
-            Stake your $AGRI tokens to receive stAGRI and earn passive income from our container farm operations.
+            The $UMBI token powers the AKAR Farm ecosystem on Arbitrum's Layer 2 network, enabling efficient container farm investments with low gas fees. 
+            Stake your $UMBI tokens to receive stUMBI and earn passive income from our container farm operations.
           </p>
         </div>
         
@@ -38,7 +38,7 @@ export const AkarTokenSection: React.FC<AkarTokenSectionProps> = ({ tokenMetrics
                 <div>
                   <h3 className="text-2xl font-bold flex items-center">
                     <CircleDollarSign className="h-5 w-5 mr-2 text-green-600" />
-                    $AGRI Token
+                    $UMBI Token
                   </h3>
                   <p className="text-muted-foreground">Container farm ownership token</p>
                 </div>
@@ -83,7 +83,7 @@ export const AkarTokenSection: React.FC<AkarTokenSectionProps> = ({ tokenMetrics
                 <div>
                   <h3 className="text-2xl font-bold flex items-center">
                     <Wallet className="h-5 w-5 mr-2 text-emerald-600" />
-                    stAGRI Staking
+                    stUMBI Staking
                   </h3>
                   <p className="text-muted-foreground">Earn passive income</p>
                 </div>
@@ -94,7 +94,7 @@ export const AkarTokenSection: React.FC<AkarTokenSectionProps> = ({ tokenMetrics
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Total Staked</p>
-                    <p className="text-2xl font-bold">{tokenMetrics.stakedAmount.toLocaleString()} $AGRI</p>
+                    <p className="text-2xl font-bold">{tokenMetrics.stakedAmount.toLocaleString()} $UMBI</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">% of Supply</p>
@@ -132,7 +132,7 @@ export const AkarTokenSection: React.FC<AkarTokenSectionProps> = ({ tokenMetrics
             size="lg"
             className="gap-2"
           >
-            Get $AGRI Tokens
+            Get $UMBI Tokens
             <ArrowRight className="h-4 w-4" />
           </Button>
         </div>

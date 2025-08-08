@@ -30,7 +30,7 @@ export const HomeFooter: React.FC<HomeFooterProps> = ({ onNavigate }) => {
             <h3 className="font-bold mb-4">Products</h3>
             <ul className="space-y-2">
               <li><Link to="/farm-projects" className="text-muted-foreground hover:text-primary">Projects</Link></li>
-              <li><Link to="/tokenization" className="text-muted-foreground hover:text-primary">$AGRI Token</Link></li>
+              <li><Link to="/tokenization" className="text-muted-foreground hover:text-primary">$UMBI Token</Link></li>
               <li><Link to="/analytics" className="text-muted-foreground hover:text-primary">Analytics</Link></li>
             </ul>
           </div>

@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { AnimatedProjectTypes } from "./AnimatedProjectTypes";
 import { ArrowRight, Wallet, LineChart, BarChart4 } from "lucide-react";
-
+import { useTokenPrice } from "@/hooks/useTokenPrice";
 interface HeroContentProps {
   title: string;
   subtitle: string;
@@ -23,6 +23,8 @@ export const HeroContent: React.FC<HeroContentProps> = ({
   onExploreClick,
   onLearnMoreClick
 }) => {
+  const { price, change24h, loading } = useTokenPrice('UMBI');
+  const changePositive = change24h >= 0;
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -33,6 +35,16 @@ export const HeroContent: React.FC<HeroContentProps> = ({
             interval={3000}
             className="text-2xl sm:text-3xl font-display"
           />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary">
+            UMBI ${price.toFixed(2)}
+            <span className={changePositive ? "ml-2 text-green-600" : "ml-2 text-red-600"}>
+              {changePositive ? '+' : ''}{change24h.toFixed(2)}%
+            </span>
+          </span>
+          <Button size="sm" className="h-9" onClick={() => (window.location.href = "/token-purchase")}>Buy $UMBI</Button>
         </div>
         
         <p className="text-lg text-muted-foreground md:pr-6 leading-relaxed">
