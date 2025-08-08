@@ -1,7 +1,7 @@
 
 import React from "react";
 import { HeroContent } from "@/components/home/hero/HeroContent";
-import { HeroImage } from "@/components/home/hero/HeroImage";
+import { LiveTokenChart } from "@/components/home/hero/LiveTokenChart";
 import { AnimatedProjectTypes } from "@/components/home/hero/AnimatedProjectTypes";
 import { useMobile } from "@/hooks/use-mobile";
 
@@ -37,7 +37,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {isMobile ? (
             <>
               <div className="w-full h-[350px]">
-                <HeroImage />
+                <LiveTokenChart />
               </div>
               <HeroContent 
                 title={content.title}
@@ -61,7 +61,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 onLearnMoreClick={onLearnMoreClick}
               />
               <div className="w-full h-[500px]">
-                <HeroImage />
+                <LiveTokenChart />
               </div>
             </>
           )}

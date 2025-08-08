@@ -28,14 +28,14 @@ export const HeroContent: React.FC<HeroContentProps> = ({
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <div className="flex items-center gap-2 my-3">
+        <h1 id="hero-heading" className="flex items-center gap-2 my-3">
           <AnimatedProjectTypes 
             baseText={title}
             projectTypes={farmTypes}
             interval={3000}
             className="text-2xl sm:text-3xl font-display"
           />
-        </div>
+        </h1>
 
         <div className="flex flex-wrap items-center gap-3">
           <span className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-primary/10 text-primary">
