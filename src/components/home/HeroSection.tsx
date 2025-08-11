@@ -36,7 +36,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* For mobile, show the HeroImage first, then content */}
           {isMobile ? (
             <>
-              <div className="w-full h-[350px]">
+              <div className="w-full h-[220px]">
                 <LiveTokenChart />
               </div>
               <HeroContent 
@@ -60,7 +60,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 onExploreClick={onExploreClick}
                 onLearnMoreClick={onLearnMoreClick}
               />
-              <div className="w-full h-[500px]">
+              <div className="w-full h-[320px]">
                 <LiveTokenChart />
               </div>
             </>
