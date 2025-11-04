@@ -22,7 +22,6 @@ interface DashboardGridProps {
   expandedSections: {
     sensors: boolean;
     sales: boolean;
-    tokenization: boolean;
     locations: boolean;
     climate?: boolean;
     water?: boolean;
@@ -32,7 +31,6 @@ interface DashboardGridProps {
   farmLocations: FarmLocation[];
   waterData?: WaterData;
   climateData?: ClimateData;
-  tokenData?: TokenizationData;
 }
 
 export const DashboardGrid: React.FC<DashboardGridProps> = ({
@@ -42,8 +40,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
   salesData,
   farmLocations,
   waterData,
-  climateData,
-  tokenData
+  climateData
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -137,13 +134,12 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
         </SectionCard>
       </div>
       
-      <DashboardSidebar 
-        isDeveloperMode={isDeveloperMode}
-        expandedSections={expandedSections}
-        toggleSection={toggleSection}
-        farmLocations={farmLocations}
-        tokenData={tokenData}
-      />
+        <DashboardSidebar 
+          isDeveloperMode={isDeveloperMode}
+          expandedSections={expandedSections}
+          toggleSection={toggleSection}
+          farmLocations={farmLocations}
+        />
     </div>
   );
 }

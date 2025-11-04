@@ -23,10 +23,10 @@ export const BackendHeader: React.FC = () => {
         <div>
           <div className="flex items-center gap-3 mb-2">
             <Logo size="md" showText={false} />
-            <h1 className="text-3xl font-bold tracking-tight">Backend Dashboard</h1>
+            <h1 className="text-3xl font-bold tracking-tight">AKAR Farm OS</h1>
           </div>
           <p className="text-muted-foreground mt-1">
-            Manage all data, projections, and integrations
+            Complete farm management platform - operations, sales, sensors, HR & AI analytics
           </p>
           <div className="mt-2 flex items-center">
             <span className="text-xs bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 px-2 py-1 rounded-full">
@@ -47,7 +47,7 @@ export const BackendHeader: React.FC = () => {
           </Button>
           <Button size="sm">
             <Database className="mr-2 h-4 w-4" />
-            Sync with Supabase
+            Sync Data
           </Button>
         </div>
       </div>

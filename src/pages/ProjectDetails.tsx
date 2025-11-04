@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { ContainerProject } from "@/components/containers/ContainerCard";
-import { ContainerStakeModal } from "@/components/containers/ContainerStakeModal";
 import { useWallet } from "@/context/wallet/WalletContext";
 import { WalletConnectModal } from "@/components/wallet/WalletConnectModal";
 import { useToast } from "@/hooks/use-toast";
@@ -23,7 +22,6 @@ const ProjectDetails = () => {
   
   const [container, setContainer] = useState<ContainerProject | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showStakeModal, setShowStakeModal] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
   
   // Mock data for charts and stats
@@ -113,7 +111,11 @@ const ProjectDetails = () => {
       return;
     }
     
-    setShowStakeModal(true);
+    // Navigate to projects page instead of showing stake modal
+    toast({
+      title: "Investment Moved",
+      description: "Investment features are now handled by Umbi (www.umbi.fi)",
+    });
   };
 
   if (loading || !container) {
@@ -146,12 +148,6 @@ const ProjectDetails = () => {
           <RiskAssessmentCard />
         </div>
       </div>
-      
-      <ContainerStakeModal
-        open={showStakeModal}
-        onOpenChange={setShowStakeModal}
-        containerId={id || null}
-      />
       
       <WalletConnectModal
         open={showWalletModal}

@@ -10,7 +10,7 @@ import { useDashboardData } from "@/components/dashboard/useDashboardData";
 import { Button } from "@/components/ui/button";
 import { Wallet, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { WalletSummary } from "@/components/farm-projects/WalletSummary";
+
 import { AppHeader } from "@/components/layout/AppHeader";
 import { useAuth } from "@/context/auth";
 import { Footer } from "@/components/layout/Footer";
@@ -32,7 +32,6 @@ const Dashboard = () => {
   const [expandedSections, setExpandedSections] = useState({
     sensors: true,
     sales: true,
-    tokenization: true,
     locations: true,
     climate: true,
     water: true
@@ -170,19 +169,6 @@ const Dashboard = () => {
       <div className="container mx-auto space-y-6 p-6">
         <div className="pt-16">
           <DashboardHeader currentUser={currentUser} />
-          
-          {wallet.connected && (
-            <WalletSummary
-              isConnected={wallet.connected}
-              walletAddress={wallet.address}
-              walletBalance={wallet.balance}
-              akrBalance={55}
-              stakedAkr={25}
-              claimedRewards={5}
-              onConnectWallet={() => setShowWalletModal(true)}
-              onDisconnectWallet={handleDisconnectWallet}
-            />
-          )}
           
           {/* Projects Section */}
           <div className="mb-8">

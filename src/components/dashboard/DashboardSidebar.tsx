@@ -1,9 +1,8 @@
 
 import React from 'react';
 import { SectionCard } from "@/components/dashboard/SectionCard";
-import { TokenizationOverview } from "@/components/dashboard/TokenizationOverview";
 import { FarmLocationsOverview } from "@/components/dashboard/FarmLocationsOverview";
-import { FarmLocation, TokenizationData } from "@/services/mockDataService";
+import { FarmLocation } from "@/services/mockDataService";
 import { useDeveloperMode } from "@/context/DeveloperModeContext";
 
 interface DashboardSidebarProps {
@@ -11,67 +10,23 @@ interface DashboardSidebarProps {
   expandedSections: {
     sensors: boolean;
     sales: boolean;
-    tokenization: boolean;
     locations: boolean;
     climate?: boolean;
     water?: boolean;
   };
   toggleSection: (section: string) => void;
   farmLocations: FarmLocation[];
-  tokenData?: TokenizationData;
 }
 
 export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   isDeveloperMode,
   expandedSections,
   toggleSection,
-  farmLocations,
-  tokenData
+  farmLocations
 }) => {
-  const { getContainerData } = useDeveloperMode();
-  const defaultTokenData: TokenizationData = {
-    totalValue: 125000000,
-    totalTokens: 12500,
-    activeContracts: 3,
-    totalInvestors: 18,
-    averageReturn: 12.5,
-    recentActivities: [
-      {
-        id: "token-act-1",
-        type: "invested" as const,
-        description: "New investment",
-        tokenAmount: 500,
-        date: new Date().toLocaleDateString(),
-        transactionHash: "0x1234567890abcdef"
-      },
-      {
-        id: "token-act-2",
-        type: "harvested" as const,
-        description: "Harvest yield distributed",
-        tokenAmount: 250,
-        date: new Date().toLocaleDateString(),
-        transactionHash: "0x0987654321fedcba"
-      }
-    ],
-    tokenBalance: 5000,
-    tokenPrice: 10000,
-    tokenChange: 2.5,
-    tokenChangeType: "increase" as const,
-    tokenHolders: [],
-    investments: [],
-    recentTransactions: [],
-    tokenAllocation: [],
-    investmentPerformance: [],
-    contractDuration: 12
-  };
-
-  const displayTokenData = tokenData || defaultTokenData;
-
   return (
     <div className="space-y-6">
-      <TokenizationOverview tokenData={displayTokenData} />
-      
-      <SectionCard 
+      <SectionCard
         title="Container Locations"
         onToggle={() => toggleSection('locations')}
         isExpanded={expandedSections.locations}

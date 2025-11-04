@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 interface ContainerGridProps {
-  onSelectContainer: (containerId: string) => void;
+  onSelectContainer?: (containerId: string) => void;
   onViewDashboard?: (containerId: string) => void;
   language?: 'en' | 'id' | 'ko';
 }
@@ -54,14 +54,14 @@ export const ContainerGrid: React.FC<ContainerGridProps> = ({
           <div key={container.id} className="relative">
             <ContainerCard
               container={container}
-              onAction={() => onSelectContainer(container.id)}
+              onAction={onSelectContainer ? () => onSelectContainer(container.id) : undefined}
             />
-            {onViewDashboard && (
+            {onViewDashboard && onSelectContainer && (
               <div className="mt-2 flex justify-between">
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  onClick={() => onSelectContainer(container.id)}
+                  onClick={onSelectContainer ? () => onSelectContainer(container.id) : undefined}
                 >
                   {content[language].viewDetails}
                 </Button>

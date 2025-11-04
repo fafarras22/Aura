@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContainerGrid } from "@/components/containers/ContainerGrid";
-import { ContainerStakeModal } from "@/components/containers/ContainerStakeModal";
+
 import { useDBSetup } from "@/lib/db-setup";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/components/ui/use-toast";
@@ -16,8 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Projects = () => {
-  const [selectedContainerId, setSelectedContainerId] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { initializeDB } = useDBSetup();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
@@ -131,11 +129,6 @@ const Projects = () => {
     setupDatabase();
   }, [initializeDB, toast]);
 
-  const handleContainerSelect = (containerId: string) => {
-    setSelectedContainerId(containerId);
-    setIsModalOpen(true);
-  };
-
   const handleViewDashboard = (containerId: string) => {
     navigate(`/project/${containerId}/dashboard`);
   };
@@ -214,7 +207,6 @@ const Projects = () => {
                   <meta itemProp="name" content="AKAR Farm Container Projects" />
                   <meta itemProp="description" content="Collection of sustainable container farming projects available for investment" />
                   <ContainerGrid 
-                    onSelectContainer={handleContainerSelect} 
                     onViewDashboard={handleViewDashboard}
                     language={language}
                   />
@@ -235,14 +227,7 @@ const Projects = () => {
                         </p>
                       </div>
                       <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleContainerSelect(`container-${index + 1}`)}
-                        >
-                          {content[language].viewDetails}
-                        </Button>
-                        <Button 
+                        <Button
                           variant="default" 
                           size="sm"
                           onClick={() => handleViewDashboard(`container-${index + 1}`)}
@@ -256,12 +241,6 @@ const Projects = () => {
               </TabsContent>
             </Tabs>
           )}
-
-          <ContainerStakeModal
-            open={isModalOpen}
-            onOpenChange={setIsModalOpen}
-            containerId={selectedContainerId}
-          />
         </div>
       </div>
       

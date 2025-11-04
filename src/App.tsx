@@ -9,12 +9,10 @@ import ConnectWallet from '@/pages/ConnectWallet';
 
 // Lazy load other pages for better performance
 const Projects = lazy(() => import('@/pages/Projects'));
-const FarmProjects = lazy(() => import('@/pages/FarmProjects'));
+const FarmOS = lazy(() => import('@/pages/FarmOS'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 const Analytics = lazy(() => import('@/pages/Analytics'));
 const Profile = lazy(() => import('@/pages/Profile'));
-const Tokenization = lazy(() => import('@/pages/Tokenization'));
-const TokenPurchase = lazy(() => import('@/pages/TokenPurchase'));
 const ProjectDetails = lazy(() => import('@/pages/ProjectDetails'));
 const HowItWorks = lazy(() => import('@/pages/HowItWorks'));
 const Sensors = lazy(() => import('@/pages/Sensors'));
@@ -45,13 +43,11 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/farm-projects" element={<FarmProjects />} />
+          <Route path="/farm-os" element={<FarmOS />} />
           <Route path="/connect-wallet" element={<ConnectWallet />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/tokenization" element={<Tokenization />} />
-          <Route path="/token-purchase" element={<TokenPurchase />} />
           <Route path="/project/:id" element={<ProjectDetails />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/sensors" element={<Sensors />} />
@@ -70,7 +66,7 @@ const App = () => {
           
           {/* Redirect old routes to new ones if needed */}
           <Route path="/learn-more" element={<Navigate to="/how-it-works" replace />} />
-          <Route path="/explore-solutions" element={<Navigate to="/farm-projects" replace />} />
+          <Route path="/explore-solutions" element={<Navigate to="/farm-os" replace />} />
           
           {/* 404 fallback */}
           <Route path="*" element={

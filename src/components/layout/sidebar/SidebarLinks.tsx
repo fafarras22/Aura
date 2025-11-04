@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import {
   BarChart3,
   Cloud,
-  CreditCard,
+  Database,
   GanttChartSquare,
   LayoutDashboard,
   Leaf,
@@ -14,8 +14,7 @@ import {
   VideoIcon,
   PackageOpen,
   AlertCircle,
-  Warehouse,
-  CircleDollarSign
+  Warehouse
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "./NavLink";
@@ -59,7 +58,7 @@ export function SidebarLinks() {
         </NavLink>
       </NavSection>
       
-      <NavSection title="Production Data">
+      <NavSection title="Farm Operations">
         <NavLink 
           to="/production/vegetables" 
           icon={Sprout} 
@@ -67,9 +66,6 @@ export function SidebarLinks() {
         >
           Vegetables
         </NavLink>
-      </NavSection>
-      
-      <NavSection title="Sales Performance">
         <NavLink 
           to="/sales/daily" 
           icon={BarChart3} 
@@ -79,17 +75,7 @@ export function SidebarLinks() {
         </NavLink>
       </NavSection>
       
-      <NavSection title="Tokenization & Projects">
-        <NavLink to="/tokenization" icon={CreditCard} isActive={location.pathname === '/tokenization'}>
-          Tokenization
-        </NavLink>
-        <NavLink 
-          to="/farm-projects" 
-          icon={CircleDollarSign} 
-          isActive={location.pathname.startsWith('/farm-projects')}
-        >
-          Farm Projects
-        </NavLink>
+      <NavSection title="Real Estate Projects">
         <NavLink 
           to="/projects" 
           icon={Warehouse} 
@@ -98,6 +84,12 @@ export function SidebarLinks() {
           Real Estate
         </NavLink>
       </NavSection>
+      
+      {isDeveloperMode && (
+        <NavLink to="/farm-os" icon={Database} isActive={location.pathname === '/farm-os'}>
+          Farm OS (Admin)
+        </NavLink>
+      )}
       
       <NavLink to="/analytics" icon={GanttChartSquare} isActive={location.pathname === '/analytics'}>
         Analytics

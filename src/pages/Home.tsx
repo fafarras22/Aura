@@ -8,7 +8,7 @@ import { HowAkarWorks } from "@/components/home/HowAkarWorks";
 import { AseanImpact } from "@/components/home/AseanImpact";
 import { AkarTokenSection } from "@/components/home/AkarTokenSection";
 import { QuickInvestment } from "@/components/home/QuickInvestment";
-import { HeroSection } from "@/components/home/HeroSection";
+import { FarmOSHero } from "@/components/home/FarmOSHero";
 import { IndonesiaImpactSection } from "@/components/home/IndonesiaImpactSection"; 
 import { TokenizationSection } from "@/components/home/TokenizationSection";
 import { Footer } from "@/components/layout/Footer";
@@ -118,13 +118,8 @@ const Home = () => {
       <HomeHeader language={language} setLanguage={setLanguage} />
       
       <main>
-        {/* Hero Section with animated images */}
-        <HeroSection 
-          content={content.hero}
-          farmTypes={content.farmTypes}
-          onExploreClick={() => navigate('/farm-projects')}
-          onLearnMoreClick={() => navigate('/how-it-works')}
-        />
+        {/* Hero Section - Farm OS Focus */}
+        <FarmOSHero />
         
         {/* Quick Investment Section - Moved up for easier access */}
         <QuickInvestment language={language} />

@@ -19,14 +19,13 @@ interface DashboardContentProps {
   expandedSections: {
     sensors: boolean;
     sales: boolean;
-    tokenization: boolean;
     locations: boolean;
     climate?: boolean;
     water?: boolean;
   };
   toggleSection: (section: string) => void;
   salesData: ContainerSalesData;
-  tokenData: TokenizationData;
+  tokenData?: TokenizationData;
   farmLocations: FarmLocation[];
   waterData?: WaterData;
   climateData?: ClimateData;
@@ -63,7 +62,6 @@ export const DashboardContent: React.FC<DashboardContentProps> = ({
         farmLocations={farmLocations}
         waterData={waterData}
         climateData={climateData}
-        tokenData={tokenData}
       />
     </div>
   );

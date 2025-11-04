@@ -17,7 +17,7 @@ import { SystemSettingsForm } from "@/components/backend/SystemSettingsForm";
 import { IntegrationsPanel } from "@/components/backend/IntegrationsPanel";
 import { ProductionDataForm } from "@/components/backend/ProductionDataForm";
 
-const BackendDashboard = () => {
+const FarmOS = () => {
   const { isDeveloperMode, currentUser } = useDeveloperMode();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -25,23 +25,23 @@ const BackendDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("sales");
   
-  // Check if user has admin privileges
-  const isAdmin = isDeveloperMode || (currentUser?.role === 'admin');
+  // Check if user has farm operator privileges (admin role for now)
+  const isFarmOperator = isDeveloperMode || (currentUser?.role === 'admin');
   
   useEffect(() => {
-    // Redirect non-admin users away from this page
-    if (!isAdmin) {
+    // Redirect non-farm operator users away from this page
+    if (!isFarmOperator) {
       toast({
         title: "Access Denied",
-        description: "You need administrator privileges to access this page.",
+        description: "You need farm operator privileges to access the Farm OS.",
         variant: "destructive",
       });
       navigate("/dashboard");
     }
-  }, [isAdmin, navigate, toast]);
+  }, [isFarmOperator, navigate, toast]);
   
-  // If not logged in or not admin, show access denied
-  if (!user || !isAdmin) {
+  // If not logged in or not farm operator, show access denied
+  if (!user || !isFarmOperator) {
     return (
       <div className="container max-w-7xl mx-auto px-4 py-8">
         <Card>
@@ -51,11 +51,11 @@ const BackendDashboard = () => {
               Access Restricted
             </CardTitle>
             <CardDescription>
-              Administrator privileges required
+              Farm operator privileges required
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p>You need administrator privileges to access the backend dashboard.</p>
+            <p>You need farm operator privileges to access the AKAR Farm OS platform.</p>
           </CardContent>
         </Card>
       </div>
@@ -68,7 +68,7 @@ const BackendDashboard = () => {
       
       <div className="mt-6">
         <Badge variant="secondary" className="mb-6">
-          Admin Backend
+          AKAR Farm OS
         </Badge>
         
         <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -143,4 +143,4 @@ const BackendDashboard = () => {
   );
 };
 
-export default BackendDashboard;
+export default FarmOS;
